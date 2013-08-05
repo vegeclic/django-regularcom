@@ -1,0 +1,14 @@
+{% load i18n %}
+<hr/>
+
+{% block footer %}
+  <footer class="footer">
+    <div class="copy">
+      django-regularcom - version 0.1 | {% trans "Under" %} <a href="http://www.gnu.org/licenses/agpl-3.0.html">{% trans "GNU Affero General Public License" %}</a>
+    </div>
+    <nav>
+      {% block footernav %}
+    {% endblock %}
+    </nav>
+  </footer>
+{% endblock footer %}
