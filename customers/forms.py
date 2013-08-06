@@ -1,10 +1,17 @@
 from django import forms
-from .models import Address
+from common.models import Address, Image
 
 class CustomerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CustomerForm, self).__init__(*args, **kwargs)
-        if 'instance' in kwargs:
-            self.fields['main_address'].queryset = Address.objects.filter(account=kwargs['instance'].account)
-            self.fields['shipping_address'].queryset = Address.objects.filter(account=kwargs['instance'].account)
-            self.fields['billing_address'].queryset = Address.objects.filter(account=kwargs['instance'].account)
+
+        for field in ['main_address', 'shipping_address', 'billing_address']:
+            if 'instance' in kwargs:
+                self.fields[field].queryset = Address.objects.filter(customer=kwargs['instance'])
+            else:
+                self.fields[field].queryset = Address.objects.none()
+
+        # if 'instance' in kwargs:
+        #     self.fields['main_image'].queryset = Image.objects.filter(object_id=kwargs['instance'].id)
+        # else:
+        #     self.fields['main_image'].queryset = Image.objects.none()

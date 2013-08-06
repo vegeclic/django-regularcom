@@ -1,13 +1,10 @@
 from django.contrib import admin
-from .models import Address, Customer
+from .models import Customer
 from .forms import CustomerForm
-
-class AddressAdmin(admin.ModelAdmin):
-    fieldsets = []
-
-admin.site.register(Address, AddressAdmin)
+from common.admin import ImageInline, AddressInline
 
 class CustomerAdmin(admin.ModelAdmin):
+    inlines = [AddressInline,]
     form = CustomerForm
     fieldsets = []
     list_display = ('account', 'main_address', 'date_of_birth')
