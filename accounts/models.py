@@ -83,6 +83,6 @@ class Account(AbstractBaseUser):
 class Author(models.Model):
     account = models.OneToOneField(Account)
     name = models.CharField(max_length=30, blank=True)
+    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
 
-    def __unicode__(self):
-        return self.name
+    def __unicode__(self): return self.name

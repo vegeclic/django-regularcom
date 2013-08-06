@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import Account, Author
+from common.admin import ImageInline
 
 class AccountCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -82,6 +83,7 @@ admin.site.register(Account, AccountAdmin)
 admin.site.unregister(Group)
 
 class AuthorAdmin(admin.ModelAdmin):
+    inlines = [ImageInline,]
     fieldsets = []
     list_display = ('name',)
 

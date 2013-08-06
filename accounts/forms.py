@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 from .models import Account, AccountManager
+from common.models import Image
 
 class AccountCreationForm(forms.ModelForm):
     """
@@ -47,3 +48,12 @@ class AccountCreationForm(forms.ModelForm):
         if commit:
             account.save()
         return account
+
+class AuthorForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AuthorForm, self).__init__(*args, **kwargs)
+
+        if 'instance' in kwargs:
+            self.fields['main_image'].queryset = Image.objects.filter(object_id=kwargs['instance'].id)
+        else:
+            self.fields['main_image'].queryset = Image.objects.none()
