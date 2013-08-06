@@ -37,6 +37,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     product = models.ForeignKey('products.Product', related_name='+')
+    suppliers = models.ManyToManyField(Supplier, null=True, blank=True, related_name='product_suppliers')
     body = models.TextField(blank=True)
     weight = models.FloatField(null=True, blank=True)
     sku = models.CharField(max_length=100, blank=True)
@@ -44,5 +45,21 @@ class Product(models.Model):
     # authors = models.ManyToManyField('accounts.Author', null=True, blank=True, related_name='+')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
+    enabled = models.BooleanField(default=True)
+    expired = models.BooleanField(default=False)
 
     def __unicode__(self): return self.name
+
+class Inventory(models.Model):
+    class Meta:
+        verbose_name_plural = _("inventories")
+
+    product = models.OneToOneField(Product)
+    quantity = models.IntegerField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self): return self.product.name
+
+class Order(models.Model):
+    product = models.OneToOneField(Product)
