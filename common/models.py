@@ -4,11 +4,11 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 class Image(models.Model):
-    def image_name(instance, filename):
-        return '/'.join([instance.content_object.__module__.split('.')[0].lower(),
-                         instance.content_object.__class__.__name__.lower(),
-                         instance.content_object.slug,
-                         filename])
+    def image_name(self, filename):
+        package = self.content_object.__module__.split('.')[0].lower()
+        module = self.content_object.__class__.__name__.lower()
+        slug = self.content_object.slug if 'slug' in dir(self.content_object) else str(self.object_id)
+        return '/'.join([package, module, slug, filename])
 
     image = models.ImageField(upload_to=image_name)
     content_type = models.ForeignKey(ContentType, related_name='+')

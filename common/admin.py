@@ -2,6 +2,21 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from .models import Image, Country, Address
 
+class MyModelAdmin(admin.ModelAdmin):
+    add_form = None
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Use special form during creation
+        """
+        defaults = {}
+        if obj is None:
+            defaults.update({
+                'form': self.add_form if self.add_form else self.form,
+            })
+        defaults.update(kwargs)
+        return super(MyModelAdmin, self).get_form(request, obj, **defaults)
+
 class LimitedAdminInlineMixin(object):
     """
     InlineAdmin mixin limiting the selection of related items according to
