@@ -37,6 +37,13 @@ class Product(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     product = models.ForeignKey('products.Product', related_name='+')
+    STATUS_CHOICES = (
+        ('d', _('Draft')),
+        ('p', _('Published')),
+        ('e', _('Expired')),
+        ('w', _('Withdrawn')),
+    )
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     suppliers = models.ManyToManyField(Supplier, null=True, blank=True, related_name='product_suppliers')
     body = models.TextField(blank=True)
     weight = models.FloatField(null=True, blank=True)
@@ -45,15 +52,14 @@ class Product(models.Model):
     # authors = models.ManyToManyField('accounts.Author', null=True, blank=True, related_name='+')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
-    enabled = models.BooleanField(default=True)
-    expired = models.BooleanField(default=False)
 
     def __unicode__(self): return self.name
 
 class Inventory(models.Model):
     class Meta:
-        verbose_name_plural = _("inventories")
+        verbose_name_plural = _('inventories')
 
+    store = models.ForeignKey('Store')
     product = models.OneToOneField(Product)
     quantity = models.IntegerField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -61,9 +67,16 @@ class Inventory(models.Model):
 
     def __unicode__(self): return self.product.name
 
+class Store(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self): return self.name
+
 class Entry(models.Model):
     class Meta:
-        verbose_name_plural = _("entries")
+        verbose_name_plural = _('entries')
 
     order = models.ForeignKey('Order')
     product = models.OneToOneField(Product)
@@ -72,5 +85,12 @@ class Entry(models.Model):
     def __unicode__(self): return self.product.name
 
 class Order(models.Model):
+    STATUS_CHOICES = (
+        ('d', _('Draft')),
+        ('v', _('Validate')),
+        ('e', _('Expired')),
+        ('w', _('Withdrawn')),
+    )
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)

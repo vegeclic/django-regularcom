@@ -28,44 +28,42 @@ admin.site.register(models.Supplier, SupplierAdmin)
 class ProductAdmin(ca.MyModelAdmin):
     form = forms.ProductForm
     add_form = forms.ProductCreationForm
-    list_display = ('name', 'weight', 'date_created', 'date_last_modified',)
+    list_display = ('name', 'weight', 'date_created', 'date_last_modified', 'status',)
+    list_filter = ('status',)
     prepopulated_fields = {"slug": ("name",)}
+    actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
 
-    def queryset(self, request):
-        qs = super(ca.MyModelAdmin, self).queryset(request)
-        if request.user:
-            return qs
-        return qs.filter(author=request.user)
+    def make_draft(self, request, queryset): queryset.update(status='d')
+    def make_published(self, request, queryset): queryset.update(status='p')
+    def make_expired(self, request, queryset): queryset.update(status='e')
+    def make_withdrawn(self, request, queryset): queryset.update(status='w')
 
 admin.site.register(models.Product, ProductAdmin)
 
-class InventoryAdmin(ca.MyModelAdmin):
-    list_display = ('product', 'quantity', 'date_last_modified',)
+class InventoryInline(admin.TabularInline):
+    model = models.Inventory
+    extra = 3
 
-admin.site.register(models.Inventory, InventoryAdmin)
+class StoreAdmin(ca.MyModelAdmin):
+    list_display = ('name', 'date_last_modified',)
+    inlines = [InventoryInline, ca.AddressInline,]
+
+admin.site.register(models.Store, StoreAdmin)
 
 class EntryInline(admin.TabularInline):
     model = models.Entry
     extra = 3
 
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     if db_field.name == 'product':
-    #         print(db_field.blank)
-    #         # kwargs['queryset'] = Product.objects.filter(owner=request.user)
-    #     return super(EntryInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    def get_formset(self, request, obj=None, **kwargs):
-        formset = super(admin.TabularInline, self).get_formset(request, obj, **kwargs)
-        # f = formset.form.base_fields['product'].choices.choice()
-        f = formset
-        print(dir(f))
-        print(f)
-        # print([x for x in f])
-        return formset
-
 class OrderAdmin(ca.MyModelAdmin):
-    list_display = ('date_created', 'date_last_modified',)
+    list_display = ('status', 'date_created', 'date_last_modified',)
+    list_filter = ('status',)
+    actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [EntryInline,]
+
+    def make_draft(self, request, queryset): queryset.update(status='d')
+    def make_validate(self, request, queryset): queryset.update(status='v')
+    def make_expired(self, request, queryset): queryset.update(status='e')
+    def make_withdrawn(self, request, queryset): queryset.update(status='w')
 
 admin.site.register(models.Order, OrderAdmin)

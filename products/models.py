@@ -27,6 +27,13 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
+    STATUS_CHOICES = (
+        ('d', _('Draft')),
+        ('p', _('Published')),
+        ('e', _('Expired')),
+        ('w', _('Withdrawn')),
+    )
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     categories = models.ManyToManyField(Category, null=True, blank=True, related_name='+')
     tags = generic.GenericRelation(TaggedItem)
     body = models.TextField(blank=True)
