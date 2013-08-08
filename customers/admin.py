@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Customer
-from .forms import CustomerForm
-from common.admin import ImageInline, AddressInline
+from . import models, forms
+import common.admin as ca
 
-class CustomerAdmin(admin.ModelAdmin):
-    inlines = [AddressInline,]
-    form = CustomerForm
+class CustomerAdmin(ca.MyModelAdmin):
+    form = forms.CustomerForm
+    add_form = forms.CustomerCreationForm
     fieldsets = []
     list_display = ('account', 'main_address', 'date_of_birth')
+    inlines = [ca.AddressInline, ca.ImageInline,]
 
-admin.site.register(Customer, CustomerAdmin)
+admin.site.register(models.Customer, CustomerAdmin)

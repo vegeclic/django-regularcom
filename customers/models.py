@@ -8,6 +8,6 @@ class Customer(models.Model):
     main_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     shipping_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     billing_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
-    # main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
+    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
 
     def __unicode__(self): return self.account.email
