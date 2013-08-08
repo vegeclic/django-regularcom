@@ -1,8 +1,52 @@
 from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
-from .models import Account, AccountManager
-from common.models import Image
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from . import models
+import common.models as cm
+import common.forms as cf
+
+class AccountCreationAdminForm(forms.ModelForm):
+    """A form for creating new users. Includes all the required
+    fields, plus a repeated password."""
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
+    class Meta:
+        model = models.Account
+        fields = ('email',)
+
+    def clean_password2(self):
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        account = super(AccountCreationAdminForm, self).save(commit=False)
+        account.set_password(self.cleaned_data["password1"])
+        if commit:
+            account.save()
+        return account
+
+class AccountChangeAdminForm(forms.ModelForm):
+    """A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    """
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = models.Account
+
+    def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
+        return self.initial["password"]
 
 class AccountCreationForm(forms.ModelForm):
     """
@@ -21,7 +65,7 @@ class AccountCreationForm(forms.ModelForm):
                                 help_text=_("Enter the same password as above, for verification."))
 
     class Meta:
-        model = Account
+        model = models.Account
         fields = ("email",)
 
     def clean_email(self):
@@ -49,11 +93,11 @@ class AccountCreationForm(forms.ModelForm):
             account.save()
         return account
 
-class AuthorForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(AuthorForm, self).__init__(*args, **kwargs)
+class AuthorForm(cf.ModelFormWithImage):
+    class Meta:
+        model = models.Author
 
-        if 'instance' in kwargs:
-            self.fields['main_image'].queryset = Image.objects.filter(object_id=kwargs['instance'].id)
-        else:
-            self.fields['main_image'].queryset = Image.objects.none()
+class AuthorCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Author
+        exclude = ('main_image',)
