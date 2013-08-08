@@ -61,5 +61,16 @@ class Inventory(models.Model):
 
     def __unicode__(self): return self.product.name
 
-class Order(models.Model):
+class Entry(models.Model):
+    class Meta:
+        verbose_name_plural = _("entries")
+
+    order = models.ForeignKey('Order')
     product = models.OneToOneField(Product)
+    quantity = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self): return self.product.name
+
+class Order(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
