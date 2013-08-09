@@ -1,20 +1,21 @@
 from django import forms
-from common.models import Image
+from . import models
+import common.forms as cf
 
-class CategoryForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CategoryForm, self).__init__(*args, **kwargs)
+class CategoryForm(cf.ModelFormWithImage):
+    class Meta:
+        model = models.Category
 
-        if 'instance' in kwargs:
-            self.fields['main_image'].queryset = Image.objects.filter(object_id=kwargs['instance'].id)
-        else:
-            self.fields['main_image'].queryset = Image.objects.none()
+class CategoryCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Category
+        exclude = ('main_image',)
 
-class ProductForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
+class ProductForm(cf.ModelFormWithImage):
+    class Meta:
+        model = models.Product
 
-        if 'instance' in kwargs:
-            self.fields['main_image'].queryset = Image.objects.filter(object_id=kwargs['instance'].id)
-        else:
-            self.fields['main_image'].queryset = Image.objects.none()
+class ProductCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Product
+        exclude = ('main_image',)

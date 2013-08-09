@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
-from .models import Image, Country, Address
+from django.contrib.contenttypes.models import ContentType
+from . import models, forms
 
 class MyModelAdmin(admin.ModelAdmin):
     add_form = None
@@ -86,12 +87,34 @@ class CountryAdmin(admin.ModelAdmin):
     fieldsets = []
     list_display = ('name',)
 
-admin.site.register(Country, CountryAdmin)
+admin.site.register(models.Country, CountryAdmin)
+
+class CurrencyAdmin(MyModelAdmin):
+    fieldsets = []
+    list_display = ('name', 'symbol', 'exchange_rate',)
+
+admin.site.register(models.Currency, CurrencyAdmin)
 
 class AddressInline(generic.GenericStackedInline):
-    model = Address
+    model = models.Address
     extra = 1
 
 class ImageInline(generic.GenericTabularInline):
-    model = Image
+    model = models.Image
     extra = 1
+
+class CriteriaAdmin(MyModelAdmin):
+    fieldsets = []
+    list_display = ('name',)
+
+admin.site.register(models.Criteria, CriteriaAdmin)
+
+class ParameterAdmin(MyModelAdmin):
+    form = forms.ParameterForm
+    add_form = forms.ParameterCreationForm
+    fieldsets = []
+    list_display = ('site', 'content_type', 'name', 'value',)
+
+    def value(self, obj): return obj.content_object
+
+admin.site.register(models.Parameter, ParameterAdmin)

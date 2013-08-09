@@ -4,12 +4,6 @@ from . import forms, models
 import common.admin as ca
 import common.models as cm
 
-class CurrencyAdmin(ca.MyModelAdmin):
-    fieldsets = []
-    list_display = ('name', 'symbol',)
-
-admin.site.register(models.Currency, CurrencyAdmin)
-
 class PriceInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     model = models.Price
     extra = 1

@@ -31,7 +31,7 @@ class AccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email = models.EmailField(
-        verbose_name='email address',
+        verbose_name=_('email address'),
         max_length=255,
         unique=True,
         db_index=True,
@@ -81,8 +81,8 @@ class Account(AbstractBaseUser):
         return self.is_admin
 
 class Author(models.Model):
-    account = models.OneToOneField(Account)
-    name = models.CharField(max_length=30, blank=True)
-    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
+    account = models.OneToOneField(Account, verbose_name=_('account'))
+    name = models.CharField(_('name'), max_length=30, blank=True)
+    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
 
     def __unicode__(self): return self.name

@@ -33,16 +33,16 @@ class Address(models.Model):
         ('M', _('Male')),
         ('F', _('Female')),
     )
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=1, blank=True)
+    gender = models.CharField(_('gender'), choices=GENDER_CHOICES, max_length=1, blank=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
-    street = models.CharField(max_length=100, blank=True)
-    postal_code = models.CharField(max_length=100, blank=True)
-    city = models.CharField(max_length=100, blank=True)
-    country = models.ForeignKey(Country, null=True, blank=True)
-    home_phone = models.CharField(max_length=100, blank=True)
-    mobile_phone = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(blank=True)
+    street = models.CharField(_('street'), max_length=100, blank=True)
+    postal_code = models.CharField(_('postal code'), max_length=100, blank=True)
+    city = models.CharField(_('city'), max_length=100, blank=True)
+    country = models.ForeignKey(Country, null=True, blank=True, verbose_name=_('country'))
+    home_phone = models.CharField(_('home phone'), max_length=100, blank=True)
+    mobile_phone = models.CharField(_('mobile phone'), max_length=100, blank=True)
+    email = models.EmailField(_('email'), blank=True)
 
     def __unicode__(self):
         """
@@ -50,3 +50,30 @@ class Address(models.Model):
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
+
+class Currency(models.Model):
+    class Meta:
+        verbose_name_plural = _("currencies")
+
+    name = models.CharField(_('name'), max_length=30, unique=True)
+    symbol = models.CharField(_('symbol'), max_length=30, unique=True)
+    exchange_rate = models.FloatField(_('exchange rate'), default=1)
+
+    def __unicode__(self): return ('%s (%s)' % (self.name, self.symbol)).strip()
+
+class Criteria(models.Model):
+    name = models.CharField(_('name'), max_length=100, unique=True)
+
+    def __unicode__(self): return self.name
+
+class Parameter(models.Model):
+    class Meta:
+        unique_together = ('site', 'name')
+
+    site = models.ForeignKey('sites.Site', verbose_name=_('site'))
+    name = models.CharField(_('name'), max_length=100, unique=True)
+    content_type = models.ForeignKey(ContentType, verbose_name=_('content type'))
+    object_id = models.PositiveIntegerField(_('object id'), default=0)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+
+    def __unicode__(self): return '%s %s' % (self.site, self.name)

@@ -10,4 +10,4 @@ class Customer(models.Model):
     billing_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
 
-    def __unicode__(self): return self.account.email
+    def __unicode__(self): return '%s%s' % (self.account.email, (' (%s)' % self.main_address.__unicode__()) if self.main_address else '')

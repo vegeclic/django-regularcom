@@ -9,8 +9,8 @@ import common.forms as cf
 class AccountCreationAdminForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
 
     class Meta:
         model = models.Account
@@ -37,7 +37,7 @@ class AccountChangeAdminForm(forms.ModelForm):
     the user, but replaces the password field with admin's
     password hash display field.
     """
-    password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField(label=_('Password'))
 
     class Meta:
         model = models.Account
@@ -57,7 +57,7 @@ class AccountCreationForm(forms.ModelForm):
         'duplicate_email': _("A user with that email already exists."),
         'password_mismatch': _("The two password fields didn't match."),
     }
-    email = forms.EmailField(label=_("Email"), max_length=255)
+    email = forms.EmailField(label=_("Email address"), max_length=255)
     password1 = forms.CharField(label=_("Password"),
                                 widget=forms.PasswordInput)
     password2 = forms.CharField(label=_("Password confirmation"),
