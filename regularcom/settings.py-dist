@@ -134,6 +134,8 @@ INSTALLED_APPS = (
     'products',
     'suppliers',
     'common',
+    'carts',
+    'wallets',
 )
 
 # A sample logging configuration. The only tangible logging
