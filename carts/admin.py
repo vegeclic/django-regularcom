@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
+from isoweek import Week
+from dateutil.relativedelta import relativedelta
 from . import forms, models
 import common.admin as ca
 import common.models as cm
@@ -15,6 +17,7 @@ class ThematicAdmin(ca.MyModelAdmin):
 admin.site.register(models.Thematic, ThematicAdmin)
 
 class PriceInline(admin.TabularInline):
+    form = forms.PriceForm
     model = models.Price
     extra = 1
 
@@ -24,19 +27,43 @@ class SizeAdmin(ca.MyModelAdmin):
     list_display = ('name', 'price',)
     inlines = [PriceInline, ca.ImageInline,]
 
-    def price(self, obj): return obj.price_set.get(currency__name='Euro')
+    def price(self, obj): return obj.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
 
 admin.site.register(models.Size, SizeAdmin)
 
-class OrderAdmin(ca.MyModelAdmin):
-    form = forms.OrderForm
-    list_display = ('customer', 'size', 'price', 'frequency', 'start_period', 'end_period', 'quantity',)
-    fieldsets = (
-        (None,        {'fields': ['customer', 'size', 'frequency']}),
-        (_('Period'), {'fields': ['start_period', 'end_period'], 'classes': ['collapse']}),
-        (None,        {'fields': ['products', 'criterias', 'quantity']}),
-    )
+class ExtentInline(admin.TabularInline):
+    form = forms.ExtentForm
+    model = models.Extent
+    extra = 3
 
-    def price(self, obj): return obj.size.price_set.get(currency__name='Euro')
+class SubscriptionAdmin(ca.MyModelAdmin):
+    add_form = forms.SubscriptionCreationForm
+    form = forms.SubscriptionForm
+    list_display = ('customer', 'size', 'price', 'frequency', 'nweeks', 'duration', 'quantity', 'status',)
+    list_filter = ('status',)
+    inlines = [ExtentInline,]
 
-admin.site.register(models.Order, OrderAdmin)
+    def price(self, obj): return obj.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+
+    def duration(self, obj):
+        s, e = Week.fromstring(obj.start).day(1), Week.fromstring(obj.end).day(1)
+        return str(relativedelta(e,s))
+
+    def nweeks(self, obj): return Week.fromstring(obj.end) - Week.fromstring(obj.start)
+
+admin.site.register(models.Subscription, SubscriptionAdmin)
+
+class ContentInline(admin.TabularInline):
+    form = forms.ContentForm
+    model = models.Content
+    extra = 3
+    fields = ('extent', 'product', 'quantity',)
+
+class DeliveryAdmin(ca.MyModelAdmin):
+    add_form = forms.DeliveryCreationForm
+    form = forms.DeliveryForm
+    list_display = ('subscription', 'date', 'status',)
+    list_filter = ('status',)
+    inlines = [ContentInline,]
+
+admin.site.register(models.Delivery, DeliveryAdmin)
