@@ -5,6 +5,7 @@ import common.admin as ca
 import common.models as cm
 
 class PriceInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
+    form = forms.PriceForm
     model = models.Price
     extra = 1
 

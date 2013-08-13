@@ -2,13 +2,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from common.models import Parameter
+import common.models as cm
 
 class Supplier(models.Model):
     name = models.CharField(_('name'), max_length=30, unique=True)
     slug = models.SlugField(unique=True)
-    delivery_delay = models.IntegerField(_('delivery delay'), null=True, blank=True)
-    threshold_order = models.IntegerField(_('threshold order'), null=True, blank=True)
+    delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
+    threshold_order = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
 
     def __unicode__(self): return self.name
@@ -42,7 +42,7 @@ class Price(models.Model):
 
     product = models.ForeignKey(Product, verbose_name=_('product'))
     supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
-    currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'), default=Parameter.objects.get(name='default currency').object_id)
+    currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
 
@@ -54,7 +54,7 @@ class Inventory(models.Model):
 
     store = models.ForeignKey('Store', verbose_name=_('store'))
     product = models.OneToOneField(Product, verbose_name=_('product'))
-    quantity = models.IntegerField(_('quantity'), null=True, blank=True)
+    quantity = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
@@ -73,14 +73,14 @@ class Entry(models.Model):
 
     order = models.ForeignKey('Order', verbose_name=_('order'))
     product = models.OneToOneField(Product, verbose_name=_('product'))
-    quantity = models.IntegerField(_('quantity'), null=True, blank=True)
+    quantity = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
 
     def __unicode__(self): return self.product.name
 
 class Order(models.Model):
     STATUS_CHOICES = (
         ('d', _('Draft')),
-        ('v', _('Validate')),
+        ('v', _('Validated')),
         ('e', _('Expired')),
         ('w', _('Withdrawn')),
     )
