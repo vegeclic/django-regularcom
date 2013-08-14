@@ -53,17 +53,29 @@ class SubscriptionAdmin(ca.MyModelAdmin):
 
 admin.site.register(models.Subscription, SubscriptionAdmin)
 
-class ContentInline(admin.TabularInline):
+class ContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
+    # form = forms.ContentProductForm
+    model = models.ContentProduct
+    extra = 3
+    # fields = ('extent', 'product', 'quantity',)
+
+    # def get_filters(self, obj): return (('content', {'extent__product': obj.product}),)
+    def get_filters(self, obj): return (('product', {'product': obj}),)
+
+class ContentAdmin(ca.MyModelAdmin):
     form = forms.ContentForm
     model = models.Content
-    extra = 3
-    fields = ('extent', 'product', 'quantity',)
+    # fields = ('extent', 'product', 'quantity',)
+    list_display = ('delivery', 'extent',)
+    inlines = [ContentProductInline,]
+
+admin.site.register(models.Content, ContentAdmin)
 
 class DeliveryAdmin(ca.MyModelAdmin):
     add_form = forms.DeliveryCreationForm
     form = forms.DeliveryForm
     list_display = ('subscription', 'date', 'status',)
     list_filter = ('status',)
-    inlines = [ContentInline,]
+    # inlines = [ContentInline,]
 
 admin.site.register(models.Delivery, DeliveryAdmin)

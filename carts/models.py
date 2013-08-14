@@ -73,14 +73,20 @@ class Delivery(models.Model):
 
     def __unicode__(self): return self.date
 
+class ContentProduct(models.Model):
+    class Meta:
+        unique_together = ('content', 'product')
+
+    content = models.ForeignKey('Content', verbose_name=_('content'))
+    product = models.ForeignKey('suppliers.Product', verbose_name=_('product'))
+    quantity = models.PositiveIntegerField(_('quantity'), default=1)
+
 class Content(models.Model):
     class Meta:
         unique_together = ('delivery', 'extent')
 
     delivery = models.ForeignKey('Delivery', verbose_name=_('delivery'))
     extent = models.ForeignKey('Extent', verbose_name=_('extent'))
-    product = models.ForeignKey('suppliers.Product', verbose_name=_('product'), null=True, blank=True)
-    quantity = models.PositiveIntegerField(_('quantity'), default=1)
 
     def __unicode__(self): return '%s, %s' % (self.delivery, self.extent)
 
@@ -122,7 +128,7 @@ class Subscription(models.Model):
             for i in range(0, e+1-s, self.frequency):
                 d = self.delivery_set.create(date=s+i)
                 for extent in self.extent_set.filter(subscription=self):
-                    d.content_set.create(extent=extent, quantity=extent.extent)
+                    d.content_set.create(extent=extent)
 
 class Extent(models.Model):
     class Meta:
