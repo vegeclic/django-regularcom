@@ -36,7 +36,7 @@ class Product(TranslatableModel):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'MyModel: %s' % self.pk)
+    def __unicode__(self): return self.lazy_translation_getter('name', 'Product: %s' % self.pk)
 
 class Price(models.Model):
     class Meta:
