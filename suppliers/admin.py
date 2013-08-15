@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
+from hvad.admin import TranslatableAdmin
 from . import forms, models
 import common.admin as ca
 import common.models as cm
@@ -20,14 +21,16 @@ class SupplierAdmin(ca.MyModelAdmin):
 
 admin.site.register(models.Supplier, SupplierAdmin)
 
-class ProductAdmin(ca.MyModelAdmin):
-    form = forms.ProductForm
-    add_form = forms.ProductCreationForm
-    list_display = ('name', 'weight', 'date_created', 'date_last_modified', 'status',)
+class ProductAdmin(TranslatableAdmin):
+    list_display = ('all_translations', 'name_', 'slug', 'weight', 'date_created', 'date_last_modified', 'status',)
+    # list_display = ('name', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
-    prepopulated_fields = {"slug": ("name",)}
+    # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
+    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'weight', 'sku', 'main_image',)
+
+    def name_(self, obj): return obj.lazy_translation_getter('name')
 
     def make_draft(self, request, queryset): queryset.update(status='d')
     def make_published(self, request, queryset): queryset.update(status='p')

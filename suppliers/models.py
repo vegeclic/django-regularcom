@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from hvad.models import TranslatableModel, TranslatedFields
 import common.models as cm
 
 class Supplier(models.Model):
@@ -13,8 +14,11 @@ class Supplier(models.Model):
 
     def __unicode__(self): return self.name
 
-class Product(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+class Product(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(_('name'), max_length=100, unique=True),
+        body = models.TextField(_('body'), blank=True),
+    )
     slug = models.SlugField(unique=True)
     product = models.ForeignKey('products.Product', related_name='+', verbose_name=_('product'))
     STATUS_CHOICES = (
@@ -26,15 +30,13 @@ class Product(models.Model):
     status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
     suppliers = models.ManyToManyField(Supplier, null=True, blank=True, related_name='product_suppliers', verbose_name=_('suppliers'))
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='product_criterias', verbose_name=_('criterias'))
-    body = models.TextField(_('body'), blank=True)
     weight = models.FloatField(_('weight'), null=True, blank=True)
     sku = models.CharField(max_length=100, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
-    # authors = models.ManyToManyField('accounts.Author', null=True, blank=True, related_name='+', verbose_name=_('authors'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.name
+    def __unicode__(self): return self.lazy_translation_getter('name', 'MyModel: %s' % self.pk)
 
 class Price(models.Model):
     class Meta:
@@ -42,6 +44,7 @@ class Price(models.Model):
 
     product = models.ForeignKey(Product, verbose_name=_('product'))
     supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
+    reference = models.CharField(_('reference'), max_length=30)
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
