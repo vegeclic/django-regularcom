@@ -1,0 +1,4 @@
+* python 3
+* django > 1.5
+* django hvad (dev version since it is the only one compatible with python 3)
+* beautiful soup 4
