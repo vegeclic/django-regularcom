@@ -34,8 +34,8 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
-#LANGUAGE_CODE = 'fr-fr'
+LANGUAGE_CODE = 'en'
+#LANGUAGE_CODE = 'fr'
 
 SITE_ID = 1
 
@@ -119,6 +119,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'hvad',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -168,3 +169,12 @@ LOGGING = {
 }
 
 AUTH_USER_MODEL = 'accounts.Account'
+
+START_YEAR = 2013
+
+AVE_LOGIN = ''
+AVE_PASSWD = ''
+AVE_SUPPLIER_NAME = 'AVE'
+AVE_CHUNK = 300
+AVE_LIMIT_SIZE = None
+AVE_LOCAL_RETRIEVE = False
