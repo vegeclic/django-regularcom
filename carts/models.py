@@ -30,6 +30,9 @@ from isoweek import Week
 import common.models as cm
 
 class StatusBasedModel(models.Model):
+    class Meta:
+        abstract = True
+
     STATUS_CHOICES = (
         ('d', _('Draft')),
         ('p', _('Published')),
