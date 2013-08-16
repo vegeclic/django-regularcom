@@ -27,6 +27,7 @@ import common.models as cm
 class Supplier(models.Model):
     name = models.CharField(_('name'), max_length=30, unique=True)
     slug = models.SlugField(unique=True)
+    suppliers = models.ManyToManyField('self', null=True, blank=True, related_name='supplier_suppliers', verbose_name=_('suppliers'))
     delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
     threshold_order = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
@@ -37,6 +38,7 @@ class Product(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(_('name'), max_length=100, unique=True),
         body = models.TextField(_('body'), blank=True),
+        ingredients = models.TextField(_('ingredients'), blank=True),
     )
     slug = models.SlugField(unique=True)
     product = models.ForeignKey('products.Product', related_name='+', verbose_name=_('product'))
@@ -63,7 +65,8 @@ class Price(models.Model):
 
     product = models.ForeignKey(Product, verbose_name=_('product'))
     supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
-    reference = models.CharField(_('reference'), max_length=30)
+    reference = models.CharField(_('reference'), max_length=30, null=True, blank=True)
+    supplier_product_url = models.URLField(_('supplier product url'), null=True, blank=True)
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)

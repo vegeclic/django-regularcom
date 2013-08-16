@@ -47,7 +47,7 @@ class ProductAdmin(TranslatableAdmin):
     # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
-    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'weight', 'sku', 'main_image',)
+    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image',)
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
 
