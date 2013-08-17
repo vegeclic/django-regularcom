@@ -92,8 +92,8 @@ class AccountCreationForm(forms.ModelForm):
         # but it sets a nicer error message than the ORM. See #13147.
         email = self.cleaned_data["email"]
         try:
-            Account._default_manager.get(email=email)
-        except Account.DoesNotExist:
+            models.Account._default_manager.get(email=email)
+        except models.Account.DoesNotExist:
             return email
         raise forms.ValidationError(self.error_messages['duplicate_email'])
 
