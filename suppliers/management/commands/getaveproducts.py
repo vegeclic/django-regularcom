@@ -254,10 +254,10 @@ class Command(NoArgsCommand):
             weight2_area = article_data.find(text=re.compile('Gewicht:'))
             if weight2_area:
                 weight2 = weight2_area.parent.next_sibling.strip()
-                if weight2 != '-':
+                if weight2 and weight2 != '-':
                     logger_article.debug('weight2: %s', weight2)
                     logger_db.debug('convert weight to float')
-                    product_obj.weight = float(weight2.split(' ')[0])
+                    product_obj.weight = float(weight2.strip().replace(',','.').split(' ')[0])
 
             price2_area = article_data.find(text=re.compile('Einkaufspreis (EK):'))
             if price2_area:
