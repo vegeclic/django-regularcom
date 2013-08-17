@@ -2,3 +2,5 @@
 * django > 1.5
 * django hvad (dev version since it is the only one compatible with python 3)
 * beautiful soup 4
+* celery 3.0.19
+* django-celery 3.0.11

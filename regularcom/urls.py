@@ -37,4 +37,5 @@ urlpatterns = patterns('',
 
     url(r'^$', 'regularcom.views.home', name='home'),
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^celerytest/', include('celerytest.urls')),
 )

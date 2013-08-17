@@ -22,4 +22,5 @@ from django.http import HttpResponseRedirect, HttpResponse
 # from models import *
 
 def home(request):
+    print(request.user)
     return render(request, 'home.html')

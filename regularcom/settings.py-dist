@@ -1,5 +1,12 @@
 # Django settings for regularcom project.
 
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_RESULT_BACKEND = 'database'
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -119,6 +126,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'djcelery',
     'hvad',
     'django.contrib.auth',
     'django.contrib.contenttypes',
