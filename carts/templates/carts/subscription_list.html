@@ -1,0 +1,50 @@
+{% extends "carts/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Subscriptions" %}</h2>
+
+  <div class="form-actions text-right">
+    <a href="{% url "create" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+	<th class="span3">{% trans "Size" %}</th>
+	<th class="span2">{% trans "Price" %}</th>
+	<th class="span2">{% trans "Frequency" %}</th>
+	<th class="span2">{% trans "Duration" %}</th>
+	<th class="span2">{% trans "Quantity" %}</th>
+	<th class="span2">{% trans "Date" %}</th>
+	<th class="span2">{% trans "Status" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subscription in object_list %}
+	<tr class="{% cycle 'row1' 'row2' %} {% if subscription.status == "v" %}success{% else %}warning{% endif %}">
+	  <td><a href="{% url "deliveries" subscription.id %}">{{subscription.size}}</a></td>
+	  <td>{{subscription.price}}</td>
+	  <td>{{subscription.frequency}}</td>
+	  <td>{{subscription.duration}}</td>
+	  <td>{{subscription.quantity}}</td>
+	  <td>{{subscription.date_created}}</td>
+	  <td>{{subscription.get_status_display}}</td>
+	</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="form-actions text-right">
+    <a href="{% url "create" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
+  </div>
+
+  <div class="pagination text-center">
+    <ul>
+      <li class="disabled"><a href="#">«</a></li>
+      <li class="active"><a href="#">1</a></li>
+      <li class="disabled"><a href="#">»</a></li>
+    </ul>
+  </div>
+
+{% endblock %}

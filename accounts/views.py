@@ -18,20 +18,45 @@
 #
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.views import login as auth_views_login
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from common import views as cv
 from . import forms, models
-
-# Create your views here.
 
 def signup(request):
     if request.method == "POST":
         signup_form = forms.AccountCreationForm(request.POST)
+
         if signup_form.is_valid():
             account = models.Account.objects.create_user(email=signup_form.data['email'], password=signup_form.data['password1'])
-            return redirect('django.contrib.auth.views.login', {'signup_ok': True})
-        return render(request, 'registration/login.html', {'signup_form': signup_form})
-    return render(request, 'registration/login.html', {'signup_form': forms.AccountCreationForm()})
+            messages.success(request, "Your account has been successfully created.")
+            return redirect('login')
 
-def logout_view(request):
-    logout(request)
-    return render(request, 'regularcom.views.home')
+        cv.messages_from_form(request, signup_form)
+        return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': signup_form})
+
+    return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': forms.AccountCreationForm()})
+
+@login_required
+def profile(request):
+    return render(request, 'accounts/profile.html', {'section': 'profile'})
+
+def login(request):
+    response = auth_views_login(request, extra_context={'section': 'login'})
+    if request.method == 'POST':
+        if 'context_data' in dir(response):
+            form = response.context_data.get('form')
+            if form:
+                cv.messages_from_form(request, form)
+                return response
+        messages.success(request, "You're logged in.")
+    return response
+
+def logout(request):
+    auth_logout(request)
+    messages.success(request, "You're logged out.")
+    return login(request)
+
+def password_reset(request): return redirect('regularcom.views.home')

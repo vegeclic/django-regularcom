@@ -17,8 +17,12 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-# from models import *
+from django.conf.urls.defaults import *
+from django.views.generic import TemplateView, DetailView, ListView
+from . import views, models
 
-def home(request): return render(request, 'home.html', {'section': 'home'})
+urlpatterns = patterns('wallets.views',
+                       url(r'^$', views.BalanceView.as_view(), name='balance'),
+                       url(r'^histories/$', views.HistoryView.as_view(), name='histories'),
+                       url(r'^settings/$', views.SettingsView.as_view(), name='settings'),
+)

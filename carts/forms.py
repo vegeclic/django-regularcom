@@ -27,31 +27,31 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 from pprint import pprint
 
-class ThematicForm(cf.ModelFormWithImage):
+class ThematicAdminForm(cf.ModelFormWithImage):
     class Meta:
         model = models.Thematic
 
-class ThematicCreationForm(forms.ModelForm):
+class ThematicCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Thematic
         exclude = ('main_image',)
 
-class SizeForm(cf.ModelFormWithImage):
+class SizeAdminForm(cf.ModelFormWithImage):
     class Meta:
         model = models.Size
 
-class SizeCreationForm(forms.ModelForm):
+class SizeCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Size
         exclude = ('main_image',)
 
-class PriceForm(cf.ModelFormWithCurrency):
+class PriceAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Price
 
-class SubscriptionBaseForm(forms.ModelForm):
+class SubscriptionBaseAdminForm(forms.ModelForm):
     def clean(self):
-        cleaned_data = super(SubscriptionBaseForm, self).clean()
+        cleaned_data = super(SubscriptionBaseAdminForm, self).clean()
         prefix = 'extent_set-'
         total = int(self.data.get('%sTOTAL_FORMS' % prefix))
         extents = [int(e) if e else 0 for e in [self.data.get('%s%d-extent' % (prefix,i)) for i in range(total)]]
@@ -63,7 +63,7 @@ class SubscriptionBaseForm(forms.ModelForm):
             raise forms.ValidationError(_('The sum of extents should be equal to 100 instead %d.' % __sum))
         return cleaned_data
 
-class SubscriptionCreationForm(SubscriptionBaseForm):
+class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
         fields = ('status', 'customer', 'size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
@@ -78,7 +78,7 @@ class SubscriptionCreationForm(SubscriptionBaseForm):
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
     def __init__(self, *args, **kwargs):
-        super(SubscriptionCreationForm, self).__init__(*args, **kwargs)
+        super(SubscriptionCreationAdminForm, self).__init__(*args, **kwargs)
         start = self.fields['start']
         cw = Week.thisweek()
         choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
@@ -86,14 +86,14 @@ class SubscriptionCreationForm(SubscriptionBaseForm):
         start.initial = cw+1
 
     def save(self, commit=True):
-        subscription = super(SubscriptionCreationForm, self).save(commit=False)
+        subscription = super(SubscriptionCreationAdminForm, self).save(commit=False)
         bw = Week.fromstring(self.cleaned_data['start'])
         ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
         subscription.end = ew
         if commit: subscription.save()
         return subscription
 
-class SubscriptionForm(SubscriptionBaseForm):
+class SubscriptionAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
         fields = ('status', 'customer', 'size', 'criterias', 'quantity',)
@@ -105,26 +105,56 @@ class SubscriptionForm(SubscriptionBaseForm):
             raise forms.ValidationError(_('The status is already validated. It cannot be changed anymore.'))
         return status
 
-class ExtentForm(forms.ModelForm):
+class ExtentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Extent
 
-class DeliveryCreationForm(forms.ModelForm):
+class DeliveryCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Delivery
 
     def __init__(self, *args, **kwargs):
-        super(DeliveryCreationForm, self).__init__(*args, **kwargs)
+        super(DeliveryCreationAdminForm, self).__init__(*args, **kwargs)
         date = self.fields['date']
         cw = Week.thisweek()
         choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
         date.choices = zip(choices, choices)
         date.initial = cw+1
 
-class DeliveryForm(forms.ModelForm):
+class DeliveryAdminForm(forms.ModelForm):
     class Meta:
         model = models.Delivery
 
-class ContentForm(forms.ModelForm):
+class ContentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Content
+
+class CreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Subscription
+        fields = ('size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
+
+    DURATION_CHOICES = (
+        (1, _('1 month')),
+        (3, _('3 months')),
+        (6, _('6 months')),
+        (9, _('9 months')),
+        (12, _('1 year')),
+    )
+    duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
+
+    def __init__(self, *args, **kwargs):
+        super(CreateForm, self).__init__(*args, **kwargs)
+        start = self.fields['start']
+        cw = Week.thisweek()
+        choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
+        start.choices = zip(choices, choices)
+        start.initial = cw+1
+
+    def save(self, commit=True):
+        subscription = super(CreateForm, self).save(commit=False)
+        bw = Week.fromstring(self.cleaned_data['start'])
+        ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
+        subscription.end = ew
+        if commit: subscription.save()
+        return subscription

@@ -1,0 +1,10 @@
+{% extends "wallets/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Wallet" %}</h2>
+
+  Wallet page of {{ user }}.
+  <br/>
+  {% trans "Balance of your account" %}: <a href="{% url "histories" %}">{{ balance_in_target_currency }} {{ object.target_currency.symbol }}</a>.
+{% endblock %}

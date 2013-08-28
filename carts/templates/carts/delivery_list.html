@@ -1,0 +1,25 @@
+{% extends "carts/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Deliveries" %}</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+	<th>{% trans "Subscription" %}</th>
+	<th class="span1">{% trans "Date" %}</th>
+	<th class="span1">{% trans "Status" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for delivery in object_list %}
+	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "v" %}success{% else %}warning{% endif %}">
+	  <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
+	  <td>{{delivery.date}}</td>
+	  <td>{{delivery.get_status_display}}</td>
+	</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -25,11 +25,11 @@ import datetime
 from . import models
 import common.forms as cf
 
-class WalletForm(cf.ModelFormWithCurrency):
+class WalletAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Wallet
 
-class CreditCreationForm(cf.ModelFormWithCurrency):
+class CreditCreationAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Credit
         fields = ('wallet', 'payment_type', 'amount', 'currency', 'payment_date',)
@@ -47,7 +47,7 @@ class CreditCreationForm(cf.ModelFormWithCurrency):
             raise forms.ValidationError(_('The payment date is only needed for payment with cheque.'))
         return payment_date
 
-class CreditForm(cf.ModelFormWithCurrency):
+class CreditAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Credit
         fields = ('status', 'wallet', 'payment_type', 'amount', 'currency', 'payment_date',)
@@ -68,12 +68,12 @@ class CreditForm(cf.ModelFormWithCurrency):
             raise forms.ValidationError(_('The status is already validated. It cannot be changed anymore.'))
         return status
 
-class HistoryCreationForm(forms.ModelForm):
+class HistoryCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.History
         # fields = ('wallet', 'content_type', 'amount',)
 
-class HistoryForm(forms.ModelForm):
+class HistoryAdminForm(forms.ModelForm):
     class Meta:
         model = models.History
         # fields = ('site', 'name', 'content_type', 'object_id',)
@@ -81,9 +81,14 @@ class HistoryForm(forms.ModelForm):
     object_id = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
-        super(HistoryForm, self).__init__(*args, **kwargs)
+        super(HistoryAdminForm, self).__init__(*args, **kwargs)
         content_type = self.initial.get('content_type')
         object_id = self.initial.get('object_id')
         object_id_field = self.fields.get('object_id')
         object_id_field.choices = [(o.id, o) for o in ContentType.objects.get(pk=content_type).get_all_objects_for_this_type()]
         object_id_field.initial = object_id
+
+class SettingsForm(cf.ModelFormWithCurrency):
+    class Meta:
+        model = models.Wallet
+        exclude = ('customer', 'balance',)

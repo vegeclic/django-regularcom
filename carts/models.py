@@ -143,6 +143,13 @@ class Subscription(models.Model):
 
     def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
 
+    def price(self):
+        return self.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+
+    def duration(self):
+        s, e = Week.fromstring(self.start).day(1), Week.fromstring(self.end).day(1)
+        return str(relativedelta(e,s))
+
     def save(self, *args, **kwargs):
         super(Subscription, self).save(*args, **kwargs)
         if self.status == 'v':

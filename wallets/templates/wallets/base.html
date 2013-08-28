@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "wallets/css/styles.css" %}" />
+{% endblock %}
+
+{% block page_title %}{% trans "Wallet" %}{% endblock %}
+
+{% block content %}
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="well sidebar-nav">
+	<ul class="nav nav-list">
+	  <li class="{% if not sub_section or sub_section == "balance" %}active{% endif %}">
+	    <a href="{% url "balance" %}"><i class="icon-briefcase"></i> {% trans "Balance" %}</a>
+	  </li>
+
+	  <li class="{% if sub_section == "histories" %}active{% endif %}">
+	    <a href="{% url "histories" %}"><i class="icon-calendar"></i> {% trans "Histories" %}</a>
+	  </li>
+
+	  <li class="{% if sub_section == "settings" %}active{% endif %}">
+	    <a href="{% url "settings" %}"><i class="icon-cog"></i> {% trans "Settings" %}</a>
+	  </li>
+	</ul>
+      </div>
+    </div> <!--/.span2 -->
+
+    <div class="span10">
+      {% block sub_content %}{% endblock %}
+    </div> <!--/.span10 -->
+  </div> <!--/.row-fluid -->
+{% endblock %}

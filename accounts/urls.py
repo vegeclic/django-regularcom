@@ -20,11 +20,15 @@
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 
-urlpatterns = patterns('',
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    # url(r'^logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^logout/$', 'logout_view'),
-    url(r'^profile/$', 'regularcom.views.home', name='home'),
-    url(r'^password_reset/$', 'regularcom.views.home', name='home'),
-    url(r'^signup/$', 'signup'),
+urlpatterns = patterns('accounts.views',
+                       url(r'^login/$', 'login', name='login'),
+                       url(r'^logout/$', 'logout', name='logout'),
+                       url(r'^profile/$', 'profile', name='profile'),
+                       url(r'^password_reset/$', 'password_reset', name='password_reset'),
+                       url(r'^signup/$', 'signup', name='signup'),
+)
+
+urlpatterns += patterns('django.contrib.auth.views',
+                        # url(r'^login/$', 'login', name='login', kwargs={'extra_context': {'section': 'login'}}),
+                        # url(r'^logout/$', 'logout', name='logout', kwargs={'extra_context': {'section': 'logout'}, 'template_name': 'registration/logout.html',}),
 )

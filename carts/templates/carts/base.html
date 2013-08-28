@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "carts/css/styles.css" %}" />
+  <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
+{% endblock %}
+
+{% block page_title %}{% trans "Cart" %}{% endblock %}
+
+{% block content %}
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="well sidebar-nav">
+	<ul class="nav nav-list">
+	  <li class="{% if sub_section == "create" %}active{% endif %}">
+	    <a href="{% url "create" %}"><i class="icon-plus"></i> {% trans "Create" %}</a>
+	  </li>
+
+	  <li class="{% if not sub_section or sub_section == "subscriptions" %}active{% endif %}">
+	    <a href="{% url "subscriptions" %}"><i class="icon-shopping-cart"></i> {% trans "Subscriptions" %}</a>
+	  </li>
+
+	  <li class="{% if sub_section == "deliveries" %}active{% endif %}">
+	    <a href="{% url "deliveries" %}"><i class="icon-calendar"></i> {% trans "Deliveries" %}</a>
+	  </li>
+	</ul>
+      </div>
+    </div> <!--/.span2 -->
+
+    <div class="span10">
+      {% block sub_content %}{% endblock %}
+    </div> <!--/.span10 -->
+  </div> <!--/.row-fluid -->
+{% endblock %}

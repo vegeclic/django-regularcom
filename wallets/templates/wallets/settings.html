@@ -1,0 +1,13 @@
+{% extends "wallets/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Settings" %}</h2>
+
+  <form class="wallet-form" method="post" action="{% url "settings" %}">
+    {% csrf_token %}
+    <h3 class="wallet-form-heading">{% trans "Update your wallet parameters" %}</h3>
+    {{ form.as_p }}
+    <button class="btn btn-large btn-primary" type="submit">{% trans "Save" %}</button>
+  </form>
+{% endblock %}

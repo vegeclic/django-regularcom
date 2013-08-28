@@ -26,7 +26,7 @@ import common.admin as ca
 import common.models as cm
 
 class WalletAdmin(ca.MyModelAdmin):
-    form = forms.WalletForm
+    form = forms.WalletAdminForm
     list_display = ('customer', 'balance', 'balance_in_target_currency', 'target_currency',)
     list_filter = ('target_currency',)
 
@@ -36,8 +36,8 @@ class WalletAdmin(ca.MyModelAdmin):
 admin.site.register(models.Wallet, WalletAdmin)
 
 class CreditAdmin(ca.MyModelAdmin):
-    add_form = forms.CreditCreationForm
-    form = forms.CreditForm
+    add_form = forms.CreditCreationAdminForm
+    form = forms.CreditAdminForm
     list_display = ('wallet', 'payment_type', 'amount', 'currency', 'payment_date', 'date_created', 'status',)
     list_filter = ('status', 'wallet', 'payment_type', 'currency',)
     # readonly_fields = ('status',)
@@ -62,8 +62,8 @@ class CreditAdmin(ca.MyModelAdmin):
 admin.site.register(models.Credit, CreditAdmin)
 
 class HistoryAdmin(ca.MyModelAdmin):
-    add_form = forms.HistoryCreationForm
-    form = forms.HistoryForm
+    add_form = forms.HistoryCreationAdminForm
+    form = forms.HistoryAdminForm
     list_display = ('wallet', 'content_type', 'value', 'amount', 'wallet_amount', 'target_currency', 'date_created',)
     list_filter = ('wallet', 'content_type',)
 

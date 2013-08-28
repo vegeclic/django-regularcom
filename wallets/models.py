@@ -47,6 +47,8 @@ class History(models.Model):
 
     def __unicode__(self): return '%s %s' % (self.wallet.__unicode__(), self.amount)
 
+    def target_amount(self): return self.amount * self.wallet.target_currency.exchange_rate
+
 class Credit(models.Model):
     wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
     PAYMENT_TYPES = (

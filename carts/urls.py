@@ -17,8 +17,13 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-# from models import *
+from django.conf.urls.defaults import *
+from django.views.generic import TemplateView, DetailView, ListView
+from . import views, models
 
-def home(request): return render(request, 'home.html', {'section': 'home'})
+urlpatterns = patterns('carts.views',
+                       url(r'^subscriptions/$', views.SubscriptionView.as_view(), name='subscriptions'),
+                       url(r'^deliveries/(?P<pk>\d+)/$', views.DeliveryView.as_view(), name='deliveries'),
+                       url(r'^deliveries/$', views.DeliveryView.as_view(), name='deliveries'),
+                       url(r'^create/$', views.CreateView.as_view(), name='create'),
+)

@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+{% load i18n %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>{% block page_title %}Django-Regularcom{% endblock %}</title>
+    <title>{% block page_title %}Regular'com - {{ section }}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" />
-    <!-- <link rel="stylesheet" href="{{ STATIC_URL }}css/docs.css" /> -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" type="text/css" />
-    <!-- <link rel="shortcut icon" href="{{ STATIC_URL }}ico/daemon.ico" /> -->
-
-    <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-    <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.min.js"></script>
+    {% comment %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/docs.css" />
+    <link rel="shortcut icon" href="{{ STATIC_URL }}ico/daemon.ico" />
+    {% endcomment %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
+    {% block head %}{% endblock %}
   </head>
 
   <body>
@@ -22,26 +22,22 @@
     <div class="{% block content_class %}container{% endblock %}">
 
       <div role="main">
-	{% if messages %}
-	  <div class="row">
-	    <div class="span12">
-	      {% for message in messages %}
-		<div class="alert alert-{{message.tags}} fade in">
-		  <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-		  <strong>{{message.tags|title}}:</strong> {{message}}
-		</div>
-	      {% endfor %}
-	    </div><!-- end span -->
-	  </div><!-- end row -->
-	{% endif %}
-
+	{% include "_messages.html" %}
 	{% block content %}{% endblock %}
-      </div>
+      </div> <!--/main -->
 
       {% include "footer.html" %}
 
     </div> <!--/.container -->
 
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+    {% block foot %}{% endblock %}
   </body>
 </html>
+
+{# {% comment %} #}
+<pre>
+    {% debug %}
+</pre>
+{# {% endcomment %} #}
