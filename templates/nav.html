@@ -7,22 +7,25 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
       </button>
-      <!-- <a class="brand" href="#"> -->
-      <!-- <img src="{{ STATIC_URL }}ico/daemon.ico" style="width: 20px;"/> &nbsp; -->
-      <!-- </a> -->
+      {% comment %}
+      <a class="brand" href="#">
+      <img src="{{ STATIC_URL }}ico/daemon.ico" style="width: 20px;"/> &nbsp;
+      </a>
+      {% endcomment %}
       <a class="brand" href="{% url 'home' %}">Regular'com</a>
       <div class="nav-collapse collapse">
 	<ul class="nav">
     	  {% block menu %}
-            <li class="{% if not section or section == 'home' %}active{% endif %}"><a href="{% url 'home' %}"><i class="icon-home"></i> {% trans "Presentation" %}</a></li>
+            <li {% if not section or section == 'home' %}class="active"{% endif %}><a href="{% url 'home' %}"><i class="icon-home"></i> {% trans "Presentation" %}</a></li>
 	    {% if user.is_authenticated %}
-	      <li class="{% if section == 'profile' %}active{% endif %}"><a href="{% url 'profile' %}"><i class="icon-user"></i> {% trans "Profile" %}</a></li>
-	      <li class="{% if section == 'wallet' %}active{% endif %}"><a href="{% url 'balance' %}"><i class="icon-briefcase"></i> {% trans "Wallet" %}</a></li>
-	      <li class="{% if section == 'cart' %}active{% endif %}"><a href="{% url 'subscriptions' %}"><i class="icon-shopping-cart"></i> {% trans "Carts" %}</a></li>
-	      <li class="{% if section == 'logout' %}active{% endif %}"><a href="{% url 'logout' %}"><i class="icon-off"></i> {% trans "Logout" %}</a></li>
+	      <li {% if section == 'profile' %}class="active"{% endif %}><a href="{% url 'profile' %}"><i class="icon-user"></i> {% trans "Profile" %}</a></li>
+	      <li {% if section == 'mailbox' %}class="active"{% endif %}><a href="{% url 'messages' %}"><i class="icon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<strong>({{nb_messages}})</strong>{% endif %}</a></li>
+	      <li {% if section == 'wallet' %}class="active"{% endif %}><a href="{% url 'balance' %}"><i class="icon-briefcase"></i> {% trans "Wallet" %} <strong>({{wallet.balance_in_target_currency|floatformat}} {{wallet.target_currency.symbol}})</strong></a></li>
+	      <li {% if section == 'cart' %}class="active"{% endif %}><a href="{% url 'subscriptions' %}"><i class="icon-shopping-cart"></i> {% trans "Carts" %}</a></li>
+	      <li {% if section == 'logout' %}class="active"{% endif %}><a href="{% url 'logout' %}"><i class="icon-off"></i> {% trans "Logout" %}</a></li>
 	    {% else %}
-	      <li class="{% if section == 'login' %}active{% endif %}"><a href="{% url 'login' %}"><i class="icon-lock"></i> {% trans "Login" %}</a></li>
-	      <li class="{% if section == 'signup' %}active{% endif %}"><a href="{% url 'signup' %}"><i class="icon-plus-sign"></i> {% trans "Signup" %}</a></li>
+	      <li {% if section == 'login' %}class="active"{% endif %}><a href="{% url 'login' %}"><i class="icon-lock"></i> {% trans "Login" %}</a></li>
+	      <li {% if section == 'signup' %}class="active"{% endif %}><a href="{% url 'signup' %}"><i class="icon-plus-sign"></i> {% trans "Signup" %}</a></li>
 	    {% endif %}
 	  {% endblock menu %}
 	</ul>
