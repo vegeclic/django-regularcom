@@ -19,6 +19,7 @@
 
 from django.conf.urls import patterns, include, url
 from django.views.generic import DetailView, ListView, TemplateView
+from . import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -34,9 +35,10 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('accounts.urls')),
     url(r'^carts/', include('carts.urls')),
     url(r'^wallets/', include('wallets.urls')),
-    url(r'^celerytest/', include('celerytest.urls')),
+    url(r'^mailbox/', include('mailbox.urls')),
+    # url(r'^celerytest/', include('celerytest.urls')),
 )
 
 urlpatterns += patterns('regularcom.views',
-    url(r'^$', 'home', name='home'),
+    url(r'^$', views.HomeView.as_view(), name='home'),
 )

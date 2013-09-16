@@ -19,6 +19,13 @@
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views import generic
 # from models import *
 
-def home(request): return render(request, 'home.html', {'section': 'home'})
+class HomeView(generic.TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['section'] = 'home'
+        return context
