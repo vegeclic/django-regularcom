@@ -60,6 +60,7 @@ class Product(TranslatableModel):
     )
     status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
     categories = models.ManyToManyField(Category, null=True, blank=True, related_name='+', verbose_name=_('categories'))
+    products_parent = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, related_name='products_children', verbose_name=_('products parent'))
     tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     date_created = models.DateTimeField(auto_now_add=True)
