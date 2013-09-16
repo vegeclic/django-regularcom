@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "mailbox/css/styles.css" %}" />
+  <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
+{% endblock %}
+
+{% block page_title %}{% trans "Mailbox" %}{% endblock %}
+
+{% block content %}
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="well sidebar-nav">
+	<ul class="nav nav-list">
+	  <li {% if sub_section == "new_message" %}class="active"{% endif %}>
+	    <a href="{% url "new_message" %}"><i class="icon-envelope"></i> {% trans "New message" %}</a>
+	  </li>
+	  <li {% if not sub_section or sub_section == "messages" %}class="active"{% endif %}>
+	    <a href="{% url "messages" %}"><i class="icon-inbox"></i> {% trans "Messages" %}</a>
+	  </li>
+	</ul>
+      </div>
+    </div>
+
+    <div class="span9">
+      {% block sub_content %}{% endblock %}
+    </div>
+  </div> <!--/.row-fluid -->
+{% endblock %}

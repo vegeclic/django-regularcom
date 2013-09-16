@@ -1,0 +1,41 @@
+{% extends "mailbox/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+  <h2>{% trans "Message" %}</h2>
+
+  <div class="form-actions text-right">
+    <a href="{% url "messages" %}" class="btn btn-primary"><i class="icon-arrow-left icon-white"></i> {% trans "Return" %}</a>
+    <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="icon-envelope icon-white"></i> {% trans "Reply" %}</a>
+  </div>
+
+  <p>
+    <label><strong>{% trans "Participants" %}:</strong></label>
+    <ul>
+      {% for participant in object.participants.all %}
+	{% if user.customer != participant %}
+	  <li>{{participant}}</li>
+	{% endif %}
+      {% endfor %}
+    </ul>
+  </p>
+  <p><label><strong>{% trans "Subject" %}:</strong></label> {{object.subject}}</p>
+  <p><label><strong>{% trans "Body" %}:</strong></label> {{object.body}}</p>
+
+  {% if object.reply_set.all %}
+    <hr/>
+    <h3>{% trans "Replies" %}</h3>
+    {% for reply in object.reply_set.all %}
+      <p><label><strong>{% trans "Participant" %}:</strong></label> {{reply.participant}}</p>
+      <p><label><strong>{% trans "Body" %}:</strong></label> {{reply.body}}</p>
+      <p><label><strong>{% trans "Date" %}:</strong></label> {{reply.date_created}}</p>
+      <hr/>
+    {% endfor %}
+  {% endif %}
+
+  <div class="form-actions text-right">
+    <a href="{% url "messages" %}" class="btn btn-primary"><i class="icon-arrow-left icon-white"></i> {% trans "Return" %}</a>
+    <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="icon-envelope icon-white"></i> {% trans "Reply" %}</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "mailbox/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+  <h2>{% trans "New message" %}</h2>
+
+  <form class="mailbox-form" method="post" action="{% url "new_message" %}">
+    {% csrf_token %}
+    <h3 class="mailbox-form-heading">{% trans "Send a new message" %}</h3>
+
+    {{ form.as_p }}
+
+    {% comment %}
+    <div class="control-group {% if form.participants.errors %}error{% endif %}">
+      <label class="control-label" for="id_participants">{{ form.participants.label }}</label>
+      <div class="controls">
+	{{ form.participants }}
+	{{ form.participants.errors }}
+      </div>
+      {% if form.participants.help_text %}
+	<span class="helptext">{{ form.participants.help_text }}</span>
+      {% endif %}
+    </div>
+
+    <div class="control-group {% if form.subject.errors %}error{% endif %}">
+      <label class="control-label" for="id_subject">{{ form.subject.label }}</label>
+      <div class="controls">
+	{{ form.subject }}
+	{{ form.subject.errors }}
+      </div>
+      {% if form.subject.help_text %}
+	<span class="helptext">{{ form.subject.help_text }}</span>
+      {% endif %}
+    </div>
+
+    <div class="control-group {% if form.body.errors %}error{% endif %}">
+      <label class="control-label" for="id_body">{{ form.body.label }}</label>
+      <div class="controls">
+	{{ form.body }}
+	{{ form.body.errors }}
+      </div>
+      {% if form.body.help_text %}
+	<span class="helptext">{{ form.body.help_text }}</span>
+      {% endif %}
+    </div>
+    {% endcomment %}
+
+    <button class="btn btn-large btn-primary" type="submit">{% trans "submit" %}</button>
+  </form>
+{% endblock %}
