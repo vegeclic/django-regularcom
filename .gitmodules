@@ -7,5 +7,5 @@
 	url = git://github.com/components/jqueryui.git
 
 [submodule "bootstrap"]
-	path = static/jqueryui
+	path = static/bootstrap
 	url = git://github.com/components/bootstrap.git
