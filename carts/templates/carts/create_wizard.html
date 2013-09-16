@@ -1,0 +1,135 @@
+{% extends "carts/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% comment %}
+{% block head %}
+  {{ wizard.form.media }}
+{% endblock %}
+{% endcomment %}
+
+{% block sub_content %}
+  <h2>{% trans "Create" %}</h2>
+
+  <form class="cart-form" method="post" action="{% url "create" %}">
+    {% csrf_token %}
+
+    {% comment %}
+    {# Include the hidden fields #}
+    {% for hidden in wizard.form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% endcomment %}
+
+    <h3 class="cart-form-heading">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>
+
+    {% if wizard.steps.current == '0' %}
+
+      {% with tname="carts/one_slide.html" %}
+	{% with id="size" label="Size" %}{% include tname %}{% endwith %}
+	{% with id="frequency" label="Frequency" %}{% include tname %}{% endwith %}
+	{% with id="duration" label="Duration" %}{% include tname %}{% endwith %}
+	{% with id="start" label="Start" %}{% include tname %}{% endwith %}
+      {% endwith %}
+
+      <div>
+	<label>{% trans "Products" %}:</label>
+	<ul class="media-list">
+	  {% for product, products in wizard.form.products_tree.items %}
+	    {% include "carts/products_tree.html" %}
+	  {% endfor %}
+	</ul>
+      </div>
+
+    {% elif wizard.steps.current == '1' %}
+
+      <div id="sliders">
+        {% for product in wizard.form.selected_products %}
+	  <label>{{ product }}</label>
+	  <div class="row">
+	    <!-- <div class="span1"><input type="checkbox" class="lock"/></div> -->
+	    <div class="span1">
+	      <button type="button" class="btn btn-link tooltip_link lock" data-toggle="button" title="{% trans "lock" %} {{product}}"><i class="icon-lock"></i></button>
+	    </div>
+            <div class="span10 slider"></div>
+            <div class="span1 value_content"><span class="value">0</span> %</div>
+	    <input type="hidden" name="product_{{ product.id }}" class="input_value" value="0"/>
+	  </div>
+	{% endfor %}
+	{# <span id="sliders_total">100</span> #}
+      </div>
+
+    {% endif %}
+
+    {{ wizard.management_form.as_p }}
+    {% if wizard.form.forms %}
+      {{ wizard.form.management_form.as_p }}
+      {% for form in wizard.form.forms %}
+        {{ form.as_p }}
+      {% endfor %}
+    {% else %}
+      {{ wizard.form.as_p }}
+    {% endif %}
+
+    {% if wizard.steps.prev %}
+      {% comment %}
+      <button class="btn btn-large" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+      {% endcomment %}
+      <button class="btn btn-large" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+    {% endif %}
+
+    <button class="btn btn-large btn-primary" type="submit">{% trans "submit" %}</button>
+    {% if wizard.steps.current == '1' %}
+      <a class="btn btn-large" id="balance">{% trans "balance" %}</a>
+    {% endif %}
+  </form>
+{% endblock %}
+
+{% block foot %}
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
+  <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
+
+  <script type="text/javascript">
+    $(function() {
+	create_one_slider([{% for size in wizard.form.sizes %}[{{size.id}}, '{{size}}'], {% endfor %}], 'size', 2);
+	create_one_slider([{% for frequency in wizard.form.frequencies %}[{{frequency.0}}, '{{frequency.1}}'], {% endfor %}], 'frequency', 1);
+	create_one_slider([{% for duration in wizard.form.durations %}[{{duration.0}}, '{{duration.1}}'], {% endfor %}], 'duration', 4);
+	create_one_slider([{% for start in wizard.form.starts %}['{{start}}', '{{start}}'], {% endfor %}], 'start', 0);
+
+	$('.tooltip_link').tooltip();
+
+	$('.expend_button').click(function() {
+	    i = $(this).find('i');
+	    if ( i.hasClass('icon-plus') ) {
+		i.removeClass('icon-plus');
+		i.addClass('icon-minus');
+	    } else {
+		i.removeClass('icon-minus');
+		i.addClass('icon-plus');
+	    }
+	});
+
+	$('.add_link').click(function() {
+	    i = $(this).find('i');
+	    if ( $(this).hasClass('btn-success') ) {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-link');
+		i.removeClass('icon-white');
+		$(this).siblings('.value')[0].value = 0;
+	    } else {
+		$(this).removeClass('btn-link');
+		$(this).addClass('btn-success');
+ 		i.addClass('icon-white');
+		$(this).siblings('.value')[0].value = 1;
+	    }
+	});
+    });
+  </script>
+
+  <style type="text/css">
+    .ui-slider .ui-slider-handle { height: 2.3em; }
+  </style>
+{% endblock %}
