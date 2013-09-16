@@ -1,5 +1,5 @@
 .cart-form {
-    max-width: 500px;
+    max-width: 550px;
     padding: 19px 29px 29px;
     margin: 0 auto 20px;
     background-color: #fff;
@@ -17,21 +17,21 @@
     margin-bottom: 10px;
 }
 
-.cart-form input[type="text"],
-.cart-form input[type="password"],
-.cart-form select {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
+#sliders {
+    width: 100%;
+    padding-left: 20px;
+    padding-bottom: 20px;
 }
 
-.cart-form input[type="text"],
-.cart-form input[type="password"]
-{
-    width: 480px;
+#sliders div {
+    margin-bottom: 5px;
 }
 
-.cart-form select {
-    width: 500px;
+#sliders .value_content {
+    font-size: 12px;
+}
+
+.one_slide .row {
+    margin-left: 0;
+    margin-bottom: 20px;
 }

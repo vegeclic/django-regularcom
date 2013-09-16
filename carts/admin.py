@@ -29,8 +29,8 @@ import common.models as cm
 class ThematicAdmin(ca.MyModelAdmin):
     form = forms.ThematicAdminForm
     add_form = forms.ThematicCreationAdminForm
-    list_display = ('name', 'start_period', 'end_period', 'date_last_modified', 'status',)
-    list_filter = ('status',)
+    list_display = ('name', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
+    list_filter = ('enabled',)
     inlines = [ca.ImageInline,]
 
 admin.site.register(models.Thematic, ThematicAdmin)
@@ -58,17 +58,20 @@ class ExtentInline(admin.TabularInline):
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
     form = forms.SubscriptionAdminForm
-    list_display = ('customer', 'size', 'price', 'frequency', 'nweeks', 'duration', 'quantity', 'status',)
+    list_display = ('customer', 'size', 'frequency', 'duration', 'quantity', 'status',)
     list_filter = ('status',)
     inlines = [ExtentInline,]
 
     def price(self, obj): return obj.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
 
     def duration(self, obj):
+        if not obj.start or not obj.end: return None
         s, e = Week.fromstring(obj.start).day(1), Week.fromstring(obj.end).day(1)
         return str(relativedelta(e,s))
 
-    def nweeks(self, obj): return Week.fromstring(obj.end) - Week.fromstring(obj.start)
+    def nweeks(self, obj):
+        if not obj.start or not obj.end: return None
+        return Week.fromstring(obj.end) - Week.fromstring(obj.start)
 
 admin.site.register(models.Subscription, SubscriptionAdmin)
 
@@ -76,7 +79,7 @@ class ContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     # form = forms.ContentProductAdminForm
     model = models.ContentProduct
     extra = 3
-    # fields = ('extent', 'product', 'quantity',)
+    # fields = ('extent', 'proudct', 'quantity',)
 
     # def get_filters(self, obj): return (('content', {'extent__product': obj.product}),)
     def get_filters(self, obj): return (('product', {'product': obj}),)

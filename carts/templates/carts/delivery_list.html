@@ -4,22 +4,52 @@
 {% block sub_content %}
   <h2>{% trans "Deliveries" %}</h2>
 
+  {% if subscription %}
+    <table class="table table-bordered table-hover">
+      <tr>
+	<th class="span2">{% trans "Subscription" %}</th>
+	<td><a href="{% url "subscriptions" %}">{{subscription}}</a></td>
+	<td><a href="{% url "subscriptions" %}">{{subscription.id}}</a></td>
+      </tr>
+    </table>
+  {% endif %}
+
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-	<th>{% trans "Subscription" %}</th>
-	<th class="span1">{% trans "Date" %}</th>
-	<th class="span1">{% trans "Status" %}</th>
+	<th class="span1"></th>
+	{% if not subscription %}
+	  <th class="span1">{% trans "Subscription" %}</th>
+	  <th>{% trans "Description" %}</th>
+	{% endif %}
+	<th>{% trans "Date" %}</th>
+	<th class="span2">{% trans "Status" %}</th>
       </tr>
     </thead>
     <tbody>
-      {% for delivery in object_list %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "v" %}success{% else %}warning{% endif %}">
-	  <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
+      {% for delivery in object_list|dictsort:'date' %}
+	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "p" %}success{% else %}warning{% endif %}">
+	  <td style="text-align: center;">
+	    {% if delivery.status == "w" %}
+	      <a href="{% url "subscription_delivery_validate" delivery.subscription.id delivery.id %}" class="valid_link" data-toggle="tooltip" title="{% trans "buy" %} {{delivery}}"><i class="icon-ok-sign"></i></a>
+	    {% endif %}
+	  </td>
+	  {% if not subscription %}
+	    <td style="text-align: right;"><a href="{% url "subscriptions" %}">{{delivery.subscription.id}}</a></td>
+	    <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
+	  {% endif %}
 	  <td>{{delivery.date}}</td>
 	  <td>{{delivery.get_status_display}}</td>
 	</tr>
       {% endfor %}
     </tbody>
   </table>
+{% endblock %}
+
+{% block foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('.valid_link').tooltip();
+    });
+  </script>
 {% endblock %}

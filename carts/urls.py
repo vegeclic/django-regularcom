@@ -19,11 +19,12 @@
 
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView, DetailView, ListView
-from . import views, models
+from . import views, models, forms
 
 urlpatterns = patterns('carts.views',
                        url(r'^subscriptions/$', views.SubscriptionView.as_view(), name='subscriptions'),
-                       url(r'^deliveries/(?P<pk>\d+)/$', views.DeliveryView.as_view(), name='deliveries'),
+                       url(r'^subscriptions/(?P<pk>\d+)/deliveries/$', views.DeliveryView.as_view(), name='subscription_deliveries'),
                        url(r'^deliveries/$', views.DeliveryView.as_view(), name='deliveries'),
-                       url(r'^create/$', views.CreateView.as_view(), name='create'),
+                       url(r'^subscriptions/(?P<subscription_id>\d+)/deliveries/(?P<delivery_id>\d+)/validate/$', views.DeliveryPaymentView.as_view(), name='subscription_delivery_validate'),
+                       url(r'^create/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2]), name='create'),
 )

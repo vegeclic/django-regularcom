@@ -24,24 +24,14 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms.models import inlineformset_factory
+from django.contrib import messages
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import common.models as cm
+import wallets.models as wm
 
-class StatusBasedModel(models.Model):
-    class Meta:
-        abstract = True
-
-    STATUS_CHOICES = (
-        ('d', _('Draft')),
-        ('p', _('Published')),
-        ('e', _('Expired')),
-        ('w', _('Withdrawn')),
-    )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
-
-class Thematic(StatusBasedModel):
+class Thematic(models.Model):
     name = models.CharField(_('name'), max_length=100, unique=True)
     products = models.ManyToManyField('products.Product', null=True, blank=True, related_name='thematic_products', verbose_name=_('products'))
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='thematic_criterias', verbose_name=_('criterias'))
@@ -50,17 +40,22 @@ class Thematic(StatusBasedModel):
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
+    enabled = models.BooleanField(_('enabled'), default=False)
 
-class Size(StatusBasedModel):
+class Size(models.Model):
     name = models.CharField(max_length=100, unique=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
+    enabled = models.BooleanField(_('enabled'), default=False)
+
+    def default_price(self):
+        try:
+            return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+        except Size.DoesNotExist:
+            return None
 
     def __unicode__(self):
-        try:
-            selected_price = self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
-        except ObjectDoesNotExist:
-            selected_price = None
-        return '%s%s' % (self.name, (' (%s)' % selected_price.__unicode__()) if selected_price else "")
+        price = self.default_price()
+        return '%s%s' % (self.name, (' (%s)' % price.__unicode__()) if price else "")
 
 class Price(models.Model):
     class Meta:
@@ -83,17 +78,31 @@ class Delivery(models.Model):
     subscription = models.ForeignKey('Subscription', verbose_name=_('subscription'))
     date = models.CharField(_('date'), max_length=7, choices=WEEKS_CHOICES)
     STATUS_CHOICES = (
-        ('d', _('Draft')),
-        ('v', _('Validated')),
-        ('D', _('Delivered')),
+        ('w', _('In waiting')),
+        ('p', _('Payed')),
+        ('P', _('In progress')),
+        ('d', _('Delivered')),
+        ('c', _('Canceled')),
         ('e', _('Expired')),
-        ('w', _('Withdrawn')),
     )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
+    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='w')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.date
+    def __unicode__(self): return '%s - %s' % (self.subscription.__unicode__(), self.date)
+
+    def save(self, *args, **kwargs):
+        if self.status == 'p':
+            wallet = wm.Wallet.objects.get(customer__account=self.subscription.customer)
+            amount = self.subscription.size.default_price().price
+            if wallet.balance < amount:
+                raise ValueError(_('You dont have enough money in your wallet to buy it (%d < %d).') % (wallet.balance, amount))
+            wallet.balance -= amount
+            wallet.save()
+            h = wm.History(wallet=wallet, content_type=ContentType.objects.get(model='delivery'),
+                           object_id=self.id, amount=amount*-1)
+            h.save()
+        super(Delivery, self).save(*args, **kwargs)
 
 class ContentProduct(models.Model):
     class Meta:
@@ -112,18 +121,19 @@ class Content(models.Model):
 
     def __unicode__(self): return '%s, %s' % (self.delivery, self.extent)
 
+FREQUENCY_CHOICES = (
+    (1, _('Once a week')),
+    (2, _('Every two weeks')),
+    (3, _('Every three weeks')),
+    (4, _('Once a month')),
+    (8, _('Every two months')),
+    (13, _('Once a quarter')),
+    (26, _('Every 6 months')),
+)
+
 class Subscription(models.Model):
     customer = models.ForeignKey('customers.Customer', verbose_name=_('customer'))
     size = models.ForeignKey(Size, verbose_name=_('size'))
-    FREQUENCY_CHOICES = (
-        (1, _('Once a week')),
-        (2, _('Every two weeks')),
-        (3, _('Every three weeks')),
-        (4, _('Once a month')),
-        (8, _('Every two months')),
-        (13, _('Once a quarter')),
-        (26, _('Every 6 months')),
-    )
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=2, help_text=_('Delivery made sure Tuesday'))
     start = models.CharField(_('start'), max_length=7, choices=WEEKS_CHOICES,
                              help_text=_('Here is the beginnig week of the subscription.'))
@@ -132,12 +142,11 @@ class Subscription(models.Model):
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='cart_subscription_criterias', verbose_name=_('criterias'))
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
     STATUS_CHOICES = (
-        ('d', _('Draft')),
+        ('w', _('In waiting')),
         ('v', _('Validated')),
-        ('e', _('Expired')),
-        ('w', _('Withdrawn')),
+        ('c', _('Canceled')),
     )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
+    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='v')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
@@ -146,14 +155,28 @@ class Subscription(models.Model):
     def price(self):
         return self.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
 
+    def frequency_name(self): return dict(FREQUENCY_CHOICES).get(self.frequency)
+
     def duration(self):
+        if not self.start or not self.end: return None
         s, e = Week.fromstring(self.start).day(1), Week.fromstring(self.end).day(1)
         return str(relativedelta(e,s))
+
+    def duration2(self):
+        if not self.start or not self.end: return None
+        s, e = Week.fromstring(self.start).day(1), Week.fromstring(self.end).day(1)
+        r = relativedelta(e,s)
+        ret = ''
+        if r.years: ret += _('%d years, ') % r.years
+        if r.months: ret += _('%d months, ') % r.months
+        if r.days: ret += _('%d days') % r.days
+        return ret
 
     def save(self, *args, **kwargs):
         super(Subscription, self).save(*args, **kwargs)
         if self.status == 'v':
-            s, e = Week.fromstring(self.start), Week.fromstring(self.end)
+            print(self.start, self.end)
+            s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
             for i in range(0, e+1-s, self.frequency):
                 d = self.delivery_set.create(date=s+i)
                 for extent in self.extent_set.filter(subscription=self):

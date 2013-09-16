@@ -22,10 +22,22 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from . import models
 import common.forms as cf
+import common.models as cm
+import products.models as pm
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
 from pprint import pprint
+
+DURATION_CHOICES = (
+    (1, _('1 month')),
+    (3, _('3 months')),
+    (6, _('6 months')),
+    (9, _('9 months')),
+    (12, _('1 year')),
+    (18, _('18 months')),
+    (24, _('2 years')),
+)
 
 class ThematicAdminForm(cf.ModelFormWithImage):
     class Meta:
@@ -68,13 +80,6 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
         model = models.Subscription
         fields = ('status', 'customer', 'size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
 
-    DURATION_CHOICES = (
-        (1, _('1 month')),
-        (3, _('3 months')),
-        (6, _('6 months')),
-        (9, _('9 months')),
-        (12, _('1 year')),
-    )
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
     def __init__(self, *args, **kwargs):
@@ -134,13 +139,6 @@ class CreateForm(forms.ModelForm):
         model = models.Subscription
         fields = ('size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
 
-    DURATION_CHOICES = (
-        (1, _('1 month')),
-        (3, _('3 months')),
-        (6, _('6 months')),
-        (9, _('9 months')),
-        (12, _('1 year')),
-    )
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
     def __init__(self, *args, **kwargs):
@@ -158,3 +156,27 @@ class CreateForm(forms.ModelForm):
         subscription.end = ew
         if commit: subscription.save()
         return subscription
+
+class CreateForm1(forms.Form):
+    size = forms.HiddenInput()
+    frequency = forms.HiddenInput()
+    duration = forms.HiddenInput()
+    start = forms.HiddenInput()
+    # products = forms.MultipleChoiceField(help_text=_('Use CTRL to select several products.'))
+    # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
+
+    def __init__(self, *args, **kwargs):
+        super(CreateForm1, self).__init__(*args, **kwargs)
+        # start = self.fields['start']
+        # cw = Week.thisweek()
+        # choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
+        # start.choices = zip(choices, choices)
+        # start.initial = cw+1
+        # self.fields['products'].choices = [(product.id, product) for product in pm.Product.objects.all()]
+        # self.fields['criterias'].choices = [(criteria.id, criteria) for criteria in cm.Criteria.objects.all()]
+
+class CreateForm2(forms.Form):
+    # extents = forms.MultipleHiddenInput()
+
+    def __init__(self, *args, **kwargs):
+        super(CreateForm2, self).__init__(*args, **kwargs)
