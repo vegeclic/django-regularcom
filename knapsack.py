@@ -131,9 +131,9 @@ if __name__ == '__main__':
 
     new_pop, logbook = args.algo(pop, toolbox, args.pop_size, args.lambda_algo, args.cxpb, args.mutpb, args.max_gen, stats, halloffame=hof)
 
-    print(len(hof))
-    print(prices)
-    print(qualities)
+    print("len(hof)", len(hof))
+    print("prices", prices)
+    print("qualities", qualities)
 
     for x in hof:
         if args.marging:
