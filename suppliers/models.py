@@ -25,7 +25,7 @@ from hvad.models import TranslatableModel, TranslatedFields
 import common.models as cm
 
 class Supplier(models.Model):
-    name = models.CharField(_('name'), max_length=30, unique=True)
+    name = models.CharField(_('name'), max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     suppliers = models.ManyToManyField('self', null=True, blank=True, related_name='supplier_suppliers', verbose_name=_('suppliers'))
     delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
@@ -40,8 +40,8 @@ class Product(TranslatableModel):
         body = models.TextField(_('body'), blank=True),
         ingredients = models.TextField(_('ingredients'), blank=True),
     )
-    slug = models.SlugField(unique=True)
-    product = models.ForeignKey('products.Product', related_name='+', verbose_name=_('product'))
+    slug = models.SlugField(unique=True, max_length=100)
+    product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),
         ('p', _('Published')),
@@ -58,6 +58,12 @@ class Product(TranslatableModel):
     date_last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return self.lazy_translation_getter('name', 'Product: %s' % self.pk)
+
+    def price(self):
+        try:
+            return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+        except Product.DoesNotExist:
+            return None
 
 class Price(models.Model):
     class Meta:
