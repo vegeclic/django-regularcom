@@ -29,7 +29,7 @@ class Image(models.Model):
         slug = self.content_object.slug if 'slug' in dir(self.content_object) else str(self.object_id)
         return '/'.join([package, module, slug, filename])
 
-    image = models.ImageField(upload_to=image_name)
+    image = models.ImageField(upload_to=image_name, max_length=200)
     content_type = models.ForeignKey(ContentType, related_name='+')
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
