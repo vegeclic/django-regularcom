@@ -1,0 +1,37 @@
+{% extends "wallets/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Withdraw requests" %}</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+	<th class="span1"></th>
+	<th class="span2">{% trans "Payment type" %}</th>
+	<th class="span2">{% trans "Amount" %}</th>
+	<th class="span2">{% trans "Status" %}</th>
+	<th class="span3">{% trans "Date" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for req in object_list|dictsortreversed:"date_created" %}
+	<tr class="{% cycle 'row1' 'row2' %} {% if req.status == "v" %}success{% elif req.status == "c" %}error{% else %}warning{% endif %}">
+	  <td style="text-align: center;">{% if req.status == "w" %}<a href="{% url 'withdraw_request_cancel' req.id %}" class="remove_link" data-toggle="tooltip" title="{% trans "cancel" %} {{req}}"><i class="icon-remove-circle"></i></a>{% endif %}</td>
+	  <td>{{req.get_payment_type_display}}</td>
+	  <td>{{req.amount_in_target_currency|floatformat}} {{req.wallet.target_currency.symbol}}</td>
+	  <td>{{req.get_status_display}}</td>
+	  <td>{{req.date_created}}</td>
+	</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('.remove_link').tooltip();
+    });
+  </script>
+{% endblock %}

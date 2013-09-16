@@ -33,6 +33,8 @@ class Wallet(models.Model):
 
     def __unicode__(self): return self.customer.__unicode__()
 
+    def balance_in_target_currency(self): return self.balance * self.target_currency.exchange_rate
+
 class History(models.Model):
     class Meta:
         verbose_name_plural = _('histories')
@@ -49,35 +51,69 @@ class History(models.Model):
 
     def target_amount(self): return self.amount * self.wallet.target_currency.exchange_rate
 
+PAYMENT_TYPES = (
+    ('c', _('Cheque')),
+    ('t', _('Bank transfer')),
+    ('p', _('Paypal')),
+)
+
+STATUS_CHOICES = (
+    ('w', _('In waiting')),
+    ('v', _('Validated')),
+    ('c', _('Canceled')),
+    ('r', _('Rejected')),
+)
+
 class Credit(models.Model):
     wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
-    PAYMENT_TYPES = (
-        ('c', _('Cheque')),
-        ('t', _('Bank transfer')),
-        ('p', _('Paypal')),
-    )
     payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c')
     amount = models.FloatField(_('amount'), default=0)
     currency = models.ForeignKey('common.Currency', verbose_name=_('currency'))
     payment_date = models.DateField(_('payment date'), null=True, blank=True, help_text=_('This field may only be fullfilled for cheque payment.'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
-    STATUS_CHOICES = (
-        ('d', _('Draft')),
-        ('v', _('Validated')),
-        ('e', _('Expired')),
-        ('w', _('Withdrawn')),
-    )
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w')
 
-    def __unicode__(self): return '%s, %s, %s, %s' % (self.wallet.__unicode__(), self.get_payment_type_display(), self.amount, self.date_created)
+    def amount_in_target_currency(self): return self.amount * self.wallet.target_currency.exchange_rate
+
+    def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.wallet.__unicode__(), self.get_payment_type_display(), self.amount, self.date_created, self.get_status_display())
 
     def save(self, *args, **kwargs):
         if self.status == 'v':
-            amount = self.amount / self.currency.exchange_rate
-            self.wallet.balance += amount
+            self.wallet.balance += self.amount
             self.wallet.save()
             h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='credit'),
-                        object_id=self.id, amount=amount)
+                        object_id=self.id, amount=self.amount)
             h.save()
         super(Credit, self).save(*args, **kwargs)
+
+class Withdraw(models.Model):
+    wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
+    payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c')
+    amount = models.FloatField(_('amount'), default=0)
+    currency = models.ForeignKey('common.Currency', verbose_name=_('currency'))
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='w')
+
+    def amount_in_target_currency(self): return self.amount * self.wallet.target_currency.exchange_rate
+
+    def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.wallet.__unicode__(), self.get_payment_type_display(), self.amount, self.date_created, self.get_status_display())
+
+    def save(self, *args, **kwargs):
+        super(Withdraw, self).save(*args, **kwargs)
+        print(self.status)
+        if self.status == 'w':
+            amount = abs(round(self.amount/self.currency.exchange_rate,2))
+            if self.wallet.balance < amount:
+                raise ValueError('There is not enough money in your wallet.')
+            self.wallet.balance -= amount
+            self.wallet.save()
+        elif self.status == 'c':
+            amount = abs(round(self.amount/self.currency.exchange_rate,2))
+            self.wallet.balance += amount
+            self.wallet.save()
+        elif self.status == 'v':
+            h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='withdraw'),
+                        object_id=self.id, amount=self.amount*-1)
+            h.save()

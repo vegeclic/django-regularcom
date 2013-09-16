@@ -1,0 +1,70 @@
+{% extends "wallets/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+  <h2>{% trans "Credit" %}</h2>
+
+  <form class="wallet-form" method="post" action="{% url "credit" %}">
+    {% csrf_token %}
+    <h3 class="wallet-form-heading">{% trans "Credit your wallet" %}</h3>
+
+    <div class="one_slide">
+      <label for="amounts-slide">{% trans "Amount" %}</label>
+      <div class="row">
+	<div class="span9" id="amounts-slide"></div>
+	<div class="span2 input-append">
+	  <input type="text" name="amount" id="amount" class="input-block-level" value="0"/>
+	  <span class="add-on">{{object.target_currency.symbol}}</span>
+	</div>
+      </div>
+    </div>
+
+    {#{{ form.as_p }}#}
+
+    <p>
+      {{ form.payment_type.label_tag }}
+      {{ form.payment_type }}
+      {% if form.payment_type.help_text %}
+	<span class="helptext">{{ form.payment_type.help_text }}</span>
+      {% endif %}
+    </p>
+    <p>
+      {{ form.payment_date.label_tag }}
+      {{ form.payment_date }}
+      {% if form.payment_date.help_text %}
+	<span class="helptext">{{ form.payment_date.help_text }}</span>
+      {% endif %}
+    </p>
+
+    <button class="btn btn-large btn-primary" type="submit">{% trans "Save" %}</button>
+  </form>
+{% endblock %}
+
+{% block foot %}
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
+
+  <script type="text/javascript">
+    $(function() {
+	var amounts = ['1', '2', '5', '10', '20', '50', '100', '200', '500',];
+	$('#amounts-slide').slider({
+	    range: 'max',
+	    min: 0,
+	    max: amounts.length-1,
+	    value: 4,
+	    slide: function( event, ui ) {
+		$('#amount')[0].value = amounts[parseInt(ui.value)];
+	    }
+	});
+	$('#amount')[0].value = amounts[parseInt($('#amounts-slide').slider('value'))];
+    });
+  </script>
+
+  <style type="text/css">
+    .ui-slider .ui-slider-handle { height: 2.3em; }
+    .ui-slider { margin-right: 6px; }
+  </style>
+{% endblock %}

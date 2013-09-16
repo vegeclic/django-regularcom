@@ -24,5 +24,11 @@ from . import views, models
 urlpatterns = patterns('wallets.views',
                        url(r'^$', views.BalanceView.as_view(), name='balance'),
                        url(r'^histories/$', views.HistoryView.as_view(), name='histories'),
+                       url(r'^credit_requests/$', views.CreditRequestView.as_view(), name='credit_requests'),
+                       url(r'^credit_requests/(?P<credit_id>\d+)/cancel/$', views.CreditCancelView.as_view(), name='credit_request_cancel'),
+                       url(r'^withdraw_requests/$', views.WithdrawRequestView.as_view(), name='withdraw_requests'),
+                       url(r'^withdraw_requests/(?P<withdraw_id>\d+)/cancel/$', views.WithdrawCancelView.as_view(), name='withdraw_request_cancel'),
+                       url(r'^credit/$', views.CreditView.as_view(), name='credit'),
+                       url(r'^withdraw/$', views.WithdrawView.as_view(), name='withdraw'),
                        url(r'^settings/$', views.SettingsView.as_view(), name='settings'),
 )

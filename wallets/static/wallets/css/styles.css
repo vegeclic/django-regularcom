@@ -17,21 +17,10 @@
     margin-bottom: 10px;
 }
 
-.wallet-form input[type="text"],
-.wallet-form input[type="password"],
-.wallet-form select {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
-}
+/* .wallet-form label { */
+/*     font-weight: bold; */
+/* } */
 
-.wallet-form input[type="text"],
-.wallet-form input[type="password"]
-{
-    width: 380px;
-}
-
-.wallet-form select {
-    width: 400px;
+.one_slide .row {
+    margin-left: 0;
 }

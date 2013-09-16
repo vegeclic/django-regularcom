@@ -47,6 +47,17 @@ class CreditCreationAdminForm(cf.ModelFormWithCurrency):
             raise forms.ValidationError(_('The payment date is only needed for payment with cheque.'))
         return payment_date
 
+class WithdrawCreationAdminForm(cf.ModelFormWithCurrency):
+    class Meta:
+        model = models.Withdraw
+        fields = ('wallet', 'payment_type', 'amount', 'currency',)
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount <= 0:
+            raise forms.ValidationError(_('The amount must be positive.'))
+        return amount
+
 class CreditAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Credit
@@ -60,6 +71,18 @@ class CreditAdminForm(cf.ModelFormWithCurrency):
             if datetime.date.today() < payment_date:
                 raise forms.ValidationError(_('The payment date is not reached yet.'))
         return payment_date
+
+    def clean_status(self):
+        old_status = self.initial.get('status')
+        status = self.cleaned_data.get('status')
+        if old_status == 'v':
+            raise forms.ValidationError(_('The status is already validated. It cannot be changed anymore.'))
+        return status
+
+class WithdrawAdminForm(cf.ModelFormWithCurrency):
+    class Meta:
+        model = models.Withdraw
+        fields = ('status', 'wallet', 'payment_type', 'amount', 'currency',)
 
     def clean_status(self):
         old_status = self.initial.get('status')
@@ -92,3 +115,45 @@ class SettingsForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Wallet
         exclude = ('customer', 'balance',)
+
+    def __init__(self, *args, **kwargs):
+        super(SettingsForm, self).__init__(*args, **kwargs)
+        self.fields.get('target_currency').widget.attrs = {'class': 'input-block-level'}
+
+class CreditForm(cf.ModelFormWithCurrency):
+    class Meta:
+        model = models.Credit
+        fields = ('payment_type', 'amount', 'payment_date',)
+
+    def __init__(self, *args, **kwargs):
+        super(CreditForm, self).__init__(*args, **kwargs)
+        self.fields.get('payment_type').widget.attrs = {'class': 'input-block-level'}
+        self.fields.get('payment_date').widget.attrs = {'class': 'input-block-level'}
+
+    def clean_amount(self):
+        amount = abs(self.cleaned_data.get('amount'))
+        if not amount:
+            raise forms.ValidationError(_('The amount must be positive.'))
+        return amount
+
+    def clean_payment_date(self):
+        payment_type = self.cleaned_data.get('payment_type')
+        payment_date = self.cleaned_data.get('payment_date')
+        if payment_date and payment_type != 'c':
+            raise forms.ValidationError(_('The payment date is only needed for payment with cheque.'))
+        return payment_date
+
+class WithdrawForm(cf.ModelFormWithCurrency):
+    class Meta:
+        model = models.Withdraw
+        fields = ('payment_type', 'amount',)
+
+    def __init__(self, *args, **kwargs):
+        super(WithdrawForm, self).__init__(*args, **kwargs)
+        self.fields.get('payment_type').widget.attrs = {'class': 'input-block-level'}
+
+    def clean_amount(self):
+        amount = abs(self.cleaned_data.get('amount'))
+        if not amount:
+            raise forms.ValidationError(_('The amount must be positive.'))
+        return amount
