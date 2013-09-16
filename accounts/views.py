@@ -21,9 +21,26 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.views import login as auth_views_login
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views import generic
 from django.contrib import messages
 from common import views as cv
 from . import forms, models
+
+class AccountView(generic.DetailView):
+    model = models.Account
+    template_name = 'accounts/profile.html'
+
+    def get_object(self): return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountView, self).get_context_data(**kwargs)
+        context['section'] = 'profile'
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AccountView, self).dispatch(*args, **kwargs)
 
 def signup(request):
     if request.method == "POST":
@@ -38,10 +55,6 @@ def signup(request):
         return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': signup_form})
 
     return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': forms.AccountCreationForm()})
-
-@login_required
-def profile(request):
-    return render(request, 'accounts/profile.html', {'section': 'profile'})
 
 def login(request):
     response = auth_views_login(request, extra_context={'section': 'login'})
