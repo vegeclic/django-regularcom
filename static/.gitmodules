@@ -1,0 +1,11 @@
+[submodule "jquery"]
+	path = jquery
+	url = git://github.com/components/jquery.git
+
+[submodule "jqueryui"]
+	path = jqueryui
+	url = git://github.com/components/jqueryui.git
+
+[submodule "bootstrap"]
+	path = bootstrap
+	url = git://github.com/components/bootstrap.git
