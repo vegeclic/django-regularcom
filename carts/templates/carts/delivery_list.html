@@ -28,10 +28,10 @@
     </thead>
     <tbody>
       {% for delivery in object_list|dictsort:'date' %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "p" %}success{% else %}warning{% endif %}">
+	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "p" or delivery.status == "P" %}success{% else %}warning{% endif %}">
 	  <td style="text-align: center;">
 	    {% if delivery.status == "w" %}
-	      <a href="{% url "subscription_delivery_validate" delivery.subscription.id delivery.id %}" class="valid_link" data-toggle="tooltip" title="{% trans "buy" %} {{delivery}}"><i class="icon-ok-sign"></i></a>
+	      <a href="{% url "subscription_delivery_validate" delivery.subscription.id delivery.id %}" class="valid_link" data-toggle="tooltip" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
 	    {% endif %}
 	  </td>
 	  {% if not subscription %}
