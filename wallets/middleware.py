@@ -29,4 +29,6 @@ class WalletMiddleware(object):
         if not request.user.is_authenticated(): return response
         wallet = models.Wallet.objects.get(customer__account=request.user)
         response.context_data['wallet'] = wallet
+        response.context_data['nb_credit_in_waiting'] = len(wallet.credit_set.filter(status='w').all())
+        response.context_data['nb_withdraw_in_waiting'] = len(wallet.withdraw_set.filter(status='w').all())
         return response
