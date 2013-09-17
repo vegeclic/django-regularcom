@@ -112,6 +112,8 @@ class ContentProduct(models.Model):
     product = models.ForeignKey('suppliers.Product', verbose_name=_('product'))
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
 
+    def __unicode__(self): return self.product.__unicode__()
+
 class Content(models.Model):
     class Meta:
         unique_together = ('delivery', 'extent')
@@ -119,7 +121,7 @@ class Content(models.Model):
     delivery = models.ForeignKey('Delivery', verbose_name=_('delivery'))
     extent = models.ForeignKey('Extent', verbose_name=_('extent'))
 
-    def __unicode__(self): return '%s, %s' % (self.delivery, self.extent)
+    def __unicode__(self): return '%s, %s' % (self.delivery.__unicode__(), self.extent.__unicode__())
 
 FREQUENCY_CHOICES = (
     (1, _('Once a week')),
