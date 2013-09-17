@@ -5,12 +5,12 @@
 {% block sub_content %}
   <h2>{% trans "Reply message" %}</h2>
 
-  <form class="mailbox-form" method="post" action="{% url "reply_message" object.id %}">
+  <form role="form" class="mailbox-form" method="post" action="{% url "reply_message" object.id %}">
     {% csrf_token %}
     <h3 class="mailbox-form-heading">{% trans "Send an answer" %}</h3>
 
     {{ form.as_p }}
 
-    <button class="btn btn-large btn-primary" type="submit">{% trans "submit" %}</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "submit" %}</button>
   </form>
 {% endblock %}

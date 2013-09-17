@@ -37,7 +37,7 @@ class NewMessage(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewMessage, self).__init__(*args, **kwargs)
         for field in ['participants', 'subject', 'body',]:
-            self.fields.get(field).widget.attrs['class'] = 'input-block-level'
+            self.fields.get(field).widget.attrs['class'] = 'form-control'
         self.fields.get('body').widget.attrs['rows'] = '10'
 
 class ReplyMessage(forms.ModelForm):
@@ -48,5 +48,5 @@ class ReplyMessage(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReplyMessage, self).__init__(*args, **kwargs)
         for field in ['body',]:
-            self.fields.get(field).widget.attrs['class'] = 'input-block-level'
+            self.fields.get(field).widget.attrs['class'] = 'form-control'
         self.fields.get('body').widget.attrs['rows'] = '10'

@@ -23,7 +23,7 @@
 	  </li>
 
 	  <li {% if not sub_section or sub_section == "balance" %}class="active"{% endif %}>
-	    <a href="{% url "balance" %}"><i class="glyphicon glyphicon-briefcase"></i> {% trans "Balance" %}</a>
+	    <a href="{% url "balance" %}"><i class="glyphicon glyphicon-briefcase"></i> {% trans "Balance" %} <span class="badge pull-right">{{wallet.balance_in_target_currency|floatformat}} {{wallet.target_currency.symbol}}</span></a>
 	  </li>
 
 	  <li {% if sub_section == "histories" %}class="active"{% endif %}>
