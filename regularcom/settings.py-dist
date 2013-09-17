@@ -44,6 +44,10 @@ TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en'
 #LANGUAGE_CODE = 'fr'
 
+LOCALE_PATHS = (
+    # '',
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -108,6 +112,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'mailbox.middleware.MailboxMiddleware',
+    'wallets.middleware.WalletMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.gzip.GZipMiddleware',
@@ -126,7 +132,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'djcelery',
+    # 'djcelery',
     'hvad',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -139,12 +145,14 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'accounts',
+    'carts',
+    'common',
     'customers',
+    'mailbox',
     'products',
     'suppliers',
-    'common',
-    'carts',
     'wallets',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
