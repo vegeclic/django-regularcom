@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for message in object_list|dictsortreversed:"date_created" %}
+      {% for message in object_list|dictsortreversed:"date_last_modified" %}
 	<tr class="{% cycle 'row1' 'row2' %} {% if user.customer not in message.participants_read.all %}success{% endif %}">
 	  <td>
 	    <ul>

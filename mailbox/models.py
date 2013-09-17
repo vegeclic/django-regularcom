@@ -43,11 +43,6 @@ class Message(models.Model):
 
     def __unicode__(self): return self.subject
 
-    def save(self, *args, **kwargs):
-        super(Message, self).save(*args, **kwargs)
-        self.participants_read.add(self.owner)
-        self.participants_notified.add(self.owner)
-
 class Reply(models.Model):
     class Meta:
         verbose_name_plural = _('replies')

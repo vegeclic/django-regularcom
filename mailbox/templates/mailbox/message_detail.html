@@ -10,6 +10,7 @@
     <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="glyphicon glyphicon-envelope"></i> {% trans "Reply" %}</a>
   </div>
 
+  <p><label><strong>{% trans "Owner" %}:</strong></label> {{object.owner}}</p>
   <p>
     <label><strong>{% trans "Participants" %}:</strong></label>
     <ul>

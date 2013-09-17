@@ -77,9 +77,12 @@ class NewMessageView(generic.CreateView):
     success_url = '/mailbox/messages'
 
     def form_valid(self, form):
-        form.instance.owner = cm.Customer.objects.get(account=self.request.user)
+        fi = form.instance
+        fi.owner = cm.Customer.objects.get(account=self.request.user)
         ret = super(NewMessageView, self).form_valid(form)
-        form.instance.participants.add(form.instance.owner)
+        fi.participants.add(fi.owner)
+        fi.participants_read.add(fi.owner)
+        fi.participants_notified.add(fi.owner)
         messages.success(self.request, _('Your message has been sent successfuly.'))
         return ret
 
@@ -101,11 +104,13 @@ class ReplyMessageView(generic.CreateView):
     success_url = '/mailbox/messages'
 
     def form_valid(self, form):
-        form.instance.participant = cm.Customer.objects.get(account=self.request.user)
-        form.instance.message = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
-        form.instance.message.participants_read.clear()
-        form.instance.message.participants_notified.clear()
-        form.instance.message.save()
+        fi = form.instance
+        fi.participant = cm.Customer.objects.get(account=self.request.user)
+        fi.message = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
+        fi.message.participants_read.clear()
+        fi.message.participants_notified.clear()
+        fi.message.participants_read.add(fi.participant)
+        fi.message.participants_notified.add(fi.participant)
         ret = super(ReplyMessageView, self).form_valid(form)
         messages.success(self.request, _('Your reply has been sent successfuly.'))
         return ret
