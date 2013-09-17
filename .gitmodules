@@ -1,9 +1,9 @@
-[submodule "jquery"]
-	path = jquery
+[submodule "static/jquery"]
+	path = static/jquery
 	url = git://github.com/components/jquery.git
-[submodule "jqueryui"]
-	path = jqueryui
+[submodule "static/jqueryui"]
+	path = static/jqueryui
 	url = git://github.com/components/jqueryui.git
-[submodule "bootstrap"]
-	path = bootstrap
+[submodule "static/bootstrap"]
+	path = static/bootstrap
 	url = git://github.com/components/bootstrap.git
