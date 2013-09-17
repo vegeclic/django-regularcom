@@ -4,21 +4,23 @@
 {% block sub_content %}
   <h2>{% trans "Subscriptions" %}</h2>
 
-  <div class="form-actions text-right">
+  <div class="text-right">
     <a href="{% url "create" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
   </div>
+
+  <br/>
 
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-	<th class="span2">{% trans "Size" %}</th>
-	<th class="span2">{% trans "Price" %}</th>
-	<th class="span2">{% trans "Frequency" %}</th>
-	<th class="span1">{% trans "Duration" %}</th>
-	<th class="span1">{% trans "Quantity" %}</th>
-	<th class="span1">{% trans "#weeks" %}</th>
-	<th class="span2">{% trans "Date" %}</th>
-	<th class="span1">{% trans "Status" %}</th>
+	<th class="col-md-2">{% trans "Size" %}</th>
+	<th class="col-md-2">{% trans "Price" %}</th>
+	<th class="col-md-2">{% trans "Frequency" %}</th>
+	<th class="col-md-1">{% trans "Duration" %}</th>
+	<th class="col-md-1">{% trans "Quantity" %}</th>
+	<th class="col-md-1">{% trans "#weeks" %}</th>
+	<th class="col-md-2">{% trans "Date" %}</th>
+	<th class="col-md-1">{% trans "Status" %}</th>
       </tr>
     </thead>
     <tbody>
@@ -41,8 +43,8 @@
     <a href="{% url "create" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
   </div>
 
-  <div class="pagination text-center">
-    <ul>
+  <div class="text-center">
+    <ul class="pagination">
       <li class="disabled"><a href="#">«</a></li>
       <li class="active"><a href="#">1</a></li>
       <li class="disabled"><a href="#">»</a></li>

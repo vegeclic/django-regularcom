@@ -8,57 +8,38 @@
 
 {% block content %}
   {% if signup_form %}
-    {% comment %}
-    <form method="post" action="{% url "accounts.views.signup" %}">
-      {% csrf_token %}
-      {{ signup_form.as_p }}
-      <input type="submit" value="{% trans 'Create' %}" />
-    </form>
-    {% endcomment %}
-
-    <form class="account-form" method="post" action="{% url "accounts.views.signup" %}">
+    <form role="form" class="account-form" method="post" action="{% url "accounts.views.signup" %}">
       {% csrf_token %}
       <h2 class="account-form-heading">Please sign up</h2>
-      {# {{ signup_form.as_p }} #}
-      <input name="email" type="text" class="input-block-level" placeholder="{{ signup_form.email.label }}"/>
-      <input name="password1" type="password" class="input-block-level" placeholder="{{ signup_form.password1.label }}"/>
-      <input name="password2" type="password" class="input-block-level" placeholder="{{ signup_form.password2.label }}"/>
-      <button class="btn btn-large btn-primary" type="submit">{% trans "Sign up" %}</button>
+      <div class="form-group">
+	<input name="email" type="text" class="form-control" placeholder="{{ signup_form.email.label }}"/>
+      </div>
+      <div class="form-group">
+	<input name="password1" type="password" class="form-control" placeholder="{{ signup_form.password1.label }}"/>
+      </div>
+      <div class="form-group">
+	<input name="password2" type="password" class="form-control" placeholder="{{ signup_form.password2.label }}"/>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign up" %}</button>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
-
   {% else %}
-
-    <form class="account-form" method="post" action="{% url "accounts.views.login" %}">
+    <form role="form" class="account-form" method="post" action="{% url "accounts.views.login" %}">
       {% csrf_token %}
       <h2 class="account-form-heading">{% trans "Please sign in" %}</h2>
-      <input name="username" type="text" class="input-block-level" placeholder="{{ form.username.label }}"/>
-      <input name="password" type="password" class="input-block-level" placeholder="{{ form.password.label }}"/>
-      <label class="checkbox">
-	<input type="checkbox" value="remember-me"/> {% trans "Remember me" %}
-      </label>
-      <button class="btn btn-large btn-primary" type="submit">{% trans "Sign in" %}</button>
+      <div class="form-group">
+	<input name="username" type="text" class="form-control" placeholder="{{ form.username.label }}"/>
+      </div>
+      <div class="form-group">
+	<input name="password" type="password" class="form-control" placeholder="{{ form.password.label }}"/>
+      </div>
+      <div class="checkbox">
+	<label>
+	  <input type="checkbox" value="remember-me"/> {% trans "Remember me" %}
+	</label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
-
-    {% comment %}
-    <form method="post" action="{% url "django.contrib.auth.views.login" %}">
-      {% csrf_token %}
-      <table>
-	<tr>
-	  <td>{{ form.username.label_tag }}</td>
-	  <td>{{ form.username }}</td>
-	</tr>
-	<tr>
-	  <td>{{ form.password.label_tag }}</td>
-	  <td>{{ form.password }}</td>
-	</tr>
-      </table>
-
-      <input type="submit" value="{% trans "login" %}" />
-      <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-    {% endcomment %}
-
-    {% endif %}
+  {% endif %}
 {% endblock %}

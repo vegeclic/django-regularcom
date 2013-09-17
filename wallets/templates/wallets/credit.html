@@ -5,39 +5,39 @@
 {% block sub_content %}
   <h2>{% trans "Credit" %}</h2>
 
-  <form class="wallet-form" method="post" action="{% url "credit" %}">
+  <form role="form" class="wallet-form" method="post" action="{% url "credit" %}">
     {% csrf_token %}
     <h3 class="wallet-form-heading">{% trans "Credit your wallet" %}</h3>
 
-    <div class="one_slide">
-      <label for="amounts-slide">{% trans "Amount" %}</label>
-      <div class="row">
-	<div class="span9" id="amounts-slide"></div>
-	<div class="span2 input-append">
-	  <input type="text" name="amount" id="amount" class="input-block-level" value="0"/>
-	  <span class="add-on">{{object.target_currency.symbol}}</span>
+    <div class="form-group">
+      <div class="one_slide">
+	<label for="amounts-slide">{% trans "Amount" %}</label>
+	<div class="row">
+	  <div class="col-md-9" id="amounts-slide"></div>
+	  <div class="col-md-3 input-group">
+	    <input type="text" name="amount" id="amount" class="form-control" value="0"/>
+	    <span class="input-group-addon">{{object.target_currency.symbol}}</span>
+	  </div>
 	</div>
       </div>
     </div>
 
-    {#{{ form.as_p }}#}
-
-    <p>
+    <div class="form-group">
       {{ form.payment_type.label_tag }}
       {{ form.payment_type }}
       {% if form.payment_type.help_text %}
 	<span class="helptext">{{ form.payment_type.help_text }}</span>
       {% endif %}
-    </p>
-    <p>
+    </div>
+    <div class="form-group">
       {{ form.payment_date.label_tag }}
       {{ form.payment_date }}
       {% if form.payment_date.help_text %}
 	<span class="helptext">{{ form.payment_date.help_text }}</span>
       {% endif %}
-    </p>
+    </div>
 
-    <button class="btn btn-large btn-primary" type="submit">{% trans "Save" %}</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Credit" %}</button>
   </form>
 {% endblock %}
 
@@ -64,7 +64,7 @@
   </script>
 
   <style type="text/css">
-    .ui-slider .ui-slider-handle { height: 2.3em; }
-    .ui-slider { margin-right: 6px; }
+    .ui-slider .ui-slider-handle { height: 2.7em; }
+    .ui-slider { height: 2.2em; }
   </style>
 {% endblock %}

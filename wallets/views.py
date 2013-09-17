@@ -64,7 +64,7 @@ class CreditRequestView(generic.ListView):
     model = models.Credit
 
     def get_queryset(self):
-        return models.Credit.objects.filter(wallet__customer__account=self.request.user).exclude(status='v')
+        return models.Credit.objects.filter(wallet__customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(CreditRequestView, self).get_context_data(**kwargs)

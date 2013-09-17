@@ -7,7 +7,7 @@
   {% if subscription %}
     <table class="table table-bordered table-hover">
       <tr>
-	<th class="span2">{% trans "Subscription" %}</th>
+	<th class="col-md-2">{% trans "Subscription" %}</th>
 	<td><a href="{% url "subscriptions" %}">{{subscription}}</a></td>
 	<td><a href="{% url "subscriptions" %}">{{subscription.id}}</a></td>
       </tr>
@@ -17,13 +17,13 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-	<th class="span1"></th>
+	<th class="col-md-1"></th>
 	{% if not subscription %}
-	  <th class="span1">{% trans "Subscription" %}</th>
+	  <th class="col-md-1">{% trans "Subscription" %}</th>
 	  <th>{% trans "Description" %}</th>
 	{% endif %}
 	<th>{% trans "Date" %}</th>
-	<th class="span2">{% trans "Status" %}</th>
+	<th class="col-md-2">{% trans "Status" %}</th>
       </tr>
     </thead>
     <tbody>
@@ -44,6 +44,14 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <div class="text-center">
+    <ul class="pagination">
+      <li class="disabled"><a href="#">«</a></li>
+      <li class="active"><a href="#">1</a></li>
+      <li class="disabled"><a href="#">»</a></li>
+    </ul>
+  </div>
 {% endblock %}
 
 {% block foot %}

@@ -7,15 +7,15 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-	<th class="span2">{% trans "Content type" %}</th>
+	<th class="col-md-2">{% trans "Content type" %}</th>
 	<th>{% trans "Object" %}</th>
-	<th class="span2">{% trans "Amount" %}</th>
-	<th class="span2">{% trans "Date" %}</th>
+	<th class="col-md-2">{% trans "Amount" %}</th>
+	<th class="col-md-2">{% trans "Date" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for history in object_list|dictsortreversed:"date_created" %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if history.amount >= 0 %}info{% else %}error{% endif %}">
+	<tr class="{% cycle 'row1' 'row2' %} {% if history.target_amount < 0 %}danger{% else %}success{% endif %}">
 	  <td>{{history.content_type}}</td>
 	  <td>{{history.content_object}}</td>
 	  <td>{{history.target_amount|floatformat}} {{history.wallet.target_currency.symbol}}</td>

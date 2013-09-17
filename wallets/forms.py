@@ -118,7 +118,7 @@ class SettingsForm(cf.ModelFormWithCurrency):
 
     def __init__(self, *args, **kwargs):
         super(SettingsForm, self).__init__(*args, **kwargs)
-        self.fields.get('target_currency').widget.attrs = {'class': 'input-block-level'}
+        self.fields.get('target_currency').widget.attrs = {'class': 'form-control'}
 
 class CreditForm(cf.ModelFormWithCurrency):
     class Meta:
@@ -127,8 +127,8 @@ class CreditForm(cf.ModelFormWithCurrency):
 
     def __init__(self, *args, **kwargs):
         super(CreditForm, self).__init__(*args, **kwargs)
-        self.fields.get('payment_type').widget.attrs = {'class': 'input-block-level'}
-        self.fields.get('payment_date').widget.attrs = {'class': 'input-block-level'}
+        self.fields.get('payment_type').widget.attrs = {'class': 'form-control'}
+        self.fields.get('payment_date').widget.attrs = {'class': 'form-control'}
 
     def clean_amount(self):
         amount = abs(self.cleaned_data.get('amount'))
@@ -150,7 +150,7 @@ class WithdrawForm(cf.ModelFormWithCurrency):
 
     def __init__(self, *args, **kwargs):
         super(WithdrawForm, self).__init__(*args, **kwargs)
-        self.fields.get('payment_type').widget.attrs = {'class': 'input-block-level'}
+        self.fields.get('payment_type').widget.attrs = {'class': 'form-control'}
 
     def clean_amount(self):
         amount = abs(self.cleaned_data.get('amount'))

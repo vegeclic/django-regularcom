@@ -5,22 +5,23 @@
   <h2>{% trans "Mailbox" %}</h2>
 
   <div class="form-actions text-right">
-    <a href="{% url "messages" %}" class="btn btn-primary"><i class="icon-refresh icon-white"></i> {% trans "Refresh" %}</a>
-    <a href="{% url "new_message" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
+    <a href="{% url "messages" %}" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> {% trans "Refresh" %}</a>
+    <a href="{% url "new_message" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
   </div>
+  <br/>
 
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-	<th class="span3">{% trans "Participants" %}</th>
+	<th class="col-md-3">{% trans "Participants" %}</th>
 	<th>{% trans "Subject" %}</th>
-	<th class="span1">{% trans "#threads" %}</th>
-	<th class="span3">{% trans "Date" %}</th>
+	<th class="col-md-1">{% trans "#threads" %}</th>
+	<th class="col-md-3">{% trans "Date" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for message in object_list|dictsortreversed:"date_created" %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if user.customer not in message.participants_read.all %}info{% endif %}">
+	<tr class="{% cycle 'row1' 'row2' %} {% if user.customer not in message.participants_read.all %}success{% endif %}">
 	  <td>
 	    <ul>
 	      {% for participant in message.participants.all %}
@@ -39,12 +40,12 @@
   </table>
 
   <div class="form-actions text-right">
-    <a href="{% url "messages" %}" class="btn btn-primary"><i class="icon-refresh icon-white"></i> {% trans "Refresh" %}</a>
-    <a href="{% url "new_message" %}" class="btn btn-primary"><i class="icon-plus icon-white"></i> {% trans "New" %}</a>
+    <a href="{% url "messages" %}" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> {% trans "Refresh" %}</a>
+    <a href="{% url "new_message" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
   </div>
 
-  <div class="pagination text-center">
-    <ul>
+  <div class="text-center">
+    <ul class="pagination">
       <li class="disabled"><a href="#">«</a></li>
       <li class="active"><a href="#">1</a></li>
       <li class="disabled"><a href="#">»</a></li>

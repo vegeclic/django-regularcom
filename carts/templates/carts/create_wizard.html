@@ -11,7 +11,7 @@
 {% block sub_content %}
   <h2>{% trans "Create" %}</h2>
 
-  <form class="cart-form" method="post" action="{% url "create" %}">
+  <form role="form" class="cart-form" method="post" action="{% url "create" %}">
     {% csrf_token %}
 
     {% comment %}
@@ -45,15 +45,16 @@
 
       <div id="sliders">
         {% for product in wizard.form.selected_products %}
-	  <label>{{ product }}</label>
-	  <div class="row">
-	    <!-- <div class="span1"><input type="checkbox" class="lock"/></div> -->
-	    <div class="span1">
-	      <button type="button" class="btn btn-link tooltip_link lock" data-toggle="button" title="{% trans "lock" %} {{product}}"><i class="icon-lock"></i></button>
+	  <div class="form-group">
+	    <label>{{ product }}</label>
+	    <div class="row">
+	      <div class="col-md-2">
+		<button type="button" class="btn btn-link tooltip_link lock" data-toggle="button" title="{% trans "lock" %} {{product}}"><i class="glyphicon glyphicon-lock"></i></button>
+	      </div>
+              <div class="col-md-9 slider"></div>
+              <div class="col-md-1 value_content"><span class="value">0</span> %</div>
+	      <input type="hidden" name="product_{{ product.id }}" class="input_value" value="0"/>
 	    </div>
-            <div class="span10 slider"></div>
-            <div class="span1 value_content"><span class="value">0</span> %</div>
-	    <input type="hidden" name="product_{{ product.id }}" class="input_value" value="0"/>
 	  </div>
 	{% endfor %}
 	{# <span id="sliders_total">100</span> #}
@@ -73,14 +74,14 @@
 
     {% if wizard.steps.prev %}
       {% comment %}
-      <button class="btn btn-large" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+      <button class="btn btn-lg" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
       {% endcomment %}
-      <button class="btn btn-large" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+      <button class="btn btn-default btn-lg" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
     {% endif %}
 
-    <button class="btn btn-large btn-primary" type="submit">{% trans "submit" %}</button>
+    <button class="btn btn-lg btn-primary" type="submit">{% trans "submit" %}</button>
     {% if wizard.steps.current == '1' %}
-      <a class="btn btn-large" id="balance">{% trans "balance" %}</a>
+      <a class="btn btn-default btn-lg" id="balance">{% trans "balance" %}</a>
     {% endif %}
   </form>
 {% endblock %}
@@ -130,6 +131,7 @@
   </script>
 
   <style type="text/css">
+    .ui-slider { height: 1.9em; }
     .ui-slider .ui-slider-handle { height: 2.3em; }
   </style>
 {% endblock %}
