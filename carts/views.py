@@ -187,7 +187,7 @@ class CreateWizard(SessionWizardView):
 
         messages.success(self.request, _('The subscription was sucessfuly created.'))
 
-        return HttpResponseRedirect('/carts/subscriptions/')
+        return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
