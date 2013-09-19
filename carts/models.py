@@ -99,7 +99,7 @@ class Delivery(models.Model):
             wallet = wm.Wallet.objects.get(customer__account=self.subscription.customer)
             amount = self.payed_price
             if wallet.balance < amount:
-                raise ValueError(_('You dont have enough money in your wallet to buy it (%d < %d).') % (wallet.balance, amount))
+                raise ValueError(_('You dont have enough money in your wallet to buy it.'))
             wallet.balance -= amount
             wallet.save()
             h = wm.History(wallet=wallet, content_type=ContentType.objects.get(model='delivery'),
