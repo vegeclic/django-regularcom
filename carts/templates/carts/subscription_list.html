@@ -43,6 +43,7 @@
     <a href="{% url "create" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
   </div>
 
+  {% comment %}
   <div class="text-center">
     <ul class="pagination">
       <li class="disabled"><a href="#">«</a></li>
@@ -50,5 +51,6 @@
       <li class="disabled"><a href="#">»</a></li>
     </ul>
   </div>
+  {% endcomment %}
 
 {% endblock %}

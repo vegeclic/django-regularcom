@@ -7,3 +7,6 @@
 [submodule "static/bootstrap"]
 	path = static/bootstrap
 	url = git://github.com/components/bootstrap.git
+[submodule "static/chartjs"]
+	path = static/chartjs
+	url = git://github.com/nnnick/Chart.js.git

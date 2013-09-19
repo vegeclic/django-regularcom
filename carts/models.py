@@ -85,7 +85,10 @@ class Delivery(models.Model):
         ('c', _('Canceled')),
         ('e', _('Expired')),
     )
+    SUCCESS_CHOICES = ['p', 'P', 'd']
+    FAILED_CHOICES = ['c', 'e']
     status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='w')
+    payed_price = models.FloatField(_('payed price'), null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
@@ -94,7 +97,7 @@ class Delivery(models.Model):
     def save(self, *args, **kwargs):
         if self.status == 'p':
             wallet = wm.Wallet.objects.get(customer__account=self.subscription.customer)
-            amount = self.subscription.size.default_price().price
+            amount = self.payed_price
             if wallet.balance < amount:
                 raise ValueError(_('You dont have enough money in your wallet to buy it (%d < %d).') % (wallet.balance, amount))
             wallet.balance -= amount
@@ -102,6 +105,7 @@ class Delivery(models.Model):
             h = wm.History(wallet=wallet, content_type=ContentType.objects.get(model='delivery'),
                            object_id=self.id, amount=amount*-1)
             h.save()
+            self.payed_price = amount
         super(Delivery, self).save(*args, **kwargs)
 
 class ContentProduct(models.Model):
@@ -154,8 +158,7 @@ class Subscription(models.Model):
 
     def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
 
-    def price(self):
-        return self.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+    def price(self): return self.size.default_price()
 
     def frequency_name(self): return dict(FREQUENCY_CHOICES).get(self.frequency)
 

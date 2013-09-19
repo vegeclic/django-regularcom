@@ -20,7 +20,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
 from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
@@ -31,6 +31,7 @@ from . import forms, models
 import products.models as pm
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
+import numpy as np
 
 class SubscriptionView(generic.ListView):
     model = models.Subscription
@@ -50,20 +51,41 @@ class SubscriptionView(generic.ListView):
 
 class DeliveryView(generic.ListView):
     model = models.Delivery
+    q = 1.5
 
     def get_queryset(self):
-        pk = self.kwargs.get('pk')
-        if pk:
-            return models.Delivery.objects.filter(subscription__id=pk, subscription__customer__account=self.request.user)
-        else:
-            return models.Delivery.objects.filter(subscription__customer__account=self.request.user)
+        subscription_id = self.kwargs.get('subscription_id')
+        if subscription_id:
+            subscription = models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
+            deliveries = models.Delivery.objects.filter(subscription=subscription).order_by('date')
+
+            init = subscription.price().price
+
+            k = 0
+            last_price = 0
+            for delivery in deliveries:
+                if delivery.status not in models.Delivery.FAILED_CHOICES:
+                    last_price = delivery.payed_price if delivery.payed_price else init/(1+self.q/100)**k
+                    k += 1
+                delivery.degressive_price = last_price
+
+            return deliveries
+
+        return models.Delivery.objects.filter(subscription__customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(DeliveryView, self).get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'deliveries'
-        pk = self.kwargs.get('pk')
-        if pk: context['subscription'] = models.Subscription.objects.get(id=pk, customer__account=self.request.user)
+        subscription_id = self.kwargs.get('subscription_id')
+        if subscription_id:
+            context['subscription'] = models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
+
+            deliveries = self.get_queryset()
+            init = context['subscription'].price().price
+
+            context['mean_of_prices'] = (np.array([init/(1+self.q/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=models.Delivery.FAILED_CHOICES))]).mean())
+
         return context
 
     @method_decorator(login_required)
@@ -72,8 +94,11 @@ class DeliveryView(generic.ListView):
 
 class DeliveryPaymentView(generic.View):
     def get(self, request, subscription_id, delivery_id):
-        delivery = models.Delivery.objects.get(id=delivery_id, subscription__customer__account=request.user)
+        subscription = models.Subscription.objects.get(id=subscription_id, customer__account=request.user)
+        deliveries = models.Delivery.objects.filter(subscription=subscription, status__in=models.Delivery.SUCCESS_CHOICES)
+        delivery = models.Delivery.objects.get(id=delivery_id, subscription=subscription)
         delivery.status = 'p'
+        delivery.payed_price = subscription.price().price/(1+DeliveryView.q/100)**len(deliveries)
         try:
             delivery.save()
         except ValueError as e:

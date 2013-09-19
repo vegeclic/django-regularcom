@@ -1,5 +1,6 @@
 {% extends "carts/base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block sub_content %}
   <h2>{% trans "Deliveries" %}</h2>
@@ -12,6 +13,12 @@
 	<td><a href="{% url "subscriptions" %}">{{subscription.id}}</a></td>
       </tr>
     </table>
+
+    <div class="text-center">
+      <canvas id="myChart" width="700px" height="400px"></canvas>
+    </div>
+
+    <br/>
   {% endif %}
 
   <table class="table table-bordered table-hover">
@@ -23,28 +30,59 @@
 	  <th>{% trans "Description" %}</th>
 	{% endif %}
 	<th>{% trans "Date" %}</th>
+	{% if subscription %}
+	  <th class="col-md-2">{% trans "Price" %}</th>
+	{% endif %}
 	<th class="col-md-2">{% trans "Status" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for delivery in object_list|dictsort:'date' %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status == "p" or delivery.status == "P" %}success{% else %}warning{% endif %}">
-	  <td style="text-align: center;">
+	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status in delivery.SUCCESS_CHOICES %}success{% elif delivery.status in delivery.FAILED_CHOICES %}danger{% else %}warning{% endif %}">
+	  <td>
+	    <div class="text-center">
 	    {% if delivery.status == "w" %}
-	      <a href="{% url "subscription_delivery_validate" delivery.subscription.id delivery.id %}" class="valid_link" data-toggle="tooltip" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
+	      <a href="#valid_link_modal_{{delivery.id}}" class="valid_link" data-toggle="modal" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
+	      </div>
+
+	      <!-- Modal -->
+	      <div class="modal fade" id="valid_link_modal_{{delivery.id}}"
+		   tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      <h4 class="modal-title">{% trans "Confirmation" %}</h4>
+		    </div>
+		    <div class="modal-body">
+		      {% blocktrans with date=delivery.date %}
+			Do you confirm you want to validate the delivery {{date}} ? Your balance will be updated.
+		      {% endblocktrans %}
+		    </div>
+		    <div class="modal-footer">
+		      <a class="btn btn-primary" href="{% url "subscription_delivery_validate" delivery.subscription.id delivery.id %}"><i class="glyphicon glyphicon-ok-sign"></i> {% trans "Yes" %}</a>
+		      <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-remove-sign"></i> {% trans "No" %}</button>
+		    </div>
+		  </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	      </div><!-- /.modal -->
 	    {% endif %}
 	  </td>
 	  {% if not subscription %}
-	    <td style="text-align: right;"><a href="{% url "subscriptions" %}">{{delivery.subscription.id}}</a></td>
+	    <td class="text-right"><a href="{% url "subscriptions" %}">{{delivery.subscription.id}}</a></td>
 	    <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
 	  {% endif %}
 	  <td>{{delivery.date}}</td>
+	  {% if subscription %}
+	    <td>{% if delivery.status in delivery.SUCCESS_CHOICES %}{{delivery.payed_price|floatformat}}{% elif delivery.status in delivery.FAILED_CHOICES %}-{% else %}{{delivery.degressive_price|floatformat}}{% endif %}</td>
+	  {% endif %}
 	  <td>{{delivery.get_status_display}}</td>
 	</tr>
       {% endfor %}
     </tbody>
   </table>
 
+  {% comment %}
   <div class="text-center">
     <ul class="pagination">
       <li class="disabled"><a href="#">«</a></li>
@@ -52,12 +90,46 @@
       <li class="disabled"><a href="#">»</a></li>
     </ul>
   </div>
+  {% endcomment %}
 {% endblock %}
 
 {% block foot %}
+  {% if subscription %}
+  <script type="text/javascript" src="{% static "chartjs/Chart.min.js" %}"></script>
+
   <script type="text/javascript">
     $(function() {
 	$('.valid_link').tooltip();
     });
+
+    $(function() {
+    	var data = {
+	    labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.date}}",{% endfor %}],
+    	    datasets: [
+		{
+		    fillColor: "rgba(220,220,220,0.5)",
+		    strokeColor: "rgba(220,220,220,1)",
+		    pointColor: "rgba(220,220,220,1)",
+		    pointStrokeColor: "#fff",
+		    data: [{% for delivery in object_list|dictsort:"date" %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
+		},
+    		{
+		    fillColor: "rgba(151,187,205,0.5)",
+		    strokeColor: "rgba(151,187,205,1)",
+		    pointColor: "rgba(151,187,205,1)",
+		    pointStrokeColor: "#fff",
+		    data: [{% for delivery in object_list|dictsort:"date" %}{{delivery.degressive_price|stringformat:"f"}}, {% endfor %}]
+    		},
+    	    ]
+    	}
+
+	var options = {
+	    bezierCurve: false,
+	}
+
+    	var ctx = $("#myChart").get(0).getContext("2d");
+    	var myNewChart = new Chart(ctx).Line(data, options);
+    });
   </script>
+  {% endif %}
 {% endblock %}

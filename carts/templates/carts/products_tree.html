@@ -11,7 +11,7 @@
   <div class="media-body">
     {% if products %}
       <a data-toggle="collapse" data-target="#sub_products_{{product.id}}" class="expend_button tooltip_link" title="{% trans "expend/collapse products list" %}">
-	<h4 class="media-heading"><i class="icon-plus"></i> {{ product }}</h4>
+	<h4 class="media-heading"><i class="glyphicon glyphicon-plus"></i> {{ product }}</h4>
       </a>
     {% else %}
       <h4 class="media-heading">{{ product }}</h4>
@@ -19,8 +19,8 @@
     description
     <br/>
     <input type="hidden" class="value" name="product_{{product.id}}" value="0"/>
-    <button type="button" class="btn btn-link tooltip_link add_link" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="icon-plus-sign"></i> {% trans "add" %}</button>
-    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="icon-info-sign"></i> {% trans "more" %}</a>
+    <button type="button" class="btn btn-link tooltip_link add_link" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
+    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
     {# <label><input type="checkbox" name="product_{{product.id}}"/> {% trans "add" %}</label> #}
 
     <!-- Modal -->

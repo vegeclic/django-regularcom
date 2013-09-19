@@ -96,7 +96,7 @@ admin.site.register(models.Content, ContentAdmin)
 class DeliveryAdmin(ca.MyModelAdmin):
     add_form = forms.DeliveryCreationAdminForm
     form = forms.DeliveryAdminForm
-    list_display = ('subscription', 'date', 'status',)
+    list_display = ('subscription', 'date', 'status', 'payed_price',)
     list_filter = ('status',)
     # inlines = [ContentInline,]
 

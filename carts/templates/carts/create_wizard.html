@@ -32,7 +32,11 @@
 	{% with id="start" label="Start" %}{% include tname %}{% endwith %}
       {% endwith %}
 
-      <div>
+      <div class="form-group">
+	<a id="expend_products" class="btn btn-lg btn-danger btn-block tooltip_link" data-toggle="collapse" data-target="#display_products" title="{% trans "customize your cart content" %}">{% trans "customize" %}</a>
+      </div>
+
+      <div id="display_products" class="collapse out">
 	<label>{% trans "Products" %}:</label>
 	<ul class="media-list">
 	  {% for product, products in wizard.form.products_tree.items %}
@@ -72,17 +76,20 @@
       {{ wizard.form.as_p }}
     {% endif %}
 
-    {% if wizard.steps.prev %}
-      {% comment %}
-      <button class="btn btn-lg" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-      {% endcomment %}
-      <button class="btn btn-default btn-lg" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
-    {% endif %}
-
-    <button class="btn btn-lg btn-primary" type="submit">{% trans "submit" %}</button>
-    {% if wizard.steps.current == '1' %}
-      <a class="btn btn-default btn-lg" id="balance">{% trans "balance" %}</a>
-    {% endif %}
+    <div class="form-group">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "submit" %}</button>
+    </div>
+    <div class="form-group row">
+      {% if wizard.steps.prev %}
+	{% comment %}
+	  <button class="btn btn-lg" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+	{% endcomment %}
+	<div class="col-md-6"><button class="btn btn-default btn-lg btn-block" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button></div>
+      {% endif %}
+      {% if wizard.steps.current == '1' %}
+	<div class="col-md-6"><a class="btn btn-default btn-lg btn-block" id="balance">{% trans "balance" %}</a></div>
+      {% endif %}
+    </div>
   </form>
 {% endblock %}
 
@@ -104,27 +111,34 @@
 
 	$('.expend_button').click(function() {
 	    i = $(this).find('i');
-	    if ( i.hasClass('icon-plus') ) {
-		i.removeClass('icon-plus');
-		i.addClass('icon-minus');
+	    if ( i.hasClass('glyphicon-plus') ) {
+		i.removeClass('glyphicon-plus');
+		i.addClass('glyphicon-minus');
 	    } else {
-		i.removeClass('icon-minus');
-		i.addClass('icon-plus');
+		i.removeClass('glyphicon-minus');
+		i.addClass('glyphicon-plus');
 	    }
 	});
 
 	$('.add_link').click(function() {
-	    i = $(this).find('i');
 	    if ( $(this).hasClass('btn-success') ) {
 		$(this).removeClass('btn-success');
 		$(this).addClass('btn-link');
-		i.removeClass('icon-white');
 		$(this).siblings('.value')[0].value = 0;
 	    } else {
 		$(this).removeClass('btn-link');
 		$(this).addClass('btn-success');
- 		i.addClass('icon-white');
 		$(this).siblings('.value')[0].value = 1;
+	    }
+	});
+
+	$('#expend_products').click(function() {
+	    if ( $(this).hasClass('btn-success') ) {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+	    } else {
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
 	    }
 	});
     });
