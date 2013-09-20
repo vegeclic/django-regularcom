@@ -178,7 +178,6 @@ class CreditCancelView(generic.View):
             messages.error(request, e)
         else:
             messages.success(request, _('The credit request has been canceled.'))
-            # messages.success(request, _('Your wallet balance has been updated.'))
         return HttpResponseRedirect('/wallets/credit_requests/')
 
     @method_decorator(login_required)
@@ -195,7 +194,7 @@ class SettingsView(generic.UpdateView):
         return models.Wallet.objects.get(customer__account=self.request.user)
 
     def form_valid(self, form):
-        messages.success(self.request, 'Your settings has been changed successfuly.')
+        messages.success(self.request, _('Your settings has been changed successfuly.'))
         return super(SettingsView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
