@@ -74,7 +74,7 @@ class NewMessageView(generic.CreateView):
     form_class = forms.NewMessage
     model = models.Message
     template_name = 'mailbox/new_message.html'
-    success_url = '/mailbox/messages'
+    success_url = '/mailbox/messages/'
 
     def form_valid(self, form):
         fi = form.instance
@@ -101,16 +101,18 @@ class ReplyMessageView(generic.CreateView):
     form_class = forms.ReplyMessage
     model = models.Reply
     template_name = 'mailbox/reply_message.html'
-    success_url = '/mailbox/messages'
+    success_url = '/mailbox/messages/'
 
     def form_valid(self, form):
+        pk = self.kwargs.get('pk')
         fi = form.instance
         fi.participant = cm.Customer.objects.get(account=self.request.user)
-        fi.message = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
+        fi.message = models.Message.objects.get(id=pk, participants__account=self.request.user)
         fi.message.participants_read.clear()
         fi.message.participants_notified.clear()
         fi.message.participants_read.add(fi.participant)
         fi.message.participants_notified.add(fi.participant)
+        self.success_url = reverse_lazy('message_detail', args=[pk])
         ret = super(ReplyMessageView, self).form_valid(form)
         messages.success(self.request, _('Your reply has been sent successfuly.'))
         return ret
