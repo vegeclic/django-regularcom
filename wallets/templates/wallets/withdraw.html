@@ -5,11 +5,11 @@
 {% block sub_content %}
   <h2>{% trans "Withdraw" %}</h2>
 
-  <form role="form" class="wallet-form" method="post" action="{% url "withdraw" %}">
+  <form role="form" method="post" action="{% url "withdraw" %}">
     {% csrf_token %}
-    <h3 class="wallet-form-heading">{% trans "Withdraw from your wallet" %}</h3>
+    <h3 class="wallet-form-heading well">{% trans "Withdraw from your wallet" %}</h3>
 
-    <div class="form-group">
+    <div class="form-group well">
       <div class="one_slide">
 	<label for="amounts-slide">{% trans "Amount" %}</label>
 	<div class="row">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group well">
       {{ form.payment_type.label_tag }}
       {{ form.payment_type }}
       {% if form.payment_type.help_text %}
@@ -30,7 +30,9 @@
       {% endif %}
     </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Withdraw" %}</button>
+    <div class="form-group">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Withdraw" %}</button>
+    </div>
   </form>
 {% endblock %}
 

@@ -3,5 +3,5 @@
 
 {% block sub_content %}
   <h2>{% trans "Wallet" %}</h2>
-  {% trans "Balance of your account" %}: <a href="{% url "histories" %}">{{ balance_in_target_currency|floatformat }} {{ object.target_currency.symbol }}</a>.
+  {% trans "Balance of your account" %}: <a href="{% url "histories" %}" class="badge">{{ balance_in_target_currency|floatformat }} {{ object.target_currency.symbol }}</a>
 {% endblock %}

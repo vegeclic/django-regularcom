@@ -11,7 +11,7 @@
 {% block sub_content %}
   <h2>{% trans "Create" %}</h2>
 
-  <form role="form" class="cart-form" method="post" action="{% url "create" %}">
+  <form role="form" class="" method="post" action="{% url "create" %}">
     {% csrf_token %}
 
     {% comment %}
@@ -21,7 +21,7 @@
     {% endfor %}
     {% endcomment %}
 
-    <h3 class="cart-form-heading">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>
+    <h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>
 
     {% if wizard.steps.current == '0' %}
 
@@ -111,12 +111,12 @@
 
 	$('.expend_button').click(function() {
 	    i = $(this).find('i');
-	    if ( i.hasClass('glyphicon-plus') ) {
-		i.removeClass('glyphicon-plus');
-		i.addClass('glyphicon-minus');
+	    if ( i.hasClass('glyphicon-collapse-down') ) {
+		i.removeClass('glyphicon-collapse-down');
+		i.addClass('glyphicon-collapse-up');
 	    } else {
-		i.removeClass('glyphicon-minus');
-		i.addClass('glyphicon-plus');
+		i.removeClass('glyphicon-collapse-up');
+		i.addClass('glyphicon-collapse-down');
 	    }
 	});
 

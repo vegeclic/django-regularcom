@@ -24,13 +24,9 @@
       {% for message in object_list|dictsortreversed:"date_last_modified" %}
 	<tr class="{% cycle 'row1' 'row2' %} {% if user.customer not in message.participants_read.all %}success{% endif %}">
 	  <td>
-	    <ul>
-	      {% for participant in message.participants.all %}
-		{% if user.customer != participant %}
-		  <li>{{participant}}</li>
-		{% endif %}
-	      {% endfor %}
-	    </ul>
+	    {% for participant in message.participants.all %}
+	      <span class="badge {% if message.owner == participant %}alert-success{% endif %}">{% if participant == user.customer %}{% trans "Me" %}{% else %}{{participant}}{% endif %}</span>
+	    {% endfor %}
 	  </td>
 	  <td><a href="{% url "message_detail" message.id %}" class="subject_link" title="{{message.body}}">{{message.subject}}</a></td>
 	  <td>{{message.reply_set.all|length}}</td>
@@ -45,6 +41,7 @@
     <a href="{% url "new_message" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
   </div>
 
+  {% comment %}
   <div class="text-center">
     <ul class="pagination">
       <li class="disabled"><a href="#">«</a></li>
@@ -52,6 +49,7 @@
       <li class="disabled"><a href="#">»</a></li>
     </ul>
   </div>
+  {% endcomment %}
 
 {% endblock %}
 

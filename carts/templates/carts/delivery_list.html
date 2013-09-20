@@ -14,7 +14,7 @@
       </tr>
     </table>
 
-    <div class="text-center">
+    <div class="well text-center">
       <canvas id="myChart" width="700px" height="400px"></canvas>
     </div>
 
@@ -40,9 +40,9 @@
       {% for delivery in object_list|dictsort:'date' %}
 	<tr class="{% cycle 'row1' 'row2' %} {% if delivery.status in delivery.SUCCESS_CHOICES %}success{% elif delivery.status in delivery.FAILED_CHOICES %}danger{% else %}warning{% endif %}">
 	  <td>
-	    <div class="text-center">
 	    {% if delivery.status == "w" %}
-	      <a href="#valid_link_modal_{{delivery.id}}" class="valid_link" data-toggle="modal" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
+	      <div class="text-center">
+		<a href="#valid_link_modal_{{delivery.id}}" class="valid_link" data-toggle="modal" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
 	      </div>
 
 	      <!-- Modal -->

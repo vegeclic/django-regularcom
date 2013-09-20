@@ -36,6 +36,11 @@
     {#<script src="http://code.jquery.com/jquery.js"></script>#}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+	  $('.tooltip_link').tooltip();
+      });
+    </script>
     {% block foot %}{% endblock %}
   </body>
 </html>

@@ -8,18 +8,18 @@
     <thead>
       <tr>
 	<th class="col-md-2">{% trans "Content type" %}</th>
-	<th>{% trans "Object" %}</th>
+	<th class="col-md-6">{% trans "Object" %}</th>
 	<th class="col-md-2">{% trans "Amount" %}</th>
 	<th class="col-md-2">{% trans "Date" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for history in object_list|dictsortreversed:"date_created" %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if history.target_amount < 0 %}danger{% else %}success{% endif %}">
-	  <td>{{history.content_type}}</td>
-	  <td>{{history.content_object}}</td>
-	  <td>{{history.target_amount|floatformat}} {{history.wallet.target_currency.symbol}}</td>
-	  <td>{{history.date_created}}</td>
+	<tr class="{% cycle 'row1' 'row2' %}">
+	  <td><span class="badge">{{history.content_type}}</span></td>
+	  <td><a class="tooltip_link" title="{{history.content_object}}">{{history.content_object|truncatechars:60}}</a></td>
+	  <td><span class="badge {% if history.target_amount < 0 %}alert-danger{% else %}alert-success{% endif %}">{{history.target_amount|floatformat}} {{history.wallet.target_currency.symbol}}</span></td>
+	  <td><a class="tooltip_link" title="{{history.date_created}}">{{history.date_created|date:"d F Y"}}</a></td>
 	</tr>
       {% endfor %}
     </tbody>

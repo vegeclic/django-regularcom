@@ -5,12 +5,28 @@
 {% block sub_content %}
   <h2>{% trans "New message" %}</h2>
 
-  <form role="form" class="mailbox-form" method="post" action="{% url "new_message" %}">
+  <form role="form" method="post" action="{% url "new_message" %}">
     {% csrf_token %}
-    <h3 class="mailbox-form-heading">{% trans "Send a new message" %}</h3>
+    <h3 class="mailbox-form-heading well">{% trans "Send a new message" %}</h3>
 
-    {{ form.as_p }}
+    {% for field in form %}
+      <div class="well">
+	<div class="form-group">
+          {{ field.label_tag }}
+	  {{ field }}
+	</div>
+	{% if field.errors %}
+	  <div class="errorlist">
+	    {% for error in field.errors %}
+              <div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
+	    {% endfor %}
+	  </div>
+	{% endif %}
+      </div>
+    {% endfor %}
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "submit" %}</button>
+    <div class="form-group">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "submit" %}</button>
+    </div>
   </form>
 {% endblock %}

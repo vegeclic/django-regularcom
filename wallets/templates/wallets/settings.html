@@ -4,10 +4,28 @@
 {% block sub_content %}
   <h2>{% trans "Settings" %}</h2>
 
-  <form class="wallet-form" method="post" action="{% url "settings" %}">
+  <form role="form" method="post" action="{% url "settings" %}">
     {% csrf_token %}
-    <h3 class="wallet-form-heading">{% trans "Update your wallet parameters" %}</h3>
-    {{ form.as_p }}
-    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Save" %}</button>
+    <h3 class="wallet-form-heading well">{% trans "Update your wallet parameters" %}</h3>
+
+    {% for field in form %}
+      <div class="well">
+	<div class="form-group">
+          {{ field.label_tag }}
+	  {{ field }}
+	</div>
+	{% if field.errors %}
+	  <div class="errorlist">
+	    {% for error in field.errors %}
+              <div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
+	    {% endfor %}
+	  </div>
+	{% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="form-group">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Save" %}</button>
+    </div>
   </form>
 {% endblock %}

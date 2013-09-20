@@ -9,29 +9,31 @@
     <a href="{% url "messages" %}" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> {% trans "Return" %}</a>
     <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="glyphicon glyphicon-envelope"></i> {% trans "Reply" %}</a>
   </div>
+  <br/>
 
-  <p><label><strong>{% trans "Owner" %}:</strong></label> {{object.owner}}</p>
-  <p>
-    <label><strong>{% trans "Participants" %}:</strong></label>
-    <ul>
+  <div class="form-group well">
+    <p>
+      <label><strong>{% trans "Participants" %}:</strong></label>
       {% for participant in object.participants.all %}
-	{% if user.customer != participant %}
-	  <li>{{participant}}</li>
-	{% endif %}
+	<span class="badge {% if object.owner == participant %}alert-success{% endif %}">{% if participant == user.customer %}{% trans "Me" %}{% else %}{{participant}}{% endif %}</span>
       {% endfor %}
-    </ul>
-  </p>
-  <p><label><strong>{% trans "Subject" %}:</strong></label> {{object.subject}}</p>
-  <p><label><strong>{% trans "Body" %}:</strong></label> {{object.body}}</p>
+    </p>
+    <p><label><strong>{% trans "Subject" %}:</strong></label> {{object.subject}}</p>
+    <p><label><strong>{% trans "Body" %}:</strong></label> {{object.body}}</p>
+  </div>
 
   {% if object.reply_set.all %}
     <hr/>
-    <h3>{% trans "Replies" %}</h3>
-    {% for reply in object.reply_set.all %}
-      <p><label><strong>{% trans "Participant" %}:</strong></label> {{reply.participant}}</p>
-      <p><label><strong>{% trans "Body" %}:</strong></label> {{reply.body}}</p>
-      <p><label><strong>{% trans "Date" %}:</strong></label> {{reply.date_created}}</p>
-      <hr/>
+    <h3 class="well">{% trans "Replies" %}</h3>
+    {% for reply in object.reply_set.all|dictsortreversed:"date_created" %}
+      <div class="form-group well">
+	<p>
+	  <label><strong>{% trans "Participant" %}:</strong></label>
+	  <span class="badge">{% if reply.participant == user.customer %}{% trans "Me" %}{% else %}{{reply.participant}}{% endif %}</span>
+	</p>
+	<p><label><strong>{% trans "Body" %}:</strong></label> {{reply.body}}</p>
+	<p><label><strong>{% trans "Date" %}:</strong></label> {{reply.date_created}}</p>
+      </div>
     {% endfor %}
   {% endif %}
 

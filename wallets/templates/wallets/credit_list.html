@@ -10,30 +10,22 @@
 	<th class="col-md-1"></th>
 	<th class="col-md-2">{% trans "Payment type" %}</th>
 	<th class="col-md-2">{% trans "Amount" %}</th>
-	<th class="col-md-2">{% trans "Payment date" %}</th>
+	<!-- <th class="col-md-2">{% trans "Payment date" %}</th> -->
 	<th class="col-md-2">{% trans "Status" %}</th>
-	<th class="col-md-3">{% trans "Date" %}</th>
+	<th class="col-md-2">{% trans "Date" %}</th>
       </tr>
     </thead>
     <tbody>
       {% for req in object_list|dictsortreversed:"date_created" %}
-	<tr class="{% cycle 'row1' 'row2' %} {% if req.status == "v" %}success{% elif req.status == "c" %}danger{% else %}warning{% endif %}">
-	  <td style="text-align: center;">{% if req.status == "w" %}<a href="{% url 'credit_request_cancel' req.id %}" class="remove_link" data-toggle="tooltip" title="{% trans "cancel" %} {{req}}"><i class="glyphicon glyphicon-remove-circle"></i></a>{% endif %}</td>
+	<tr class="{% cycle 'row1' 'row2' %}">
+	  <td class="text-center">{% if req.status == "w" %}<a href="{% url 'credit_request_cancel' req.id %}" class="tooltip_link" data-toggle="tooltip" title="{% trans "cancel" %} {{req}}"><i class="glyphicon glyphicon-remove-circle"></i></a>{% endif %}</td>
 	  <td>{{req.get_payment_type_display}}</td>
-	  <td>{{req.amount_in_target_currency|floatformat}} {{req.wallet.target_currency.symbol}}</td>
-	  <td>{{req.payment_date}}</td>
-	  <td>{{req.get_status_display}}</td>
-	  <td>{{req.date_created}}</td>
+	  <td><span class="badge">{{req.amount_in_target_currency|floatformat}} {{req.wallet.target_currency.symbol}}</span></td>
+	  <!-- <td>{{req.payment_date}}</td> -->
+	  <td><span class="badge {% if req.status == "v" %}alert-success{% elif req.status == "c" %}alert-danger{% else %}alert-warning{% endif %}">{{req.get_status_display}}</span></td>
+	  <td><a class="tooltip_link" title="{{req.date_created}}">{{req.date_created|date:"d F Y"}}</a></td>
 	</tr>
       {% endfor %}
     </tbody>
   </table>
-{% endblock %}
-
-{% block foot %}
-  <script type="text/javascript">
-    $(function() {
-	$('.remove_link').tooltip();
-    });
-  </script>
 {% endblock %}
