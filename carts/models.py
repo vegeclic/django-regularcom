@@ -147,6 +147,7 @@ class Subscription(models.Model):
                            help_text=_('Here is the ending week of the subscription.'))
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='cart_subscription_criterias', verbose_name=_('criterias'))
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
+    direct_debit = models.BooleanField(_('direct debit'), default=True)
     STATUS_CHOICES = (
         ('w', _('In waiting')),
         ('v', _('Validated')),
