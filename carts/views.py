@@ -49,6 +49,30 @@ class SubscriptionView(generic.ListView):
     def dispatch(self, *args, **kwargs):
         return super(SubscriptionView, self).dispatch(*args, **kwargs)
 
+class SubscriptionUpdateView(generic.UpdateView):
+    form_class = forms.SubscriptionUpdateForm
+    model = models.Subscription
+    template_name = 'carts/subscription_edit.html'
+    success_url = '/carts/subscriptions'
+
+    def get_object(self):
+        subscription_id = self.kwargs.get('subscription_id')
+        return models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Your subscription %d has been updated successfuly.') % self.get_object().id)
+        return super(SubscriptionUpdateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(SubscriptionUpdateView, self).get_context_data(**kwargs)
+        context['section'] = 'cart'
+        context['sub_section'] = 'subscriptions'
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SubscriptionUpdateView, self).dispatch(*args, **kwargs)
+
 class DeliveryView(generic.ListView):
     model = models.Delivery
     q = 1.5

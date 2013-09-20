@@ -180,3 +180,12 @@ class CreateForm2(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(CreateForm2, self).__init__(*args, **kwargs)
+
+class SubscriptionUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Subscription
+        fields = ('status',)
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriptionUpdateForm, self).__init__(*args, **kwargs)
+        self.fields.get('status').widget.attrs = {'class': 'form-control'}
