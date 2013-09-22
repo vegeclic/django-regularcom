@@ -14,6 +14,7 @@
     <thead>
       <tr>
 	<th class="col-md-1"></th>
+	<th class="col-md-2">{% trans "ID" %}</th>
 	<th class="col-md-2">{% trans "Size" %}</th>
 	<th class="col-md-1">{% trans "Price" %}</th>
 	<th class="col-md-2">{% trans "Frequency" %}</th>
@@ -21,18 +22,18 @@
 	<th class="col-md-1">{% trans "Quantity" %}</th>
 	<th class="col-md-1">{% trans "#weeks" %}</th>
 	<th class="col-md-2">{% trans "Date" %}</th>
-	<th class="col-md-1">{% trans "Status" %}</th>
+	<th class="col-md-1">{% trans "Enabled" %}</th>
       </tr>
     </thead>
     <tbody>
-      {% for subscription in object_list %}
+      {% for subscription in object_list|dictsortreversed:"date_created" %}
 	<tr class="{% cycle 'row1' 'row2' %}">
 	  <td>
-	    {% if subscription.status == "v" %}
-	      <div class="text-center">
-		<a class="tooltip_link" href="{% url "subscription_edit" subscription.id %}" title="{% trans "edit" %} {{subscription}}"><i class="glyphicon glyphicon-edit"></i></a>{% endif %}
-	      </div>
+	    <div class="text-center">
+	      <a class="tooltip_link" href="{% url "subscription_edit" subscription.id %}" title="{% trans "edit" %} {{subscription}}"><i class="glyphicon glyphicon-edit"></i></a>
+	    </div>
 	  </td>
+	  <td><a href="{% url "subscription_deliveries" subscription.id %}">{{subscription.id}}</a></td>
 	  <td><a href="{% url "subscription_deliveries" subscription.id %}">{{subscription.size}}</a></td>
 	  <td>{{subscription.price}}</td>
 	  <td>{{subscription.frequency_name}}</td>
@@ -40,7 +41,7 @@
 	  <td>{{subscription.quantity}}</td>
 	  <td>{{subscription.delivery_set.all|length}}</td>
 	  <td><a class="tooltip_link" title="{{subscription.date_created}}">{{subscription.date_created|date:"d F Y"}}</a></td>
-	  <td><span class="badge {% if subscription.status == "v" %}alert-success{% elif subscription.status == "c" %}alert-danger{% else %}alert-warning{% endif %}">{{subscription.get_status_display}}</span></td>
+	  <td class="text-center"><span class="glyphicon {% if subscription.enabled %}glyphicon-ok-circle alert-success{% else %}glyphicon-remove-circle alert-danger{% endif %}"></span></td>
 	</tr>
       {% endfor %}
     </tbody>

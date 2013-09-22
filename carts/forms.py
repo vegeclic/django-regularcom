@@ -78,7 +78,7 @@ class SubscriptionBaseAdminForm(forms.ModelForm):
 class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('status', 'customer', 'size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
 
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
@@ -95,20 +95,15 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
         bw = Week.fromstring(self.cleaned_data['start'])
         ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
         subscription.end = ew
-        if commit: subscription.save()
+        if commit:
+            subscription.save()
+            subscription.create_deliveries()
         return subscription
 
 class SubscriptionAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('status', 'customer', 'size', 'criterias', 'quantity',)
-
-    def clean_status(self):
-        old_status = self.initial.get('status')
-        status = self.cleaned_data.get('status')
-        if old_status == 'v':
-            raise forms.ValidationError(_('The status is already validated. It cannot be changed anymore.'))
-        return status
+        fields = ('enabled', 'customer', 'size', 'criterias', 'quantity',)
 
 class ExtentAdminForm(forms.ModelForm):
     class Meta:
@@ -154,7 +149,9 @@ class CreateForm(forms.ModelForm):
         bw = Week.fromstring(self.cleaned_data['start'])
         ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
         subscription.end = ew
-        if commit: subscription.save()
+        if commit:
+            subscription.save()
+            subscription.create_deliveries()
         return subscription
 
 class CreateForm1(forms.Form):
@@ -184,8 +181,7 @@ class CreateForm2(forms.Form):
 class SubscriptionUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Subscription
-        fields = ('status',)
+        fields = ('direct_debit', 'enabled',)
 
     def __init__(self, *args, **kwargs):
         super(SubscriptionUpdateForm, self).__init__(*args, **kwargs)
-        self.fields.get('status').widget.attrs = {'class': 'form-control'}

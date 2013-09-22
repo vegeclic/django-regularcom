@@ -17,7 +17,7 @@
     {% else %}
       <h4 class="media-heading">{{ product }}</h4>
     {% endif %}
-    description
+    {{ product.body }}
     <br/>
     <input type="hidden" class="value" name="product_{{product.id}}" value="0"/>
     <button type="button" class="btn btn-link tooltip_link add_link" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>

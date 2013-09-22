@@ -209,6 +209,8 @@ class CreateWizard(SessionWizardView):
         for product, extent in products.items():
             subscription.extent_set.create(product=product, extent=extent)
 
+        subscription.create_deliveries()
+
         messages.success(self.request, _('The subscription was sucessfuly created.'))
 
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)

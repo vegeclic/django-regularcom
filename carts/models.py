@@ -148,12 +148,7 @@ class Subscription(models.Model):
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='cart_subscription_criterias', verbose_name=_('criterias'))
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
     direct_debit = models.BooleanField(_('direct debit'), default=True)
-    STATUS_CHOICES = (
-        ('w', _('In waiting')),
-        ('v', _('Validated')),
-        ('c', _('Canceled')),
-    )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='v')
+    enabled = models.BooleanField(_('enabled'), default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
@@ -178,15 +173,15 @@ class Subscription(models.Model):
         if r.days: ret += _('%d days') % r.days
         return ret
 
-    def save(self, *args, **kwargs):
-        super(Subscription, self).save(*args, **kwargs)
-        if self.status == 'v':
-            print(self.start, self.end)
-            s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
-            for i in range(0, e+1-s, self.frequency):
-                d = self.delivery_set.create(date=s+i)
-                for extent in self.extent_set.filter(subscription=self):
-                    d.content_set.create(extent=extent)
+    def create_deliveries(self):
+        s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
+        for i in range(0, e+1-s, self.frequency):
+            d = self.delivery_set.create(date=s+i)
+            for extent in self.extent_set.filter(subscription=self):
+                d.content_set.create(extent=extent)
+
+    # def save(self, *args, **kwargs):
+    #     super(Subscription, self).save(*args, **kwargs)
 
 class Extent(models.Model):
     class Meta:

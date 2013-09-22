@@ -58,8 +58,8 @@ class ExtentInline(admin.TabularInline):
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
     form = forms.SubscriptionAdminForm
-    list_display = ('customer', 'size', 'frequency', 'duration', 'quantity', 'status',)
-    list_filter = ('status',)
+    list_display = ('customer', 'size', 'frequency', 'duration', 'quantity', 'enabled',)
+    list_filter = ('enabled',)
     inlines = [ExtentInline,]
 
     def price(self, obj): return obj.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
