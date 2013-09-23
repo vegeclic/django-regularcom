@@ -42,13 +42,15 @@ admin.site.register(models.Category, CategoryAdmin)
 class ProductAdmin(TranslatableAdmin):
     # form = forms.ProductForm
     # add_form = forms.ProductCreationForm
-    list_display = ('all_translations', 'name_', 'date_created', 'date_last_modified', 'status',)
+    list_display = ('all_translations', 'name_', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
     # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, TaggedItemInline,]
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
+
+    def number_of_products(self, obj): return len(obj.product_product.all())
 
     def make_draft(self, request, queryset): queryset.update(status='d')
     def make_published(self, request, queryset): queryset.update(status='p')
