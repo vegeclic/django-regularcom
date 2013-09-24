@@ -30,7 +30,7 @@
 	  </td>
 	  <td><a href="{% url "message_detail" message.id %}" class="subject_link" title="{{message.body}}">{{message.subject}}</a></td>
 	  <td>{{message.reply_set.all|length}}</td>
-	  <td>{{message.date_created}}</td>
+	  <td><a class="tooltip_link" title="{{message.date_last_modified}}">{{message.date_last_modified|date:"d F Y"}}</a></td>
 	</tr>
       {% endfor %}
     </tbody>

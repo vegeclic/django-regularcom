@@ -19,7 +19,8 @@
       {% endfor %}
     </p>
     <p><label><strong>{% trans "Subject" %}:</strong></label> {{object.subject}}</p>
-    <p><label><strong>{% trans "Body" %}:</strong></label> {{object.body}}</p>
+    <p><label><strong>{% trans "Date" %}:</strong></label> {{object.date_created}}</p>
+    <p><label><strong>{% trans "Body" %}:</strong></label> {{object.body|linebreaks}}</p>
   </div>
 
   {% if object.reply_set.all %}
@@ -31,8 +32,8 @@
 	  <label><strong>{% trans "Participant" %}:</strong></label>
 	  <span class="badge">{% if reply.participant == user.customer %}{% trans "Me" %}{% else %}{{reply.participant}}{% endif %}</span>
 	</p>
-	<p><label><strong>{% trans "Body" %}:</strong></label> {{reply.body}}</p>
 	<p><label><strong>{% trans "Date" %}:</strong></label> {{reply.date_created}}</p>
+      	<p><label><strong>{% trans "Body" %}:</strong></label> {{reply.body|linebreaks}}</p>
       </div>
     {% endfor %}
   {% endif %}
