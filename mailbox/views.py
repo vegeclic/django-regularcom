@@ -84,6 +84,9 @@ class NewMessageView(generic.CreateView):
         fi.participants_read.add(fi.owner)
         fi.participants_notified.add(fi.owner)
         messages.success(self.request, _('Your message has been sent successfuly.'))
+        to = list(fi.participants.all())
+        to.remove(fi.owner)
+        models.create_mail(subject=fi.subject, body=fi.body, participants=to, message=fi)
         return ret
 
     def get_context_data(self, **kwargs):
@@ -115,6 +118,9 @@ class ReplyMessageView(generic.CreateView):
         self.success_url = reverse_lazy('message_detail', args=[pk])
         ret = super(ReplyMessageView, self).form_valid(form)
         messages.success(self.request, _('Your reply has been sent successfuly.'))
+        to = list(fi.message.participants.all())
+        to.remove(fi.participant)
+        models.create_mail(subject=fi.message.subject, body=fi.body, participants=to, owner=fi.participant, message=fi.message, prefix='Re: ')
         return ret
 
     def get_context_data(self, **kwargs):

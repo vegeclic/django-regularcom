@@ -24,12 +24,38 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms.models import inlineformset_factory
+from django.core.mail import send_mail
 # from django.contrib import messages
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import common.models as cm
+import customers.models as csm
 import wallets.models as wm
+
+def create_mail(subject, body, participants=[], owner=None, mail_only=False, message=None, prefix=''):
+    if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+
+    mail_body = body
+    if not mail_only:
+        mail_body = "%s\n\nURL: http://www.vegeclic.fr/mailbox/messages/%d/" % (body, message.id)
+
+    send_mail('%s[Végéclic] %s' % (prefix, subject), mail_body, owner.account.email, [customer.account.email for customer in participants])
+
+    return message
+
+class MessageManager(models.Manager):
+    def create_message(self, subject, body, participants=[], owner=None, mail_only=False):
+        if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+
+        message = None
+
+        if not mail_only:
+            message = self.create(subject=subject, body=body, owner=owner)
+            for p in participants: message.participants.add(p)
+            message.participants.add(owner)
+
+        return create_mail(subject, body, participants, owner, mail_only, message)
 
 class Message(models.Model):
     owner = models.ForeignKey('customers.Customer', verbose_name=_('owner'))
@@ -41,7 +67,15 @@ class Message(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
+    objects = MessageManager()
+
     def __unicode__(self): return self.subject
+
+class ReplyManager(models.Manager):
+    def create_reply(self, message, owner, body):
+        if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+        reply = self.create(message=message, participant=owner, body=body)
+        return create_mail(message.subject, body, owner=owner, message=message, prefix='Re: ')
 
 class Reply(models.Model):
     class Meta:
@@ -52,5 +86,7 @@ class Reply(models.Model):
     body = models.TextField(_('body'), blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
+
+    objects = ReplyManager()
 
     def __unicode__(self): return self.body
