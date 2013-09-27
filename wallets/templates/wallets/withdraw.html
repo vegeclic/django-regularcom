@@ -48,7 +48,7 @@
 	    range: 'max',
 	    min: 0,
 	    max: parseInt({{object.balance_in_target_currency|stringformat:"f"}}),
-	    step: 10,
+	    step: parseInt({{object.balance_in_target_currency|stringformat:"f"}}/10),
 	    value: 0,
 	    slide: function( event, ui ) {
 		$('#amount')[0].value = ui.value;
