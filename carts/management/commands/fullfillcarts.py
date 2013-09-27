@@ -18,11 +18,15 @@
 #
 
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
+from django.utils import translation
 from django.core.management.base import BaseCommand, CommandError, NoArgsCommand
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
 from ... import models
+from mailbox import models as mm
+from customers import models as cm
 import logging, logging.config
 import numpy, random
 import matplotlib.pyplot as plt
@@ -33,6 +37,8 @@ class Command(NoArgsCommand):
     help = 'Fullfill the validated subscription deliveries content'
 
     def handle_noargs(self, **options):
+        translation.activate('fr')
+
         logging.debug('Command in progress')
 
         pop_size = 50
@@ -47,14 +53,27 @@ class Command(NoArgsCommand):
         zero = True
         # zero = False
 
-        week_limit = Week.withdate(datetime.date.today() + relativedelta(days=10))
+        # week_limit = Week.withdate(datetime.date.today() + relativedelta(days=10))
+        week_limit = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
         deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p')
         for delivery in deliveries:
             logging.debug(delivery.__unicode__())
 
             for extent in delivery.subscription.extent_set.all():
+                logging.debug(extent)
+
                 __extent = extent.extent
-                products = extent.product.product_product.all()
+
+                def get_product_products(product):
+                    __products = []
+                    for child in product.products_children.all():
+                        __products += get_product_products(child)
+                    __products += product.product_product.all()
+                    return __products
+
+                # products = extent.product.product_product.all()
+                products = get_product_products(extent.product)
+                print(products)
                 prices = [p.price().purchase_price for p in products]
                 nbr_items = len(prices)
 
@@ -122,7 +141,25 @@ class Command(NoArgsCommand):
                         logging.debug("add product %d with a quantity %d" % (i, sol[i]))
                         content.contentproduct_set.create(product=products[i], quantity=sol[i])
 
-                logging.debug("change delivery status")
+            logging.debug("change delivery status")
 
-                delivery.status = 'P'
-                delivery.save()
+            delivery.status = 'P'
+            delivery.save()
+
+            logging.debug("send a message to the delivery customer")
+
+            customer = delivery.subscription.customer
+
+            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.date}, body=_(
+"""Hi %(name)s,
+
+we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
+
+Your cart will be send to you in 10 days.
+
+Best regards,
+Végéclic.
+"""
+            ) % {'name': customer.main_address.__unicode__(), 'date': delivery.date, 'subscription_id': delivery.subscription.id})
+
+        translation.deactivate()
