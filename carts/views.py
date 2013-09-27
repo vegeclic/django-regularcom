@@ -119,10 +119,12 @@ class DeliveryView(generic.ListView):
 
 class DeliveryPaymentView(generic.View):
     def get(self, request, subscription_id, delivery_id):
-        if delivery.status != 'w': raise ValueError(_('Delivery %d already payed or canceled.') % delivery.id)
         subscription = models.Subscription.objects.get(id=subscription_id, customer__account=request.user)
-        deliveries = models.Delivery.objects.filter(subscription=subscription, status__in=models.Delivery.SUCCESS_CHOICES)
         delivery = models.Delivery.objects.get(id=delivery_id, subscription=subscription)
+
+        if delivery.status != 'w': raise ValueError(_('Delivery %d already payed or canceled.') % delivery.id)
+
+        deliveries = models.Delivery.objects.filter(subscription=subscription, status__in=models.Delivery.SUCCESS_CHOICES)
         delivery.status = 'p'
         delivery.payed_price = subscription.price().price/(1+DeliveryView.q/100)**len(deliveries)
         try:
@@ -157,7 +159,8 @@ class CreateWizard(SessionWizardView):
             form.sizes = models.Size.objects.all()
             form.frequencies = models.FREQUENCY_CHOICES
             form.durations = forms.DURATION_CHOICES
-            cw = Week.withdate(datetime.date.today() + relativedelta(days=10))
+            # cw = Week.withdate(datetime.date.today() + relativedelta(days=10))
+            cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
             form.starts = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
 
             def products_tree(products, root_product=None, root_only=True):

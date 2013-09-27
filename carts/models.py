@@ -177,8 +177,8 @@ class Subscription(models.Model):
         s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
         for i in range(0, e+1-s, self.frequency):
             d = self.delivery_set.create(date=s+i)
-            for extent in self.extent_set.filter(subscription=self):
-                d.content_set.create(extent=extent)
+            # for extent in self.extent_set.filter(subscription=self):
+            #     d.content_set.create(extent=extent)
 
     # def save(self, *args, **kwargs):
     #     super(Subscription, self).save(*args, **kwargs)
