@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-23 07:15+0200\n"
+"POT-Creation-Date: 2013-09-23 16:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -328,39 +328,68 @@ msgstr ""
 msgid "The subscription was sucessfuly created."
 msgstr "L'abonnement a été crée correctement."
 
-#: carts/management/commands/directdebits.py:64
+#: carts/management/commands/directdebits.py:65
 #, python-format
 msgid "Delivery %(date)s cannot be validated"
 msgstr "La livraison %(date)s ne peut pas être validé"
 
-#: carts/management/commands/directdebits.py:64
-#, python-format
+#: carts/management/commands/directdebits.py:66
+#, fuzzy, python-format
 msgid ""
-"Hi %(name)s, with some regret I must report that we were unable to validate "
-"your delivery %(date)s from the subscription %(subscription_id)d since you "
-"dont have enough money in your wallet to buy it. Please take a moment to "
-"credit your wallet first and validate the delivery back."
+"Hi %(name)s,\n"
+"\n"
+"with some regret I must report that we were unable to validate your delivery "
+"%(date)s from the subscription %(subscription_id)d since you dont have "
+"enough money in your wallet to buy it.\n"
+"\n"
+"Please take a moment to credit your wallet first and validate the delivery "
+"back.\n"
+"\n"
+"Best regards,\n"
+"Végéclic.\n"
 msgstr ""
-"Bonjour %(name)s, nous sommes au regrès de vous annoncer que nous avons pas "
+"Bonjour %(name)s,\n"
+"\n"
+"nous sommes au regrès de vous annoncer que nous avons pas "
 "été en mesure de valider votre livraison %(date)s de l'abonnement "
 "%(subscription_id)d étant donnée que vous ne possédez pas suffisemment "
-"d'argent dans votre portemonnaie pour l'acheter. Merci de bien vouloir "
-"prendre un petit temps pour approvisionner votre portemonnaie et revalider "
-"votre livraison."
+"d'argent dans votre portemonnaie pour l'acheter.\n"
+"\n"
+"Merci de bien vouloir prendre un petit temps pour approvisionner votre "
+"portemonnaie et revalider votre livraison.\n"
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
 
-#: carts/management/commands/directdebits.py:67
+#: carts/management/commands/directdebits.py:78
 #, python-format
 msgid "Delivery %(date)s has been validated"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/management/commands/directdebits.py:67
-#, python-format
+#: carts/management/commands/directdebits.py:79
+#, fuzzy, python-format
 msgid ""
-"Hi %(name)s, we are pleased to announce your delivery %(date)s from the "
-"subscription %(subscription_id)d has been validated automatically."
+"Hi %(name)s,\n"
+"\n"
+"we are pleased to announce your delivery %(date)s from the subscription "
+"%(subscription_id)d has been validated automatically.\n"
+"\n"
+"Your cart will be prepared as soon as possible and send to you in 10-12 "
+"days.\n"
+"\n"
+"Best regards,\n"
+"Végéclic.\n"
 msgstr ""
-"Bonjour %(name)s, nous sommes heureux de vous annoncer que votre livraison "
-"%(date)s de l'abonnement %(subscription_id)d a été validé automatiquement."
+"Bonjour %(name)s,\n"
+"\n"
+"nous sommes heureux de vous annoncer que votre livraison %(date)s de "
+"l'abonnement %(subscription_id)d a été validé automatiquement."
+"\n"
+"Votre panier sera préparé aussi vite que possible et envoyé chez vous "
+"dans 10-12 jours."
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
 
 #: carts/templates/carts/base.html:10
 msgid "Cart"
@@ -435,7 +464,7 @@ msgstr "abonnement"
 
 #: carts/templates/carts/delivery_list.html:32
 #: carts/templates/carts/subscription_list.html:24
-#: mailbox/templates/mailbox/message_detail.html:35
+#: mailbox/templates/mailbox/message_detail.html:34
 #: mailbox/templates/mailbox/message_list.html:20
 #: wallets/templates/wallets/credit_list.html:15
 #: wallets/templates/wallets/history_list.html:13
@@ -720,7 +749,7 @@ msgid "Subject"
 msgstr "Objet"
 
 #: mailbox/templates/mailbox/message_detail.html:22
-#: mailbox/templates/mailbox/message_detail.html:34
+#: mailbox/templates/mailbox/message_detail.html:35
 msgid "Body"
 msgstr "Corps"
 
@@ -858,10 +887,6 @@ msgstr "Sous"
 msgid "GNU Affero General Public License"
 msgstr "Licence publique générale GNU Affero"
 
-#: templates/home.html:11
-msgid "Regular'com"
-msgstr ""
-
 #: templates/nav.html:25
 msgid "Carts"
 msgstr "Paniers"
@@ -985,14 +1010,14 @@ msgstr "Vos paramètres de configuration ont été modifié avec succès."
 #: wallets/templates/wallets/credit.html:6
 #: wallets/templates/wallets/credit.html:42
 msgid "Credit"
-msgstr "Créditer"
+msgstr "Approvisionner"
 
 #: wallets/templates/wallets/base.html:22
 #: wallets/templates/wallets/withdraw.html:6
 #: wallets/templates/wallets/withdraw.html:34
 #, fuzzy
 msgid "Withdraw"
-msgstr "Retiré"
+msgstr "Retirer"
 
 #: wallets/templates/wallets/base.html:26
 msgid "Balance"
@@ -1072,7 +1097,7 @@ msgstr "Solde de votre compte"
 #: wallets/templates/wallets/withdraw.html:10
 #, fuzzy
 msgid "Withdraw from your wallet"
-msgstr "Créditer votre portemonnaie"
+msgstr "Approvisionner votre portemonnaie"
 
 #~ msgid "Presentation"
 #~ msgstr "Présentation"
