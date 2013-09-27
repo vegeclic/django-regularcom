@@ -20,21 +20,47 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
+import common.models as cm
+import customers.models as csm
+import wallets.models as wm
+import mailbox.models as mm
 
 class AccountManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email):
         """
         Creates and saves a User with the given email and password.
         """
-        if not email:
-            raise ValueError('Users must have an email address')
+        if not email: raise ValueError('Users must have an email address')
 
-        account = self.model(
-            email=AccountManager.normalize_email(email)
-        )
-
+        account = self.model(email=AccountManager.normalize_email(email))
+        password = self.make_random_password()
         account.set_password(password)
         account.save(using=self._db)
+
+        customer = csm.Customer.objects.create(account=account)
+        wallet = wm.Wallet.objects.create(customer=customer, target_currency=cm.Parameter.objects.get(name='default currency').content_object)
+
+        message = mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Welcome to Végéclic'), body=_(
+"""Hi there,
+
+We are pleased to see you among us on the new website of Végéclic.
+
+You can authenticate to your account with the following information:
+
+email: %(email)s
+password: %(password)s
+
+or just click on the link bellow to be directly connected (without authentication-step):
+
+http://www.vegeclic.fr/accounts/login/
+
+Ready ? Go to the "carts" section in order to create a new subscription. It is quite simple!
+
+Best regards,
+Végéclic.
+"""
+        ) % {'email': account.email, 'password': password})
+
         return account
 
     def create_superuser(self, email, password):

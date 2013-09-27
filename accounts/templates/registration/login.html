@@ -14,12 +14,14 @@
       <div class="form-group">
 	<input name="email" type="text" class="form-control" placeholder="{{ signup_form.email.label }}"/>
       </div>
+      {% comment %}
       <div class="form-group">
 	<input name="password1" type="password" class="form-control" placeholder="{{ signup_form.password1.label }}"/>
       </div>
       <div class="form-group">
 	<input name="password2" type="password" class="form-control" placeholder="{{ signup_form.password2.label }}"/>
       </div>
+      {% endcomment %}
       <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign up" %}</button>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>

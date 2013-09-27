@@ -47,7 +47,8 @@ def signup(request):
         signup_form = forms.AccountCreationForm(request.POST)
 
         if signup_form.is_valid():
-            account = models.Account.objects.create_user(email=signup_form.data['email'], password=signup_form.data['password1'])
+            # account = models.Account.objects.create_user(email=signup_form.data['email'], password=signup_form.data['password1'])
+            account = models.Account.objects.create_user(email=signup_form.data['email'])
             messages.success(request, "Your account has been successfully created.")
             return redirect('login')
 

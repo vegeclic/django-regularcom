@@ -28,27 +28,26 @@ import common.forms as cf
 class AccountCreationAdminForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
+    # password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
+    # password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
 
     class Meta:
         model = models.Account
         fields = ('email',)
 
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
-        return password2
+    # def clean_password2(self):
+    #     # Check that the two password entries match
+    #     password1 = self.cleaned_data.get("password1")
+    #     password2 = self.cleaned_data.get("password2")
+    #     if password1 and password2 and password1 != password2:
+    #         raise forms.ValidationError("Passwords don't match")
+    #     return password2
 
     def save(self, commit=True):
         # Save the provided password in hashed format
         account = super(AccountCreationAdminForm, self).save(commit=False)
-        account.set_password(self.cleaned_data["password1"])
-        if commit:
-            account.save()
+        account.set_password(models.Account.objects.make_random_password())
+        if commit: account.save()
         return account
 
 class AccountChangeAdminForm(forms.ModelForm):
@@ -74,14 +73,14 @@ class AccountCreationForm(forms.ModelForm):
     """
     error_messages = {
         'duplicate_email': _("A user with that email already exists."),
-        'password_mismatch': _("The two password fields didn't match."),
+        # 'password_mismatch': _("The two password fields didn't match."),
     }
     email = forms.EmailField(label=_("Email address"), max_length=255)
-    password1 = forms.CharField(label=_("Password"),
-                                widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"),
-                                widget=forms.PasswordInput,
-                                help_text=_("Enter the same password as above, for verification."))
+    # password1 = forms.CharField(label=_("Password"),
+    #                             widget=forms.PasswordInput)
+    # password2 = forms.CharField(label=_("Password confirmation"),
+    #                             widget=forms.PasswordInput,
+    #                             help_text=_("Enter the same password as above, for verification."))
 
     class Meta:
         model = models.Account
@@ -97,19 +96,17 @@ class AccountCreationForm(forms.ModelForm):
             return email
         raise forms.ValidationError(self.error_messages['duplicate_email'])
 
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError(
-                self.error_messages['password_mismatch'])
-        return password2
+    # def clean_password2(self):
+    #     password1 = self.cleaned_data.get("password1")
+    #     password2 = self.cleaned_data.get("password2")
+    #     if password1 and password2 and password1 != password2:
+    #         raise forms.ValidationError(self.error_messages['password_mismatch'])
+    #     return password2
 
     def save(self, commit=True):
         account = super(UserCreationForm, self).save(commit=False)
-        account.set_password(self.cleaned_data["password1"])
-        if commit:
-            account.save()
+        # account.set_password(self.cleaned_data["password1"])
+        if commit: account.save()
         return account
 
 class AuthorForm(cf.ModelFormWithImage):
