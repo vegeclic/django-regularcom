@@ -34,13 +34,13 @@ class AccountView(generic.DetailView):
     def get_object(self): return self.request.user
 
     def get_context_data(self, **kwargs):
-        context = super(AccountView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'profile'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AccountView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 def signup(request):
     if request.method == "POST":

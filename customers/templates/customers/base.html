@@ -9,8 +9,12 @@
     <div class="col-md-3">
       <div class="well sidebar-nav">
 	<ul class="nav nav-pills nav-stacked">
+	  <li {% if sub_section == "profile" %}class="active"{% endif %}>
+	    <a href="{% url "profile" %}"><i class="glyphicon glyphicon-user"></i> {% trans "Profile" %}</a>
+	  </li>
+
 	  <li {% if sub_section == "addresses" %}class="active"{% endif %}>
-	    <a href="{% url "addresses" %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "Addresses" %}</a>
+	    <a href="{% url "addresses" %}"><i class="glyphicon glyphicon-home"></i> {% trans "Addresses" %}</a>
 	  </li>
 
 	  <li {% if sub_section == "address_create" %}class="active"{% endif %}>

@@ -104,7 +104,7 @@ class HistoryAdminForm(forms.ModelForm):
     object_id = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
-        super(HistoryAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         content_type = self.initial.get('content_type')
         object_id = self.initial.get('object_id')
         object_id_field = self.fields.get('object_id')
@@ -117,7 +117,7 @@ class SettingsForm(cf.ModelFormWithCurrency):
         exclude = ('customer', 'balance',)
 
     def __init__(self, *args, **kwargs):
-        super(SettingsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields.get('target_currency').widget.attrs = {'class': 'form-control'}
 
 class CreditForm(cf.ModelFormWithCurrency):
@@ -126,7 +126,7 @@ class CreditForm(cf.ModelFormWithCurrency):
         fields = ('payment_type', 'amount', 'payment_date',)
 
     def __init__(self, *args, **kwargs):
-        super(CreditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields.get('payment_type').widget.attrs = {'class': 'form-control'}
         self.fields.get('payment_date').widget.attrs = {'class': 'form-control'}
 
@@ -149,7 +149,7 @@ class WithdrawForm(cf.ModelFormWithCurrency):
         fields = ('payment_type', 'amount',)
 
     def __init__(self, *args, **kwargs):
-        super(WithdrawForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields.get('payment_type').widget.attrs = {'class': 'form-control'}
 
     def clean_amount(self):

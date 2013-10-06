@@ -45,7 +45,7 @@ class AccountCreationAdminForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        account = super(AccountCreationAdminForm, self).save(commit=False)
+        account = super().save(commit=False)
         account.set_password(models.Account.objects.make_random_password())
         if commit: account.save()
         return account
@@ -104,7 +104,7 @@ class AccountCreationForm(forms.ModelForm):
     #     return password2
 
     def save(self, commit=True):
-        account = super(UserCreationForm, self).save(commit=False)
+        account = super().save(commit=False)
         # account.set_password(self.cleaned_data["password1"])
         if commit: account.save()
         return account

@@ -1,0 +1,12 @@
+{% extends "customers/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Profile" %}</h2>
+
+  <table class="table table-bordered table-hover">
+    <tr class="alert alert-info"><th class="col-md-2">{% trans "Known as" %}</th><td>{{object.main_address}}</td></tr>
+    <tr><th class="col-md-2">{% trans "Shipping" %}</th><td>{{object.shipping_address}}</td></tr>
+    <tr><th class="col-md-2">{% trans "Billing" %}</th><td>{{object.billing_address}}</td></tr>
+  </table>
+{% endblock %}

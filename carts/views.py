@@ -41,14 +41,14 @@ class SubscriptionView(generic.ListView):
         return models.Subscription.objects.filter(customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
-        context = super(SubscriptionView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'subscriptions'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(SubscriptionView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class SubscriptionUpdateView(generic.UpdateView):
     form_class = forms.SubscriptionUpdateForm
@@ -62,17 +62,17 @@ class SubscriptionUpdateView(generic.UpdateView):
 
     def form_valid(self, form):
         messages.success(self.request, _('Your subscription %d has been updated successfuly.') % self.get_object().id)
-        return super(SubscriptionUpdateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(SubscriptionUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'subscriptions'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(SubscriptionUpdateView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class DeliveryView(generic.ListView):
     model = models.Delivery
@@ -99,7 +99,7 @@ class DeliveryView(generic.ListView):
         return models.Delivery.objects.filter(subscription__customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
-        context = super(DeliveryView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'deliveries'
         subscription_id = self.kwargs.get('subscription_id')
@@ -115,7 +115,7 @@ class DeliveryView(generic.ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DeliveryView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class DeliveryPaymentView(generic.View):
     def get(self, request, subscription_id, delivery_id):
@@ -138,19 +138,19 @@ class DeliveryPaymentView(generic.View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DeliveryPaymentView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class CreateWizard(SessionWizardView):
     template_name = 'carts/create_wizard.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CreateWizard, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'create'
         return context
 
     def get_form(self, step=None, data=None, files=None):
-        form = super(CreateWizard, self).get_form(step, data, files)
+        form = super().get_form(step, data, files)
 
         # determine the step if not given
         if step is None: step = self.steps.current
@@ -222,4 +222,4 @@ class CreateWizard(SessionWizardView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(CreateWizard, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)

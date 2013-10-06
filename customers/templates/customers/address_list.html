@@ -27,6 +27,7 @@
 	  <td>
 	    <div class="text-center">
 	      <a class="tooltip_link" href="{% url "address_edit" address.id %}" title="{% trans "edit" %} {{address}}"><i class="glyphicon glyphicon-edit"></i></a>
+	      <a class="tooltip_link" href="{% url "address_remove" address.id %}" title="{% trans "remove" %} {{address}}"><i class="glyphicon glyphicon-remove-circle"></i></a>
 	    </div>
 	  </td>
 	  <td>{{address.first_name}} {{address.last_name}} ({{address.gender}})</td>

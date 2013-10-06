@@ -35,7 +35,7 @@ class MyModelAdmin(admin.ModelAdmin):
                 'form': self.add_form if self.add_form else self.form,
             })
         defaults.update(kwargs)
-        return super(MyModelAdmin, self).get_form(request, obj, **defaults)
+        return super().get_form(request, obj, **defaults)
 
 class LimitedAdminInlineMixin(object):
     """
@@ -76,10 +76,7 @@ class LimitedAdminInlineMixin(object):
         Make sure we can only select variations that relate to the current
         item.
         """
-        formset = \
-            super(LimitedAdminInlineMixin, self).get_formset(request,
-                                                             obj,
-                                                             **kwargs)
+        formset = super().get_formset(request, obj, **kwargs)
 
         for (field, filters) in self.get_filters(obj):
             if obj:

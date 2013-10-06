@@ -1,0 +1,20 @@
+{% extends "customers/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Remove an address" %}</h2>
+
+  <form role="form" method="post" action="{% url "address_remove" object.id %}">
+    {% csrf_token %}
+
+    <div class="alert alert-warning">
+      {% trans "Do you confirm that you would like to delete the following address ?" %}
+      <strong>{{ object }}</strong>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-6"><button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Yes" %}</button></div>
+      <div class="col-md-6"><a class="btn btn-lg btn-default btn-block" href="{% url "addresses" %}">{% trans "No" %}</a></div>
+    </div>
+  </form>
+{% endblock %}

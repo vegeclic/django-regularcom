@@ -39,14 +39,14 @@ class MessageListView(generic.ListView):
         return models.Message.objects.filter(participants__account=self.request.user)
 
     def get_context_data(self, **kwargs):
-        context = super(MessageListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'mailbox'
         context['sub_section'] = 'messages'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(MessageListView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class MessageView(generic.DetailView):
     model = models.Message
@@ -61,14 +61,14 @@ class MessageView(generic.DetailView):
         return message
 
     def get_context_data(self, **kwargs):
-        context = super(MessageView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'mailbox'
         context['sub_section'] = 'messages'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(MessageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class NewMessageView(generic.CreateView):
     form_class = forms.NewMessage
@@ -79,7 +79,7 @@ class NewMessageView(generic.CreateView):
     def form_valid(self, form):
         fi = form.instance
         fi.owner = cm.Customer.objects.get(account=self.request.user)
-        ret = super(NewMessageView, self).form_valid(form)
+        ret = super().form_valid(form)
         fi.participants.add(fi.owner)
         fi.participants_read.add(fi.owner)
         fi.participants_notified.add(fi.owner)
@@ -90,7 +90,7 @@ class NewMessageView(generic.CreateView):
         return ret
 
     def get_context_data(self, **kwargs):
-        context = super(NewMessageView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'mailbox'
         context['sub_section'] = 'new_message'
         context['form'].fields.get('participants').queryset = cm.Customer.objects.exclude(account=self.request.user)
@@ -98,7 +98,7 @@ class NewMessageView(generic.CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(NewMessageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class ReplyMessageView(generic.CreateView):
     form_class = forms.ReplyMessage
@@ -116,7 +116,7 @@ class ReplyMessageView(generic.CreateView):
         fi.message.participants_read.add(fi.participant)
         fi.message.participants_notified.add(fi.participant)
         self.success_url = reverse_lazy('message_detail', args=[pk])
-        ret = super(ReplyMessageView, self).form_valid(form)
+        ret = super().form_valid(form)
         messages.success(self.request, _('Your reply has been sent successfuly.'))
         to = list(fi.message.participants.all())
         to.remove(fi.participant)
@@ -124,7 +124,7 @@ class ReplyMessageView(generic.CreateView):
         return ret
 
     def get_context_data(self, **kwargs):
-        context = super(ReplyMessageView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'mailbox'
         context['sub_section'] = 'messages'
         context['object'] = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
@@ -132,4 +132,4 @@ class ReplyMessageView(generic.CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ReplyMessageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)

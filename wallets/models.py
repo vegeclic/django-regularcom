@@ -85,7 +85,7 @@ class Credit(models.Model):
             h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='credit'),
                         object_id=self.id, amount=self.amount)
             h.save()
-        super(Credit, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class Withdraw(models.Model):
     wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
@@ -101,7 +101,7 @@ class Withdraw(models.Model):
     def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.wallet.__unicode__(), self.get_payment_type_display(), self.amount, self.date_created, self.get_status_display())
 
     def save(self, *args, **kwargs):
-        super(Withdraw, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         print(self.status)
         if self.status == 'w':
             amount = abs(round(self.amount/self.currency.exchange_rate,2))

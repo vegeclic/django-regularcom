@@ -63,7 +63,7 @@ class PriceAdminForm(cf.ModelFormWithCurrency):
 
 class SubscriptionBaseAdminForm(forms.ModelForm):
     def clean(self):
-        cleaned_data = super(SubscriptionBaseAdminForm, self).clean()
+        cleaned_data = super().clean()
         prefix = 'extent_set-'
         total = int(self.data.get('%sTOTAL_FORMS' % prefix))
         extents = [int(e) if e else 0 for e in [self.data.get('%s%d-extent' % (prefix,i)) for i in range(total)]]
@@ -83,7 +83,7 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
     def __init__(self, *args, **kwargs):
-        super(SubscriptionCreationAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         start = self.fields['start']
         cw = Week.thisweek()
         choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
@@ -91,7 +91,7 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
         start.initial = cw+1
 
     def save(self, commit=True):
-        subscription = super(SubscriptionCreationAdminForm, self).save(commit=False)
+        subscription = super().save(commit=False)
         bw = Week.fromstring(self.cleaned_data['start'])
         ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
         subscription.end = ew
@@ -114,7 +114,7 @@ class DeliveryCreationAdminForm(forms.ModelForm):
         model = models.Delivery
 
     def __init__(self, *args, **kwargs):
-        super(DeliveryCreationAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         date = self.fields['date']
         cw = Week.thisweek()
         choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
@@ -137,7 +137,7 @@ class CreateForm(forms.ModelForm):
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
     def __init__(self, *args, **kwargs):
-        super(CreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         start = self.fields['start']
         cw = Week.thisweek()
         choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
@@ -145,7 +145,7 @@ class CreateForm(forms.ModelForm):
         start.initial = cw+1
 
     def save(self, commit=True):
-        subscription = super(CreateForm, self).save(commit=False)
+        subscription = super().save(commit=False)
         bw = Week.fromstring(self.cleaned_data['start'])
         ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
         subscription.end = ew
@@ -163,7 +163,7 @@ class CreateForm1(forms.Form):
     # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
 
     def __init__(self, *args, **kwargs):
-        super(CreateForm1, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # start = self.fields['start']
         # cw = Week.thisweek()
         # choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
@@ -176,7 +176,7 @@ class CreateForm2(forms.Form):
     # extents = forms.MultipleHiddenInput()
 
     def __init__(self, *args, **kwargs):
-        super(CreateForm2, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 class SubscriptionUpdateForm(forms.ModelForm):
     class Meta:
@@ -184,4 +184,4 @@ class SubscriptionUpdateForm(forms.ModelForm):
         fields = ('direct_debit', 'enabled',)
 
     def __init__(self, *args, **kwargs):
-        super(SubscriptionUpdateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)

@@ -26,8 +26,24 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 from . import forms, models
 import common.models as cm
+
+class CustomerView(generic.DetailView):
+    model = models.Customer
+
+    def get_object(self): return self.request.user.customer
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'customers'
+        context['sub_section'] = 'profile'
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class AddressListView(generic.ListView):
     model = cm.Address
@@ -36,37 +52,88 @@ class AddressListView(generic.ListView):
     def get_queryset(self): return self.request.user.customer.addresses.all()
 
     def get_context_data(self, **kwargs):
-        context = super(AddressListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'customers'
         context['sub_section'] = 'addresses'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AddressListView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
+
+class AddressCreateView(generic.CreateView):
+    form_class = forms.AddressCreateForm
+    model = cm.Address
+    template_name = 'customers/address_create.html'
+    # success_url = '/customers/addresses/'
+    success_url = reverse_lazy('addresses')
+
+    def get_object(self): return self.request.user.customer
+
+    def form_valid(self, form):
+        fi = form.instance
+        fi.content_type = ContentType.objects.get(model='customer')
+        fi.object_id = self.request.user.customer.id
+        messages.success(self.request, _('Your new address has been well created.'))
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'customers'
+        context['sub_section'] = 'address_create'
+        context['object'] = self.get_object()
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+class AddressDeleteView(generic.DeleteView):
+    model = cm.Address
+    template_name = 'customers/address_confirm_delete.html'
+    # success_url = reverse_lazy('addresses') # raise an exception
+    success_url = '/customers/addresses'
+
+    def get_object(self):
+        return self.request.user.customer.addresses.get(id=self.kwargs.get('address_id'))
+
+    def get_success_url(self):
+        messages.success(self.request, _('Your address has been well deleted.'))
+        return super().get_success_url()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'customers'
+        context['sub_section'] = 'addresses'
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class AddressUpdateView(generic.UpdateView):
     form_class = forms.AddressUpdateForm
     model = cm.Address
     template_name = 'customers/address_edit.html'
-    success_url = '/customers/addresses'
+    # success_url = '/customers/addresses'
+    success_url = reverse_lazy('addresses')
 
     def get_object(self):
         return self.request.user.customer.addresses.get(id=self.kwargs.get('address_id'))
 
     def form_valid(self, form):
         messages.success(self.request, _('Your address %d has been updated successfuly.') % self.get_object().id)
-        return super(AddressUpdateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(AddressUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'customers'
         context['sub_section'] = 'addresses'
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AddressUpdateView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class AddressDefineAsMainView(generic.View):
     def get(self, request, address_id):
@@ -79,7 +146,7 @@ class AddressDefineAsMainView(generic.View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AddressDefineAsMainView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class AddressDefineAsShippingView(generic.View):
     def get(self, request, address_id):
@@ -92,7 +159,7 @@ class AddressDefineAsShippingView(generic.View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AddressDefineAsShippingView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 class AddressDefineAsBillingView(generic.View):
     def get(self, request, address_id):
@@ -105,27 +172,4 @@ class AddressDefineAsBillingView(generic.View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(AddressDefineAsBillingView, self).dispatch(*args, **kwargs)
-
-class AddressCreateView(generic.CreateView):
-    form_class = forms.AddressCreateForm
-    model = cm.Address
-    template_name = 'customers/address_create.html'
-    success_url = '/customers/addresses/'
-
-    def get_object(self): return self.request.user.customer
-
-    def form_valid(self, form):
-        messages.success(self.request, _('Your new address has been well created.'))
-        return super(AddressCreateView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(AddressCreateView, self).get_context_data(**kwargs)
-        context['section'] = 'customers'
-        context['sub_section'] = 'address_create'
-        context['object'] = self.get_object()
-        return context
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(AddressCreateView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)

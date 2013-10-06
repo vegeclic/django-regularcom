@@ -4,7 +4,7 @@
 {% block sub_content %}
   <h2>{% trans "Address" %}</h2>
 
-  <form role="form" method="post" action="{% url "address_edit" object.id %}">
+  <form role="form" method="post" action="{% url "address_create" %}">
     {% csrf_token %}
     <h3 class="customer-form-heading well">{% trans "Add an address" %}</h3>
 

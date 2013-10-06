@@ -106,7 +106,7 @@ class Delivery(models.Model):
                            object_id=self.id, amount=amount*-1)
             h.save()
             self.payed_price = amount
-        super(Delivery, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class ContentProduct(models.Model):
     class Meta:
@@ -181,7 +181,7 @@ class Subscription(models.Model):
             #     d.content_set.create(extent=extent)
 
     # def save(self, *args, **kwargs):
-    #     super(Subscription, self).save(*args, **kwargs)
+    #     super().save(*args, **kwargs)
 
 class Extent(models.Model):
     class Meta:

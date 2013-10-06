@@ -22,10 +22,11 @@ from django.views.generic import TemplateView, DetailView, ListView
 from . import views, models
 
 urlpatterns = patterns('customers.views',
-                       # url(r'^$', views.BalanceView.as_view(), name='balance'),
+                       url(r'^$', views.CustomerView.as_view(), name='profile'),
                        url(r'^addresses/$', views.AddressListView.as_view(), name='addresses'),
                        url(r'^addresses/create/$', views.AddressCreateView.as_view(), name='address_create'),
                        url(r'^addresses/(?P<address_id>\d+)/edit/$', views.AddressUpdateView.as_view(), name='address_edit'),
+                       url(r'^addresses/(?P<address_id>\d+)/remove/$', views.AddressDeleteView.as_view(), name='address_remove'),
                        url(r'^addresses/(?P<address_id>\d+)/define_as_main/$', views.AddressDefineAsMainView.as_view(), name='address_define_as_main'),
                        url(r'^addresses/(?P<address_id>\d+)/define_as_shipping/$', views.AddressDefineAsShippingView.as_view(), name='address_define_as_shipping'),
                        url(r'^addresses/(?P<address_id>\d+)/define_as_billing/$', views.AddressDefineAsBillingView.as_view(), name='address_define_as_billing'),
