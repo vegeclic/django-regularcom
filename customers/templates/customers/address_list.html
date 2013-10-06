@@ -1,0 +1,69 @@
+{% extends "customers/base.html" %}
+{% load i18n %}
+
+{% block sub_content %}
+  <h2>{% trans "Addresses" %}</h2>
+
+  <div class="text-right">
+    <a href="{% url "address_create" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
+  </div>
+
+  <br/>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+	<th class="col-md-1"></th>
+	<th class="col-md-3">{% trans "Name" %}</th>
+	<th>{% trans "Address" %}</th>
+	<th class="col-md-1">{% trans "Main" %}</th>
+	<th class="col-md-1">{% trans "Shipping" %}</th>
+	<th class="col-md-1">{% trans "Billing" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for address in object_list %}
+	<tr class="{% cycle 'row1' 'row2' %}">
+	  <td>
+	    <div class="text-center">
+	      <a class="tooltip_link" href="{% url "address_edit" address.id %}" title="{% trans "edit" %} {{address}}"><i class="glyphicon glyphicon-edit"></i></a>
+	    </div>
+	  </td>
+	  <td>{{address.first_name}} {{address.last_name}} ({{address.gender}})</td>
+	  <td>{{address.street}}, {{address.postal_code}} {{address.city}}, {{address.country}}</td>
+	  <td>
+	    <div class="text-center">
+	      {% if address == user.customer.main_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% else %}
+		<a class="tooltip_link" href="{% url "address_define_as_main" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
+	      {% endif %}
+	    </div>
+	  </td>
+	  <td>
+	    <div class="text-center">
+	      {% if address == user.customer.shipping_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% else %}
+		<a class="tooltip_link" href="{% url "address_define_as_shipping" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
+	      {% endif %}
+	    </div>
+	  </td>
+	  <td>
+	    <div class="text-center">
+	      {% if address == user.customer.billing_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% else %}
+		<a class="tooltip_link" href="{% url "address_define_as_billing" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
+	      {% endif %}
+	    </div>
+	  </td>
+	</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="form-actions text-right">
+    <a href="{% url "address_create" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
+  </div>
+{% endblock %}

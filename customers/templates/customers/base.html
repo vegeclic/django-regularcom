@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block page_title %}{% trans "Customer" %}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="well sidebar-nav">
+	<ul class="nav nav-pills nav-stacked">
+	  <li {% if sub_section == "addresses" %}class="active"{% endif %}>
+	    <a href="{% url "addresses" %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "Addresses" %}</a>
+	  </li>
+
+	  <li {% if sub_section == "address_create" %}class="active"{% endif %}>
+	    <a href="{% url "address_create" %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "New address" %}</a>
+	  </li>
+
+	  {% comment %}
+	  <li {% if sub_section == "settings" %}class="active"{% endif %}>
+	    <a href="{% url "settings" %}"><i class="glyphicon glyphicon-cog"></i> {% trans "Settings" %}</a>
+	  </li>
+	  {% endcomment %}
+	</ul>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      {% block sub_content %}{% endblock %}
+    </div>
+  </div> <!--/.row-fluid -->
+{% endblock %}
