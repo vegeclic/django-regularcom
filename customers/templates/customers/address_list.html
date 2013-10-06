@@ -25,9 +25,11 @@
       {% for address in object_list %}
 	<tr class="{% cycle 'row1' 'row2' %}">
 	  <td>
-	    <div class="text-center">
+	    <div class="text-left">
 	      <a class="tooltip_link" href="{% url "address_edit" address.id %}" title="{% trans "edit" %} {{address}}"><i class="glyphicon glyphicon-edit"></i></a>
-	      <a class="tooltip_link" href="{% url "address_remove" address.id %}" title="{% trans "remove" %} {{address}}"><i class="glyphicon glyphicon-remove-circle"></i></a>
+	      {% if address != user.customer.main_address and address != user.customer.shipping_address and address != user.customer.billing_address %}
+		<a class="tooltip_link" href="{% url "address_remove" address.id %}" title="{% trans "remove" %} {{address}}"><i class="glyphicon glyphicon-remove-circle"></i></a>
+	      {% endif %}
 	    </div>
 	  </td>
 	  <td>{{address.first_name}} {{address.last_name}} ({{address.gender}})</td>
@@ -43,7 +45,9 @@
 	  </td>
 	  <td>
 	    <div class="text-center">
-	      {% if address == user.customer.shipping_address %}
+	      {% if user.customer.shipping_address and address == user.customer.shipping_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% elif not user.customer.shipping_address and address == user.customer.main_address %}
 		<i class="glyphicon glyphicon-check"></i>
 	      {% else %}
 		<a class="tooltip_link" href="{% url "address_define_as_shipping" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
@@ -52,7 +56,9 @@
 	  </td>
 	  <td>
 	    <div class="text-center">
-	      {% if address == user.customer.billing_address %}
+	      {% if user.customer.billing_address and address == user.customer.billing_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% elif not user.customer.billing_address and address == user.customer.main_address %}
 		<i class="glyphicon glyphicon-check"></i>
 	      {% else %}
 		<a class="tooltip_link" href="{% url "address_define_as_billing" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>

@@ -33,3 +33,7 @@ class Customer(models.Model):
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
 
     def __unicode__(self): return '%s%s' % (self.account.email, (' (%s)' % self.main_address.__unicode__()) if self.main_address else '')
+
+    def get_shipping_address(self): return self.shipping_address if self.shipping_address else self.main_address
+
+    def get_billing_address(self): return self.billing_address if self.billing_address else self.main_address

@@ -29,6 +29,8 @@ from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from . import forms, models
 import common.models as cm
+import accounts.models as am
+import mailbox.models as mm
 
 class CustomerView(generic.DetailView):
     model = models.Customer
@@ -169,6 +171,36 @@ class AddressDefineAsBillingView(generic.View):
         customer.save()
         messages.success(request, _('The address %s has been defined as billing address.') % address.__unicode__())
         return HttpResponseRedirect('/customers/addresses/')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+class PasswordResetView(generic.View):
+    def get(self, request):
+        account = self.request.user
+        password = am.Account.objects.make_random_password()
+        account.set_password(password)
+        account.save()
+        customer = self.request.user.customer
+
+        mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Password reset'), body=_(
+"""Hi %(name)s,
+
+A request to reset your password was made with your account %(email)s from the website of Végéclic.
+
+You will find your new password below:
+
+New password: %(password)s
+
+Best regards,
+Végéclic.
+"""
+            ) % {'name': customer.main_address.__unicode__(), 'email': account.email, 'password': password})
+
+        messages.success(request, _('The password has been regenerated. You will receive an email with the new password.'))
+
+        return HttpResponseRedirect('/customers/')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

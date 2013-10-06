@@ -24,7 +24,7 @@ from . import views, models
 urlpatterns = patterns('accounts.views',
                        url(r'^login/$', 'login', name='login'),
                        url(r'^logout/$', 'logout', name='logout'),
-                       # url(r'^profile/$', views.AccountView.as_view(), name='profile'),
+                       url(r'^profile/$', views.AccountView.as_view(), name='profile'),
                        url(r'^password_reset/$', 'password_reset', name='password_reset'),
                        url(r'^signup/$', 'signup', name='signup'),
 )
