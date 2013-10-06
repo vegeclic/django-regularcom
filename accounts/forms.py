@@ -117,3 +117,12 @@ class AuthorCreationForm(forms.ModelForm):
     class Meta:
         model = models.Author
         exclude = ('main_image',)
+
+class PasswordResetForm(forms.Form):
+    email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        email_attrs = self.fields.get('email').widget.attrs
+        email_attrs['class'] = 'form-control'
+        email_attrs['placeholder'] = _('Email address')

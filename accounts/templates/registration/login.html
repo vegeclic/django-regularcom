@@ -40,7 +40,10 @@
 	  <input type="checkbox" value="remember-me"/> {% trans "Remember me" %}
 	</label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
+      <div class="form-group">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
+	<a class="btn btn-lg btn-default btn-block" href="{% url "account_password_reset" %}">{% trans "I forgot my password" %}</a>
+      </div>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
   {% endif %}

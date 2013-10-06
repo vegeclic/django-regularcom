@@ -18,6 +18,8 @@
 #
 
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.views import login as auth_views_login
 from django.contrib.auth.decorators import login_required
@@ -26,6 +28,7 @@ from django.views import generic
 from django.contrib import messages
 from common import views as cv
 from . import forms, models
+import mailbox.models as mm
 
 class AccountView(generic.DetailView):
     model = models.Account
@@ -73,4 +76,32 @@ def logout(request):
     messages.success(request, "You're logged out.")
     return login(request)
 
-def password_reset(request): return redirect('regularcom.views.home')
+class PasswordResetView(generic.FormView):
+    template_name = 'accounts/password_reset.html'
+    form_class = forms.PasswordResetForm
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        account = models.Account.objects.get(email=email)
+        password = models.Account.objects.make_random_password()
+        account.set_password(password)
+        account.save()
+        customer = account.customer
+
+        mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Password reset'), body=_(
+"""Hi %(name)s,
+
+A request to reset your password was made with your account %(email)s from the website of Végéclic.
+
+You will find your new password below:
+
+New password: %(password)s
+
+Best regards,
+Végéclic.
+"""
+            ) % {'name': customer.main_address.__unicode__(), 'email': account.email, 'password': password})
+
+        messages.success(self.request, _('The password has been regenerated. You will receive an email with the new password.'))
+        return super().form_valid(form)
