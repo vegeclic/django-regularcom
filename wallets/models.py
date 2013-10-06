@@ -102,7 +102,6 @@ class Withdraw(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        print(self.status)
         if self.status == 'w':
             amount = abs(round(self.amount/self.currency.exchange_rate,2))
             if self.wallet.balance < amount:
