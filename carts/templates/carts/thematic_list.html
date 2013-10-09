@@ -1,18 +1,20 @@
 {% extends "carts/base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block sub_content %}
-  <h2>{% trans "Thematic carts" %}</h2>
+  <h2>{% trans "Our thematic carts" %}</h2>
 
   <div class="row">
     {% for thematic in object_list|dictsortreversed:"date_created" %}
-    <div class="col-sm-6 col-md-3" style="margin-bottom:40px;">
+    <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
       <div class="thumbnail">
-	<img data-src="holder.js/100%x180" alt="100%x180" src="data:image/png;base64,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" style="height: 180px; width: 100%; display: block;"/>
+	<a href="{% url "create_thematic" thematic.pk %}"><img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px; display: block;"/></a>
 	<div class="caption">
 	  <h3>{{thematic.name}}</h3>
+	  <p>{{thematic.body}}</p>
 	  <div class="form-group">
-	    <a href="#" class="btn btn-primary btn-block">{% trans "Create" %}</a>
+	    <a href="{% url "create_thematic" thematic.pk %}" class="btn btn-primary btn-block">{% trans "Create" %}</a>
 	  </div>
 	</div>
       </div>

@@ -28,5 +28,6 @@ urlpatterns = patterns('carts.views',
                        url(r'^deliveries/$', views.DeliveryView.as_view(), name='deliveries'),
                        url(r'^subscriptions/(?P<subscription_id>\d+)/deliveries/(?P<delivery_id>\d+)/validate/$', views.DeliveryPaymentView.as_view(), name='subscription_delivery_validate'),
                        url(r'^create/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2]), name='create'),
+                       url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2]), name='create_thematic'),
                        url(r'^thematics/$', views.ThematicListView.as_view(), name='thematics'),
 )

@@ -91,6 +91,10 @@ class ExtentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Extent
 
+class ThematicExtentAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.ThematicExtent
+
 class DeliveryCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Delivery

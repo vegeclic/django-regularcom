@@ -27,11 +27,16 @@ from . import forms, models
 import common.admin as ca
 import common.models as cm
 
+class ThematicExtentInline(admin.TabularInline):
+    form = forms.ThematicExtentAdminForm
+    model = models.ThematicExtent
+    extra = 3
+
 class ThematicAdmin(TranslatableAdmin):
     list_display = ('all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
-    fields = ('name', 'body', 'products', 'start_period', 'end_period', 'main_image', 'enabled',)
+    fields = ('name', 'body', 'size', 'frequency', 'start_duration', 'end_duration', 'criterias', 'start_period', 'end_period', 'main_image', 'enabled',)
     list_filter = ('enabled',)
-    inlines = [ca.ImageInline,]
+    inlines = [ca.ImageInline, ThematicExtentInline,]
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
 

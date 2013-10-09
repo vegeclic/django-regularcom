@@ -32,15 +32,43 @@ from isoweek import Week
 import common.models as cm
 import wallets.models as wm
 
+FREQUENCY_CHOICES = (
+    (1, _('Once a week')),
+    (2, _('Every two weeks')),
+    (3, _('Every three weeks')),
+    (4, _('Once a month')),
+    (8, _('Every two months')),
+    (13, _('Once a quarter')),
+    (26, _('Every 6 months')),
+)
+
+FREQUENCY_DEFAULT = 2
+
+__weeks = []
+for y in range(settings.START_YEAR, Week.thisweek().year+2): __weeks += Week.weeks_of_year(y)
+WEEKS_CHOICES = [(str(w), str(w)) for w in __weeks]
+
 class Thematic(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(_('name'), max_length=100, unique=True),
         body = models.TextField(_('body'), blank=True),
     )
-    products = models.ManyToManyField('products.Product', null=True, blank=True, related_name='thematic_products', verbose_name=_('products'))
+    size = models.ForeignKey('Size', verbose_name=_('size'), null=True, blank=True)
+    frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
+    start_duration = models.CharField(_('start duration'), max_length=7, choices=WEEKS_CHOICES,
+                                      help_text=_('Here is the beginnig week of the duration.'),
+                                      null=True, blank=True)
+    end_duration = models.CharField(_('end duration'), max_length=7, choices=WEEKS_CHOICES,
+                                    help_text=_('Here is the ending week of the duration.'),
+                                    null=True, blank=True)
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='thematic_criterias', verbose_name=_('criterias'))
-    start_period = models.DateField(_('start period'), null=True, blank=True, default=datetime.date.today)
-    end_period = models.DateField(_('end period'), null=True, blank=True)
+    quantity = models.PositiveIntegerField(_('quantity'), default=1)
+    start_period = models.CharField(_('start period'), max_length=10, choices=WEEKS_CHOICES,
+                                    help_text=_('Here is the beginnig week of the period.'),
+                                    null=True, blank=True)
+    end_period = models.CharField(_('end period'), max_length=7, choices=WEEKS_CHOICES,
+                                  help_text=_('Here is the ending week of the period.'),
+                                  null=True, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
@@ -76,10 +104,6 @@ class Price(models.Model):
     price = models.FloatField(_('price'))
 
     def __unicode__(self): return ('%s %s' % (self.price, self.currency.symbol)).strip()
-
-__weeks = []
-for y in range(settings.START_YEAR, Week.thisweek().year+2): __weeks += Week.weeks_of_year(y)
-WEEKS_CHOICES = [(str(w), str(w)) for w in __weeks]
 
 class Delivery(models.Model):
     class Meta:
@@ -137,20 +161,10 @@ class Content(models.Model):
 
     def __unicode__(self): return '%s, %s' % (self.delivery.__unicode__(), self.extent.__unicode__())
 
-FREQUENCY_CHOICES = (
-    (1, _('Once a week')),
-    (2, _('Every two weeks')),
-    (3, _('Every three weeks')),
-    (4, _('Once a month')),
-    (8, _('Every two months')),
-    (13, _('Once a quarter')),
-    (26, _('Every 6 months')),
-)
-
 class Subscription(models.Model):
     customer = models.ForeignKey('customers.Customer', verbose_name=_('customer'))
     size = models.ForeignKey(Size, verbose_name=_('size'))
-    frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=2, help_text=_('Delivery made sure Tuesday'))
+    frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'))
     start = models.CharField(_('start'), max_length=7, choices=WEEKS_CHOICES,
                              help_text=_('Here is the beginnig week of the subscription.'))
     end = models.CharField(_('end'), max_length=7, choices=WEEKS_CHOICES,
@@ -187,11 +201,6 @@ class Subscription(models.Model):
         s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
         for i in range(0, e+1-s, self.frequency):
             d = self.delivery_set.create(date=s+i)
-            # for extent in self.extent_set.filter(subscription=self):
-            #     d.content_set.create(extent=extent)
-
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
 
 class Extent(models.Model):
     class Meta:
@@ -202,3 +211,13 @@ class Extent(models.Model):
     extent = models.PositiveSmallIntegerField(_('extent'))
 
     def __unicode__(self): return '%s, %s, %s' % (self.subscription.__unicode__(), self.product.__unicode__(), self.extent)
+
+class ThematicExtent(models.Model):
+    class Meta:
+        unique_together = ('thematic', 'product')
+
+    thematic = models.ForeignKey(Thematic, verbose_name=_('thematic'))
+    product = models.ForeignKey('products.Product', verbose_name=_('product'))
+    extent = models.PositiveSmallIntegerField(_('extent'))
+
+    def __unicode__(self): return '%s, %s, %s' % (self.thematic.__unicode__(), self.product.__unicode__(), self.extent)

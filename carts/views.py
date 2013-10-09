@@ -166,10 +166,16 @@ class CreateWizard(SessionWizardView):
         if step is None: step = self.steps.current
 
         if step == '0':
+            thematic_id = self.kwargs.get('thematic_id')
+            thematic = None
+            if thematic_id:
+                thematic = models.Thematic.objects.get(id=thematic_id)
+
+            print(thematic)
+
             form.sizes = models.Size.objects.all()
             form.frequencies = models.FREQUENCY_CHOICES
             form.durations = forms.DURATION_CHOICES
-            # cw = Week.withdate(datetime.date.today() + relativedelta(days=10))
             cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
             form.starts = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
 
