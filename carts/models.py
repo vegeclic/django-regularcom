@@ -22,6 +22,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from hvad.models import TranslatableModel, TranslatedFields
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms.models import inlineformset_factory
 from django.contrib import messages
@@ -31,8 +32,11 @@ from isoweek import Week
 import common.models as cm
 import wallets.models as wm
 
-class Thematic(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+class Thematic(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(_('name'), max_length=100, unique=True),
+        body = models.TextField(_('body'), blank=True),
+    )
     products = models.ManyToManyField('products.Product', null=True, blank=True, related_name='thematic_products', verbose_name=_('products'))
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='thematic_criterias', verbose_name=_('criterias'))
     start_period = models.DateField(_('start period'), null=True, blank=True, default=datetime.date.today)
@@ -42,8 +46,13 @@ class Thematic(models.Model):
     date_last_modified = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(_('enabled'), default=False)
 
-class Size(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    def __unicode__(self): return self.lazy_translation_getter('name', 'Thematic: %s' % self.pk)
+
+class Size(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(_('name'), max_length=100, unique=True),
+        body = models.TextField(_('body'), blank=True),
+    )
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     enabled = models.BooleanField(_('enabled'), default=False)
 
@@ -55,7 +64,8 @@ class Size(models.Model):
 
     def __unicode__(self):
         price = self.default_price()
-        return '%s%s' % (self.name, (' (%s)' % price.__unicode__()) if price else "")
+        return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
+                         (' (%s)' % price.__unicode__()) if price else "")
 
 class Price(models.Model):
     class Meta:

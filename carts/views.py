@@ -34,11 +34,25 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import numpy as np
 
+class ThematicListView(generic.ListView):
+    model = models.Thematic
+
+    def get_queryset(self): return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'cart'
+        context['sub_section'] = 'thematics'
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
+
 class SubscriptionView(generic.ListView):
     model = models.Subscription
 
     def get_queryset(self):
-        return models.Subscription.objects.filter(customer__account=self.request.user)
+        return self.model.objects.filter(customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,8 +61,7 @@ class SubscriptionView(generic.ListView):
         return context
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class SubscriptionUpdateView(generic.UpdateView):
     form_class = forms.SubscriptionUpdateForm
@@ -58,7 +71,7 @@ class SubscriptionUpdateView(generic.UpdateView):
 
     def get_object(self):
         subscription_id = self.kwargs.get('subscription_id')
-        return models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
+        return self.model.objects.get(id=subscription_id, customer__account=self.request.user)
 
     def form_valid(self, form):
         messages.success(self.request, _('Your subscription %d has been updated successfuly.') % self.get_object().id)
@@ -71,8 +84,7 @@ class SubscriptionUpdateView(generic.UpdateView):
         return context
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class DeliveryView(generic.ListView):
     model = models.Delivery
@@ -82,21 +94,21 @@ class DeliveryView(generic.ListView):
         subscription_id = self.kwargs.get('subscription_id')
         if subscription_id:
             subscription = models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
-            deliveries = models.Delivery.objects.filter(subscription=subscription).order_by('date')
+            deliveries = self.model.objects.filter(subscription=subscription).order_by('date')
 
             init = subscription.price().price
 
             k = 0
             last_price = 0
             for delivery in deliveries:
-                if delivery.status not in models.Delivery.FAILED_CHOICES:
+                if delivery.status not in self.model.FAILED_CHOICES:
                     last_price = delivery.payed_price if delivery.payed_price else init/(1+self.q/100)**k
                     k += 1
                 delivery.degressive_price = last_price
 
             return deliveries
 
-        return models.Delivery.objects.filter(subscription__customer__account=self.request.user)
+        return self.model.objects.filter(subscription__customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,13 +121,12 @@ class DeliveryView(generic.ListView):
             deliveries = self.get_queryset()
             init = context['subscription'].price().price
 
-            context['mean_of_prices'] = (np.array([init/(1+self.q/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=models.Delivery.FAILED_CHOICES))]).mean())
+            context['mean_of_prices'] = (np.array([init/(1+self.q/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=self.model.FAILED_CHOICES))]).mean())
 
         return context
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class DeliveryPaymentView(generic.View):
     def get(self, request, subscription_id, delivery_id):
@@ -137,8 +148,7 @@ class DeliveryPaymentView(generic.View):
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % int(subscription_id))
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class CreateWizard(SessionWizardView):
     template_name = 'carts/create_wizard.html'
@@ -221,5 +231,4 @@ class CreateWizard(SessionWizardView):
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)

@@ -20,18 +20,20 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
+from hvad.admin import TranslatableAdmin
 from isoweek import Week
 from dateutil.relativedelta import relativedelta
 from . import forms, models
 import common.admin as ca
 import common.models as cm
 
-class ThematicAdmin(ca.MyModelAdmin):
-    form = forms.ThematicAdminForm
-    add_form = forms.ThematicCreationAdminForm
-    list_display = ('name', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
+class ThematicAdmin(TranslatableAdmin):
+    list_display = ('all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
+    fields = ('name', 'body', 'products', 'start_period', 'end_period', 'main_image', 'enabled',)
     list_filter = ('enabled',)
     inlines = [ca.ImageInline,]
+
+    def name_(self, obj): return obj.lazy_translation_getter('name')
 
 admin.site.register(models.Thematic, ThematicAdmin)
 
@@ -40,11 +42,12 @@ class PriceInline(admin.TabularInline):
     model = models.Price
     extra = 1
 
-class SizeAdmin(ca.MyModelAdmin):
-    form = forms.SizeAdminForm
-    add_form = forms.SizeCreationAdminForm
-    list_display = ('name', 'price',)
+class SizeAdmin(TranslatableAdmin):
+    list_display = ('all_translations', 'name_', 'price', 'enabled',)
+    fields = ('name', 'body', 'main_image', 'enabled',)
     inlines = [PriceInline, ca.ImageInline,]
+
+    def name_(self, obj): return obj.lazy_translation_getter('name')
 
     def price(self, obj): return obj.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
 

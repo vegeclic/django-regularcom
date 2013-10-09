@@ -39,24 +39,6 @@ DURATION_CHOICES = (
     (24, _('2 years')),
 )
 
-class ThematicAdminForm(cf.ModelFormWithImage):
-    class Meta:
-        model = models.Thematic
-
-class ThematicCreationAdminForm(forms.ModelForm):
-    class Meta:
-        model = models.Thematic
-        exclude = ('main_image',)
-
-class SizeAdminForm(cf.ModelFormWithImage):
-    class Meta:
-        model = models.Size
-
-class SizeCreationAdminForm(forms.ModelForm):
-    class Meta:
-        model = models.Size
-        exclude = ('main_image',)
-
 class PriceAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Price
