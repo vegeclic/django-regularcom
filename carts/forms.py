@@ -23,6 +23,7 @@ from django.utils.translation import ugettext_lazy as _
 from . import models
 import common.forms as cf
 import common.models as cm
+import common.widgets as cw
 import products.models as pm
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -141,10 +142,12 @@ class CreateForm(forms.ModelForm):
         return subscription
 
 class CreateForm1(forms.Form):
-    size = forms.HiddenInput()
-    frequency = forms.HiddenInput()
-    duration = forms.HiddenInput()
-    start = forms.HiddenInput()
+    size = forms.ChoiceField(required=False)
+    frequency = forms.ChoiceField(required=False)
+    duration = forms.ChoiceField(required=False)
+    start = forms.ChoiceField(required=False)
+    customized = forms.BooleanField(required=False)
+    test = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}), choices=((1,1),(2,2),(3,3)))
     # products = forms.MultipleChoiceField(help_text=_('Use CTRL to select several products.'))
     # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
 

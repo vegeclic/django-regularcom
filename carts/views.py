@@ -42,7 +42,7 @@ class ThematicListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
-        context['sub_section'] = 'thematics'
+        context['sub_section'] = 'create_thematic'
         return context
 
     @method_decorator(login_required)
@@ -150,13 +150,22 @@ class DeliveryPaymentView(generic.View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
+def show_extent_form_condition(wizard):
+    cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+    return cleaned_data.get('customized', True)
+
 class CreateWizard(SessionWizardView):
     template_name = 'carts/create_wizard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
-        context['sub_section'] = 'create'
+        thematic_id = self.kwargs.get('thematic_id')
+        if thematic_id:
+            context['sub_section'] = 'create_thematic'
+            context['thematic'] = models.Thematic.objects.get(id=thematic_id)
+        else:
+            context['sub_section'] = 'create_custom'
         return context
 
     def get_form(self, step=None, data=None, files=None):
@@ -170,8 +179,6 @@ class CreateWizard(SessionWizardView):
             thematic = None
             if thematic_id:
                 thematic = models.Thematic.objects.get(id=thematic_id)
-
-            print(thematic)
 
             form.sizes = models.Size.objects.all()
             form.frequencies = models.FREQUENCY_CHOICES
@@ -190,12 +197,13 @@ class CreateWizard(SessionWizardView):
             form.products_tree = products_tree(pm.Product.objects.all())
 
         elif step == '1':
+            cleaned_data = self.get_cleaned_data_for_step('0')
+
             form.selected_products = []
             for product in pm.Product.objects.all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
                     form.selected_products.append(product)
 
-            cleaned_data = self.get_cleaned_data_for_step('0')
             # if cleaned_data:
             #     form.selected_products = [pm.Product.objects.get(id=product) for product in cleaned_data.get('products')]
             messages.info(self.request, _('In order to lock a product percent, please check the corresponding checkbox.'))
@@ -204,6 +212,9 @@ class CreateWizard(SessionWizardView):
 
     def done(self, form_list, **kwargs):
         form_data = [form.cleaned_data for form in form_list]
+
+        print(form_data)
+        return
 
         products = {}
         for product in pm.Product.objects.all():

@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <input type="hidden" name="{{id}}" id="{{id}}" value="0"/>
-<div class="form-group one_slide well">
+<div class="form-group one_slide alert alert-{{style}}">
   <label for="{{id}}-slide">{% trans label %}:</label>
   <div class="row">
     <div class="col-md-8" id="{{id}}-slide"></div>

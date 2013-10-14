@@ -133,12 +133,13 @@ function create_one_slider(choices, id, default_value) {
 	value: default_value,
 	slide: function( event, ui ) {
 	    var v = choices[ parseInt(ui.value) ];
-	    $('#' + id)[0].value = v[0];
+	    $('#id_' + id)[0].selectedIndex = v[0];
 	    $('#' + id + '-slide-text').text( v[1] );
 	}
     });
 
     var v = choices[ parseInt($('#' + id + '-slide').slider('value')) ];
-    $('#' + id)[0].value = v[0];
+    // $('#' + id)[0].value = v[0];
+    $('#id_' + id)[0].selectedIndex = v[0];
     $('#' + id + '-slide-text').text( v[1] );
 }
