@@ -49,16 +49,11 @@
 
     {% if wizard.steps.current == '0' %}
       {% with tname="carts/one_slide.html" %}
-	{% with id="0-size" label="Size" style="success" %}{% include tname %}{% endwith %}
-	{% with id="0-frequency" label="Frequency" style="info" %}{% include tname %}{% endwith %}
-	{% with id="0-duration" label="Duration" style="warning" %}{% include tname %}{% endwith %}
-	{% with id="0-start" label="Start" style="danger" %}{% include tname %}{% endwith %}
+	{% with id="0-size" field=wizard.form.size style="success" %}{% include tname %}{% endwith %}
+	{% with id="0-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
+	{% with id="0-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
+	{% with id="0-start" field=wizard.form.start style="danger" %}{% include tname %}{% endwith %}
       {% endwith %}
-
-      <div class="form-group one_slide alert alert-info">
-	<label for="0-test-slide">{{ wizard.form.test.label }}:</label>
-	{{ wizard.form.test }}
-      </div>
 
       <div class="form-group">
 	<div data-toggle="buttons">
@@ -111,7 +106,7 @@
     {% endcomment %}
 
     <div class="form-group">
-      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "submit" %}</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Submit" %}</button>
     </div>
     <div class="form-group row">
       {% if wizard.steps.prev %}
@@ -136,19 +131,6 @@
 
   <script type="text/javascript">
     $(function() {
-	$('.slidebar-select').each(function() {
-	    var s = $(this)[0].name;
-	    var l = [];
-	    $(this).find('option').each(function() { l.push([$(this).val(), $(this).text()]); });
-	    // alert(l);
-	    create_one_slider(l, s.name, s.selectedIndex);
-	});
-
-	create_one_slider([{% for size in wizard.form.sizes %}[{{size.id}}, '{{size}}'], {% endfor %}], '0-size', 2);
-	create_one_slider([{% for frequency in wizard.form.frequencies %}[{{frequency.0}}, '{{frequency.1}}'], {% endfor %}], '0-frequency', 1);
-	create_one_slider([{% for duration in wizard.form.durations %}[{{duration.0}}, '{{duration.1}}'], {% endfor %}], '0-duration', 4);
-	create_one_slider([{% for start in wizard.form.starts %}['{{start}}', '{{start}}'], {% endfor %}], '0-start', 0);
-
 	$('.tooltip_link').tooltip();
 
 	$('.expend_button').click(function() {

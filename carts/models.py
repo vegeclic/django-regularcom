@@ -54,15 +54,22 @@ class Thematic(TranslatableModel):
         body = models.TextField(_('body'), blank=True),
     )
     size = models.ForeignKey('Size', verbose_name=_('size'), null=True, blank=True)
+    locked_size = models.BooleanField(_('locked size'), default=False)
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
+    locked_frequency = models.BooleanField(_('locked frequency'), default=False)
     start_duration = models.CharField(_('start duration'), max_length=7, choices=WEEKS_CHOICES,
                                       help_text=_('Here is the beginnig week of the duration.'),
                                       null=True, blank=True)
+    locked_start = models.BooleanField(_('locked start'), default=False)
     end_duration = models.CharField(_('end duration'), max_length=7, choices=WEEKS_CHOICES,
                                     help_text=_('Here is the ending week of the duration.'),
                                     null=True, blank=True)
+    locked_duration = models.BooleanField(_('locked duration'), default=False)
     criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='thematic_criterias', verbose_name=_('criterias'))
+    locked_criterias = models.BooleanField(_('locked criterias'), default=False)
+    locked_products = models.BooleanField(_('locked products'), default=False)
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
+    locked_quantity = models.BooleanField(_('locked quantity'), default=False)
     start_period = models.CharField(_('start period'), max_length=10, choices=WEEKS_CHOICES,
                                     help_text=_('Here is the beginnig week of the period.'),
                                     null=True, blank=True)

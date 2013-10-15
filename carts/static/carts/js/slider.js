@@ -30,7 +30,7 @@ $(function() {
 	var s = $(this);
 
 	$(this).siblings().find('.lock').click(function() {
-	    s.slider('option', 'disabled', ! s.slider('option', 'disabled'));
+	    s.slider('option', 'disabled', !s.slider('option', 'disabled'));
 	});
 
 	$(this).empty().slider({
@@ -125,21 +125,33 @@ $(function() {
     });
 });
 
-function create_one_slider(choices, id, default_value) {
+function create_one_slider(choices, id, default_value, disabled) {
     $('#' + id + '-slide').slider({
 	range: 'max',
 	min: 0,
 	max: choices.length-1,
 	value: default_value,
+	disabled: disabled,
 	slide: function( event, ui ) {
-	    var v = choices[ parseInt(ui.value) ];
-	    $('#id_' + id)[0].selectedIndex = v[0];
+	    var i = parseInt(ui.value);
+	    var v = choices[i];
+	    $('#id_' + id)[0].selectedIndex = i;
 	    $('#' + id + '-slide-text').text( v[1] );
 	}
     });
 
-    var v = choices[ parseInt($('#' + id + '-slide').slider('value')) ];
-    // $('#' + id)[0].value = v[0];
-    $('#id_' + id)[0].selectedIndex = v[0];
+    var i = parseInt($('#' + id + '-slide').slider('value'));
+    var v = choices[i];
+    $('#id_' + id)[0].selectedIndex = i;
     $('#' + id + '-slide-text').text( v[1] );
 }
+
+$(function() {
+    $('.slidebar-select').each(function() {
+	var s = $(this)[0];
+	var options = [];
+	$(this).find('option').each(function() { options.push([$(this).val(), $(this).text()]); });
+	create_one_slider(options, s.name, s.selectedIndex, $(this).hasClass('disabled'));
+	$(this).hide();
+    });
+});

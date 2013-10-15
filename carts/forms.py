@@ -40,6 +40,8 @@ DURATION_CHOICES = (
     (24, _('2 years')),
 )
 
+DURATION_DEFAULT = 3
+
 class PriceAdminForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Price
@@ -142,24 +144,28 @@ class CreateForm(forms.ModelForm):
         return subscription
 
 class CreateForm1(forms.Form):
-    size = forms.ChoiceField(required=False)
-    frequency = forms.ChoiceField(required=False)
-    duration = forms.ChoiceField(required=False)
-    start = forms.ChoiceField(required=False)
+    size = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
+                                  queryset=models.Size.objects.all(), initial=0)
+    frequency = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
+                                  choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT)
+    duration = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
+                                 choices=DURATION_CHOICES, initial=DURATION_DEFAULT)
+    start = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}))
     customized = forms.BooleanField(required=False)
-    test = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}), choices=((1,1),(2,2),(3,3)))
+
     # products = forms.MultipleChoiceField(help_text=_('Use CTRL to select several products.'))
     # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # start = self.fields['start']
-        # cw = Week.thisweek()
-        # choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
-        # start.choices = zip(choices, choices)
-        # start.initial = cw+1
         # self.fields['products'].choices = [(product.id, product) for product in pm.Product.objects.all()]
         # self.fields['criterias'].choices = [(criteria.id, criteria) for criteria in cm.Criteria.objects.all()]
+
+        cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
+        start = self.fields['start']
+        start_choices = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
+        start.choices = zip(start_choices, start_choices)
+        start.initial = cw
 
 class CreateForm2(forms.Form):
     # extents = forms.MultipleHiddenInput()

@@ -180,11 +180,22 @@ class CreateWizard(SessionWizardView):
             if thematic_id:
                 thematic = models.Thematic.objects.get(id=thematic_id)
 
-            form.sizes = models.Size.objects.all()
-            form.frequencies = models.FREQUENCY_CHOICES
-            form.durations = forms.DURATION_CHOICES
-            cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
-            form.starts = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
+            if thematic:
+                for k, f in [('size', thematic.size),
+                             ('frequency', thematic.frequency),
+                             ('start', thematic.start_duration)]:
+                    if f: form.fields[k].initial = f
+
+                if thematic.end_duration:
+                    delta = relativedelta(Week.fromstring(thematic.end_duration).day(1),
+                                          Week.fromstring(thematic.start_duration).day(1))
+                    form.fields['duration'].initial = delta.months
+
+                for k, f in [('size', thematic.locked_size),
+                             ('frequency', thematic.locked_frequency),
+                             ('start', thematic.locked_start),
+                             ('duration', thematic.locked_duration)]:
+                    if f: form.fields[k].widget.attrs['class'] += ' disabled'
 
             def products_tree(products, root_product=None, root_only=True):
                 dict_ = {}
@@ -197,54 +208,39 @@ class CreateWizard(SessionWizardView):
             form.products_tree = products_tree(pm.Product.objects.all())
 
         elif step == '1':
-            cleaned_data = self.get_cleaned_data_for_step('0')
-
             form.selected_products = []
             for product in pm.Product.objects.all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
                     form.selected_products.append(product)
 
-            # if cleaned_data:
-            #     form.selected_products = [pm.Product.objects.get(id=product) for product in cleaned_data.get('products')]
             messages.info(self.request, _('In order to lock a product percent, please check the corresponding checkbox.'))
 
         return form
 
     def done(self, form_list, **kwargs):
         form_data = [form.cleaned_data for form in form_list]
-
-        print(form_data)
-        return
-
+        customized = form_data[0].get('customized', False)
         products = {}
-        for product in pm.Product.objects.all():
-            if ('product_%d' % product.id) in form_list[1].data:
-                products[product] = int(form_list[1].data['product_%d' % product.id])
 
-        size = models.Size.objects.get(id=form_list[0].data.get('size')[0])
+        if customized:
+            for product in pm.Product.objects.all():
+                if ('product_%d' % product.id) in form_list[1].data:
+                    products[product] = int(form_list[1].data['product_%d' % product.id])
 
-        frequency = int(form_list[0].data.get('frequency'))
-        if frequency not in dict(models.FREQUENCY_CHOICES):
-            raise ValueError('Frequency doesnot exist.')
-
-        duration = int(form_list[0].data.get('duration'))
-        if duration not in dict(forms.DURATION_CHOICES):
-            raise ValueError('Duration doesnot exist.')
-
-        bw = Week.fromstring(form_list[0].data.get('start'))
+        size = form_data[0].get('size')
+        frequency = int(form_data[0].get('frequency'))
+        duration = int(form_data[0].get('duration'))
+        bw = Week.fromstring(form_data[0].get('start'))
         ew = Week.withdate( bw.day(1) + relativedelta(months=duration) )
-
-        customer = cm.Customer.objects.get(account=self.request.user)
+        customer = self.request.user.customer
 
         subscription = models.Subscription.objects.create(customer=customer, size=size, frequency=frequency, start=bw, end=ew)
 
         for product, extent in products.items():
             subscription.extent_set.create(product=product, extent=extent)
-
         subscription.create_deliveries()
 
         messages.success(self.request, _('The subscription was sucessfuly created.'))
-
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
 
     @method_decorator(login_required)
