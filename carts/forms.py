@@ -23,7 +23,6 @@ from django.utils.translation import ugettext_lazy as _
 from . import models
 import common.forms as cf
 import common.models as cm
-import common.widgets as cw
 import products.models as pm
 import datetime
 from dateutil.relativedelta import relativedelta
