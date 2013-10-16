@@ -923,17 +923,17 @@ msgstr "Votre adresse %d a été mise à jour correctement."
 #: customers/views.py:146
 #, python-format
 msgid "The address %s has been defined as main address."
-msgstr "L'adresse %d a été défini comme adresse principale."
+msgstr "L'adresse %s a été défini comme adresse principale."
 
 #: customers/views.py:159
 #, python-format
 msgid "The address %s has been defined as shipping address."
-msgstr "L'adresse %d a été défini comme adresse de livraison."
+msgstr "L'adresse %s a été défini comme adresse de livraison."
 
 #: customers/views.py:172
 #, python-format
 msgid "The address %s has been defined as billing address."
-msgstr "L'adresse %d a été défini comme adresse de facturation."
+msgstr "L'adresse %s a été défini comme adresse de facturation."
 
 #: customers/templates/customers/address_confirm_delete.html:5
 msgid "Remove an address"
