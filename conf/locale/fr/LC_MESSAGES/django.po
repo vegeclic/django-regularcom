@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-29 20:29+0200\n"
+"POT-Creation-Date: 2013-10-16 23:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "A user with that email already exists."
 msgstr ""
 
-#: accounts/forms.py:78
+#: accounts/forms.py:78 accounts/forms.py:128
 msgid "Email address"
 msgstr ""
 
@@ -65,20 +65,58 @@ msgstr ""
 msgid "account"
 msgstr ""
 
-#: accounts/models.py:130 carts/models.py:35 common/models.py:77
-#: common/models.py:84 common/models.py:93 products/models.py:39
-#: products/models.py:51 suppliers/models.py:28 suppliers/models.py:39
-#: suppliers/models.py:95
+#: accounts/models.py:130 carts/models.py:53 carts/models.py:88
+#: common/models.py:77 common/models.py:84 common/models.py:93
+#: products/models.py:39 products/models.py:51 suppliers/models.py:28
+#: suppliers/models.py:39 suppliers/models.py:95
 msgid "name"
 msgstr ""
 
-#: accounts/models.py:131 carts/models.py:40 carts/models.py:47
+#: accounts/models.py:131 carts/models.py:79 carts/models.py:91
 #: products/models.py:43 products/models.py:65 suppliers/models.py:33
 #: suppliers/models.py:56
 msgid "main image"
 msgstr "image principale"
 
-#: accounts/templates/accounts/profile.html:6 templates/nav.html:28
+#: accounts/views.py:92 customers/views.py:187
+msgid "Password reset"
+msgstr ""
+
+#: accounts/views.py:93 customers/views.py:188
+#, python-format
+msgid ""
+"Hi %(name)s,\n"
+"\n"
+"A request to reset your password was made with your account %(email)s from "
+"the website of Végéclic.\n"
+"\n"
+"You will find your new password below:\n"
+"\n"
+"New password: %(password)s\n"
+"\n"
+"Best regards,\n"
+"Végéclic.\n"
+msgstr ""
+
+#: accounts/views.py:106 customers/views.py:201
+msgid ""
+"The password has been regenerated. You will receive an email with the new "
+"password."
+msgstr ""
+
+#: accounts/templates/accounts/password_reset.html:12
+#: customers/templates/customers/customer_detail.html:15
+msgid "Reset my password"
+msgstr ""
+
+#: accounts/templates/accounts/password_reset.html:30
+#, fuzzy
+msgid "Send a new password"
+msgstr "Envoyer une réponse"
+
+#: accounts/templates/accounts/profile.html:6
+#: customers/templates/customers/base.html:13
+#: customers/templates/customers/customer_detail.html:5 templates/nav.html:28
 msgid "Profile"
 msgstr "Profil"
 
@@ -99,9 +137,13 @@ msgstr "Connectez-vous"
 msgid "Remember me"
 msgstr "Se souvenir de moi"
 
-#: accounts/templates/registration/login.html:44
+#: accounts/templates/registration/login.html:45
 msgid "Sign in"
 msgstr "Connexion"
+
+#: accounts/templates/registration/login.html:46
+msgid "I forgot my password"
+msgstr ""
 
 #: carts/forms.py:33
 msgid "1 month"
@@ -131,220 +173,309 @@ msgstr "18 mois"
 msgid "2 years"
 msgstr "2 ans"
 
-#: carts/forms.py:75
+#: carts/forms.py:59
 #, python-format
 msgid "The sum of extents should be equal to 100 instead %d."
 msgstr "La somme des proportions doit être égale à 100 au lieu de %d."
 
-#: carts/models.py:36
-msgid "products"
-msgstr "produits"
+#: carts/forms.py:179
+msgid "Which size would you like to use for your cart ?"
+msgstr ""
 
-#: carts/models.py:37 carts/models.py:148 suppliers/models.py:53
-msgid "criterias"
-msgstr "critères"
+#: carts/forms.py:181
+msgid "How often would you like to receive your cart ?"
+msgstr ""
+
+#: carts/forms.py:183
+msgid "How long would you like to receive your cart ?"
+msgstr ""
+
+#: carts/forms.py:184
+msgid "When would you like to start your subscription ?"
+msgstr ""
+
+#: carts/forms.py:186
+msgid "Select as much criterias as you want in your cart."
+msgstr ""
+
+#: carts/models.py:36
+msgid "Once a week"
+msgstr "Une fois par semaine"
+
+#: carts/models.py:37
+msgid "Every two weeks"
+msgstr "Toutes les deux semaines"
 
 #: carts/models.py:38
-msgid "start period"
-msgstr "début de la période"
+msgid "Every three weeks"
+msgstr "Toutes les trois semaines"
 
 #: carts/models.py:39
-msgid "end period"
-msgstr "fin de la période"
+msgid "Once a month"
+msgstr "Une fois par mois"
 
-#: carts/models.py:43 carts/models.py:48 carts/models.py:151
-msgid "enabled"
-msgstr "activé"
+#: carts/models.py:40
+msgid "Every two months"
+msgstr "Tous les deux mois"
 
-#: carts/models.py:64 carts/models.py:142
+#: carts/models.py:41
+msgid "Once a quarter"
+msgstr "Une fois par trimestre"
+
+#: carts/models.py:42
+msgid "Every 6 months"
+msgstr "Une fois par semestre"
+
+#: carts/models.py:54 carts/models.py:89 mailbox/models.py:64
+#: mailbox/models.py:86 products/models.py:52 suppliers/models.py:40
+msgid "body"
+msgstr "corps"
+
+#: carts/models.py:56 carts/models.py:109 carts/models.py:173
 msgid "size"
 msgstr "taille"
 
-#: carts/models.py:65 suppliers/models.py:76 wallets/models.py:71
+#: carts/models.py:57
+msgid "locked size"
+msgstr ""
+
+#: carts/models.py:58 carts/models.py:174
+msgid "frequency"
+msgstr "fréquence"
+
+#: carts/models.py:58 carts/models.py:174
+msgid "Delivery made sure Tuesday"
+msgstr "Les livraisons sont assurées le Mardi"
+
+#: carts/models.py:59
+#, fuzzy
+msgid "locked frequency"
+msgstr "fréquence"
+
+#: carts/models.py:60
+#, fuzzy
+msgid "start duration"
+msgstr "début de la période"
+
+#: carts/models.py:61
+#, fuzzy
+msgid "Here is the beginnig week of the duration."
+msgstr "Il s'agit de la semaine de début de l'abonnement."
+
+#: carts/models.py:63
+msgid "locked start"
+msgstr ""
+
+#: carts/models.py:64
+#, fuzzy
+msgid "end duration"
+msgstr "Durée"
+
+#: carts/models.py:65
+#, fuzzy
+msgid "Here is the ending week of the duration."
+msgstr "Il s'agit de la semaine de fin de l'abonnement."
+
+#: carts/models.py:67
+#, fuzzy
+msgid "locked duration"
+msgstr "Durée"
+
+#: carts/models.py:68 carts/models.py:179 suppliers/models.py:53
+msgid "criterias"
+msgstr "critères"
+
+#: carts/models.py:69
+#, fuzzy
+msgid "locked criterias"
+msgstr "critères"
+
+#: carts/models.py:70
+#, fuzzy
+msgid "locked products"
+msgstr "produits"
+
+#: carts/models.py:71 carts/models.py:158 carts/models.py:180
+#: suppliers/models.py:88 suppliers/models.py:107
+msgid "quantity"
+msgstr "quantité"
+
+#: carts/models.py:72
+#, fuzzy
+msgid "locked quantity"
+msgstr "quantité"
+
+#: carts/models.py:73
+msgid "start period"
+msgstr "début de la période"
+
+#: carts/models.py:74
+#, fuzzy
+msgid "Here is the beginnig week of the period."
+msgstr "Il s'agit de la semaine de début de l'abonnement."
+
+#: carts/models.py:76
+msgid "end period"
+msgstr "fin de la période"
+
+#: carts/models.py:77
+#, fuzzy
+msgid "Here is the ending week of the period."
+msgstr "Il s'agit de la semaine de fin de l'abonnement."
+
+#: carts/models.py:82 carts/models.py:92 carts/models.py:182
+msgid "enabled"
+msgstr "activé"
+
+#: carts/models.py:110 suppliers/models.py:76 wallets/models.py:71
 #: wallets/models.py:94
 msgid "currency"
 msgstr "devise"
 
-#: carts/models.py:66
+#: carts/models.py:111
 msgid "price"
 msgstr "prix"
 
-#: carts/models.py:76
+#: carts/models.py:117
 msgid "deliveries"
 msgstr "livraisons"
 
-#: carts/models.py:78 carts/models.py:190
+#: carts/models.py:119 carts/models.py:216
 msgid "subscription"
 msgstr "abonnement"
 
-#: carts/models.py:79
+#: carts/models.py:120
 msgid "date"
 msgstr ""
 
-#: carts/models.py:81 wallets/models.py:61
+#: carts/models.py:122 wallets/models.py:61
 msgid "In waiting"
 msgstr "En attente"
 
-#: carts/models.py:82
+#: carts/models.py:123
 msgid "Payed"
 msgstr "Payé"
 
-#: carts/models.py:83
+#: carts/models.py:124
 msgid "In progress"
 msgstr "En cours"
 
-#: carts/models.py:84
+#: carts/models.py:125
 msgid "Delivered"
 msgstr "Livré"
 
-#: carts/models.py:85 wallets/models.py:63
+#: carts/models.py:126 wallets/models.py:63
 msgid "Canceled"
 msgstr "Annulé"
 
-#: carts/models.py:86 products/models.py:58 suppliers/models.py:48
+#: carts/models.py:127 products/models.py:58 suppliers/models.py:48
 #: suppliers/models.py:115
 msgid "Expired"
 msgstr "Expiré"
 
-#: carts/models.py:90 products/models.py:61 suppliers/models.py:51
+#: carts/models.py:131 products/models.py:61 suppliers/models.py:51
 #: suppliers/models.py:118
 msgid "status"
 msgstr "statut"
 
-#: carts/models.py:91
+#: carts/models.py:132
 #, fuzzy
 msgid "payed price"
 msgstr "prix d'achat"
 
-#: carts/models.py:102
+#: carts/models.py:143
 msgid "You dont have enough money in your wallet to buy it."
 msgstr ""
 "Vous ne possédez pas assez d'argent dans votre portemonnaie pour l'acheter."
 
-#: carts/models.py:115
+#: carts/models.py:156
 msgid "content"
 msgstr "contenu"
 
-#: carts/models.py:116 carts/models.py:191 suppliers/models.py:44
-#: suppliers/models.py:72 suppliers/models.py:87 suppliers/models.py:106
+#: carts/models.py:157 carts/models.py:217 carts/models.py:227
+#: suppliers/models.py:44 suppliers/models.py:72 suppliers/models.py:87
+#: suppliers/models.py:106
 msgid "product"
 msgstr "produit"
 
-#: carts/models.py:117 carts/models.py:149 suppliers/models.py:88
-#: suppliers/models.py:107
-msgid "quantity"
-msgstr "quantité"
-
-#: carts/models.py:125
+#: carts/models.py:166
 msgid "delivery"
 msgstr "livraison"
 
-#: carts/models.py:126 carts/models.py:192
+#: carts/models.py:167 carts/models.py:218 carts/models.py:228
 msgid "extent"
 msgstr "proportion"
 
-#: carts/models.py:131
-msgid "Once a week"
-msgstr "Une fois par semaine"
-
-#: carts/models.py:132
-msgid "Every two weeks"
-msgstr "Toutes les deux semaines"
-
-#: carts/models.py:133
-msgid "Every three weeks"
-msgstr "Toutes les trois semaines"
-
-#: carts/models.py:134
-msgid "Once a month"
-msgstr "Une fois par mois"
-
-#: carts/models.py:135
-msgid "Every two months"
-msgstr "Tous les deux mois"
-
-#: carts/models.py:136
-msgid "Once a quarter"
-msgstr "Une fois par trimestre"
-
-#: carts/models.py:137
-msgid "Every 6 months"
-msgstr "Une fois par semestre"
-
-#: carts/models.py:141 wallets/models.py:28
+#: carts/models.py:172 wallets/models.py:28
 msgid "customer"
 msgstr "client"
 
-#: carts/models.py:143
-msgid "frequency"
-msgstr "fréquence"
-
-#: carts/models.py:143
-msgid "Delivery made sure Tuesday"
-msgstr "Les livraisons sont assurées le Mardi"
-
-#: carts/models.py:144
+#: carts/models.py:175
 msgid "start"
 msgstr "début"
 
-#: carts/models.py:145
+#: carts/models.py:176
 msgid "Here is the beginnig week of the subscription."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
-#: carts/models.py:146
+#: carts/models.py:177
 msgid "end"
 msgstr "fin"
 
-#: carts/models.py:147
+#: carts/models.py:178
 msgid "Here is the ending week of the subscription."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:150
+#: carts/models.py:181
 msgid "direct debit"
 msgstr "prélévement automatique"
 
-#: carts/models.py:171
+#: carts/models.py:202
 #, fuzzy, python-format
 msgid "%d years, "
 msgstr "%d ans, "
 
-#: carts/models.py:172
+#: carts/models.py:203
 #, fuzzy, python-format
 msgid "%d months, "
 msgstr "%d mois, "
 
-#: carts/models.py:173
+#: carts/models.py:204
 #, python-format
 msgid "%d days"
 msgstr "%d jours"
 
-#: carts/views.py:64
+#: carts/models.py:226
+msgid "thematic"
+msgstr ""
+
+#: carts/views.py:77
 #, fuzzy, python-format
 msgid "Your subscription %d has been updated successfuly."
 msgstr "L'abonnement a été crée correctement."
 
-#: carts/views.py:125
+#: carts/views.py:136
 #, python-format
 msgid "Delivery %d already payed or canceled."
 msgstr "Livraison %d déjà payée ou annulée."
 
-#: carts/views.py:135
+#: carts/views.py:146
 #, fuzzy
 msgid "The delivery has been successfuly payed."
 msgstr "L'abonnement a été crée correctement."
 
-#: carts/views.py:136 wallets/views.py:164
+#: carts/views.py:147 wallets/views.py:164
 msgid "Your wallet balance has been updated."
 msgstr "Le solde de votre portemonnaie a été mis à jour."
 
-#: carts/views.py:185
+#: carts/views.py:237
 msgid ""
 "In order to lock a product percent, please check the corresponding checkbox."
 msgstr ""
 "Pour sauvegarder la proportion d'un produit, utilisez le bouton verrouiller "
 "correspondant."
 
-#: carts/views.py:219
+#: carts/views.py:281
 msgid "The subscription was sucessfuly created."
 msgstr "L'abonnement a été crée correctement."
 
@@ -443,57 +574,74 @@ msgstr "Panier"
 
 #: carts/templates/carts/base.html:18
 #: carts/templates/carts/create_wizard.html:12
-msgid "Create"
-msgstr "Créer"
+#: suppliers/templates/suppliers/catalog.html:18
+msgid "Create a thematic cart"
+msgstr ""
 
 #: carts/templates/carts/base.html:22
+#: carts/templates/carts/create_wizard.html:12
+#: suppliers/templates/suppliers/catalog.html:22
+msgid "Create a custom cart"
+msgstr ""
+
+#: carts/templates/carts/base.html:26
 #: carts/templates/carts/subscription_list.html:5
+#: suppliers/templates/suppliers/catalog.html:26
 msgid "Subscriptions"
 msgstr "Abonnements"
 
-#: carts/templates/carts/base.html:26
+#: carts/templates/carts/base.html:30
 #: carts/templates/carts/delivery_list.html:6
+#: suppliers/templates/suppliers/catalog.html:30
 msgid "Deliveries"
 msgstr "Livraisons"
 
-#: carts/templates/carts/create_wizard.html:25
-msgid "Step"
-msgstr "Étape"
+#: carts/templates/carts/create_wizard.html:23
+#, python-format
+msgid ""
+"\n"
+"\t  <h4>Ready to create your new %(name)s thematic cart ?</h4>\n"
+"\t"
+msgstr ""
 
-#: carts/templates/carts/create_wizard.html:25
-msgid "of"
-msgstr "sur"
+#: carts/templates/carts/create_wizard.html:27
+msgid ""
+"\n"
+"\t  <h4>Ready to create your new custom cart ?</h4>\n"
+"\t"
+msgstr ""
 
-#: carts/templates/carts/create_wizard.html:37
+#: carts/templates/carts/create_wizard.html:32
+msgid ""
+"\n"
+"\t<p>Be free to choice below the size of your cart as well as its frequency "
+"and duration. You can even push the beginning week of your subscription to "
+"your convenience.</p>\n"
+"      "
+msgstr ""
+
+#: carts/templates/carts/create_wizard.html:67
 msgid "customize your cart content"
 msgstr "personnaliser le contenu de votre panier"
 
-#: carts/templates/carts/create_wizard.html:37
-#, fuzzy
-msgid "customize"
-msgstr "client"
-
-#: carts/templates/carts/create_wizard.html:41
+#: carts/templates/carts/create_wizard.html:74
 #, fuzzy
 msgid "Products"
 msgstr "Produits"
 
-#: carts/templates/carts/create_wizard.html:57
+#: carts/templates/carts/create_wizard.html:94
 msgid "lock"
 msgstr "verrouiller"
 
-#: carts/templates/carts/create_wizard.html:81
-#: carts/templates/carts/subscription_edit.html:28
-#: mailbox/templates/mailbox/new_message.html:29
-#: mailbox/templates/mailbox/reply_message.html:28
-msgid "submit"
+#: carts/templates/carts/create_wizard.html:121
+msgid "Submit"
 msgstr ""
 
-#: carts/templates/carts/create_wizard.html:89
+#: carts/templates/carts/create_wizard.html:129
 msgid "prev step"
 msgstr ""
 
-#: carts/templates/carts/create_wizard.html:92 wallets/models.py:29
+#: carts/templates/carts/create_wizard.html:132 wallets/models.py:29
 msgid "balance"
 msgstr "équilibrer"
 
@@ -553,26 +701,28 @@ msgstr ""
 "\t\t      "
 
 #: carts/templates/carts/delivery_list.html:63
+#: customers/templates/customers/address_confirm_delete.html:16
 msgid "Yes"
 msgstr ""
 
 #: carts/templates/carts/delivery_list.html:64
+#: customers/templates/customers/address_confirm_delete.html:17
 msgid "No"
 msgstr ""
 
-#: carts/templates/carts/products_tree.html:14
+#: carts/templates/carts/products_tree.html:15
 msgid "expend/collapse products list"
 msgstr "plier/déplier la liste des produits"
 
-#: carts/templates/carts/products_tree.html:23
+#: carts/templates/carts/products_tree.html:24
 msgid "add"
 msgstr "ajouter"
 
-#: carts/templates/carts/products_tree.html:24
+#: carts/templates/carts/products_tree.html:25
 msgid "read more about"
 msgstr "en savoir plus à propos de"
 
-#: carts/templates/carts/products_tree.html:24
+#: carts/templates/carts/products_tree.html:25
 msgid "more"
 msgstr "plus"
 
@@ -581,8 +731,18 @@ msgstr "plus"
 msgid "Edit a subscription"
 msgstr "abonnement"
 
+#: carts/templates/carts/subscription_edit.html:28
+#: customers/templates/customers/address_create.html:28
+#: customers/templates/customers/address_edit.html:28
+#: mailbox/templates/mailbox/new_message.html:29
+#: mailbox/templates/mailbox/reply_message.html:28
+msgid "submit"
+msgstr ""
+
 #: carts/templates/carts/subscription_list.html:8
 #: carts/templates/carts/subscription_list.html:51
+#: customers/templates/customers/address_list.html:8
+#: customers/templates/customers/address_list.html:74
 #: mailbox/templates/mailbox/message_list.html:9
 #: mailbox/templates/mailbox/message_list.html:41
 msgid "New"
@@ -617,9 +777,18 @@ msgid "Enabled"
 msgstr "Activé"
 
 #: carts/templates/carts/subscription_list.html:33
+#: customers/templates/customers/address_list.html:29
 #, fuzzy
 msgid "edit"
 msgstr "éditer"
+
+#: carts/templates/carts/thematic_list.html:6
+msgid "Our thematic carts"
+msgstr ""
+
+#: carts/templates/carts/thematic_list.html:17
+msgid "Create"
+msgstr "Créer"
 
 #: celerytest/templates/celerytest/home.html:8
 msgid "Celery test"
@@ -697,38 +866,110 @@ msgstr "type de contenu"
 msgid "object id"
 msgstr "identifiant de l'objet"
 
+#: customers/views.py:79
+#, fuzzy
+msgid "Your new address has been well created."
+msgstr "Le solde de votre portemonnaie a été mis à jour."
+
+#: customers/views.py:103
+#, fuzzy
+msgid "Your address has been well deleted."
+msgstr "Votre message a été envoyé avec succès."
+
+#: customers/views.py:127
+#, fuzzy, python-format
+msgid "Your address %d has been updated successfuly."
+msgstr "L'abonnement a été crée correctement."
+
+#: customers/views.py:146
+#, python-format
+msgid "The address %s has been defined as main address."
+msgstr ""
+
+#: customers/views.py:159
+#, python-format
+msgid "The address %s has been defined as shipping address."
+msgstr ""
+
+#: customers/views.py:172
+#, python-format
+msgid "The address %s has been defined as billing address."
+msgstr ""
+
+#: customers/templates/customers/address_confirm_delete.html:5
+msgid "Remove an address"
+msgstr ""
+
+#: customers/templates/customers/address_confirm_delete.html:11
+msgid "Do you confirm that you would like to delete the following address ?"
+msgstr ""
+
+#: customers/templates/customers/address_create.html:5
+#: customers/templates/customers/address_edit.html:5
+#: customers/templates/customers/address_list.html:18
+msgid "Address"
+msgstr ""
+
+#: customers/templates/customers/address_create.html:9
+msgid "Add an address"
+msgstr ""
+
+#: customers/templates/customers/address_edit.html:9
+msgid "Edit an address"
+msgstr ""
+
 #: customers/templates/customers/address_list.html:5
-#: customers/templates/customers/base.html:13
+#: customers/templates/customers/base.html:17
 msgid "Addresses"
 msgstr ""
 
-#: customers/templates/customers/address_list.html:10
+#: customers/templates/customers/address_list.html:17
 msgid "Name"
 msgstr ""
 
-#: customers/templates/customers/address_list.html:11
-#, fuzzy
-msgid "Street"
-msgstr "adresse"
-
-#: customers/templates/customers/address_list.html:12
-#, fuzzy
-msgid "Postal code"
-msgstr "code postal"
-
-#: customers/templates/customers/address_list.html:13
-msgid "City"
+#: customers/templates/customers/address_list.html:19
+msgid "Main"
 msgstr ""
 
-#: customers/templates/customers/address_list.html:14
-#, fuzzy
-msgid "Country"
-msgstr "pays"
+#: customers/templates/customers/address_list.html:20
+#: customers/templates/customers/customer_detail.html:9
+msgid "Shipping"
+msgstr ""
+
+#: customers/templates/customers/address_list.html:21
+#: customers/templates/customers/customer_detail.html:10
+msgid "Billing"
+msgstr ""
+
+#: customers/templates/customers/address_list.html:31
+msgid "remove"
+msgstr ""
+
+#: customers/templates/customers/address_list.html:42
+#: customers/templates/customers/address_list.html:53
+#: customers/templates/customers/address_list.html:64
+msgid "select"
+msgstr ""
 
 #: customers/templates/customers/base.html:5
 #, fuzzy
 msgid "Customer"
 msgstr "client"
+
+#: customers/templates/customers/base.html:21
+#, fuzzy
+msgid "New address"
+msgstr "Nouveau message"
+
+#: customers/templates/customers/customer_detail.html:8
+msgid "Known as"
+msgstr ""
+
+#: customers/templates/customers/customer_detail.html:13
+#: wallets/templates/wallets/base.html:42
+#: wallets/templates/wallets/settings.html:5
+msgid "Settings"
+msgstr "Paramétrage"
 
 #: mailbox/middleware.py:34
 #, python-format
@@ -747,11 +988,6 @@ msgstr ""
 #, fuzzy
 msgid "subject"
 msgstr "objet"
-
-#: mailbox/models.py:64 mailbox/models.py:86 products/models.py:52
-#: suppliers/models.py:40
-msgid "body"
-msgstr "corps"
 
 #: mailbox/models.py:65
 msgid "participants_notified"
@@ -959,6 +1195,15 @@ msgstr "commande"
 msgid "Validated"
 msgstr "Validé"
 
+#: suppliers/templates/suppliers/catalog.html:10
+msgid "Catalog"
+msgstr ""
+
+#: suppliers/templates/suppliers/catalog.html:37
+#, fuzzy
+msgid "Our suppliers products"
+msgstr "URL du produit chez le fournisseur"
+
 #: templates/footer.html:7
 msgid "Under"
 msgstr "Sous"
@@ -1116,11 +1361,6 @@ msgstr "Créditer votre portemonnaie"
 msgid "Withdraw requests"
 msgstr "Retiré"
 
-#: wallets/templates/wallets/base.html:42
-#: wallets/templates/wallets/settings.html:5
-msgid "Settings"
-msgstr "Paramétrage"
-
 #: wallets/templates/wallets/credit.html:10
 msgid "Credit your wallet"
 msgstr "Créditer votre portemonnaie"
@@ -1174,6 +1414,28 @@ msgstr "Solde de votre compte"
 #, fuzzy
 msgid "Withdraw from your wallet"
 msgstr "Approvisionner votre portemonnaie"
+
+#~ msgid "Step"
+#~ msgstr "Étape"
+
+#~ msgid "of"
+#~ msgstr "sur"
+
+#, fuzzy
+#~ msgid "customize"
+#~ msgstr "client"
+
+#, fuzzy
+#~ msgid "Street"
+#~ msgstr "adresse"
+
+#, fuzzy
+#~ msgid "Postal code"
+#~ msgstr "code postal"
+
+#, fuzzy
+#~ msgid "Country"
+#~ msgstr "pays"
 
 #~ msgid "Presentation"
 #~ msgstr "Présentation"
