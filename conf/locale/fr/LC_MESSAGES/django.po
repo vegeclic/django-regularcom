@@ -139,7 +139,6 @@ msgid "Reset my password"
 msgstr "Réinitialiser mon mot de passe"
 
 #: accounts/templates/accounts/password_reset.html:30
-#, fuzzy
 msgid "Send a new password"
 msgstr "Envoyer un nouveau mot de passe"
 
@@ -150,7 +149,6 @@ msgid "Profile"
 msgstr "Profil"
 
 #: accounts/templates/registration/login.html:13
-#, fuzzy
 msgid "Please sign up"
 msgstr "Inscrivez-vous"
 
@@ -277,17 +275,14 @@ msgid "Delivery made sure Tuesday"
 msgstr "Les livraisons sont envoyées le mardi"
 
 #: carts/models.py:59
-#, fuzzy
 msgid "locked frequency"
 msgstr "fréquence verrouillée"
 
 #: carts/models.py:60
-#, fuzzy
 msgid "start duration"
 msgstr "début de la période"
 
 #: carts/models.py:61
-#, fuzzy
 msgid "Here is the beginnig week of the duration."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
@@ -296,17 +291,14 @@ msgid "locked start"
 msgstr "début verrouillé"
 
 #: carts/models.py:64
-#, fuzzy
 msgid "end duration"
 msgstr "fin de durée"
 
 #: carts/models.py:65
-#, fuzzy
 msgid "Here is the ending week of the duration."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
 #: carts/models.py:67
-#, fuzzy
 msgid "locked duration"
 msgstr "durée verrouillée"
 
@@ -315,12 +307,10 @@ msgid "criterias"
 msgstr "critères"
 
 #: carts/models.py:69
-#, fuzzy
 msgid "locked criterias"
 msgstr "critères verrouillés"
 
 #: carts/models.py:70
-#, fuzzy
 msgid "locked products"
 msgstr "produits verrouillés"
 
@@ -330,7 +320,6 @@ msgid "quantity"
 msgstr "quantité"
 
 #: carts/models.py:72
-#, fuzzy
 msgid "locked quantity"
 msgstr "quantité verrouillée"
 
@@ -339,7 +328,6 @@ msgid "start period"
 msgstr "début de la période"
 
 #: carts/models.py:74
-#, fuzzy
 msgid "Here is the beginnig week of the period."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
@@ -348,7 +336,6 @@ msgid "end period"
 msgstr "fin de la période"
 
 #: carts/models.py:77
-#, fuzzy
 msgid "Here is the ending week of the period."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
@@ -408,7 +395,6 @@ msgid "status"
 msgstr "statut"
 
 #: carts/models.py:132
-#, fuzzy
 msgid "payed price"
 msgstr "prix d'achat"
 
@@ -460,12 +446,12 @@ msgid "direct debit"
 msgstr "prélévement automatique"
 
 #: carts/models.py:202
-#, fuzzy, python-format
+#, python-format
 msgid "%d years, "
 msgstr "%d ans, "
 
 #: carts/models.py:203
-#, fuzzy, python-format
+#, python-format
 msgid "%d months, "
 msgstr "%d mois, "
 
@@ -479,9 +465,9 @@ msgid "thematic"
 msgstr "thème"
 
 #: carts/views.py:77
-#, fuzzy, python-format
+#, python-format
 msgid "Your subscription %d has been updated successfuly."
-msgstr "L'abonnement a été mis à jour correctement."
+msgstr "L'abonnement %d a été mis à jour correctement."
 
 #: carts/views.py:136
 #, python-format
@@ -489,7 +475,6 @@ msgid "Delivery %d already payed or canceled."
 msgstr "Livraison %d déjà payée ou annulée."
 
 #: carts/views.py:146
-#, fuzzy
 msgid "The delivery has been successfuly payed."
 msgstr "L'échéance a bien été payée."
 
@@ -514,7 +499,7 @@ msgid "Delivery %(date)s cannot be validated"
 msgstr "La livraison %(date)s ne peut pas être validée"
 
 #: carts/management/commands/directdebits.py:65
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hi %(name)s,\n"
 "\n"
@@ -531,7 +516,7 @@ msgstr ""
 "Bonjour %(name)s,\n"
 "\n"
 "nous sommes au regret de vous annoncer que nous n'avons pas été en mesure de "
-"valider votre livraison %(date)s de l'abonnement %(subscription_id)le solde "
+"valider votre livraison %(date)s de l'abonnement %(subscription_id)d, le solde "
 "de votre portemonnaie n'étant pas suffisant pour pouvoir l'acheter.\n"
 "\n"
 "Merci de bien vouloir prendre un petit temps pour approvisionner votre "
@@ -546,7 +531,7 @@ msgid "Delivery %(date)s has been validated"
 msgstr "La livraison %(date)s a été validé"
 
 #: carts/management/commands/directdebits.py:77
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hi %(name)s,\n"
 "\n"
@@ -569,12 +554,12 @@ msgstr ""
 "Végéclic.\n"
 
 #: carts/management/commands/fullfillcarts.py:153
-#, fuzzy, python-format
+#, python-format
 msgid "Delivery %(date)s is in progress"
 msgstr "La livraison %(date)s a été validé"
 
 #: carts/management/commands/fullfillcarts.py:154
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Hi %(name)s,\n"
 "\n"
@@ -664,7 +649,6 @@ msgid "customize your cart content"
 msgstr "personnaliser le contenu de votre panier"
 
 #: carts/templates/carts/create_wizard.html:74
-#, fuzzy
 msgid "Products"
 msgstr "Produits"
 
@@ -691,7 +675,6 @@ msgid "Subscription"
 msgstr "Abonnement"
 
 #: carts/templates/carts/delivery_list.html:30
-#, fuzzy
 msgid "Description"
 msgstr ""
 
@@ -722,7 +705,6 @@ msgid "buy"
 msgstr "acheter"
 
 #: carts/templates/carts/delivery_list.html:55
-#, fuzzy
 msgid "Confirmation"
 msgstr ""
 
@@ -766,7 +748,6 @@ msgid "more"
 msgstr "plus"
 
 #: carts/templates/carts/subscription_edit.html:9
-#, fuzzy
 msgid "Edit a subscription"
 msgstr "Éditer un abonnement"
 
@@ -817,7 +798,6 @@ msgstr "Activé"
 
 #: carts/templates/carts/subscription_list.html:33
 #: customers/templates/customers/address_list.html:29
-#, fuzzy
 msgid "edit"
 msgstr "éditer"
 
@@ -906,17 +886,15 @@ msgid "object id"
 msgstr "identifiant de l'objet"
 
 #: customers/views.py:79
-#, fuzzy
 msgid "Your new address has been well created."
 msgstr "Votre nouvelle adresse a bien été crée."
 
 #: customers/views.py:103
-#, fuzzy
 msgid "Your address has been well deleted."
 msgstr "Votre adresse a bien été supprimé."
 
 #: customers/views.py:127
-#, fuzzy, python-format
+#, python-format
 msgid "Your address %d has been updated successfuly."
 msgstr "Votre adresse %d a été mise à jour correctement."
 
@@ -991,12 +969,10 @@ msgid "select"
 msgstr "sélectionner"
 
 #: customers/templates/customers/base.html:5
-#, fuzzy
 msgid "Customer"
 msgstr "Client"
 
 #: customers/templates/customers/base.html:21
-#, fuzzy
 msgid "New address"
 msgstr "Nouvelle adresse"
 
@@ -1024,7 +1000,6 @@ msgid "participants"
 msgstr ""
 
 #: mailbox/models.py:63
-#, fuzzy
 msgid "subject"
 msgstr "objet"
 
@@ -1037,7 +1012,6 @@ msgid "participants_read"
 msgstr ""
 
 #: mailbox/models.py:82
-#, fuzzy
 msgid "replies"
 msgstr "réponses"
 
@@ -1093,13 +1067,11 @@ msgstr ""
 #: mailbox/templates/mailbox/message_detail.html:18
 #: mailbox/templates/mailbox/message_detail.html:33
 #: mailbox/templates/mailbox/message_list.html:28
-#, fuzzy
 msgid "Me"
 msgstr "Moi"
 
 #: mailbox/templates/mailbox/message_detail.html:21
 #: mailbox/templates/mailbox/message_list.html:18
-#, fuzzy
 msgid "Subject"
 msgstr "Objet"
 
@@ -1109,7 +1081,6 @@ msgid "Body"
 msgstr "Corps"
 
 #: mailbox/templates/mailbox/message_detail.html:28
-#, fuzzy
 msgid "Replies"
 msgstr "Réponses"
 
@@ -1239,7 +1210,6 @@ msgid "Catalog"
 msgstr "Catalogue"
 
 #: suppliers/templates/suppliers/catalog.html:37
-#, fuzzy
 msgid "Our suppliers products"
 msgstr "Les produits de nos fournisseurs"
 
@@ -1375,7 +1345,6 @@ msgstr "Approvisionner"
 #: wallets/templates/wallets/base.html:22
 #: wallets/templates/wallets/withdraw.html:6
 #: wallets/templates/wallets/withdraw.html:34
-#, fuzzy
 msgid "Withdraw"
 msgstr "Retirer"
 
@@ -1390,13 +1359,11 @@ msgstr "Historiques"
 
 #: wallets/templates/wallets/base.html:34
 #: wallets/templates/wallets/credit_list.html:5
-#, fuzzy
 msgid "Credit requests"
 msgstr "Créditer votre portemonnaie"
 
 #: wallets/templates/wallets/base.html:38
 #: wallets/templates/wallets/withdraw_list.html:5
-#, fuzzy
 msgid "Withdraw requests"
 msgstr "Demandes de retraits"
 
@@ -1414,18 +1381,15 @@ msgstr "Montant"
 
 #: wallets/templates/wallets/credit_list.html:11
 #: wallets/templates/wallets/withdraw_list.html:11
-#, fuzzy
 msgid "Payment type"
 msgstr "Type de paiement"
 
 #: wallets/templates/wallets/credit_list.html:13
-#, fuzzy
 msgid "Payment date"
 msgstr "Date de paiement"
 
 #: wallets/templates/wallets/credit_list.html:21
 #: wallets/templates/wallets/withdraw_list.html:20
-#, fuzzy
 msgid "cancel"
 msgstr "annuler"
 
@@ -1450,7 +1414,6 @@ msgid "Balance of your account"
 msgstr "Solde de votre compte"
 
 #: wallets/templates/wallets/withdraw.html:10
-#, fuzzy
 msgid "Withdraw from your wallet"
 msgstr "Retirer de votre portemonnaie"
 
@@ -1460,19 +1423,15 @@ msgstr "Retirer de votre portemonnaie"
 #~ msgid "of"
 #~ msgstr "sur"
 
-#, fuzzy
 #~ msgid "customize"
 #~ msgstr "personnaliser"
 
-#, fuzzy
 #~ msgid "Street"
 #~ msgstr "Rue"
 
-#, fuzzy
 #~ msgid "Postal code"
 #~ msgstr "code postal"
 
-#, fuzzy
 #~ msgid "Country"
 #~ msgstr "Pays"
 
