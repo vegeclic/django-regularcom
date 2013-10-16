@@ -175,7 +175,7 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
         return id_
 
 class CreateForm1(forms.Form):
-    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=1,
+    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=models.Size.objects.all()[1],
                                   help_text=_('Which size would you like to use for your cart ?'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
                                   help_text=_('How often would you like to receive your cart ?'))
