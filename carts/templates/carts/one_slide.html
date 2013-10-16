@@ -1,18 +1,23 @@
 {% load i18n %}
 
 {#<input type="hidden" name="{{id}}" id="{{id}}" value="0"/>#}
-<div class="form-group one_slide alert alert-{{style}}">
-  <label for="{{id}}-slide">{{ field.label }}:</label>
-  {{ field }}
-  <div class="row">
-    <div class="col-md-8" id="{{id}}-slide"></div>
-    <div class="col-md-4"><span class="badge" style="margin:5px" id="{{id}}-slide-text"></span></div>
-  </div>
-  {% if field.errors %}
-    <div class="errorlist">
-      {% for error in field.errors %}
-        <div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
-      {% endfor %}
+<div class="panel panel-{{style}}">
+  <div class="panel-heading"><h4>{{ field.label }}</h4></div>
+  <div class="panel-body" style="padding-left: 30px">
+    {{ field }}
+    <div class="row">
+      <div class="col-md-8" id="{{id}}-slide"></div>
+      <div class="col-md-4"><span class="badge" style="margin:5px" id="{{id}}-slide-text"></span></div>
     </div>
+    {% if field.errors %}
+      <div class="errorlist">
+	{% for error in field.errors %}
+          <div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
+	{% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  {% if field.help_text %}
+    <div class="panel-footer">{{field.help_text}}</div>
   {% endif %}
 </div>

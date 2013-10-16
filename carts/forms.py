@@ -142,16 +142,48 @@ class CreateForm(forms.ModelForm):
             subscription.create_deliveries()
         return subscription
 
-class CreateForm1(forms.Form):
-    size = forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
-                                  queryset=models.Size.objects.all(), initial=0)
-    frequency = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
-                                  choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT)
-    duration = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}),
-                                 choices=DURATION_CHOICES, initial=DURATION_DEFAULT)
-    start = forms.ChoiceField(widget=forms.Select(attrs={'class': 'slidebar-select'}))
-    customized = forms.BooleanField(required=False)
+class MyCheckboxSelectMultiple(forms.SelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        if value is None: value = []
+        has_id = attrs and 'id' in attrs
+        final_attrs = self.build_attrs(attrs, name=name)
+        output = ['<div class="btn-group" data-toggle="buttons">']
+        # Normalize to strings
+        str_values = set([forms.widgets.force_text(v) for v in value])
+        for i, (option_value, option_label) in enumerate(forms.widgets.chain(self.choices, choices)):
+            # If an ID attribute was given, add a numeric index as a suffix,
+            # so that the checkboxes don't all have the same ID attribute.
+            if has_id:
+                final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
+                label_for = forms.widgets.format_html(' for="{0}"', final_attrs['id'])
+            else:
+                label_for = ''
 
+            cb = forms.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
+            option_value = forms.widgets.force_text(option_value)
+            rendered_cb = cb.render(name, option_value)
+            option_label = forms.widgets.force_text(option_label)
+            output.append(forms.widgets.format_html('<label class="btn btn-primary btn-lg"{0}>{1} {2}</label>',
+                                                    label_for, rendered_cb, option_label))
+        output.append('</div>')
+        return forms.widgets.mark_safe('\n'.join(output))
+
+    def id_for_label(self, id_):
+        # See the comment for RadioSelect.id_for_label()
+        if id_:
+            id_ += '_0'
+        return id_
+
+class CreateForm1(forms.Form):
+    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=0,
+                                  help_text=_('Which size would you like to use for your cart ?'))
+    frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
+                                  help_text=_('How often would you like to receive your cart ?'))
+    duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=DURATION_DEFAULT,
+                                 help_text=_('How long would you like to receive your cart ?'))
+    start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'))
+    customized = forms.BooleanField(required=False)
+    criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple, queryset=cm.Criteria.objects.all(), required=False, help_text=_('Select as much criterias as you want in your cart.'))
     # products = forms.MultipleChoiceField(help_text=_('Use CTRL to select several products.'))
     # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
 
@@ -165,6 +197,12 @@ class CreateForm1(forms.Form):
         start_choices = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
         start.choices = zip(start_choices, start_choices)
         start.initial = cw
+
+        for field in ['size', 'frequency', 'duration', 'start']:
+            self.fields[field].widget.attrs['class'] = 'slidebar-select'
+
+        for field in ['criterias']:
+            self.fields[field].widget.attrs['class'] = 'checkbox-select'
 
 class CreateForm2(forms.Form):
     # extents = forms.MultipleHiddenInput()

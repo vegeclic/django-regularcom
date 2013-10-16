@@ -45,7 +45,7 @@
     {% endfor %}
     {% endcomment %}
 
-    <h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>
+    <!-- <h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3> -->
 
     {% if wizard.steps.current == '0' %}
       {% with tname="carts/one_slide.html" %}
@@ -54,6 +54,12 @@
 	{% with id="0-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
 	{% with id="0-start" field=wizard.form.start style="danger" %}{% include tname %}{% endwith %}
       {% endwith %}
+
+      <div class="panel panel-default">
+	<div class="panel-heading"><h4>{{ wizard.form.criterias.label }}</h4></div>
+	<div class="panel-body">{{ wizard.form.criterias }}</div>
+	<div class="panel-footer">{{ wizard.form.criterias.help_text }}</div>
+      </div>
 
       <div class="form-group">
 	<div data-toggle="buttons">

@@ -201,6 +201,7 @@ class CreateWizard(SessionWizardView):
                 dict_ = {}
                 for product in products:
                     if product == root_product: continue
+                    if product.status != 'p': continue
                     if not product.products_parent.all() or not root_only:
                         dict_[product] = products_tree(product.products_children.all(), root_product=product, root_only=False)
                 return dict_
