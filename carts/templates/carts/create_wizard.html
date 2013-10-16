@@ -69,13 +69,17 @@
 	</div>
       </div>
 
-      <div id="display_products" class="collapse out">
-	<label>{% trans "Products" %}:</label>
-	<ul class="media-list">
-	  {% for product, products in wizard.form.products_tree.items %}
-	    {% include "carts/products_tree.html" %}
-	  {% endfor %}
-	</ul>
+      <div class="panel panel-success collapse out" id="display_products">
+	<div class="panel-heading"><h4>{% trans "Products" %}</h4></div>
+	<div class="panel-body">
+	  <ul class="media-list">
+	    {% for product, products in wizard.form.products_tree.items %}
+	      {% with product=product.0 selected=product.1 products=products %}
+		{% include "carts/products_tree.html" %}
+	      {% endwith %}
+	    {% endfor %}
+	  </ul>
+	</div>
       </div>
 
     {% elif wizard.steps.current == '1' %}
@@ -137,6 +141,15 @@
 
   <script type="text/javascript">
     $(function() {
+	$('.checkbox-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
 	$('.tooltip_link').tooltip();
 
 	$('.expend_button').click(function() {

@@ -175,10 +175,12 @@ class CreateWizard(SessionWizardView):
         if step is None: step = self.steps.current
 
         if step == '0':
-            thematic_id = self.kwargs.get('thematic_id')
-            thematic = None
-            if thematic_id:
-                thematic = models.Thematic.objects.get(id=thematic_id)
+            try:
+                thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
+            except models.Thematic.DoesNotExist:
+                thematic = None
+
+            thematic_products = []
 
             if thematic:
                 for k, f in [('size', thematic.size),
@@ -194,8 +196,17 @@ class CreateWizard(SessionWizardView):
                 for k, f in [('size', thematic.locked_size),
                              ('frequency', thematic.locked_frequency),
                              ('start', thematic.locked_start),
-                             ('duration', thematic.locked_duration)]:
+                             ('duration', thematic.locked_duration),
+                             ('criterias', thematic.locked_criterias)]:
                     if f: form.fields[k].widget.attrs['class'] += ' disabled'
+
+                if thematic.criterias:
+                    print(thematic.criterias.all())
+                    form.fields['criterias'].initial = [v.id for v in thematic.criterias.all()]
+
+                # for extent in thematic.thematicextent_set.all():
+
+                thematic_products = [e.product for e in thematic.thematicextent_set.all()]
 
             def products_tree(products, root_product=None, root_only=True):
                 dict_ = {}
@@ -203,7 +214,7 @@ class CreateWizard(SessionWizardView):
                     if product == root_product: continue
                     if product.status != 'p': continue
                     if not product.products_parent.all() or not root_only:
-                        dict_[product] = products_tree(product.products_children.all(), root_product=product, root_only=False)
+                        dict_[(product, product in thematic_products)] = products_tree(product.products_children.all(), root_product=product, root_only=False)
                 return dict_
 
             form.products_tree = products_tree(pm.Product.objects.all())
@@ -234,8 +245,11 @@ class CreateWizard(SessionWizardView):
         bw = Week.fromstring(form_data[0].get('start'))
         ew = Week.withdate( bw.day(1) + relativedelta(months=duration) )
         customer = self.request.user.customer
+        criterias = form_data[0].get('criterias')
 
         subscription = models.Subscription.objects.create(customer=customer, size=size, frequency=frequency, start=bw, end=ew)
+
+        subscription.criterias = criterias
 
         for product, extent in products.items():
             subscription.extent_set.create(product=product, extent=extent)

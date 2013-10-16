@@ -163,7 +163,7 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
             option_value = forms.widgets.force_text(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = forms.widgets.force_text(option_label)
-            output.append(forms.widgets.format_html('<label class="btn btn-primary btn-lg"{0}>{1} {2}</label>',
+            output.append(forms.widgets.format_html('<label class="btn btn-default btn-lg"{0}>{1} {2}</label>',
                                                     label_for, rendered_cb, option_label))
         output.append('</div>')
         return forms.widgets.mark_safe('\n'.join(output))

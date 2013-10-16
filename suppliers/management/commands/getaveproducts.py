@@ -63,7 +63,8 @@ def download(url, slug, data=None, filename=None, media_root=settings.MEDIA_ROOT
     dest_path = '%s/%s' % (dest, o[-1] if not filename else filename)
     if os.path.exists(dest_path): return dest_path.replace(settings.MEDIA_ROOT+'/', settings.MEDIA_URL)
     local_path, headers = request.urlretrieve(url, dest_path, data=data)
-    return local_path.replace(settings.MEDIA_ROOT+'/', settings.MEDIA_URL)
+    # return local_path.replace(settings.MEDIA_ROOT+'/', settings.MEDIA_URL)
+    return local_path.replace(settings.MEDIA_ROOT+'/', '')
 
 def capfirst(value): return value and value[0].upper() + value[1:]
 

@@ -55,7 +55,7 @@ class Thematic(TranslatableModel):
     )
     size = models.ForeignKey('Size', verbose_name=_('size'), null=True, blank=True)
     locked_size = models.BooleanField(_('locked size'), default=False)
-    frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
+    frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
     locked_frequency = models.BooleanField(_('locked frequency'), default=False)
     start_duration = models.CharField(_('start duration'), max_length=7, choices=WEEKS_CHOICES,
                                       help_text=_('Here is the beginnig week of the duration.'),

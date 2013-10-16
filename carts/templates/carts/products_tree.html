@@ -20,8 +20,8 @@
     {% endif %}
     {{ product.body }}
     <br/>
-    <input type="hidden" class="value" name="product_{{product.id}}" value="0"/>
-    <button type="button" class="btn btn-link tooltip_link add_link" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
+    <input type="hidden" class="value" name="product_{{product.id}}" value="{% if selected %}1{% else %}0{% endif %}"/>
+    <button type="button" class="btn tooltip_link add_link {% if selected %}btn-success active{% else %}btn-link{% endif %}" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
     <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
     {# <label><input type="checkbox" name="product_{{product.id}}"/> {% trans "add" %}</label> #}
     </div>
@@ -61,7 +61,7 @@
       <div class="media collapse out" id="sub_products_{{product.id}}">
 	<ul class="media-list">
 	  {% for sub_product, sub_products in products.items %}
-	    {% with product=sub_product products=sub_products template_name="carts/products_tree.html" %}
+	    {% with product=sub_product.0 selected=sub_product.1 products=sub_products template_name="carts/products_tree.html" %}
               {% include template_name %}
 	    {% endwith %}
 	  {% endfor %}
