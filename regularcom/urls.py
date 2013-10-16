@@ -33,10 +33,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^accounts/', include('accounts.urls')),
-    url(r'^customers/', include('customers.urls')),
     url(r'^carts/', include('carts.urls')),
-    url(r'^wallets/', include('wallets.urls')),
+    url(r'^customers/', include('customers.urls')),
     url(r'^mailbox/', include('mailbox.urls')),
+    url(r'^suppliers/', include('suppliers.urls')),
+    url(r'^wallets/', include('wallets.urls')),
     # url(r'^celerytest/', include('celerytest.urls')),
 )
 
