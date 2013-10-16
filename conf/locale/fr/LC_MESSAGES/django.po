@@ -31,7 +31,7 @@ msgstr ""
 
 #: accounts/models.py:43
 msgid "Welcome to Végéclic"
-msgstr ""
+msgstr "Bienvenue sur Végéclic"
 
 #: accounts/models.py:44
 #, python-format
@@ -56,6 +56,24 @@ msgid ""
 "Best regards,\n"
 "Végéclic.\n"
 msgstr ""
+"Bonjour et bienvenue,\n"
+"\n"
+"Nous sommes heureux de vous compter parmi nous sur le nouveau site de Végéclic.\n"
+"\n"
+"Vous pouvez accéder à votre compte avec les informations suivantes:\n"
+"\n"
+"email: %(email)s\n"
+"mot de passe: %(password)s\n"
+"\n"
+"ou cliquez directement sur le lien ci-dessous pour être connecté directement (sans passer par l'étape d'identification):\n"
+"\n"
+"http://www.vegeclic.fr/accounts/login/\n"
+"\n"
+"Prêt ? Rendez-vous dans la section \"paniers\" pour souscrire à un nouvel abonnement. "
+"C'est très simple !\n"
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
 
 #: accounts/models.py:79
 msgid "email address"
@@ -80,7 +98,7 @@ msgstr "image principale"
 
 #: accounts/views.py:92 customers/views.py:187
 msgid "Password reset"
-msgstr ""
+msgstr "Réinitialisation du mot de passe"
 
 #: accounts/views.py:93 customers/views.py:188
 #, python-format
@@ -97,22 +115,33 @@ msgid ""
 "Best regards,\n"
 "Végéclic.\n"
 msgstr ""
+"Bonjour %(name)s,\n"
+"\n"
+"Une demande de réinitialisation de mot de passe a été faite depuis votre compte %(email)s sur "
+"le site Végéclic.\n"
+"\n"
+"Veuillez trouver ci-dessous votre nouveau mot de passe:\n"
+"\n"
+"Nouveau mot de passe: %(password)s\n"
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
 
 #: accounts/views.py:106 customers/views.py:201
 msgid ""
 "The password has been regenerated. You will receive an email with the new "
 "password."
-msgstr ""
+msgstr "Le mot de passe a été réinitialisé. Vous allez recevoir un e-mail avec le nouveau mot de passe."
 
 #: accounts/templates/accounts/password_reset.html:12
 #: customers/templates/customers/customer_detail.html:15
 msgid "Reset my password"
-msgstr ""
+msgstr "Réinitialiser mon mot de passe"
 
 #: accounts/templates/accounts/password_reset.html:30
 #, fuzzy
 msgid "Send a new password"
-msgstr "Envoyer une réponse"
+msgstr "Envoyer un nouveau mot de passe"
 
 #: accounts/templates/accounts/profile.html:6
 #: customers/templates/customers/base.html:13
@@ -143,7 +172,7 @@ msgstr "Connexion"
 
 #: accounts/templates/registration/login.html:46
 msgid "I forgot my password"
-msgstr ""
+msgstr "J'ai oublié mon mot de passe"
 
 #: carts/forms.py:33
 msgid "1 month"
@@ -196,7 +225,7 @@ msgstr ""
 
 #: carts/forms.py:186
 msgid "Select as much criterias as you want in your cart."
-msgstr ""
+msgstr "Sélectionner les critères que vous souhaitez appliquer à votre panier"
 
 #: carts/models.py:36
 msgid "Once a week"
@@ -237,7 +266,7 @@ msgstr "taille"
 
 #: carts/models.py:57
 msgid "locked size"
-msgstr ""
+msgstr "taille verrouillée"
 
 #: carts/models.py:58 carts/models.py:174
 msgid "frequency"
@@ -245,12 +274,12 @@ msgstr "fréquence"
 
 #: carts/models.py:58 carts/models.py:174
 msgid "Delivery made sure Tuesday"
-msgstr "Les livraisons sont assurées le Mardi"
+msgstr "Les livraisons sont envoyées le mardi"
 
 #: carts/models.py:59
 #, fuzzy
 msgid "locked frequency"
-msgstr "fréquence"
+msgstr "fréquence verrouillée"
 
 #: carts/models.py:60
 #, fuzzy
@@ -264,12 +293,12 @@ msgstr "Il s'agit de la semaine de début de l'abonnement."
 
 #: carts/models.py:63
 msgid "locked start"
-msgstr ""
+msgstr "début verrouillé"
 
 #: carts/models.py:64
 #, fuzzy
 msgid "end duration"
-msgstr "Durée"
+msgstr "fin de durée"
 
 #: carts/models.py:65
 #, fuzzy
@@ -279,7 +308,7 @@ msgstr "Il s'agit de la semaine de fin de l'abonnement."
 #: carts/models.py:67
 #, fuzzy
 msgid "locked duration"
-msgstr "Durée"
+msgstr "durée verrouillée"
 
 #: carts/models.py:68 carts/models.py:179 suppliers/models.py:53
 msgid "criterias"
@@ -288,12 +317,12 @@ msgstr "critères"
 #: carts/models.py:69
 #, fuzzy
 msgid "locked criterias"
-msgstr "critères"
+msgstr "critères verrouillés"
 
 #: carts/models.py:70
 #, fuzzy
 msgid "locked products"
-msgstr "produits"
+msgstr "produits verrouillés"
 
 #: carts/models.py:71 carts/models.py:158 carts/models.py:180
 #: suppliers/models.py:88 suppliers/models.py:107
@@ -303,7 +332,7 @@ msgstr "quantité"
 #: carts/models.py:72
 #, fuzzy
 msgid "locked quantity"
-msgstr "quantité"
+msgstr "quantité verrouillée"
 
 #: carts/models.py:73
 msgid "start period"
@@ -346,7 +375,7 @@ msgstr "abonnement"
 
 #: carts/models.py:120
 msgid "date"
-msgstr ""
+msgstr "date"
 
 #: carts/models.py:122 wallets/models.py:61
 msgid "In waiting"
@@ -447,12 +476,12 @@ msgstr "%d jours"
 
 #: carts/models.py:226
 msgid "thematic"
-msgstr ""
+msgstr "thème"
 
 #: carts/views.py:77
 #, fuzzy, python-format
 msgid "Your subscription %d has been updated successfuly."
-msgstr "L'abonnement a été crée correctement."
+msgstr "L'abonnement a été mis à jour correctement."
 
 #: carts/views.py:136
 #, python-format
@@ -462,7 +491,7 @@ msgstr "Livraison %d déjà payée ou annulée."
 #: carts/views.py:146
 #, fuzzy
 msgid "The delivery has been successfuly payed."
-msgstr "L'abonnement a été crée correctement."
+msgstr "L'échéance a bien été payée."
 
 #: carts/views.py:147 wallets/views.py:164
 msgid "Your wallet balance has been updated."
@@ -482,7 +511,7 @@ msgstr "L'abonnement a été crée correctement."
 #: carts/management/commands/directdebits.py:64
 #, python-format
 msgid "Delivery %(date)s cannot be validated"
-msgstr "La livraison %(date)s ne peut pas être validé"
+msgstr "La livraison %(date)s ne peut pas être validée"
 
 #: carts/management/commands/directdebits.py:65
 #, fuzzy, python-format
@@ -501,10 +530,9 @@ msgid ""
 msgstr ""
 "Bonjour %(name)s,\n"
 "\n"
-"nous sommes au regrès de vous annoncer que nous avons pas été en mesure de "
-"valider votre livraison %(date)s de l'abonnement %(subscription_id)d étant "
-"donnée que vous ne possédez pas suffisemment d'argent dans votre "
-"portemonnaie pour l'acheter.\n"
+"nous sommes au regret de vous annoncer que nous n'avons pas été en mesure de "
+"valider votre livraison %(date)s de l'abonnement %(subscription_id)le solde "
+"de votre portemonnaie n'étant pas suffisant pour pouvoir l'acheter.\n"
 "\n"
 "Merci de bien vouloir prendre un petit temps pour approvisionner votre "
 "portemonnaie et revalider votre livraison.\n"
@@ -561,8 +589,8 @@ msgid ""
 msgstr ""
 "Bonjour %(name)s,\n"
 "\n"
-"nous sommes heureux de vous annoncer que votre livraison %(date)s de "
-"l'abonnement %(subscription_id)d a été validé automatiquement.\n"
+"nous sommes heureux de vous annoncer que le contenu de votre livraison %(date)s de "
+"l'abonnement %(subscription_id)d a été défini.\n"
 "Votre panier sera préparé aussi vite que possible et envoyé chez vous dans "
 "10-12 jours.\n"
 "Bien cordialement,\n"
@@ -576,13 +604,13 @@ msgstr "Panier"
 #: carts/templates/carts/create_wizard.html:12
 #: suppliers/templates/suppliers/catalog.html:18
 msgid "Create a thematic cart"
-msgstr ""
+msgstr "Choisissez un panier thématique"
 
 #: carts/templates/carts/base.html:22
 #: carts/templates/carts/create_wizard.html:12
 #: suppliers/templates/suppliers/catalog.html:22
 msgid "Create a custom cart"
-msgstr ""
+msgstr "Créer votre panier personnalisé"
 
 #: carts/templates/carts/base.html:26
 #: carts/templates/carts/subscription_list.html:5
@@ -603,6 +631,9 @@ msgid ""
 "\t  <h4>Ready to create your new %(name)s thematic cart ?</h4>\n"
 "\t"
 msgstr ""
+"\n"
+"\t  <h4>Prêt pour choisir votre nouveau panier thématique « %(name)s » ?</h4>\n"
+"\t"
 
 #: carts/templates/carts/create_wizard.html:27
 msgid ""
@@ -610,6 +641,9 @@ msgid ""
 "\t  <h4>Ready to create your new custom cart ?</h4>\n"
 "\t"
 msgstr ""
+"\n"
+"\t  <h4>Prêt pour créer votre nouveau panier personnalisé ?</h4>\n"
+"\t"
 
 #: carts/templates/carts/create_wizard.html:32
 msgid ""
@@ -619,6 +653,11 @@ msgid ""
 "your convenience.</p>\n"
 "      "
 msgstr ""
+"\n"
+"\t<p>Vous pouvez choisir ci-dessous la taille de votre panier, ainsi que la fréquence "
+"et la durée de votre abonnement. Vous pouvez même choisir la semaine de début d'abonnement qui "
+"vous convient.</p>\n"
+"      "
 
 #: carts/templates/carts/create_wizard.html:67
 msgid "customize your cart content"
@@ -635,11 +674,11 @@ msgstr "verrouiller"
 
 #: carts/templates/carts/create_wizard.html:121
 msgid "Submit"
-msgstr ""
+msgstr "Confirmer"
 
 #: carts/templates/carts/create_wizard.html:129
 msgid "prev step"
-msgstr ""
+msgstr "étape préc."
 
 #: carts/templates/carts/create_wizard.html:132 wallets/models.py:29
 msgid "balance"
@@ -654,7 +693,7 @@ msgstr "Abonnement"
 #: carts/templates/carts/delivery_list.html:30
 #, fuzzy
 msgid "Description"
-msgstr "abonnement"
+msgstr ""
 
 #: carts/templates/carts/delivery_list.html:32
 #: carts/templates/carts/subscription_list.html:24
@@ -685,7 +724,7 @@ msgstr "acheter"
 #: carts/templates/carts/delivery_list.html:55
 #, fuzzy
 msgid "Confirmation"
-msgstr "Durée"
+msgstr ""
 
 #: carts/templates/carts/delivery_list.html:58
 #, python-format
@@ -729,7 +768,7 @@ msgstr "plus"
 #: carts/templates/carts/subscription_edit.html:9
 #, fuzzy
 msgid "Edit a subscription"
-msgstr "abonnement"
+msgstr "Éditer un abonnement"
 
 #: carts/templates/carts/subscription_edit.html:28
 #: customers/templates/customers/address_create.html:28
@@ -737,7 +776,7 @@ msgstr "abonnement"
 #: mailbox/templates/mailbox/new_message.html:29
 #: mailbox/templates/mailbox/reply_message.html:28
 msgid "submit"
-msgstr ""
+msgstr "confirmer"
 
 #: carts/templates/carts/subscription_list.html:8
 #: carts/templates/carts/subscription_list.html:51
@@ -784,7 +823,7 @@ msgstr "éditer"
 
 #: carts/templates/carts/thematic_list.html:6
 msgid "Our thematic carts"
-msgstr ""
+msgstr "Nos paniers thématiques"
 
 #: carts/templates/carts/thematic_list.html:17
 msgid "Create"
@@ -869,101 +908,101 @@ msgstr "identifiant de l'objet"
 #: customers/views.py:79
 #, fuzzy
 msgid "Your new address has been well created."
-msgstr "Le solde de votre portemonnaie a été mis à jour."
+msgstr "Votre nouvelle adresse a bien été crée."
 
 #: customers/views.py:103
 #, fuzzy
 msgid "Your address has been well deleted."
-msgstr "Votre message a été envoyé avec succès."
+msgstr "Votre adresse a bien été supprimé."
 
 #: customers/views.py:127
 #, fuzzy, python-format
 msgid "Your address %d has been updated successfuly."
-msgstr "L'abonnement a été crée correctement."
+msgstr "Votre adresse %d a été mise à jour correctement."
 
 #: customers/views.py:146
 #, python-format
 msgid "The address %s has been defined as main address."
-msgstr ""
+msgstr "L'adresse %d a été défini comme adresse principale."
 
 #: customers/views.py:159
 #, python-format
 msgid "The address %s has been defined as shipping address."
-msgstr ""
+msgstr "L'adresse %d a été défini comme adresse de livraison."
 
 #: customers/views.py:172
 #, python-format
 msgid "The address %s has been defined as billing address."
-msgstr ""
+msgstr "L'adresse %d a été défini comme adresse de facturation."
 
 #: customers/templates/customers/address_confirm_delete.html:5
 msgid "Remove an address"
-msgstr ""
+msgstr "Retirer une adresse"
 
 #: customers/templates/customers/address_confirm_delete.html:11
 msgid "Do you confirm that you would like to delete the following address ?"
-msgstr ""
+msgstr "Voulez-vous réellement supprimer l'adresse suivante ?"
 
 #: customers/templates/customers/address_create.html:5
 #: customers/templates/customers/address_edit.html:5
 #: customers/templates/customers/address_list.html:18
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: customers/templates/customers/address_create.html:9
 msgid "Add an address"
-msgstr ""
+msgstr "Ajouter une adresse"
 
 #: customers/templates/customers/address_edit.html:9
 msgid "Edit an address"
-msgstr ""
+msgstr "Éditer une adresse"
 
 #: customers/templates/customers/address_list.html:5
 #: customers/templates/customers/base.html:17
 msgid "Addresses"
-msgstr ""
+msgstr "Adresses"
 
 #: customers/templates/customers/address_list.html:17
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: customers/templates/customers/address_list.html:19
 msgid "Main"
-msgstr ""
+msgstr "Principale"
 
 #: customers/templates/customers/address_list.html:20
 #: customers/templates/customers/customer_detail.html:9
 msgid "Shipping"
-msgstr ""
+msgstr "Livraison"
 
 #: customers/templates/customers/address_list.html:21
 #: customers/templates/customers/customer_detail.html:10
 msgid "Billing"
-msgstr ""
+msgstr "Facturation"
 
 #: customers/templates/customers/address_list.html:31
 msgid "remove"
-msgstr ""
+msgstr "retirer"
 
 #: customers/templates/customers/address_list.html:42
 #: customers/templates/customers/address_list.html:53
 #: customers/templates/customers/address_list.html:64
 msgid "select"
-msgstr ""
+msgstr "sélectionner"
 
 #: customers/templates/customers/base.html:5
 #, fuzzy
 msgid "Customer"
-msgstr "client"
+msgstr "Client"
 
 #: customers/templates/customers/base.html:21
 #, fuzzy
 msgid "New address"
-msgstr "Nouveau message"
+msgstr "Nouvelle adresse"
 
 #: customers/templates/customers/customer_detail.html:8
 msgid "Known as"
-msgstr ""
+msgstr "Identifié comme"
 
 #: customers/templates/customers/customer_detail.html:13
 #: wallets/templates/wallets/base.html:42
@@ -974,7 +1013,7 @@ msgstr "Paramétrage"
 #: mailbox/middleware.py:34
 #, python-format
 msgid "You have received a new message: %s (see Mailbox)."
-msgstr "Vous avez reçu un nouveau message: %s (voir Messages)"
+msgstr "Vous avez reçu un nouveau message: %s (voir Boite de réception)."
 
 #: mailbox/models.py:61
 msgid "owner"
@@ -1000,7 +1039,7 @@ msgstr ""
 #: mailbox/models.py:82
 #, fuzzy
 msgid "replies"
-msgstr "fournisseurs"
+msgstr "réponses"
 
 #: mailbox/models.py:84
 msgid "message"
@@ -1021,7 +1060,7 @@ msgstr "Votre réponse a été envoyé avec succès."
 #: mailbox/templates/mailbox/base.html:10
 #: mailbox/templates/mailbox/message_list.html:5 templates/nav.html:27
 msgid "Mailbox"
-msgstr "Message"
+msgstr "Boite de réception"
 
 #: mailbox/templates/mailbox/base.html:18
 #: mailbox/templates/mailbox/new_message.html:6
@@ -1072,7 +1111,7 @@ msgstr "Corps"
 #: mailbox/templates/mailbox/message_detail.html:28
 #, fuzzy
 msgid "Replies"
-msgstr "fournisseurs"
+msgstr "Réponses"
 
 #: mailbox/templates/mailbox/message_detail.html:32
 msgid "Participant"
@@ -1197,12 +1236,12 @@ msgstr "Validé"
 
 #: suppliers/templates/suppliers/catalog.html:10
 msgid "Catalog"
-msgstr ""
+msgstr "Catalogue"
 
 #: suppliers/templates/suppliers/catalog.html:37
 #, fuzzy
 msgid "Our suppliers products"
-msgstr "URL du produit chez le fournisseur"
+msgstr "Les produits de nos fournisseurs"
 
 #: templates/footer.html:7
 msgid "Under"
@@ -1301,7 +1340,7 @@ msgid ""
 "validation as soon as possible. If you made any mistakes, it is still "
 "possible to undo (see Credit histories)."
 msgstr ""
-"Votre requête d'apporvisionnement a été envoyé avec succès. Vous serez "
+"Votre requête d'approvisionnement a été envoyé avec succès. Vous serez "
 "notifié sur sa validation aussi vite que possible. Si il s'agit d'une "
 "erreur, il est toujours temps d'annuler la requête (voir historique)."
 
@@ -1359,7 +1398,7 @@ msgstr "Créditer votre portemonnaie"
 #: wallets/templates/wallets/withdraw_list.html:5
 #, fuzzy
 msgid "Withdraw requests"
-msgstr "Retiré"
+msgstr "Demandes de retraits"
 
 #: wallets/templates/wallets/credit.html:10
 msgid "Credit your wallet"
@@ -1388,7 +1427,7 @@ msgstr "Date de paiement"
 #: wallets/templates/wallets/withdraw_list.html:20
 #, fuzzy
 msgid "cancel"
-msgstr "équilibrer"
+msgstr "annuler"
 
 #: wallets/templates/wallets/history_list.html:10
 msgid "Content type"
@@ -1413,7 +1452,7 @@ msgstr "Solde de votre compte"
 #: wallets/templates/wallets/withdraw.html:10
 #, fuzzy
 msgid "Withdraw from your wallet"
-msgstr "Approvisionner votre portemonnaie"
+msgstr "Retirer de votre portemonnaie"
 
 #~ msgid "Step"
 #~ msgstr "Étape"
@@ -1423,11 +1462,11 @@ msgstr "Approvisionner votre portemonnaie"
 
 #, fuzzy
 #~ msgid "customize"
-#~ msgstr "client"
+#~ msgstr "personnaliser"
 
 #, fuzzy
 #~ msgid "Street"
-#~ msgstr "adresse"
+#~ msgstr "Rue"
 
 #, fuzzy
 #~ msgid "Postal code"
@@ -1435,7 +1474,7 @@ msgstr "Approvisionner votre portemonnaie"
 
 #, fuzzy
 #~ msgid "Country"
-#~ msgstr "pays"
+#~ msgstr "Pays"
 
 #~ msgid "Presentation"
 #~ msgstr "Présentation"
