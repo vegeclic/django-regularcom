@@ -20,13 +20,10 @@
 
 $(function() {
     var sliders = $("#sliders .slider");
-    var initial_percent = parseInt(100/sliders.length);
     var availableTotal = 100;
 
     sliders.each(function() {
-	$(this).siblings().find('.value').text(initial_percent);
-	$(this).siblings('.input_value').val(initial_percent);
-
+	var initial_percent = parseInt($(this).siblings().find('.value').text());
 	var s = $(this);
 
 	$(this).siblings().find('.lock').click(function() {
@@ -34,7 +31,7 @@ $(function() {
 	});
 
 	$(this).empty().slider({
-	    value: parseInt(initial_percent),
+	    value: initial_percent,
 	    min: 0,
 	    max: availableTotal,
 	    range: "max",

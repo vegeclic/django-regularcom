@@ -45,7 +45,7 @@
     {% endfor %}
     {% endcomment %}
 
-    <!-- <h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3> -->
+    {#<h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>#}
 
     {% if wizard.steps.current == '0' %}
       {% with tname="carts/one_slide.html" %}
@@ -63,13 +63,13 @@
 
       <div class="form-group">
 	<div data-toggle="buttons">
-	  <label id="expend_products" class="btn btn-lg btn-danger btn-block tooltip_link" title="{% trans "customize your cart content" %}" data-toggle="collapse" data-target="#display_products">
+	  <label id="expend_products" class="btn btn-lg {% if thematic %}btn-danger{% else %}btn-success active{% endif %} btn-block tooltip_link" title="{% trans "customize your cart content" %}" data-toggle="collapse" data-target="#display_products">
 	    {{ wizard.form.customized }} {{ wizard.form.customized.label }}
 	  </label>
 	</div>
       </div>
 
-      <div class="panel panel-success collapse out" id="display_products">
+      <div class="panel panel-success collapse {% if thematic %}out{% else %}in{% endif %}" id="display_products">
 	<div class="panel-heading"><h4>{% trans "Products" %}</h4></div>
 	<div class="panel-body">
 	  <ul class="media-list">
@@ -85,7 +85,7 @@
     {% elif wizard.steps.current == '1' %}
 
       <div id="sliders">
-        {% for product in wizard.form.selected_products %}
+        {% for product, extent in wizard.form.selected_products.items %}
 	  <div class="form-group">
 	    <label>{{ product }}</label>
 	    <div class="row">
@@ -93,8 +93,8 @@
 		<button type="button" class="btn btn-link tooltip_link lock" data-toggle="button" title="{% trans "lock" %} {{product}}"><i class="glyphicon glyphicon-lock"></i></button>
 	      </div>
               <div class="col-md-9 slider"></div>
-              <div class="col-md-1 value_content"><span class="value">0</span> %</div>
-	      <input type="hidden" name="product_{{ product.id }}" class="input_value" value="0"/>
+              <div class="col-md-1 value_content"><span class="value">{{ extent }}</span> %</div>
+	      <input type="hidden" name="product_{{ product.id }}" class="input_value" value="{{ extent }}"/>
 	    </div>
 	  </div>
 	{% endfor %}

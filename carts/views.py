@@ -174,14 +174,14 @@ class CreateWizard(SessionWizardView):
         # determine the step if not given
         if step is None: step = self.steps.current
 
+        try:
+            thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
+        except models.Thematic.DoesNotExist:
+            thematic = None
+
+        thematic_products = [e.product for e in thematic.thematicextent_set.all()] if thematic else []
+
         if step == '0':
-            try:
-                thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
-            except models.Thematic.DoesNotExist:
-                thematic = None
-
-            thematic_products = []
-
             if thematic:
                 for k, f in [('size', thematic.size),
                              ('frequency', thematic.frequency),
@@ -201,12 +201,7 @@ class CreateWizard(SessionWizardView):
                     if f: form.fields[k].widget.attrs['class'] += ' disabled'
 
                 if thematic.criterias:
-                    print(thematic.criterias.all())
                     form.fields['criterias'].initial = [v.id for v in thematic.criterias.all()]
-
-                # for extent in thematic.thematicextent_set.all():
-
-                thematic_products = [e.product for e in thematic.thematicextent_set.all()]
 
             def products_tree(products, root_product=None, root_only=True):
                 dict_ = {}
@@ -220,10 +215,24 @@ class CreateWizard(SessionWizardView):
             form.products_tree = products_tree(pm.Product.objects.all())
 
         elif step == '1':
-            form.selected_products = []
+            products = []
             for product in pm.Product.objects.all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
-                    form.selected_products.append(product)
+                    products.append(product)
+
+            if not products:
+                raise forms.forms.ValidationError("no product was selected")
+
+            extents = [e.extent for e in thematic.thematicextent_set.all()] if thematic else []
+            print(100, sum(extents), len(products), len(extents))
+            shared_extent = int((100 - sum(extents))/(len(products) - len(extents)))
+
+            form.selected_products = {}
+            for product in products:
+                extent = None
+                if product in thematic_products:
+                    extent = thematic.thematicextent_set.get(product=product)
+                form.selected_products[product] = extent.extent if extent else shared_extent
 
             messages.info(self.request, _('In order to lock a product percent, please check the corresponding checkbox.'))
 
@@ -232,12 +241,26 @@ class CreateWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
         form_data = [form.cleaned_data for form in form_list]
         customized = form_data[0].get('customized', False)
-        products = {}
 
+        try:
+            thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
+        except models.Thematic.DoesNotExist:
+            thematic = None
+
+        thematic_products = [e.product for e in thematic.thematicextent_set.all()] if thematic else []
+
+        products = {}
         if customized:
             for product in pm.Product.objects.all():
                 if ('product_%d' % product.id) in form_list[1].data:
                     products[product] = int(form_list[1].data['product_%d' % product.id])
+        else:
+            if thematic:
+                for e in thematic.thematicextent_set.all():
+                    products[e.product] = e.extent
+
+        if not products:
+            raise forms.ValidationError("no product was selected")
 
         size = form_data[0].get('size')
         frequency = int(form_data[0].get('frequency'))
