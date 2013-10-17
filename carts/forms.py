@@ -176,21 +176,24 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
 
 class CreateForm1(forms.Form):
     size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=0,
-                                  help_text=_('Which size would you like to use for your cart ?'))
+                                  help_text=_('Which size would you like to use for your cart ?'),
+                                  label=_('Size'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
-                                  help_text=_('How often would you like to receive your cart ?'))
+                                  help_text=_('How often would you like to receive your cart ?'),
+                                  label=_('Frequency'))
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=DURATION_DEFAULT,
-                                 help_text=_('How long would you like to receive your cart ?'))
-    start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'))
-    customized = forms.BooleanField(required=False)
-    criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple, queryset=cm.Criteria.objects.all(), required=False, help_text=_('Select as much criterias as you want in your cart.'))
-    # products = forms.MultipleChoiceField(help_text=_('Use CTRL to select several products.'))
-    # criterias = forms.MultipleChoiceField(help_text=_('Use CTRL to select several criterias.'))
+                                 help_text=_('How long would you like to receive your cart ?'),
+                                 label=_('Duration'))
+    start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'),
+                              label=_('Beginning of your subscription'))
+    customized = forms.BooleanField(label=_('Customized'), required=False)
+    criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
+                                               queryset=cm.Criteria.objects.all(),
+                                               required=False, label=_('Criterias'),
+                                               help_text=_('Select as much criterias as you want in your cart.'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['products'].choices = [(product.id, product) for product in pm.Product.objects.all()]
-        # self.fields['criterias'].choices = [(criteria.id, criteria) for criteria in cm.Criteria.objects.all()]
 
         cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
         start = self.fields['start']
@@ -205,8 +208,6 @@ class CreateForm1(forms.Form):
             self.fields[field].widget.attrs['class'] = 'checkbox-select'
 
 class CreateForm2(forms.Form):
-    # extents = forms.MultipleHiddenInput()
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
