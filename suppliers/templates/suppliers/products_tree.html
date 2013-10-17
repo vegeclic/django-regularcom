@@ -1,15 +1,20 @@
 {% load i18n %}
 {% load static %}
 
-<li class="{% if selected_product = product %}active{% endif %}">
-  <a href="{% url "catalog_product_id" product.id %}">{{ product }}</a>
-  {% if products %}
-    <ul class="nav-pills nav-stacked">
-      {% for sub_product, sub_products in products.items %}
-	{% with product=sub_product products=sub_products template_name="suppliers/products_tree.html" %}
-          {% include template_name %}
-	{% endwith %}
-      {% endfor %}
-    </ul>
-  {% endif %}
+<li class="media">
+  <span class="pull-left">
+    <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" style="width:35px; height:35px"/>
+  </span>
+  <div class="media-body">
+    <a class="btn {% if selected_product == product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list_product_id" product.id %}{% else %}{% url "catalog_grid_product_id" product.id %}{% endif %}">{{ product }}</a>
+    {% if products %}
+      <ul class="media-list" style="margin-top:10px">
+	{% for sub_product, sub_products in products.items %}
+	  {% with product=sub_product products=sub_products template_name="suppliers/products_tree.html" %}
+            {% include template_name %}
+	  {% endwith %}
+	{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
 </li>

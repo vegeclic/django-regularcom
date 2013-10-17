@@ -14,16 +14,23 @@
 
     <div class="col-md-5">
       <div class="well sidebar-nav">
-	<ul class="nav-pills nav-stacked">
-	  <li class="{% if not selected_product %}active{% endif %}">
-	    <a href="{% url "catalog" %}">{% trans "All products" %}</a>
-	    <ul class="nav-pills nav-stacked">
-	      {% for product, products in products_tree.items %}
-		{% with product=product products=products %}
-		  {% include "suppliers/products_tree.html" %}
-		{% endwith %}
-	      {% endfor %}
-	    </ul>
+	<ul class="media-list">
+	  <li class="media">
+	    <span class="pull-left">
+	      <img class="media-object img-thumbnail" style="width:35px; height:35px"/>
+	    </span>
+	    <div class="media-body">
+	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list" %}{% else %}{% url "catalog_grid" %}{% endif %}">
+		{% trans "All products" %}
+	      </a>
+	      <ul class="media-list" style="margin-top:10px">
+		{% for product, products in products_tree.items %}
+		  {% with product=product products=products %}
+		    {% include "suppliers/products_tree.html" %}
+		  {% endwith %}
+		{% endfor %}
+	      </ul>
+	    </div>
 	  </li>
 	</ul>
       </div>
@@ -31,22 +38,58 @@
 
     <div class="col-md-7">
       <ul class="nav nav-tabs pull-right">
-	<li class="{% if view == "grid" %}active{% endif %}"><a href="{% url "catalog_grid" %}">{% trans "Grid" %}</a></li>
-	<li class="{% if view == "list" %}active{% endif %}"><a href="{% url "catalog_list" %}">{% trans "List" %}</a></li>
+	{% if view == "grid" %}
+	  <li class="active"><a>{% trans "Grid" %}</a></li>
+	{% else %}
+	  {% if selected_product %}
+	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.number %}">{% trans "Grid" %}</a></li>
+	  {% else %}
+	    <li><a href="{% url "catalog_grid_page" object_list.number %}">{% trans "Grid" %}</a></li>
+	  {% endif %}
+	{% endif %}
+
+	{% if view == "list" %}
+	  <li class="active"><a>{% trans "List" %}</a></li>
+	{% else %}
+	  {% if selected_product %}
+	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.number %}">{% trans "List" %}</a></li>
+	  {% else %}
+	    <li><a href="{% url "catalog_list_page" object_list.number %}">{% trans "List" %}</a></li>
+	  {% endif %}
+	{% endif %}
       </ul>
 
       <h2>{% trans "Our suppliers products" %}</h2>
 
-      {% with product_path=product_path selected_product=selected_product %}
+      {% with product_path=product_path selected_product=selected_product view=view %}
 	{% include "suppliers/product_path.html" %}
       {% endwith %}
 
-      {% with object_list=object_list selected_product=selected_product %}
+      {% with object_list=object_list selected_product=selected_product view=view %}
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
       {% if view == "list" %}
-	<div></div>
+	<div>
+	  {% for product in object_list|dictsortreversed:"date_created" %}
+	    <div style="margin-bottom:60px;">
+	      <div class="panel panel-default">
+		<div class="panel-heading"><h4>{{product.name}}</h4></div>
+		<div class="panel-body">
+		  <div class="media">
+		    <a class="pull-left" href="#{{product.id}}">
+		      <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:90px"/>
+		    </a>
+		    <div class="media-body">
+		      {{product.body|truncatewords:45}} <a href="#">{% trans "more" %}</a>
+		    </div>
+		  </div>
+		</div>
+		<div class="panel-footer pull-right">{{product.price}}</div>
+	      </div>
+	    </div>
+	  {% endfor %}
+	</div>
       {% else %}
 	<div class="row">
 	  {% for product in object_list|dictsortreversed:"date_created" %}
@@ -54,8 +97,9 @@
 	      <div class="panel panel-default">
 		<div class="panel-heading" style="height: 100px"><h4>{{product.name}}</h4></div>
 		<div class="panel-body">
-		  <a href="#{{product.id}}"><img class="" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:170px; height:160px"/></a>
-		  <!-- <div class="pull-right"><span class="badge">{{product.price}}</span></div> -->
+		  <a href="#{{product.id}}">
+		    <img src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:170px; height:160px"/>
+		  </a>
 		</div>
 		<div class="panel-footer pull-right">{{product.price}}</div>
 	      </div>
@@ -64,11 +108,11 @@
 	</div>
       {% endif %}
 
-      {% with object_list=object_list selected_product=selected_product %}
+      {% with object_list=object_list selected_product=selected_product view=view %}
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
-      {% with product_path=product_path selected_product=selected_product %}
+      {% with product_path=product_path selected_product=selected_product view=view %}
 	{% include "suppliers/product_path.html" %}
       {% endwith %}
 
