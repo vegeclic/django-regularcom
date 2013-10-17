@@ -22,8 +22,8 @@ from django.views.generic import TemplateView, DetailView, ListView
 from . import views, models, forms
 
 urlpatterns = patterns('suppliers.views',
-                       url(r'^catalog/all/$', views.CatalogView.as_view(), name='catalog'),
-                       url(r'^catalog/all/page/(?P<page>\d+)/$', views.CatalogView.as_view(), name='catalog_page'),
+                       url(r'^catalog/$', views.CatalogView.as_view(), name='catalog'),
+                       url(r'^catalog/page/(?P<page>\d+)/$', views.CatalogView.as_view(), name='catalog_page'),
                        url(r'^catalog/(?P<product_id>\d+)/$', views.CatalogView.as_view(), name='catalog_product_id'),
                        url(r'^catalog/(?P<product_id>\d+)/page/(?P<page>\d+)/$', views.CatalogView.as_view(), name='catalog_product_id_page'),
 )
