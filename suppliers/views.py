@@ -70,6 +70,7 @@ class CatalogView(generic.ListView):
 
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
+            product_list += self.model.objects.filter(product__id=self.kwargs.get('product_id'))
             product_list += get_suppliers_products(root_product)
         else:
             product_list += self.model.objects.all()
