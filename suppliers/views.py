@@ -90,9 +90,32 @@ class CatalogView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
         context['products_tree'] = get_products_tree(pm.Product.objects.all())
+
         if self.kwargs.get('product_id'):
             context['selected_product'] = pm.Product.objects.get(id=self.kwargs.get('product_id'))
+
+            def get_product_path(products_tree, product_pattern, path=()):
+                for product, products in products_tree.items():
+                    if product == product_pattern: return path+(product,)
+                    res = get_product_path(products, product_pattern, path+(product,))
+                    if res: return res
+                return None
+
+            context['product_path'] = get_product_path(context['products_tree'], context['selected_product'])
+
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
+
+class CatalogGridView(CatalogView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['view'] = 'grid'
+        return context
+
+class CatalogListView(CatalogView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['view'] = 'list'
+        return context

@@ -30,29 +30,46 @@
     </div>
 
     <div class="col-md-7">
+      <ul class="nav nav-tabs pull-right">
+	<li class="{% if view == "grid" %}active{% endif %}"><a href="{% url "catalog_grid" %}">{% trans "Grid" %}</a></li>
+	<li class="{% if view == "list" %}active{% endif %}"><a href="{% url "catalog_list" %}">{% trans "List" %}</a></li>
+      </ul>
+
       <h2>{% trans "Our suppliers products" %}</h2>
+
+      {% with product_path=product_path selected_product=selected_product %}
+	{% include "suppliers/product_path.html" %}
+      {% endwith %}
 
       {% with object_list=object_list selected_product=selected_product %}
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
-      <div class="row">
-	{% for product in object_list|dictsortreversed:"date_created" %}
-	  <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
-	    <div class="panel panel-default">
-	      <div class="panel-heading" style="height: 100px"><h4>{{product.name}}</h4></div>
-	      <div class="panel-body">
-		<a href="#{{product.id}}"><img class="" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:170px; height:160px"/></a>
-		<!-- <div class="pull-right"><span class="badge">{{product.price}}</span></div> -->
+      {% if view == "list" %}
+	<div></div>
+      {% else %}
+	<div class="row">
+	  {% for product in object_list|dictsortreversed:"date_created" %}
+	    <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
+	      <div class="panel panel-default">
+		<div class="panel-heading" style="height: 100px"><h4>{{product.name}}</h4></div>
+		<div class="panel-body">
+		  <a href="#{{product.id}}"><img class="" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:170px; height:160px"/></a>
+		  <!-- <div class="pull-right"><span class="badge">{{product.price}}</span></div> -->
+		</div>
+		<div class="panel-footer pull-right">{{product.price}}</div>
 	      </div>
-	      <div class="panel-footer pull-right">{{product.price}}</div>
 	    </div>
-	  </div>
-	{% endfor %}
-      </div>
+	  {% endfor %}
+	</div>
+      {% endif %}
 
       {% with object_list=object_list selected_product=selected_product %}
 	{% include "suppliers/pagination.html" %}
+      {% endwith %}
+
+      {% with product_path=product_path selected_product=selected_product %}
+	{% include "suppliers/product_path.html" %}
       {% endwith %}
 
     </div>
