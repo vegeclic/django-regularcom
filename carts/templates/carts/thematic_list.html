@@ -8,11 +8,15 @@
   <div class="row">
     {% for thematic in object_list|dictsortreversed:"date_created" %}
     <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
-      <div class="thumbnail">
-	<a href="{% url "create_thematic_id" thematic.pk %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px"/></a>
-	<div class="caption">
-	  <h3>{{thematic.name}}</h3>
-	  <p style="text-align: justify">{{thematic.body}}</p>
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3>{{thematic.name}}</h3></div>
+	<div class="panel-body text-center">
+	  <a href="{% url "create_thematic_id" thematic.pk %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px"/></a>
+	</div>
+	<div class="panel-body" style="height:100px; vertical-align:top; text-align: justify">
+	  {{thematic.body}}
+	</div>
+	<div class="panel-footer">
 	  <div class="form-group">
 	    <a href="{% url "create_thematic_id" thematic.pk %}" class="btn btn-primary btn-block">{% trans "Create" %}</a>
 	  </div>
