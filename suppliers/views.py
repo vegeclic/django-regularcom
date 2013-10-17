@@ -55,7 +55,7 @@ class CatalogView(generic.ListView):
 
         def find_product(products_tree, product_pattern):
             for product, products in products_tree.items():
-                if product.id == int(product_pattern): return products
+                if product.id == int(product_pattern): return {product: products}
                 res = find_product(products, product_pattern)
                 if res: return res
             return None
@@ -64,27 +64,24 @@ class CatalogView(generic.ListView):
             if not products_tree: return []
             product_list = []
             for product, products in products_tree.items():
-                product_list += self.model.objects.filter(product=product)
+                product_list += self.model.objects.language('fr').filter(product=product)
                 product_list += get_suppliers_products(products)
             return product_list
 
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
-            product_list += self.model.objects.filter(product__id=self.kwargs.get('product_id'))
             product_list += get_suppliers_products(root_product)
         else:
-            product_list += self.model.objects.all()
+            product_list += self.model.objects.language('fr').all()
 
-        paginator = Paginator(product_list, 24) # Show 24 products per page
+        paginator = Paginator(product_list, 24)
 
         page = self.kwargs.get('page')
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
             products = paginator.page(1)
         except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
             products = paginator.page(paginator.num_pages)
 
         return products
