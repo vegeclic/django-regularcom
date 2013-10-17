@@ -32,6 +32,10 @@
     <div class="col-md-7">
       <h2>{% trans "Our suppliers products" %}</h2>
 
+      {% with object_list=object_list selected_product=selected_product %}
+	{% include "suppliers/pagination.html" %}
+      {% endwith %}
+
       <div class="row">
 	{% for product in object_list|dictsortreversed:"date_created" %}
 	  <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
@@ -46,13 +50,10 @@
 	{% endfor %}
       </div>
 
-      <div class="text-center">
-	<ul class="pagination">
-	  <li class="disabled"><a href="#">«</a></li>
-	  <li class="active"><a href="#">1</a></li>
-	  <li class="disabled"><a href="#">»</a></li>
-	</ul>
-      </div>
+      {% with object_list=object_list selected_product=selected_product %}
+	{% include "suppliers/pagination.html" %}
+      {% endwith %}
+
     </div>
 
   </div> <!--/.row-fluid -->

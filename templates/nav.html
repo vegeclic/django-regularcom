@@ -25,6 +25,7 @@
 	    <li {% if section == 'wallet' %}class="active"{% endif %}><a href="{% url 'balance' %}"><i class="glyphicon glyphicon-briefcase"></i> {% trans "Wallet" %} <span class="badge">{{wallet.balance_in_target_currency|floatformat}} {{wallet.target_currency.symbol}}</span></a></li>
 	    <li {% if section == 'mailbox' %}class="active"{% endif %}><a href="{% url 'messages' %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<span class="badge">{{nb_messages}}</span>{% endif %}</a></li>
 	    <li {% if section == 'customers' %}class="active"{% endif %}><a href="{% url 'profile' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Profile" %}</a></li>
+	    <li {% if section == 'catalog' %}class="active"{% endif %}><a href="{% url 'catalog' %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Catalog" %}</a></li>
 	    <li {% if section == 'logout' %}class="active"{% endif %}><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i> {% trans "Logout" %}</a></li>
 	  {% else %}
 	    <li {% if section == 'login' %}class="active"{% endif %}><a href="{% url 'login' %}"><i class="glyphicon glyphicon-lock"></i> {% trans "Login" %}</a></li>

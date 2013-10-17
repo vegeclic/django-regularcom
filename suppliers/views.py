@@ -35,13 +35,46 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import numpy as np
 
+def get_products_tree(products, root_product=None, root_only=True):
+    dict_ = {}
+    for product in products:
+        if product == root_product: continue
+        if product.status != 'p': continue
+        if not product.products_parent.all() or not root_only:
+            dict_[product] = get_products_tree(product.products_children.all(), root_product=product, root_only=False)
+    return dict_
+
 class CatalogView(generic.ListView):
     model = models.Product
     template_name = 'suppliers/catalog.html'
 
     def get_queryset(self):
-        product_list = self.model.objects.filter(product=self.kwargs.get('product_id')) if self.kwargs.get('product_id') else self.model.objects.all()
-        paginator = Paginator(product_list, 25) # Show 25 contacts per page
+        products_tree = get_products_tree(pm.Product.objects.all())
+
+        product_list = []
+
+        def find_product(products_tree, product_pattern):
+            for product, products in products_tree.items():
+                if product.id == int(product_pattern): return products
+                res = find_product(products, product_pattern)
+                if res: return res
+            return None
+
+        def get_suppliers_products(products_tree):
+            if not products_tree: return []
+            product_list = []
+            for product, products in products_tree.items():
+                product_list += self.model.objects.filter(product=product)
+                product_list += get_suppliers_products(products)
+            return product_list
+
+        if self.kwargs.get('product_id'):
+            root_product = find_product(products_tree, self.kwargs.get('product_id'))
+            product_list += get_suppliers_products(root_product)
+        else:
+            product_list += self.model.objects.all()
+
+        paginator = Paginator(product_list, 24) # Show 24 products per page
 
         page = self.kwargs.get('page')
         try:
@@ -56,18 +89,9 @@ class CatalogView(generic.ListView):
         return products
 
     def get_context_data(self, **kwargs):
-        def products_tree(products, root_product=None, root_only=True):
-            dict_ = {}
-            for product in products:
-                if product == root_product: continue
-                if product.status != 'p': continue
-                if not product.products_parent.all() or not root_only:
-                    dict_[product] = products_tree(product.products_children.all(), root_product=product, root_only=False)
-            return dict_
-
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
-        context['products_tree'] = products_tree(pm.Product.objects.all())
+        context['products_tree'] = get_products_tree(pm.Product.objects.all())
         if self.kwargs.get('product_id'):
             context['selected_product'] = pm.Product.objects.get(id=self.kwargs.get('product_id'))
         return context
