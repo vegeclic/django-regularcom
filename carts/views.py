@@ -214,6 +214,8 @@ class CreateWizard(SessionWizardView):
 
             form.products_tree = products_tree(pm.Product.objects.all())
 
+            if not thematic: form.fields['customized'].initial = True
+
         elif step == '1':
             products = []
             for product in pm.Product.objects.all():
@@ -224,8 +226,7 @@ class CreateWizard(SessionWizardView):
                 raise forms.forms.ValidationError("no product was selected")
 
             extents = [e.extent for e in thematic.thematicextent_set.all()] if thematic else []
-            print(100, sum(extents), len(products), len(extents))
-            shared_extent = int((100 - sum(extents))/(len(products) - len(extents)))
+            shared_extent = int((100 - sum(extents))/(len(products) - len(extents))) if (len(products) - len(extents)) else 0
 
             form.selected_products = {}
             for product in products:
@@ -260,7 +261,7 @@ class CreateWizard(SessionWizardView):
                     products[e.product] = e.extent
 
         if not products:
-            raise forms.ValidationError("no product was selected")
+            raise forms.forms.ValidationError("no product was selected")
 
         size = form_data[0].get('size')
         frequency = int(form_data[0].get('frequency'))

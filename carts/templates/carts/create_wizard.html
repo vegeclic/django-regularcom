@@ -11,30 +11,6 @@
 {% block sub_content %}
   <h2>{% if thematic %}{% trans "Create a thematic cart" %}{% else %}{% trans "Create a custom cart" %}{% endif %}</h2>
 
-  <div class="media alert alert-info">
-    {% if thematic %}
-      <div class="pull-left">
-	<img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px; display: block;"/>
-      </div>
-    {% endif %}
-
-    <div class="body">
-      {% if thematic %}
-	{% blocktrans with name=thematic.name %}
-	  <h4>Ready to create your new {{name}} thematic cart ?</h4>
-	{% endblocktrans %}
-      {% else %}
-	{% blocktrans %}
-	  <h4>Ready to create your new custom cart ?</h4>
-	{% endblocktrans %}
-      {% endif %}
-
-      {% blocktrans %}
-	<p>Be free to choice below the size of your cart as well as its frequency and duration. You can even push the beginning week of your subscription to your convenience.</p>
-      {% endblocktrans %}
-    </div>
-  </div>
-
   <form role="form" class="" method="post" action="{% if thematic %}{% url "create_thematic_id" thematic.pk %}{% else %}{% url "create_custom" %}{% endif %}">
     {% csrf_token %}
 
@@ -48,6 +24,30 @@
     {#<h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>#}
 
     {% if wizard.steps.current == '0' %}
+      <div class="media alert alert-info">
+	{% if thematic %}
+	  <div class="pull-left">
+	    <img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px; display: block;"/>
+	  </div>
+	{% endif %}
+
+	<div class="body">
+	  {% if thematic %}
+	    {% blocktrans with name=thematic.name %}
+	      <h4>Ready to create your new {{name}} thematic cart ?</h4>
+	    {% endblocktrans %}
+	  {% else %}
+	    {% blocktrans %}
+	      <h4>Ready to create your new custom cart ?</h4>
+	    {% endblocktrans %}
+	  {% endif %}
+
+	  {% blocktrans %}
+	    <p>Be free to choice below the size of your cart as well as its frequency and duration. You can even push the beginning week of your subscription to your convenience.</p>
+	  {% endblocktrans %}
+	</div>
+      </div>
+
       {% with tname="carts/one_slide.html" %}
 	{% with id="0-size" field=wizard.form.size style="success" %}{% include tname %}{% endwith %}
 	{% with id="0-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
@@ -69,9 +69,19 @@
 	</div>
       </div>
 
+      <div class="alert alert-info">
+	Vous pouvez personnaliser votre abonnement en choisissant des catégories ou sous-catégories de produits que vous souhaiteriez retrouver dans vos paniers, ainsi que d'indiquer divers critères pour finaliser votre panier.
+      </div>
+
       <div class="panel panel-success collapse {% if thematic %}out{% else %}in{% endif %}" id="display_products">
 	<div class="panel-heading"><h4>{% trans "Products" %}</h4></div>
 	<div class="panel-body">
+	  <div class="alert alert-info">
+	    Pour choisir un produit cliquez simplement sur « ajouter ». Après validation, vous serrez invité à définir les proportions de chacun de vos produits.
+	    Il vous est possible d'affiner votre sélection en dépliant les produits « parents ».
+	    Une liste de sous-produits apparaîtra, il vous suffira alors d'ajouter ceux que vous souhaitez.
+	  </div>
+
 	  <ul class="media-list">
 	    {% for product, products in wizard.form.products_tree.items %}
 	      {% with product=product.0 selected=product.1 products=products %}
@@ -83,6 +93,30 @@
       </div>
 
     {% elif wizard.steps.current == '1' %}
+
+      <div class="media alert alert-info">
+	{% if thematic %}
+	  <div class="pull-left">
+	    <img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px; display: block;"/>
+	  </div>
+	{% endif %}
+
+	<div class="body">
+	  {% if thematic %}
+	    {% blocktrans with name=thematic.name %}
+	      <h4>Ready to create your new {{name}} thematic cart ?</h4>
+	    {% endblocktrans %}
+	  {% else %}
+	    {% blocktrans %}
+	      <h4>Ready to create your new custom cart ?</h4>
+	    {% endblocktrans %}
+	  {% endif %}
+
+	  {% blocktrans %}
+	    <p>Vous pouvez maintenant déterminer la proportion souhaitée pour chaque produit en déplaçant les jauges respectives. Pour verrouiller ou déverrouiller une jauge, cliquez sur le l'icone du verrou correspondant. Pour équilibrer les jauges, cliquez sur « équilibrer ». Une fois les proportions déterminées, vous pouvez finaliser la création de votre abonnement en cliquant sur « Confirmer ».</p>
+	  {% endblocktrans %}
+	</div>
+      </div>
 
       <div id="sliders">
         {% for product, extent in wizard.form.selected_products.items %}
