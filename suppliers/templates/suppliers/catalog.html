@@ -11,6 +11,7 @@
 
 {% block content %}
   <div class="row">
+
     <div class="col-md-5">
       <div class="well sidebar-nav">
 	<ul class="nav-pills nav-stacked">
@@ -35,7 +36,7 @@
 	{% for product in object_list|dictsortreversed:"date_created" %}
 	  <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
 	    <div class="thumbnail">
-	      <a href="#"><img class="img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:200px; height:160px"/></a>
+	      <a href="#{{product.id}}"><img class="img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:200px; height:160px"/></a>
 	      <div class="caption">
 		<h4>{{product.name}}</h4>
 		{#<p style="text-align: justify">{{product.body}}</p>#}
@@ -44,6 +45,15 @@
 	  </div>
 	{% endfor %}
       </div>
+
+      <div class="text-center">
+	<ul class="pagination">
+	  <li class="disabled"><a href="#">«</a></li>
+	  <li class="active"><a href="#">1</a></li>
+	  <li class="disabled"><a href="#">»</a></li>
+	</ul>
+      </div>
     </div>
+
   </div> <!--/.row-fluid -->
 {% endblock %}

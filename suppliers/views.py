@@ -26,6 +26,7 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -39,7 +40,20 @@ class CatalogView(generic.ListView):
     template_name = 'suppliers/catalog.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(product=self.kwargs.get('product_id')) if self.kwargs.get('product_id') else self.model.objects.all()
+        product_list = self.model.objects.filter(product=self.kwargs.get('product_id')) if self.kwargs.get('product_id') else self.model.objects.all()
+        paginator = Paginator(product_list, 25) # Show 25 contacts per page
+
+        page = self.kwargs.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            products = paginator.page(paginator.num_pages)
+
+        return products
 
     def get_context_data(self, **kwargs):
         def products_tree(products, root_product=None, root_only=True):
