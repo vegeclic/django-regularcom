@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -49,7 +50,8 @@ class CatalogView(generic.ListView):
     template_name = 'suppliers/catalog.html'
 
     def get_queryset(self):
-        products_tree = get_products_tree(pm.Product.objects.all())
+        products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
+        if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         product_list = []
 
@@ -89,7 +91,9 @@ class CatalogView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
-        context['products_tree'] = get_products_tree(pm.Product.objects.all())
+
+        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
+        if not cache.get('products_tree'): cache.set('products_tree', context['products_tree'])
 
         if self.kwargs.get('product_id'):
             context['selected_product'] = pm.Product.objects.get(id=self.kwargs.get('product_id'))
@@ -105,7 +109,7 @@ class CatalogView(generic.ListView):
 
         return context
 
-    @method_decorator(login_required)
+    # @method_decorator(login_required)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class CatalogGridView(CatalogView):
