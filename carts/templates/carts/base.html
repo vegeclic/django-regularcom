@@ -4,7 +4,7 @@
 
 {% block head %}
   <link rel="stylesheet" href="{% static "carts/css/styles.css" %}" />
-  <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
+  {% block sub_head %}{% endblock %}
 {% endblock %}
 
 {% block page_title %}{% trans "Cart" %}{% endblock %}

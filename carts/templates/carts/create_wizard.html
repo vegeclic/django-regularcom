@@ -8,6 +8,10 @@
 {% endblock %}
 {% endcomment %}
 
+{% block sub_head %}
+  <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
+{% endblock %}
+
 {% block sub_content %}
   <h2>{% if thematic %}{% trans "Create a thematic cart" %}{% else %}{% trans "Create a custom cart" %}{% endif %}</h2>
 
