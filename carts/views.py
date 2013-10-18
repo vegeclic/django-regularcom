@@ -40,7 +40,7 @@ class ThematicListView(generic.ListView):
 
     def get_queryset(self):
         object_list = cache.get('thematic_list') or self.model.objects.all()
-        if not cache.get('thematic_list'): cache.set(object_list)
+        if not cache.get('thematic_list'): cache.set('thematic_list', object_list)
         return object_list
 
     def get_context_data(self, **kwargs):
