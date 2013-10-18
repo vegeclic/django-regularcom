@@ -4,11 +4,7 @@
   {% if not selected_product %}
     <li class="active">{% trans "All products" %}</li>
   {% else %}
-    {% if view == "list" %}
-      <li><a href="{% url "catalog_list" %}">{% trans "All products" %}</a></li>
-    {% else %}
-      <li><a href="{% url "catalog_grid" %}">{% trans "All products" %}</a></li>
-    {% endif %}
+    <li><a href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a></li>
   {% endif %}
 
   {% for product in product_path %}
@@ -16,9 +12,9 @@
       <li class="active">{{product}}</li>
     {% else %}
       {% if view == "list" %}
-	<li class="active"><a href="{% url "catalog_list_product_id" product.id %}">{{product}}</a></li>
+	<li class="active"><a href="{% url "catalog_list_product_id_page" product.id 1 %}">{{product}}</a></li>
       {% else %}
-	<li class="active"><a href="{% url "catalog_grid_product_id" product.id %}">{{product}}</a></li>
+	<li class="active"><a href="{% url "catalog_grid_product_id_page" product.id 1 %}">{{product}}</a></li>
       {% endif %}
     {% endif %}
   {% endfor %}

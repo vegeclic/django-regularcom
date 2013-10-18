@@ -21,10 +21,12 @@ from django.http import HttpResponse
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.views.decorators.cache import never_cache
 from . import models
 import customers.models as cm
 
 class WalletMiddleware(object):
+    # @never_cache
     def process_template_response(self, request, response):
         if not request.user.is_authenticated(): return response
         wallet = models.Wallet.objects.get(customer__account=request.user)

@@ -20,7 +20,7 @@
 	      <img class="media-object img-thumbnail" style="width:35px; height:35px"/>
 	    </span>
 	    <div class="media-body">
-	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list" %}{% else %}{% url "catalog_grid" %}{% endif %}">
+	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">
 		{% trans "All products" %}
 	      </a>
 	      <ul class="media-list" style="margin-top:10px">
