@@ -216,7 +216,8 @@ class CreateWizard(SessionWizardView):
                         dict_[(product, product in thematic_products)] = products_tree(product.products_children.all(), root_product=product, root_only=False)
                 return dict_
 
-            form.products_tree = products_tree(pm.Product.objects.all())
+            form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.all())
+            if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
 
             if not thematic: form.fields['customized'].initial = True
 
