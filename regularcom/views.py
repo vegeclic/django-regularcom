@@ -20,7 +20,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
-# from models import *
+import carts.models as cm
 
 class HomeView(generic.TemplateView):
     template_name = 'home.html'
@@ -28,4 +28,5 @@ class HomeView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         context['section'] = 'home'
+        context['thematics'] = cm.Thematic.objects.all()
         return context

@@ -66,7 +66,7 @@ STATUS_CHOICES = (
 
 class Credit(models.Model):
     wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
-    payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c')
+    payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c', help_text=_('Select your payment type. For cheque and bank transfer, your wallet will be credited once received.'))
     amount = models.FloatField(_('amount'), default=0)
     currency = models.ForeignKey('common.Currency', verbose_name=_('currency'))
     payment_date = models.DateField(_('payment date'), null=True, blank=True, help_text=_('This field may only be fullfilled for cheque payment.'))
@@ -89,7 +89,7 @@ class Credit(models.Model):
 
 class Withdraw(models.Model):
     wallet = models.ForeignKey(Wallet, verbose_name=_('wallet'))
-    payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c')
+    payment_type = models.CharField(_('payment type'), max_length=1, choices=PAYMENT_TYPES, default='c', help_text=_('Select your payment type.'))
     amount = models.FloatField(_('amount'), default=0)
     currency = models.ForeignKey('common.Currency', verbose_name=_('currency'))
     date_created = models.DateTimeField(auto_now_add=True)

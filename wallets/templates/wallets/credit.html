@@ -20,13 +20,22 @@
 	  </div>
 	</div>
       </div>
+      <br/>
+      <div class="alert alert-info">
+	<span class="helptext">
+	  Choisissez le montant dont vous souhaitez créditer votre compte ou indiquer la somme de votre choix.
+	</span>
+      </div>
     </div>
 
     <div class="form-group well">
       {{ form.payment_type.label_tag }}
       {{ form.payment_type }}
       {% if form.payment_type.help_text %}
-	<span class="helptext">{{ form.payment_type.help_text }}</span>
+	<br/>
+	<div class="alert alert-info">
+	  <span class="helptext">{{ form.payment_type.help_text }}</span>
+	</div>
       {% endif %}
     </div>
 
@@ -34,7 +43,10 @@
       {{ form.payment_date.label_tag }}
       {{ form.payment_date }}
       {% if form.payment_date.help_text %}
-	<span class="helptext">{{ form.payment_date.help_text }}</span>
+	<br/>
+	<div class="alert alert-info">
+	  <span class="helptext">{{ form.payment_date.help_text }}</span>
+	</div>
       {% endif %}
     </div>
 

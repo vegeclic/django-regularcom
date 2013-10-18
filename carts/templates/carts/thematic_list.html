@@ -5,6 +5,10 @@
 {% block sub_content %}
   <h2>{% trans "Our thematic carts" %}</h2>
 
+  <div class="alert alert-info">
+    Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> ».
+  </div>
+
   <div class="row">
     {% for thematic in object_list|dictsortreversed:"date_created" %}
     <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">

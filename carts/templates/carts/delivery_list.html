@@ -17,9 +17,18 @@
     <div class="well text-center">
       <canvas id="myChart" width="700px" height="400px"></canvas>
     </div>
-
-    <br/>
   {% endif %}
+
+  <div class="alert alert-info">
+    Veuillez trouver ci-dessous l'échéancier des livraisons pour la durée d'abonnement choisie, indiquant la dégressivité des prix.
+  </div>
+
+  <div class="well">
+    Pour que vos paniers soient bien préparés et livrés, il vous faut les valider en procédant à leur paiement au plus tard à J-10 de la date d'envoi du colis.
+Pour cela, rendez-vous sur la partie « <a href="{% url "credit" %}">portemonnaie</a> » afin de créditer votre compte.
+Une fois cela effectué, vous pouvez valider votre panier (ou plusieurs en avance) en cliquant sur le symbole à gauche du (des) panier(s) concerné(s).
+Attention cette étape valide définitivement la création de ce(s) panier(s), vous ne pourrez plus les annuler.
+  </div>
 
   <table class="table table-bordered table-hover">
     <thead>
