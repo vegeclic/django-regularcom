@@ -26,6 +26,7 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.cache import cache
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -37,7 +38,10 @@ import numpy as np
 class ThematicListView(generic.ListView):
     model = models.Thematic
 
-    def get_queryset(self): return self.model.objects.all()
+    def get_queryset(self):
+        object_list = cache.get('thematic_list') or self.model.objects.all()
+        if not cache.get('thematic_list'): cache.set(object_list)
+        return object_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
