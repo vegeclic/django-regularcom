@@ -23,7 +23,6 @@
     <input type="hidden" class="value" name="product_{{product.id}}" value="{% if selected %}1{% else %}0{% endif %}"/>
     <button type="button" class="btn tooltip_link add_link {% if selected %}btn-success active{% else %}btn-link{% endif %}" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
     <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
-    {# <label><input type="checkbox" name="product_{{product.id}}"/> {% trans "add" %}</label> #}
     </div>
 
     <!-- Modal -->

@@ -37,9 +37,9 @@ class MailboxMiddleware(object):
                 msg.save()
         return None
 
-    # @never_cache
     def process_template_response(self, request, response):
         if not request.user.is_authenticated(): return response
-        msgs = models.Message.objects.filter(participants__account=request.user).exclude(participants_read__account=request.user)
-        if len(msgs): response.context_data['nb_messages'] = len(msgs)
+        if 'context_data' in dir(response):
+            msgs = models.Message.objects.filter(participants__account=request.user).exclude(participants_read__account=request.user)
+            if len(msgs): response.context_data['nb_messages'] = len(msgs)
         return response

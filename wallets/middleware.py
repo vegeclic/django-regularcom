@@ -29,8 +29,9 @@ class WalletMiddleware(object):
     # @never_cache
     def process_template_response(self, request, response):
         if not request.user.is_authenticated(): return response
-        wallet = models.Wallet.objects.get(customer__account=request.user)
-        response.context_data['wallet'] = wallet
-        response.context_data['nb_credit_in_waiting'] = len(wallet.credit_set.filter(status='w').all())
-        response.context_data['nb_withdraw_in_waiting'] = len(wallet.withdraw_set.filter(status='w').all())
+        if 'context_data' in dir(response):
+            wallet = models.Wallet.objects.get(customer__account=request.user)
+            response.context_data['wallet'] = wallet
+            response.context_data['nb_credit_in_waiting'] = len(wallet.credit_set.filter(status='w').all())
+            response.context_data['nb_withdraw_in_waiting'] = len(wallet.withdraw_set.filter(status='w').all())
         return response
