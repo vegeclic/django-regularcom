@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load cache %}
 
 {% block head %}
   {#<link rel="stylesheet" href="{% static "suppliers/css/styles.css" %}" />#}
@@ -12,6 +13,7 @@
 {% block content %}
   <div class="row">
 
+    {% cache 3600 catalog_sidebar %}
     <div class="col-md-5">
       <div class="well sidebar-nav">
 	<ul class="media-list">
@@ -35,6 +37,7 @@
 	</ul>
       </div>
     </div>
+    {% endcache %}
 
     <div class="col-md-7">
       <ul class="nav nav-tabs pull-right">
