@@ -72,44 +72,81 @@
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
-      {% if view == "list" %}
-	<div>
-	  {% for product in object_list|dictsortreversed:"date_created" %}
-	    <div style="margin-bottom:60px;">
+      <div class="{% if view == "grid" %}row{% endif %}">
+	{% for product in object_list|dictsortreversed:"date_created" %}
+	  {% if view == "list" %}
+	    <div style="margin-bottom:80px;">
 	      <div class="panel panel-default">
-		<div class="panel-heading"><h4>{{product.name}}</h4></div>
+		<div class="panel-heading"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="{% trans "read more about" %} {{product}}"><h4>{{product.name}}</h4></a></div>
 		<div class="panel-body">
 		  <div class="media">
-		    <a class="pull-left" href="#{{product.id}}">
-		      <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:90px"/>
+		    <a class="pull-left" href="#modal_{{product.id}}" role="button" data-toggle="modal">
+		      <img class="media-object img-thumbnail tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{% trans "read more about" %} {{product}}" style="width:90px"/>
 		    </a>
 		    <div class="media-body">
-		      {{product.body|truncatewords:45}} <a href="#">{% trans "more" %}</a>
+		      {{product.body|truncatewords:45}}
 		    </div>
 		  </div>
 		</div>
-		<div class="panel-footer pull-right">{{product.price}}</div>
+		<div class="panel-footer pull-right">
+		  <span>{{product.price}}</span>
+		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
+		</div>
 	      </div>
 	    </div>
-	  {% endfor %}
-	</div>
-      {% else %}
-	<div class="row">
-	  {% for product in object_list|dictsortreversed:"date_created" %}
+	  {% else %}
 	    <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
 	      <div class="panel panel-default">
-		<div class="panel-heading" style="height: 100px"><h4>{{product.name}}</h4></div>
+		<div class="panel-heading" style="height: 80px"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="{% trans "read more about" %} {{product}}"><h4>{{product.name}}</h4></a></div>
 		<div class="panel-body">
-		  <a href="#{{product.id}}">
-		    <img src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:170px; height:160px"/>
+		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal">
+		    <img class="tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{% trans "read more about" %} {{product}}" style="width:170px; height:160px"/>
 		  </a>
 		</div>
-		<div class="panel-footer pull-right">{{product.price}}</div>
+		<div class="panel-footer pull-right">
+		  <span>{{product.price}}</span>
+		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
+		</div>
 	      </div>
 	    </div>
-	  {% endfor %}
-	</div>
-      {% endif %}
+	  {% endif %}
+
+	  <!-- Modal -->
+	  <div id="modal_{{product.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_{{product.id}}_label" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		  <h2 id="modal_{{product.id}}_label">{{product.name}}</h2>
+		</div>
+		<div class="modal-body">
+		  <a class="pull-right" href="#">
+		    <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="128x128" style="width: 128px; height: 128px; margin-left: 20px; margin-bottom: 20px"/>
+		  </a>
+
+		  {% comment %}
+		  <h4>Status</h4>
+		  <p>{{product.get_status_display}}</p>
+		  {% endcomment %}
+
+		  <h3>{% trans "Description" %}</h3>
+		  <p style="text-align:justify">{{product.body}}</p>
+
+		  <h3>{% trans "Ingredients" %}</h3>
+		  <p style="text-align:justify">{{product.ingredients}}</p>
+
+		  <h3>{% trans "Suppliers" %}</h3>
+		  <p>{% for supplier in product.suppliers.all %}{{supplier}}, {% endfor %}</p>
+		</div>
+		<div class="modal-footer">
+		  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+
+	{% endfor %}
+      </div>
 
       {% with object_list=object_list selected_product=selected_product view=view %}
 	{% include "suppliers/pagination.html" %}
