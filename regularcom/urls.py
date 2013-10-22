@@ -43,4 +43,5 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('regularcom.views',
     url(r'^$', views.HomeView.as_view(), name='home'),
+    url(r'^how/$', views.HowView.as_view(), name='how'),
 )

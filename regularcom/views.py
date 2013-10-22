@@ -26,7 +26,15 @@ class HomeView(generic.TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['section'] = 'home'
         context['thematics'] = cm.Thematic.objects.all()
+        return context
+
+class HowView(generic.TemplateView):
+    template_name = 'how.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'how'
         return context

@@ -8,28 +8,40 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
       </button>
-      {% comment %}
-	<a class="navbar-brand" href="#">
-          <img src="{{ STATIC_URL }}ico/daemon.ico" style="width: 20px;"/> &nbsp;
-        </a>
-      {% endcomment %}
-      <!-- <a class="navbar-brand" href="{% url 'home' %}">Regular'com</a> -->
       <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static "logo_inline.png" %}" alt="Végéclic" title="Végéclic"/></a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
     	{% block menu %}
-          {#<li {% if not section or section == 'home' %}class="active"{% endif %}><a href="{% url 'home' %}"><i class="glyphicon glyphicon-home"></i> {% trans "Presentation" %}</a></li>#}
-	  <li {% if section == 'catalog' %}class="active"{% endif %}><a href="{% url 'catalog_grid_page' 1 %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Catalog" %}</a></li>
+          <li {% if section == 'how' %}class="active"{% endif %}>
+	    <a href="{% url 'how' %}"><i class="glyphicon glyphicon-book"></i> {% trans "Comment Ça Marche ?" %}</a>
+	  </li>
+	  <li {% if section == 'catalog' %}class="active"{% endif %}>
+	    <a href="{% url 'catalog_grid_page' 1 %}"><i class="glyphicon glyphicon-barcode"></i> {% trans "Catalog" %}</a>
+	  </li>
 	  {% if user.is_authenticated %}
-	    <li {% if section == 'cart' %}class="active"{% endif %}><a href="{% url 'subscriptions' %}"><i class="glyphicon glyphicon-shopping-cart"></i> {% trans "Carts" %} {% if nb_subscriptions %}<span class="badge">{{nb_subscriptions}}</span>{% endif %}</a></li>
-	    <li {% if section == 'wallet' %}class="active"{% endif %}><a href="{% url 'balance' %}"><i class="glyphicon glyphicon-briefcase"></i> {% trans "Wallet" %} <span class="badge">{{wallet.balance_in_target_currency|floatformat}} {{wallet.target_currency.symbol}}</span></a></li>
-	    <li {% if section == 'mailbox' %}class="active"{% endif %}><a href="{% url 'messages' %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<span class="badge">{{nb_messages}}</span>{% endif %}</a></li>
-	    <li {% if section == 'customers' %}class="active"{% endif %}><a href="{% url 'profile' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Profile" %}</a></li>
-	    <li {% if section == 'logout' %}class="active"{% endif %}><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i> {% trans "Logout" %}</a></li>
+	    <li {% if section == 'cart' %}class="active"{% endif %}>
+	      <a href="{% url 'subscriptions' %}"><i class="glyphicon glyphicon-shopping-cart"></i> {% trans "Carts" %} {% if nb_subscriptions %}<span class="badge">{{nb_subscriptions}}</span>{% endif %}</a>
+	    </li>
+	    <li {% if section == 'wallet' %}class="active"{% endif %}>
+	      <a href="{% url 'balance' %}"><i class="glyphicon glyphicon-briefcase"></i> {% trans "Wallet" %} <span class="badge">{{wallet.balance_in_target_currency|floatformat}} {{wallet.target_currency.symbol}}</span></a>
+	    </li>
+	    <li {% if section == 'mailbox' %}class="active"{% endif %}>
+	      <a href="{% url 'messages' %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<span class="badge">{{nb_messages}}</span>{% endif %}</a>
+	    </li>
+	    <li {% if section == 'customers' %}class="active"{% endif %}>
+	      <a href="{% url 'profile' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Profile" %}</a>
+	    </li>
+	    <li {% if section == 'logout' %}class="active"{% endif %}>
+	      <a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i> {% trans "Logout" %}</a>
+	    </li>
 	  {% else %}
-	    <li {% if section == 'login' %}class="active"{% endif %}><a href="{% url 'login' %}"><i class="glyphicon glyphicon-lock"></i> {% trans "Login" %}</a></li>
-	    <li {% if section == 'signup' %}class="active"{% endif %}><a href="{% url 'signup' %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "Signup" %}</a></li>
+	    <li {% if section == 'login' %}class="active"{% endif %}>
+	      <a href="{% url 'login' %}"><i class="glyphicon glyphicon-lock"></i> {% trans "Login" %}</a>
+	    </li>
+	    <li {% if section == 'signup' %}class="active"{% endif %}>
+	      <a href="{% url 'signup' %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "Signup" %}</a>
+	    </li>
 	  {% endif %}
 	{% endblock menu %}
       </ul>
