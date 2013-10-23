@@ -18,10 +18,12 @@
 #
 
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from hvad.forms import TranslatableModelForm
 from . import models
 import common.forms as cf
 import common.models as cm
+import products.models as pm
 
 class SupplierForm(cf.ModelFormWithImage):
     class Meta:
@@ -35,3 +37,12 @@ class SupplierCreationForm(forms.ModelForm):
 class PriceForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Price
+
+class ProductForm(TranslatableModelForm):
+    class Meta:
+        model = models.Product
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['product'].queryset = pm.Product.objects.language('fr').order_by('name')

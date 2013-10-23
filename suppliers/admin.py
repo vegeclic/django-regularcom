@@ -41,6 +41,7 @@ class SupplierAdmin(ca.MyModelAdmin):
 admin.site.register(models.Supplier, SupplierAdmin)
 
 class ProductAdmin(TranslatableAdmin):
+    form = forms.ProductForm
     list_display = ('all_translations', 'name_', 'slug', 'weight', 'date_created', 'date_last_modified', 'status',)
     # list_display = ('name', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
