@@ -2,6 +2,721 @@
 {% load i18n %}
 {% load static %}
 
+{% block section_title %}Comment Ça Marche ?{% endblock %}
+
 {% block content %}
-  <h1>{% trans "Comment Ça Marche" %}</h1>
+  <h1><i class="glyphicon glyphicon-book"></i> Comment Ça Marche ?</h1>
+
+  <ul class="nav nav-tabs">
+    <li><a href="#what"><i class="glyphicon glyphicon-chevron-right"></i> C'est quoi Végéclic ?</a></li>
+    <li><a href="#why"><i class="glyphicon glyphicon-chevron-right"></i> Pourquoi ce concept ?</a></li>
+    <li><a href="#conditions"><i class="glyphicon glyphicon-chevron-right"></i> Quels sont les conditions ?</a></li>
+    <li><a href="#how"><i class="glyphicon glyphicon-chevron-right"></i> Comment faire ?</a></li>
+  </ul>
+
+  <h2 id="what"><i class="glyphicon glyphicon-chevron-right"></i> C'est quoi Végéclic ?</h2>
+
+  <div class="well" style="text-align: justify">
+    En quelques mots… <strong>boutique, abonnement, panier thématique, vegan, prix dégressif, frais de port inclus, sans engagement, écologique, éthique, très grand choix</strong>.
+  </div>
+
+  <div class="well" style="text-align: justify">
+    <p>Végéclic est une <strong>boutique en ligne</strong> qui a pour but de proposer des produits éthiques ne contribuant <strong>d'aucune manière à l'exploitation des animaux, étant respectueux de l'environnement et de votre santé</strong>, et de les rendre accessible à un plus grand nombre de personnes.</p>
+
+    <p>Nous nous distinguons des autres boutiques en ligne « conventionnelles » grâce à un concept original. <strong>Inspiré des <a href="https://fr.wikipedia.org/wiki/AMAP">AMAPs</a></strong>, nous vous proposons de créer des abonnements à des paniers dont le contenu peut être prédéfinis, avec nos paniers thématiques, ou entièrement personnalisé par vos soins. Cela nous permet de proposer les produits de nos fournisseurs à des tarifs intéressants.</p>
+  </div>
+
+  <div class="text-center">
+    <a href="#" class="">
+      <img src="{% static "scheme.png" %}" alt="scheme" class="img-thumbnail" />
+    </a>
+  </div>
+
+  <h2 id="why"><i class="glyphicon glyphicon-chevron-right"></i> Pourquoi ce concept ?</h2>
+
+  <div class="well" style="text-align: justify">
+    <p><strong>Notre concept est nouveau</strong>. En soutenant l'abonnement à des paniers, nous voulons faciliter la tâche aux personnes intéressées par la cuisine végétale, faire découvrir de nouveaux produits aux consom'acteurs « habitués » ou encore faire des cadeaux à la fois éthiques et savoureux à ses proches; tout en guarantissant des commandes à la boutique et ainsi soutenir ouvertement les entreprises prônant le veganisme !</p>
+  </div>
+
+  <div class="well" style="text-align: justify">
+    <p><strong>Plus écologique et plus économique</strong> et ceci de façon non négligeable : ayant connaissance en avance de la quantité de produits à commander et pouvant assurer une fréquence d'achat, nous sommes ainsi en mesure de négocier les prix avec nos fournisseurs. De plus cela permet d'éviter le stockage d'aliments et les pertes dû aux dates de péremptions courtes.</p>
+
+    <p>L'envoi des colis regroupé en une seule journée, le mardi, permet de limiter les émissions de CO<sub>2</sub>. Passer par des points relais pour la livraison, Mondial Relay <sup>®</sup>, est également plus écologique et plus économique qu'une livraison à domicile. Ce dernier choix est néanmoins possible moyennant le paiement d'un supplément.</p>
+
+    <p><strong>Plus de gâchis d'aliments</strong>, <strong>plus d'utilisation de transports massive</strong>, <strong>plus de prix exorbitants</strong> et que des avantages, voilà ce qui nous a poussé à créer ce nouveau concept !</p>
+  </div>
+
+  <h2><i class="glyphicon glyphicon-chevron-right"></i> Quels sont les conditions ?</h2>
+
+  <div class="well" style="text-align: justify">
+    <p>Nos abonnements sont <strong>sans engagements</strong>, vous pouvez les annuler et les modifier à tout moment sans justifications. <strong>Les prix des paniers sont dégressifs</strong> en fonction de la durée d'abonnement ainsi que le nombre de panier validé. Chaque panier validé vous donne droit à une baisse de prix. S'il vous arrive de ne pas valider un panier, la dégressivité des prix ne sera pas appliquée sur ce dernier, cependant elle reprendra dès que les paniers suivants seront validés.</p>
+
+    <p>Les envois de colis sont effectués <strong>tous les mardis par Mondial Relay <sup>®</sup></strong>, et livrés en 48-72h dans le point relais que vous aurez choisit. <strong>Les frais de port sont inclus</strong> dans le prix des paniers. Un supplément est à payer si vous souhaitez être livré chez vous par la poste. Tous les colis contenant des produits frais seront envoyés avec <strong>un accumulateur de froid et un emballage isotherme</strong>.<p>
+  </div>
+
+  <h2 id="how"><i class="glyphicon glyphicon-chevron-right"></i> Comment faire ?</h2>
+
+  <div class="well">
+    Pour avoir de plus ample informations et explications sur le fonctionnement du site, nous vous invitons à cliquer ci-dessous sur les fonctionnalités à éclaircir.
+  </div>
+
+  <div class="row">
+
+    {# Signup #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_signup" role="button" data-toggle="modal">Inscription</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_signup" role="button" data-toggle="modal">
+	    <img src="{% static "how/signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_signup" role="button" data-toggle="modal">
+	    Comment s'inscrire sur Végéclic ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_signup" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_signup_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_signup_label">Inscription</h2>
+	    Comment s'inscrire sur Végéclic ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour vous inscrire à Végéclic et ainsi profiter de nos services, vous devez vous rendre sur la page « Inscription » en cliquant, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "signup" %}">Inscription</a> <sup>10</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Vous pouvez à présent suivre les étapes suivantes pour mener à bien votre inscription:
+	      <ul>
+		<li>indiquez votre adresse électronique <sup>11</sup> (email)</li>
+		<li>et valider votre inscription en cliquant sur le bouton « Inscription <sup>12</sup> ».</li>
+		<li>Vous allez recevoir aussitôt un mail, à l'adresse communiqué <sup>11</sup>, contenant le mot de passe à utiliser pour vous connecter à votre espace abonné.</li>
+		<li>Vous êtes à présent près à vous connecter à votre espace abonné.</li>
+	      </ul>
+	    </div>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Login #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3>	  <a href="#modal_login" role="button" data-toggle="modal">
+Connexion</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_login" role="button" data-toggle="modal">
+	    <img src="{% static "how/login.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_login" role="button" data-toggle="modal">
+	    Comment se connecter à son espace abonné ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_login_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_login_label">Connexion</h2>
+	    Comment se connecter à son espace abonné ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour vous connecter à votre espace abonné et ainsi profiter de nos services, vous devez vous rendre sur la page « Connexion » en cliquant, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "login" %}">Connexion</a> <sup>13</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Arrivé sur le formulaire de connexion :
+	      <ul>
+		<li>indiquez votre adresse électronique <sup>14</sup> (email) ainsi que le mot de passe que vous avez reçu par mail <sup>15</sup> après vous êtes inscrit</li>
+		<li>et finissez en validant votre connexion en cliquant sur le bouton « Connexion <sup>16</sup> ».</li>
+		<li>Vous pouvez, si vous le souhaitez, cocher la case « Se souvenir de moi <sup>17</sup> » afin de conserver votre session.</li>
+		<li>Si vous avez oublié ou perdu votre mot de passe, vous pouvez cliquer sur le bouton « J'ai oublié mon mot de passe <sup>18</sup> ». Vous serez alors redirigé vers un autre formulaire vous invitant à saisir votre adresse électronique et valider afin de recevoir votre nouveau mot de passe par mail.</li>
+	      </ul>
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Vous obtiendrez ainsi un nouveau menu de navigation vous permettant de bénéficier de tous nos services.
+	    </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Subscription #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_subscription" role="button" data-toggle="modal">Abonnement</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_subscription" role="button" data-toggle="modal">
+	    <img src="{% static "how/thematic_carts.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_subscription" role="button" data-toggle="modal">
+	    Comment s'abonner à un panier ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_subscription" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_subscription_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_subscription_label">Abonnement</h2>
+	    Comment s'abonner à un panier ?
+	  </div>
+	  <div class="modal-body">
+	    <div class="well">
+	      Un fois que vous êtes connecté vous pouvez <a href="{% url "create_thematic" %}">choisir un panier thématique</a> ou <a href="{% url "create_custom" %}">créer un panier personnalisé</a>.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour cela rendez-vous dans la rubrique « Panier » en cliquant sur le menu de navigation principal situé en haut du site sur le lien « <a href="{% url "subscriptions" %}">Panier</a> <sup>37</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Arrivé sur la rubrique « Panier », vous pouvez à présent choisir de créer votre panier thématique en cliquant sur le menu de navigation à gauche « <a href="{% url "create_thematic" %}">Choisissez un panier thématique</a> <sup>38</sup> » ou de créer votre panier personnalisé en cliquant sur « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> <sup>40</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/thematic_carts.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Si vous faites le choix de créer un panier thématique, vous arrivez alors sur la page ci-dessus où pourrez choisir entre nos différents thêmes de panier. Si un des paniers vous convient, cliquez sur le bouton « Créer » situé en dessous de ce dernier. Si aucun des paniers thématiques vous convient, il est vous est tout de même possible de composer votre propre panier en allant dans la rubrique « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/carts.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      <p>Dans les deux cas (choix d'un panier thématique ou personnalisé), vous êtes redirigé vers la page ci-dessus où vous êtes invité à définir la taille de votre panier, la fréquence et la durée de votre abonnement, la date de début de votre abonnement si vous souhaitez le différer ainsi que des critères de choix de produits éventuels. Pour cela il vous suffit de déplacer le curseur des gauges prévus à cet effet <sup>41, 42, 43, 44</sup>.</p>
+
+	      <p>
+		Vous pouvez ainsi suivre les étapes comme indiquez ci-dessous :
+		<ul>
+		  <li>définissez la taille de votre panier <sup>41</sup>,</li>
+		  <li>la fréquence de votre abonnement <sup>42</sup>,</li>
+		  <li>la durée de votre abonnement <sup>43</sup>,</li>
+		  <li>la date de début de votre abonnement <sup>44</sup>,</li>
+		  <li>ainsi que des critères <sup>45</sup> éventuels si vous le souhaitez.</li>
+		</ul>
+	      </p>
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/customize.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      <p>
+		Plus bas dans le formulaire, vous avez également la possibilité de choisir les familles de produits que vous souhaitez trouver dans votre panier.
+		<ul>
+		  <li>Dans le cas d'un panier thématique, il vous suffit de cliquer sur le bouton « Personnaliser » pour modifier le contenu du panier pré-sélectionné.</li>
+		  <li>Dans le cas d'un panier personnalisé, vous devez nécessairement sélectionner les familles de produits que vous souhaitez trouver dans votre panier.</li>
+		</ul>
+	      </p>
+	      <p>Pour naviguer au sein des familles de produits, il vous est possible de plier/déplier les familles de produits <sup>49</sup> afin d'accéder aux familles de produits enfants. Vous pouvez ainsi sélectionner ou désélectionner des familles de produits en cliquant sur le bouton « ajouter <sup>46, 47</sup> » correspondant. Pour de plus ample information concernant une famille de produits en particulier, vous pouvez cliquez sur le bouton « plus <sup>48</sup> » correspondant.</p>
+	      <p>Une fois que vous êtes prêt à créer votre abonnement, cliquez sur le bouton « Confirmer » situé en bas du formulaire.</p>
+	    </div>
+
+	    {#<img src="{% static "how/customize2.png" %}" alt="" title="" class="img-thumbnail"/>#}
+
+	    <div>
+	      <img src="{% static "how/extents.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Si vous avez choisit de personnaliser le contenu de votre panier, vous serez invité à paramétrer une dernière étape avant de finaliser la création de votre abonnement. Vous devez définir dans cette étape, comme illustrée ci-dessus, les proportions, exprimées en pourcentage, de chaque famille de produit que vous avez sélectionné précédemment. Vous définirez ainsi la quantité de chaque produit relative à la taille de votre panier. Pour se faire, vous pouvez vous aider, comme précedemment, des gauges prévus à cet effet <sup>51</sup>. Vous pouvez dans le besoin réequilibrer les proportions sur chaque produit en cliquant sur le bouton « Équilibrer <sup>52</sup> » et même verrouiller une proportion afin qu'elle reste figée lorsque vous paramétrez d'autres proportions de produits en vous aidant de l'icone de verrou située à gauche des gauges. Une fois prêt à créer votre abonnement, vous pourrez cliquer sur le bouton « Confirmer » situé en bas du formulaire <sup>53</sup> afin de valider et créer définitivement l'abonnement à votre nouveau panier. Il vous est possible de revenir à l'étape précédente si vous souhaitez modifier un paramètre de votre panier en cliquant sur « Étape précédente <sup>54</sup> ».
+	    </div>
+
+	    <div class="well">
+	      <strong>Exemple :</strong> Si vous avez choisit un panier à 30 € avec deux familles de produits différents, respectivement, viandes et fromages végétaux, de sélectionnées dont chacune occupe 50 % du panier, vous aurez alors une quantité équivalent à 15 € de viandes végétales et 15 € de fromages végétaux auxquels il faut soustraire les frais de port qui sont inclus au prix du panier.
+	    </div>
+
+	    <div class="well">
+	      Votre panier est ainsi crée, il ne vous reste qu'à suivre les indications envoyer par mail pour approvisionner <a href="">votre portemonnaie</a> et <a href="">valider vos paniers</a> ! Si votre compte est approvisionner, l'échéance sera prélevé automatiquement 10 jours avant la date d'envoi.
+	    </div>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Deliveries #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_deliveries" role="button" data-toggle="modal">Livraisons</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_deliveries" role="button" data-toggle="modal">
+	    <img src="{% static "how/deliveries.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_deliveries" role="button" data-toggle="modal">
+	    Comment consulter le détail de mes livraisons ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_deliveries" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_deliveries_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_deliveries_label">Livraisons</h2>
+	    Comment consulter le détail de mes livraisons ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour consulter le détail des échéances de livraisons d'un de vos abonnements, vous devez vous rendre dans la rubrique « Panier » en cliquant, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "subscriptions" %}">Panier</a> <sup>37</sup> ». À ce titre, le nombre situé à droite de ce lien <sup>37</sup> indique le nombre d'abonnement actif existant sur votre compte.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Arrivé sur la rubrique « Panier », vous trouverez, dans la partie droite du site, la liste des abonnements auxquels vous avez souscrit. Pour consulter les détails d'un abonnement, vous pouvez cliquer sur la taille de l'abonnement correspondant <sup>63</sup>. Il vous est également possible de changer certain paramètre de votre abonnement en cliquant sur l'icone approprié <sup>66</sup>.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/deliveries.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Vous serez alors redirigé vers la page illustrée ci-dessus où il vous sera possible de visualiser la liste des échéances de votre abonnement avec leur prix et statut respectifs. Vous remarquerez la dégressivité des prix en observant que les prix baissent au fur et à mesure que l'on avance dans les échéances.
+	    </div>
+
+	    <div class="well">
+	      Par défaut, les échéances sont payées et validées automatiquement à J-10 de la date prévue d'envoi, cependant il vous est possible de les valider manuellement, et si vous le souhaitez, en avance, en cliquant sur l'icone correspondant située à gauche de chaque échéance <sup>63</sup>. Il vous est possible de modifier ce comportement en éditant les paramètres de votre abonnement <sup>66</sup>. Lorsqu'une de vos échéances est validée, cette dernière est surlignée en vert avec son statut, situé dans la colonne « Status », indiqué comme :
+	      <ul>
+		<li>« Payé », lorsque l'échéance a été payé,</li>
+		<li>« Préparation », lorsque le panier est en cours de préparation,</li>
+		<li>« Livré », lorsque le panier a été livré,</li>
+	      </ul>
+	      Si l'échéance n'a pas encore été validée, elle est indiqué avec un status « En attente » et si le paiement et la validation de cette dernière a été omise, le status est alors indiqué comme « Expiré ».
+	    </div>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Catalog #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_catalog" role="button" data-toggle="modal">Catalogue</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_catalog" role="button" data-toggle="modal">
+	    <img src="{% static "how/catalog.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_catalog" role="button" data-toggle="modal">
+	    Comment utiliser le catalogue ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_catalog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_catalog_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_catalog_label">Catalogue</h2>
+	    Comment utiliser le catalogue ?
+	  </div>
+	  <div class="modal-body">
+	    <div class="well">
+	      Afin que vous ayez un ordre d'idée des produits de nos fournisseurs utilisés pour composer vos panier, vous pouvez consulter le catalogue qui référence la totalité des produits classés par famille.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour vous rendre dans la rubrique « Catalogue », vous devez cliquez, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "catalog" %}">Catalogue</a> <sup>20</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/catalog.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Arrivé dans la rubrique « Catalogue », comme illustré ci-dessus, vous pouvez parcourir les produits de nos fournisseurs en sélectionnant, dans un permier temps, la famille de produits souhaitée, dans la partie gauche du site <sup>21</sup>, et dans un second, parcourir parmi les produits des fournisseurs qui apparaîssent dans la partie droite du site <sup>22</sup>. Il vous est possible d'afficher la fiche de chaque produit en cliquant sur leur image respectif <sup>22</sup> ainsi que de choisir un affichage en grille ou liste en cliquant sur les liens correspondants <sup>23</sup>.
+	    </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Navbar #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_navbar" role="button" data-toggle="modal">Navigation</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_navbar" role="button" data-toggle="modal">
+	    <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_navbar" role="button" data-toggle="modal">
+	    Comment naviguer sur le site ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_navbar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_navbar_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_navbar_label">Navigation</h2>
+	    Comment naviguer sur le site ?
+	  </div>
+	  <div class="modal-body">
+	    <div class="well">
+	      <p>Vous trouverez ici une page d'aide relative à la méthode de navigation sur le site Végéclic.</p>
+	      <p>
+		Il existe deux types de menu de navigation :
+		<ul>
+		  <li>le menu de navigation principal, situé en haut du site,</li>
+		  <li>et le menu de navigation de la rubrique, situé à gauche du site.</li>
+		</ul>
+	      </p>
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Le menu de navigation principal, illustré par les deux figures ci-dessus, peut être différent selon que vous soyez connecté ou non sur le site.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      En ce qui concerne le menu de navigation de la rubrique, celui ci est composé de lien relatif à la rubrique visitée.
+	    </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Profil #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_profil" role="button" data-toggle="modal">Profil</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_profil" role="button" data-toggle="modal">
+	    <img src="{% static "how/profil.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_profil" role="button" data-toggle="modal">
+	    Comment fonctionne le profil ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_profil" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_profil_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_profil_label">Profil</h2>
+	    Comment fonctionne le profil ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour accéder à la rubrique « Profil » afin de configurer les données relatives à votre compte, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "profile" %}">Profil</a> <sup>24</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/profil.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Arrivé dans la rubrique « Profil », un rappel des adresses que vous avez communiqués dans la page « <a href="{% url "addresses" %}">Adresse</a> <sup>27</sup> » apparaît dans la partie droite du site. Il vous est possible de les modifier ou ajouter en cliquant, sur le menu à gauche de site, sur le lien « <a href="{% url "address_create" %}">Nouvelle adresse</a> <sup>26</sup> ». Par ailleurs, si vous souhaitez, de temps en temps, changer votre mot de passe, il vous est possible de réinitialiser ce derner en cliquant sur le bouton « Réinitialiser mon mot de passe <sup>25</sup> ». Vous recevrez aussitôt un mail content un nouveau mot de passe.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/address.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Nous illustrons, ci-dessus, la page « Adresses ». Il vous est possible de créer une nouvelle adresse en cliquant sur le bouton « <a href="{% url "address_create" %}">Nouveau</a> <sup>28</sup> ». Vous serez alors rediriger vers un formulaire vous invitant à saisir les coordonnées de cette nouvelle adresse. Vous pouvez également modifier une adresse existante en vous référant à l'icone d'édition <sup>30</sup> à l'adresse correspondante. Et pour finir, vous pouvez indiquer le rôle de chacune de vos adresse à savoir s'il s'agit d'une adresse de « Livraison » ou « Facturation » <sup>29</sup>. L'adresse de « Livraison » et « Facturation » correspond par défaut à l'adresse « Principale » si ces dernières n'ont pas été définis.
+	    </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Wallet #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_wallet" role="button" data-toggle="modal">Portemonnaie</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_wallet" role="button" data-toggle="modal">
+	    <img src="{% static "how/wallet.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_wallet" role="button" data-toggle="modal">
+	    Comment utiliser le portemonnaie ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_wallet" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_wallet_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_wallet_label">Portemonnaie</h2>
+	    Comment utiliser le portemonnaie ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour accéder à la rubrique « Portemonnaie », afin d'approvisionner votre compte en monnaie et ainsi bénéficier des services proposés par Végéclic, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "balance" %}">Portemonnaie</a> <sup>58</sup> ».
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/wallet.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Vous vous situez à présent sur votre portemonnaie virtuel vous permettant d'approvisionner votre compte en monnaie afin d'utiliser ce solde pour le paiement de vos abonnements. Comme illustré, ci-dessus, vous pouvez consulter le solde actuel de votre portemonnaie dans la partie droite du site dans l'intitulé « Solde de votre compte » ainsi que en cliquant sur le lien correspondant <sup>58</sup>.
+	    </div>
+
+	    <div class="well">
+	      Vous pouvez, en outre, approvisionner votre compte en monnaie en cliquant, sur le menu situé à gauche du site, sur le lien « <a href="{% url "credit" %}">Approvisionner</a> <sup>56</sup> ». Vous serez alors redirigé vers un formulaire vous invitant à saisir le montant que vous souhaitez créditer sur votre compte ainsi que le type de paiement. Il vous est également possible d'effectuer un retrait du montant disponible dans votre portemonnaie en vous référant à la partie « Retirer » en cliquant sur le lien « <a href="{% url "withdraw" %}">Retirer</a> <sup>57</sup> » du menu.
+	    </div>
+
+	    <div class="well">
+	      L'historique des opérations de votre compte est disponible en cliquant sur le lien « <a href="{% url "histories" %}">Historiques</a> <sup>59</sup> ». Vous pouvez également consulter l'état de l'ensemble des requêtes d'approvisionnement ainsi que retraits effectuées en cliquant sur les liens « <a href="{% url "credit_requests" %}">Requêtes d'approvisionnements</a> <sup>60</sup> » et « <a href="{% url "withdraw_requests" %}">Requêtes de retraits</a> <sup>61</sup> ». Pour finir, vous pouvez modifier les paramètres relatifs à votre portemonnaie en cliquant sur le lien « <a href="{% url "settings" %}">Paramétrage</a> <sup>62</sup> ».
+	    </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {# Mailbox #}
+
+    <div class="col-sm-8 col-md-4" style="margin-bottom:10px;">
+      <div class="panel panel-default">
+	<div class="panel-heading"><h3><a href="#modal_mailbox" role="button" data-toggle="modal">Boite de réception</a></h3></div>
+	<div class="panel-body" style="height: 200px">
+	  <a href="#modal_mailbox" role="button" data-toggle="modal">
+	    <img src="{% static "how/mailbox.png" %}" alt="" title="" class="img-thumbnail"/>
+	  </a>
+	</div>
+	<div class="panel-footer">
+	  <a href="#modal_mailbox" role="button" data-toggle="modal">
+	    Comment utiliser la messagerie ?
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_mailbox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_mailbox_label" aria-hidden="true">
+      <div class="modal-dialog" style="width: 600px">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h2 id="modal_mailbox_label">Boite de réception</h2>
+	    Comment utiliser la messagerie ?
+	  </div>
+	  <div class="modal-body">
+	    <div>
+	      <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Pour accéder à la rubrique « Boite de réception », afin de consulter votre messagerie, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "messages" %}">Boite de réception</a> <sup>32</sup> ». À ce titre, un compteur apparait à côté de ce lien pour vous indiquez le nombre de nouveaux messages reçus lorsque vous en avez.
+	    </div>
+
+	    <div>
+	      <img src="{% static "how/mailbox.png" %}" alt="" title="" class="img-thumbnail"/>
+	    </div>
+
+	    <br/>
+
+	    <div class="well">
+	      Depuis votre messagerie, il vous est possible de prendre contact avec l'équipe Végéclic pour tous les problèmes que vous serez susceptible de rencontrer. Pour cela vous pouvez écrire un nouveau message en cliquant sur le lien « <a href="{% url "new_message" %}">Nouveau</a> <sup>34</sup> ». Vous serez alors redirigé vers un formulaire où vous serez invité à saisir l'objet ainsi que le corps de votre message. Il vous est également possible, depuis cette rubrique, de consulter les messages que vous avez reçu. Pour lire un message, cliquez sur l'objet de ce dernier comme illustré ci-dessus <sup>33</sup>. Les nouveaux messages sont surlignés en vert et vous en êtes informez avec une notification dans la partie supérieur du site ainsi que un mail.
+	    </div>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+  </div>
 {% endblock %}

@@ -7,7 +7,7 @@
   {% block sub_head %}{% endblock %}
 {% endblock %}
 
-{% block page_title %}{% trans "Cart" %}{% endblock %}
+{% block section_title %}{% trans "Cart" %}{% endblock %}
 
 {% block content %}
   <div class="row">
@@ -29,14 +29,12 @@
 	  <li {% if sub_section == "deliveries" %}class="active"{% endif %}>
 	    <a href="{% url "deliveries" %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Deliveries" %}</a>
 	  </li>
+
+	  <li {% if section == "catalog" %}class="active"{% endif %}>
+	    <a href="{% url "catalog_grid_page" 1 %}"><i class="glyphicon glyphicon-barcode"></i> {% trans "Catalog" %}</a>
+	  </li>
 	</ul>
       </div>
-
-      {% comment %}
-      <div class="alert alert-info">
-	toto
-      </div>
-      {% endcomment %}
     </div>
 
     <div class="col-md-9">

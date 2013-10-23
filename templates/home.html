@@ -2,9 +2,11 @@
 {% load i18n %}
 {% load static %}
 
+{% block section_title %}{% trans "Presentation" %}{% endblock %}
+
 {% block content %}
   <div style="margin: 60px 0">
-    <img src="{% static "banner.png" alt="Végéclic" title="Végéclic" class="img-rounded" %}"/>
+    <img src="{% static "banner.png" %}" alt="Végéclic" title="Végéclic"/>
   </div>
 
   <hr style="border: 1px solid grey"/>
