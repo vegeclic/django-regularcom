@@ -24,6 +24,11 @@ from . import forms, models
 import common.admin as ca
 import common.models as cm
 
+class FeeAdmin(ca.MyModelAdmin):
+    list_display = ('name', 'percent',)
+
+admin.site.register(models.Fee, FeeAdmin)
+
 class PriceInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     form = forms.PriceForm
     model = models.Price

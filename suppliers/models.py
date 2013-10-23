@@ -59,11 +59,23 @@ class Product(TranslatableModel):
 
     def __unicode__(self): return '%s, %s' % (self.lazy_translation_getter('name', 'Product: %s' % self.pk), self.price().purchase_price)
 
+    # def origin(self):
+    #     try:
+    #         return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object).origin()
+    #     except Product.DoesNotExist:
+    #         return None
+
     def price(self):
         try:
             return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
         except Product.DoesNotExist:
             return None
+
+class Fee(models.Model):
+    name = models.CharField(_('name'), max_length=100, null=True, blank=True)
+    percent = models.FloatField(_('percent'))
+
+    def __unicode__(self): return self.name
 
 class Price(models.Model):
     class Meta:
@@ -76,8 +88,13 @@ class Price(models.Model):
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
+    fee = models.ForeignKey(Fee, related_name='supplier_product_price_fee', verbose_name=_('fee'), null=True, blank=True)
 
-    def __unicode__(self): return ('%s%s %s' % (self.purchase_price, (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
+    # def __unicode__(self): return ('%s%s %s' % (self.purchase_price, (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
+
+    def __unicode__(self): return ('%.2f (%.2f) %s' % (self.purchase_price, self.purchase_price * (1+(.50+.055+.055)), self.currency.symbol)).strip()
+
+    # def fees(self): return ('%s%s %s' % (self.purchase_price * (1+(.5+.05+.055)), (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
 
 class Inventory(models.Model):
     class Meta:
