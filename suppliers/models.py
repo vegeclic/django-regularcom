@@ -92,7 +92,7 @@ class Price(models.Model):
 
     # def __unicode__(self): return ('%s%s %s' % (self.purchase_price, (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
 
-    def __unicode__(self): return ('%.2f (%.2f) %s' % (self.purchase_price, self.purchase_price * (1+(.50+.055+.055)), self.currency.symbol)).strip()
+    def __unicode__(self): return ('%.2f (%.2f) %s' % (self.purchase_price, self.purchase_price * (1+(.50+.055+(self.fee.percent/100))), self.currency.symbol)).strip()
 
     # def fees(self): return ('%s%s %s' % (self.purchase_price * (1+(.5+.05+.055)), (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
 
