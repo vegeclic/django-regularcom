@@ -47,6 +47,20 @@ class PriceInline(admin.TabularInline):
     model = models.Price
     extra = 1
 
+class CarrierLevelInline(admin.TabularInline):
+    extra = 1
+    model = models.CarrierLevel
+
+class CarrierAdmin(TranslatableAdmin):
+    extra = 1
+    list_display = ('all_translations', 'name_', 'body_',)
+    inlines = [CarrierLevelInline,]
+
+    def name_(self, obj): return obj.lazy_translation_getter('name')
+    def body_(self, obj): return obj.lazy_translation_getter('body')
+
+admin.site.register(models.Carrier, CarrierAdmin)
+
 class SizeAdmin(TranslatableAdmin):
     list_display = ('all_translations', 'name_', 'price', 'enabled',)
     fields = ('name', 'body', 'main_image', 'enabled',)

@@ -112,6 +112,22 @@ class Price(models.Model):
 
     def __unicode__(self): return ('%s %s' % (self.price, self.currency.symbol)).strip()
 
+class Carrier(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(_('name'), max_length=100, unique=True),
+        body = models.TextField(_('body'), blank=True),
+    )
+
+    def __unicode__(self): return self.lazy_translation_getter('name', 'Carrier: %s' % self.pk)
+
+class CarrierLevel(models.Model):
+    carrier = models.ForeignKey(Carrier, verbose_name=_('carrier'))
+    weight = models.FloatField(_('weight'))
+    currency = models.ForeignKey('common.Currency', related_name='cart_carrier_level_price_currency', verbose_name=_('currency'))
+    price = models.FloatField(_('price'))
+
+    def __unicode__(self): return '%.2f %s / %.2f kg' % (self.price, self.currency.symbol, self.weight)
+
 class Delivery(models.Model):
     class Meta:
         verbose_name_plural = _('deliveries')
