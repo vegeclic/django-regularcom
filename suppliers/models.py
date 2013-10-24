@@ -30,6 +30,7 @@ class Supplier(models.Model):
     suppliers = models.ManyToManyField('self', null=True, blank=True, related_name='supplier_suppliers', verbose_name=_('suppliers'))
     delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
     threshold_order = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
+    fee_per_weight = models.FloatField(_('fee per weight'), default=0, null=True, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
 
     def __unicode__(self): return self.name

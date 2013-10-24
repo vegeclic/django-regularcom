@@ -120,6 +120,8 @@ class Carrier(TranslatableModel):
         name = models.CharField(_('name'), max_length=100, unique=True),
         body = models.TextField(_('body'), blank=True),
     )
+    apply_suppliers_fee = models.BooleanField(_('apply suppliers fee'), default=True)
+    enabled = models.BooleanField(_('enabled'), default=True)
 
     def __unicode__(self): return self.lazy_translation_getter('name', 'Carrier: %s' % self.pk)
 
