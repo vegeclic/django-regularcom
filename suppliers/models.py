@@ -107,9 +107,14 @@ class Price(models.Model):
     tax = models.ForeignKey(Tax, related_name='supplier_product_price_tax', verbose_name=_('tax'), null=True, blank=True)
 
     def price(self): return self.selling_price if self.selling_price else self.purchase_price
+
     def margin_price(self): return self.selling_price if self.selling_price else (self.purchase_price * (1+settings.PRICE_MARGIN_RATE/100))
+
     def get_pre_tax_price(self): return self.margin_price()
+
     def get_after_tax_price(self): return self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1)
+
+    def get_after_tax_price_with_fee(self): return self.get_after_tax_price() + self.product.weight * self.supplier.fee_per_weight().fee_per_weight
 
     def degressive_price(self, nb_deliveries=52):
         values = []
