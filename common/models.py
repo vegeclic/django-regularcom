@@ -21,6 +21,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from hvad.models import TranslatableModel, TranslatedFields
 
 class Image(models.Model):
     def image_name(self, filename):
@@ -80,10 +81,12 @@ class Currency(models.Model):
 
     def __unicode__(self): return ('%s (%s)' % (self.name, self.symbol)).strip()
 
-class Criteria(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+class Criteria(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(_('name'), max_length=100, unique=True)
+    )
 
-    def __unicode__(self): return self.name
+    def __unicode__(self): return self.lazy_translation_getter('name', 'Criteria: %s' % self.pk)
 
 class Parameter(models.Model):
     class Meta:

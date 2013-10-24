@@ -20,6 +20,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from hvad.admin import TranslatableAdmin
 from . import models, forms
 
 class MyModelAdmin(admin.ModelAdmin):
@@ -100,13 +101,11 @@ class LimitedAdminInlineMixin(object):
         return getattr(self, 'filters', ())
 
 class CountryAdmin(admin.ModelAdmin):
-    fieldsets = []
     list_display = ('name',)
 
 admin.site.register(models.Country, CountryAdmin)
 
 class CurrencyAdmin(MyModelAdmin):
-    fieldsets = []
     list_display = ('name', 'symbol', 'exchange_rate',)
 
 admin.site.register(models.Currency, CurrencyAdmin)
@@ -119,16 +118,16 @@ class ImageInline(generic.GenericTabularInline):
     model = models.Image
     extra = 1
 
-class CriteriaAdmin(MyModelAdmin):
-    fieldsets = []
-    list_display = ('name',)
+class CriteriaAdmin(TranslatableAdmin):
+    list_display = ('name_',)
+
+    def name_(self, obj): return obj.lazy_translation_getter('name')
 
 admin.site.register(models.Criteria, CriteriaAdmin)
 
 class ParameterAdmin(MyModelAdmin):
     form = forms.ParameterForm
     add_form = forms.ParameterCreationForm
-    fieldsets = []
     list_display = ('site', 'content_type', 'name', 'value',)
 
     def value(self, obj): return obj.content_object
