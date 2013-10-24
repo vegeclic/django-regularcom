@@ -64,7 +64,7 @@ Attention cette étape valide définitivement la création de ce(s) panier(s), v
 		      <h4 class="modal-title">{% trans "Confirmation" %}</h4>
 		    </div>
 		    <div class="modal-body">
-		      {% blocktrans with date=delivery.date %}
+		      {% blocktrans with date=delivery.get_date_display %}
 			Do you confirm you want to validate the delivery {{date}} ? Your balance will be updated.
 		      {% endblocktrans %}
 		    </div>
@@ -81,7 +81,7 @@ Attention cette étape valide définitivement la création de ce(s) panier(s), v
 	    <td class="text-right"><a href="{% url "subscriptions" %}">{{delivery.subscription.id}}</a></td>
 	    <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
 	  {% endif %}
-	  <td>{{delivery.date}}</td>
+	  <td>{{delivery.get_date_display}}</td>
 	  {% if subscription %}
 	    <td>{% if delivery.status in delivery.SUCCESS_CHOICES %}{{delivery.payed_price|floatformat}}{% elif delivery.status in delivery.FAILED_CHOICES %}-{% else %}{{delivery.degressive_price|floatformat}}{% endif %}</td>
 	  {% endif %}
@@ -113,7 +113,7 @@ Attention cette étape valide définitivement la création de ce(s) panier(s), v
 
     $(function() {
     	var data = {
-	    labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.date}}",{% endfor %}],
+	    labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.get_date_display}}",{% endfor %}],
     	    datasets: [
 		{
 		    fillColor: "rgba(220,220,220,0.5)",

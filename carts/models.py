@@ -46,7 +46,7 @@ FREQUENCY_DEFAULT = 2
 
 __weeks = []
 for y in range(settings.START_YEAR, Week.thisweek().year+2): __weeks += Week.weeks_of_year(y)
-WEEKS_CHOICES = [(str(w), str(w)) for w in __weeks]
+WEEKS_CHOICES = [(str(w), '%s (%s %s)' % (w.day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), w.week)) for w in __weeks]
 
 class Thematic(TranslatableModel):
     translations = TranslatedFields(
@@ -157,7 +157,7 @@ class Delivery(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return '%s - %s' % (self.subscription.__unicode__(), self.date)
+    def __unicode__(self): return '%s - %s' % (self.subscription.__unicode__(), self.get_date_display())
 
     def save(self, *args, **kwargs):
         if self.status == 'p':

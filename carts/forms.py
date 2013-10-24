@@ -176,7 +176,7 @@ class CreateForm1(forms.Form):
         cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
         start = self.fields['start']
         start_choices = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
-        start_date_choices = ['%s (%s %s)' % ((w + cw.week - 1).day(1), _('Week'), (w + cw.week - 1).week) for w in Week.weeks_of_year(cw.year)]
+        start_date_choices = ['%s (%s %s)' % ((w + cw.week - 1).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (w + cw.week - 1).week) for w in Week.weeks_of_year(cw.year)]
         start.choices = zip(start_choices, start_date_choices)
         start.initial = cw
 
