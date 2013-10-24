@@ -105,10 +105,6 @@ class Price(models.Model):
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
     tax = models.ForeignKey(Tax, related_name='supplier_product_price_tax', verbose_name=_('tax'), null=True, blank=True)
 
-    # def __unicode__(self): return ('%s%s %s' % (self.purchase_price, (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
-
-    # def fees(self): return ('%s%s %s' % (self.purchase_price * (1+(.5+.05+.055)), (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
-
     def price(self): return self.selling_price if self.selling_price else self.purchase_price
     def margin_price(self): return self.selling_price if self.selling_price else (self.purchase_price * (1+settings.PRICE_MARGIN_RATE/100))
     def get_pre_tax_price(self): return self.margin_price()
