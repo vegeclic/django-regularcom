@@ -24,6 +24,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from hvad.models import TranslatableModel, TranslatedFields
 import common.models as cm
+import numpy as np
 
 class Supplier(models.Model):
     name = models.CharField(_('name'), max_length=100, unique=True)
@@ -110,8 +111,14 @@ class Price(models.Model):
     def get_pre_tax_price(self): return self.margin_price()
     def get_after_tax_price(self): return self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1)
 
+    def degressive_price(self, nb_deliveries=52):
+        values = []
+        for i in range(nb_deliveries):
+            values.append(self.get_after_tax_price()/(1+settings.DEGRESSIVE_PRICE_RATE/100)**i)
+        return np.mean(values)
+
     def __unicode__(self):
-        return ('%.2f (%.2f) %s' % (self.price(), self.get_after_tax_price(), self.currency.symbol)).strip()
+        return ('%.2f %s' % (self.get_after_tax_price(), self.currency.symbol)).strip()
 
 class Inventory(models.Model):
     class Meta:

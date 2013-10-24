@@ -90,6 +90,7 @@
 		</div>
 		<div class="panel-footer pull-right">
 		  <span>{{product.price}}</span>
+		  <span>({{product.degressive_price|floatformat}} {{product.price.currency.symbol}})</span>
 		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
 		</div>
 	      </div>

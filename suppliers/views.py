@@ -68,15 +68,22 @@ class CatalogView(generic.ListView):
                 product_list += get_suppliers_products(products)
             return product_list
 
+        def compute_degressive_price(product_list):
+            for p in product_list: p.degressive_price = p.price().degressive_price(26)
+
         product_list = []
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             cache_name = 'product_list_%s' % self.kwargs.get('product_id')
             product_list = cache.get(cache_name) or get_suppliers_products(root_product)
-            if not cache.get(cache_name): cache.set(cache_name, product_list)
+            if not cache.get(cache_name):
+                compute_degressive_price(product_list)
+                cache.set(cache_name, product_list)
         else:
             product_list = cache.get('product_list') or self.model.objects.language('fr').all()
-            if not cache.get('product_list'): cache.set('product_list', product_list)
+            if not cache.get('product_list'):
+                compute_degressive_price(product_list)
+                cache.set('product_list', product_list)
 
         paginator = Paginator(product_list, 24)
 
