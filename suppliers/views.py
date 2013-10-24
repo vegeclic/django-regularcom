@@ -53,8 +53,6 @@ class CatalogView(generic.ListView):
         products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
-        product_list = []
-
         def find_product(products_tree, product_pattern):
             for product, products in products_tree.items():
                 if product.id == int(product_pattern): return {product: products}
@@ -70,11 +68,15 @@ class CatalogView(generic.ListView):
                 product_list += get_suppliers_products(products)
             return product_list
 
+        product_list = []
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
-            product_list += get_suppliers_products(root_product)
+            cache_name = 'product_list_%s' % self.kwargs.get('product_id')
+            product_list = cache.get(cache_name) or get_suppliers_products(root_product)
+            if not cache.get(cache_name): cache.set(cache_name, product_list)
         else:
-            product_list += self.model.objects.language('fr').all()
+            product_list = cache.get('product_list') or self.model.objects.language('fr').all()
+            if not cache.get('product_list'): cache.set('product_list', product_list)
 
         paginator = Paginator(product_list, 24)
 
