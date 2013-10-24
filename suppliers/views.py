@@ -66,7 +66,7 @@ class CatalogView(generic.ListView):
             if not products_tree: return []
             product_list = []
             for product, products in products_tree.items():
-                product_list += self.model.objects.language('fr').filter(product=product)
+                product_list += self.model.objects.language('fr').filter(product=product, status='p')
                 product_list += get_suppliers_products(products)
             return product_list
 
