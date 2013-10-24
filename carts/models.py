@@ -126,6 +126,9 @@ class Carrier(TranslatableModel):
     def __unicode__(self): return self.lazy_translation_getter('name', 'Carrier: %s' % self.pk)
 
 class CarrierLevel(models.Model):
+    class Meta:
+        unique_together = ('carrier', 'weight', 'currency')
+
     carrier = models.ForeignKey(Carrier, verbose_name=_('carrier'))
     weight = models.FloatField(_('weight'))
     currency = models.ForeignKey('common.Currency', related_name='cart_carrier_level_price_currency', verbose_name=_('currency'))
