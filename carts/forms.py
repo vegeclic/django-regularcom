@@ -117,31 +117,6 @@ class ContentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Content
 
-class CreateForm(forms.ModelForm):
-    class Meta:
-        model = models.Subscription
-        fields = ('size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
-
-    duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        start = self.fields['start']
-        cw = Week.thisweek()
-        choices = [str(w + cw.week) for w in Week.weeks_of_year(cw.year)]
-        start.choices = zip(choices, choices)
-        start.initial = cw+1
-
-    def save(self, commit=True):
-        subscription = super().save(commit=False)
-        bw = Week.fromstring(self.cleaned_data['start'])
-        ew = Week.withdate( bw.day(1) + relativedelta(months=int(self.cleaned_data['duration'])) )
-        subscription.end = ew
-        if commit:
-            subscription.save()
-            subscription.create_deliveries()
-        return subscription
-
 class MyCheckboxSelectMultiple(forms.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
         if value is None: value = []
@@ -175,7 +150,7 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
         return id_
 
 class CreateForm1(forms.Form):
-    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=2,
+    size = forms.ModelChoiceField(queryset=models.Size.objects.order_by('weight'), initial=2,
                                   help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
                                   label=_('Size'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
@@ -188,10 +163,10 @@ class CreateForm1(forms.Form):
                               label=_('Beginning of your subscription'))
     customized = forms.BooleanField(label=_('Customized'), required=False)
     criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
-                                               queryset=cm.Criteria.objects.all(),
+                                               queryset=cm.Criteria.objects.order_by('id'),
                                                required=False, label=_('Criterias'),
                                                help_text=_('Select as much criterias as you want in your cart.'))
-    carrier = forms.ModelChoiceField(queryset=models.Carrier.objects.all(), initial=3,
+    carrier = forms.ModelChoiceField(queryset=models.Carrier.objects.order_by('id'), initial=3,
                                      help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
                                      label=_('Carrier'))
 
