@@ -17,6 +17,7 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
@@ -76,21 +77,18 @@ class Product(TranslatableModel):
 
     def __unicode__(self): return '%s, %s' % (self.lazy_translation_getter('name', 'Product: %s' % self.pk), self.price().purchase_price)
 
-    # def origin(self):
-    #     try:
-    #         return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object).origin()
-    #     except Product.DoesNotExist:
-    #         return None
-
     def price(self):
         try:
             return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
         except Product.DoesNotExist:
             return None
 
-class Fee(models.Model):
+class Tax(models.Model):
+    class Meta:
+        verbose_name_plural = _('taxes')
+
     name = models.CharField(_('name'), max_length=100, null=True, blank=True)
-    percent = models.FloatField(_('percent'))
+    rate = models.FloatField(_('rate'))
 
     def __unicode__(self): return self.name
 
@@ -105,13 +103,19 @@ class Price(models.Model):
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
-    fee = models.ForeignKey(Fee, related_name='supplier_product_price_fee', verbose_name=_('fee'), null=True, blank=True)
+    tax = models.ForeignKey(Tax, related_name='supplier_product_price_tax', verbose_name=_('tax'), null=True, blank=True)
 
     # def __unicode__(self): return ('%s%s %s' % (self.purchase_price, (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
 
-    def __unicode__(self): return ('%.2f (%.2f) %s' % (self.purchase_price, self.purchase_price * (1+(.50+.055+(self.fee.percent/100))), self.currency.symbol)).strip()
-
     # def fees(self): return ('%s%s %s' % (self.purchase_price * (1+(.5+.05+.055)), (' (%s)' % self.selling_price) if self.selling_price else '', self.currency.symbol)).strip()
+
+    def price(self): return self.selling_price if self.selling_price else self.purchase_price
+    def margin_price(self): return self.selling_price if self.selling_price else (self.purchase_price * (1+settings.PRICE_MARGIN_RATE/100))
+    def get_pre_tax_price(self): return self.margin_price()
+    def get_after_tax_price(self): return self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1)
+
+    def __unicode__(self):
+        return ('%.2f (%.2f) %s' % (self.price(), self.get_after_tax_price(), self.currency.symbol)).strip()
 
 class Inventory(models.Model):
     class Meta:
