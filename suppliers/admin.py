@@ -36,12 +36,16 @@ class PriceInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
 
     def get_filters(self, obj): return (('supplier', {'product_suppliers': obj}),)
 
+class SupplierFeeInline(admin.TabularInline):
+    model = models.SupplierFee
+    extra = 1
+
 class SupplierAdmin(ca.MyModelAdmin):
     form = forms.SupplierForm
     add_form = forms.SupplierCreationForm
-    list_display = ('name',)
+    list_display = ('name','fee_per_weight',)
     prepopulated_fields = {"slug": ("name",)}
-    inlines = [ca.AddressInline, ca.ImageInline,]
+    inlines = [ca.AddressInline, ca.ImageInline, SupplierFeeInline,]
 
 admin.site.register(models.Supplier, SupplierAdmin)
 

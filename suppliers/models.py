@@ -30,10 +30,26 @@ class Supplier(models.Model):
     suppliers = models.ManyToManyField('self', null=True, blank=True, related_name='supplier_suppliers', verbose_name=_('suppliers'))
     delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
     threshold_order = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
-    fee_per_weight = models.FloatField(_('fee per weight'), default=0, null=True, blank=True)
+    # fee_per_weight = models.FloatField(_('fee per weight'), default=0, null=True, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
 
     def __unicode__(self): return self.name
+
+    def fee_per_weight(self):
+        try:
+            return self.supplierfee_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+        except Supplier.DoesNotExist:
+            return None
+
+class SupplierFee(models.Model):
+    class Meta:
+        unique_together = ('supplier', 'currency')
+
+    supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
+    currency = models.ForeignKey('common.Currency', related_name='supplier_fee_currency', verbose_name=_('currency'))
+    fee_per_weight = models.FloatField(_('fee per weight'))
+
+    def __unicode__(self): return '%s %s / 1 kg' % (self.fee_per_weight, self.currency.symbol)
 
 class Product(TranslatableModel):
     translations = TranslatedFields(
