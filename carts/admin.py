@@ -53,7 +53,8 @@ class CarrierLevelInline(admin.TabularInline):
 
 class CarrierAdmin(TranslatableAdmin):
     extra = 1
-    list_display = ('all_translations', 'name_', 'body_',)
+    list_display = ('all_translations', 'name_', 'body_', 'apply_suppliers_fee', 'enabled',)
+    fields = ('name', 'body', 'apply_suppliers_fee', 'enabled',)
     inlines = [CarrierLevelInline,]
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
