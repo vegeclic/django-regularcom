@@ -88,6 +88,7 @@ class Size(TranslatableModel):
         name = models.CharField(_('name'), max_length=100, unique=True),
         body = models.TextField(_('body'), blank=True),
     )
+    weight = models.FloatField(_('weight'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     enabled = models.BooleanField(_('enabled'), default=False)
 

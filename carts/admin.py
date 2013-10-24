@@ -62,8 +62,8 @@ class CarrierAdmin(TranslatableAdmin):
 admin.site.register(models.Carrier, CarrierAdmin)
 
 class SizeAdmin(TranslatableAdmin):
-    list_display = ('all_translations', 'name_', 'price', 'enabled',)
-    fields = ('name', 'body', 'main_image', 'enabled',)
+    list_display = ('all_translations', 'name_', 'price', 'weight', 'enabled',)
+    fields = ('name', 'body', 'weight', 'main_image', 'enabled',)
     inlines = [PriceInline, ca.ImageInline,]
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
