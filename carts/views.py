@@ -188,6 +188,7 @@ class CreateWizard(SessionWizardView):
         if step == '0':
             if thematic:
                 for k, f in [('size', thematic.size),
+                             ('carrier', thematic.carrier),
                              ('frequency', thematic.frequency),
                              ('start', thematic.start_duration)]:
                     if f: form.fields[k].initial = f
@@ -198,6 +199,7 @@ class CreateWizard(SessionWizardView):
                     form.fields['duration'].initial = delta.months
 
                 for k, f in [('size', thematic.locked_size),
+                             ('carrier', thematic.locked_carrier),
                              ('frequency', thematic.locked_frequency),
                              ('start', thematic.locked_start),
                              ('duration', thematic.locked_duration),
@@ -269,6 +271,7 @@ class CreateWizard(SessionWizardView):
             raise forms.forms.ValidationError("no product was selected")
 
         size = form_data[0].get('size')
+        carrier = form_data[0].get('carrier')
         frequency = int(form_data[0].get('frequency'))
         duration = int(form_data[0].get('duration'))
         bw = Week.fromstring(form_data[0].get('start'))
@@ -276,7 +279,7 @@ class CreateWizard(SessionWizardView):
         customer = self.request.user.customer
         criterias = form_data[0].get('criterias')
 
-        subscription = models.Subscription.objects.create(customer=customer, size=size, frequency=frequency, start=bw, end=ew)
+        subscription = models.Subscription.objects.create(customer=customer, size=size, carrier=carrier, frequency=frequency, start=bw, end=ew)
 
         subscription.criterias = criterias
 

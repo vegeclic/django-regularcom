@@ -55,6 +55,8 @@ class Thematic(TranslatableModel):
     )
     size = models.ForeignKey('Size', verbose_name=_('size'), null=True, blank=True)
     locked_size = models.BooleanField(_('locked size'), default=False)
+    carrier = models.ForeignKey('Carrier', verbose_name=_('carrier'), null=True, blank=True)
+    locked_carrier = models.BooleanField(_('locked carrier'), default=False)
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
     locked_frequency = models.BooleanField(_('locked frequency'), default=False)
     start_duration = models.CharField(_('start duration'), max_length=7, choices=WEEKS_CHOICES,
@@ -101,7 +103,7 @@ class Size(TranslatableModel):
     def __unicode__(self):
         price = self.default_price()
         return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
-                         (' (%s)' % price.__unicode__()) if price else "")
+                         (' (%s - %s kg)' % (price.__unicode__(), self.weight)) if price else "")
 
 class Price(models.Model):
     class Meta:
@@ -188,6 +190,7 @@ class Content(models.Model):
 class Subscription(models.Model):
     customer = models.ForeignKey('customers.Customer', verbose_name=_('customer'))
     size = models.ForeignKey(Size, verbose_name=_('size'))
+    carrier = models.ForeignKey(Carrier, verbose_name=_('carrier'))
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'))
     start = models.CharField(_('start'), max_length=7, choices=WEEKS_CHOICES,
                              help_text=_('Here is the beginnig week of the subscription.'))

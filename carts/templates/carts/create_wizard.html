@@ -65,6 +65,10 @@
 	<div class="panel-footer">{{ wizard.form.criterias.help_text }}</div>
       </div>
 
+      {% with tname="carts/one_slide.html" %}
+	{% with id="0-carrier" field=wizard.form.carrier style="success" %}{% include tname %}{% endwith %}
+      {% endwith %}
+
       <div class="form-group">
 	<div data-toggle="buttons">
 	  <label id="expend_products" class="btn btn-lg {% if thematic %}btn-danger{% else %}btn-success active{% endif %} btn-block tooltip_link" title="{% trans "customize your cart content" %}" data-toggle="collapse" data-target="#display_products">

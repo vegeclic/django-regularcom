@@ -62,7 +62,7 @@ class SubscriptionBaseAdminForm(forms.ModelForm):
 class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('enabled', 'customer', 'size', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'carrier', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
 
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
@@ -87,7 +87,7 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
 class SubscriptionAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('enabled', 'customer', 'size', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'carrier', 'criterias', 'quantity',)
 
 class ExtentAdminForm(forms.ModelForm):
     class Meta:
@@ -175,7 +175,7 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
         return id_
 
 class CreateForm1(forms.Form):
-    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=0,
+    size = forms.ModelChoiceField(queryset=models.Size.objects.all(), initial=2,
                                   help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
                                   label=_('Size'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
@@ -191,6 +191,9 @@ class CreateForm1(forms.Form):
                                                queryset=cm.Criteria.objects.all(),
                                                required=False, label=_('Criterias'),
                                                help_text=_('Select as much criterias as you want in your cart.'))
+    carrier = forms.ModelChoiceField(queryset=models.Carrier.objects.all(), initial=3,
+                                     help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
+                                     label=_('Carrier'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -198,10 +201,11 @@ class CreateForm1(forms.Form):
         cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
         start = self.fields['start']
         start_choices = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
-        start.choices = zip(start_choices, start_choices)
+        start_date_choices = ['%s (%s %s)' % ((w + cw.week - 1).day(1), _('Week'), (w + cw.week - 1).week) for w in Week.weeks_of_year(cw.year)]
+        start.choices = zip(start_choices, start_date_choices)
         start.initial = cw
 
-        for field in ['size', 'frequency', 'duration', 'start']:
+        for field in ['size', 'carrier', 'frequency', 'duration', 'start']:
             self.fields[field].widget.attrs['class'] = 'slidebar-select'
 
         for field in ['criterias']:
