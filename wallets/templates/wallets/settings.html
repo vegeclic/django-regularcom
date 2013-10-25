@@ -3,6 +3,9 @@
 
 {% block sub_content %}
   <h2>{% trans "Settings" %}</h2>
+  <div class="alert alert-info">
+        <p>Vous pouvez paramétrer votre compte ci-dessous.</p>
+  </div>
 
   <form role="form" method="post" action="{% url "settings" %}">
     {% csrf_token %}

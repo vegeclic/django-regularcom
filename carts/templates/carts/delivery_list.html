@@ -20,14 +20,11 @@
   {% endif %}
 
   <div class="alert alert-info">
-    Veuillez trouver ci-dessous l'échéancier des livraisons pour la durée d'abonnement choisie, indiquant la dégressivité des prix.
+    Veuillez trouver ci-dessous l'échéancier des livraisons pour tous vos abonnements confondus. Le premier élément ayant la date de livraison la plus proche.
   </div>
 
-  <div class="well">
-    Pour que vos paniers soient bien préparés et livrés, il vous faut les valider en procédant à leur paiement au plus tard à J-10 de la date d'envoi du colis.
-Pour cela, rendez-vous sur la partie « <a href="{% url "credit" %}">portemonnaie</a> » afin de créditer votre compte.
-Une fois cela effectué, vous pouvez valider votre panier (ou plusieurs en avance) en cliquant sur le symbole à gauche du (des) panier(s) concerné(s).
-Attention cette étape valide définitivement la création de ce(s) panier(s), vous ne pourrez plus les annuler.
+  <div class="alert alert-info">
+        Pour que vos paniers soient bien préparés et livrés, il vous faut approvisionner votre compte au plus tard à J-10 de la date d'envoi du colis, le paiement du panier sera ensuite prélevé automatiquement à cette date-là. Pour cela, rendez-vous sur la partie « <a href="{% url "credit" %}">portemonnaie</a> » afin de créditer votre compte. Vous pouvez également valider votre échéances (ou plusieurs) en avance en cliquant sur le symbole à gauche du (des) panier(s) concerné(s). Attention cette étape valide définitivement la création de ce(s) panier(s), vous ne pourrez plus les annuler.
   </div>
 
   <table class="table table-bordered table-hover">

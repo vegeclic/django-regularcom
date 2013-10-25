@@ -64,6 +64,11 @@
 
       <h2>{% trans "Our suppliers products" %}</h2>
 
+      <div class="alert alert-info">
+	<p>Veuillez trouver ci-dessous tous les produits de nos fournisseurs.</p>
+        <p>Les produits sont mis à jour constamment. L'ajout de produits spécifiques à votre panier se fait par le formulaire de création de panier personnalisé après avoir renseigné les familles de produits.</p>
+      </div>
+      
       {% with product_path=product_path selected_product=selected_product view=view %}
 	{% include "suppliers/product_path.html" %}
       {% endwith %}
@@ -72,6 +77,8 @@
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
+     
+      
       <div class="{% if view == "grid" %}row{% endif %}">
 	{% for product in object_list|dictsortreversed:"date_created" %}
 	  {% if view == "list" %}
