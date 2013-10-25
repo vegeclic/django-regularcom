@@ -61,7 +61,7 @@ class Command(NoArgsCommand):
             try:
                 delivery.save()
             except ValueError as e:
-                message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s cannot be validated') % {'date': delivery.date}, body=_(
+                message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s cannot be validated') % {'date': delivery.get_date_display()}, body=_(
 """Hi %(name)s,
 
 with some regret I must report that we were unable to validate your delivery %(date)s from the subscription %(subscription_id)d since you dont have enough money in your wallet to buy it.
@@ -73,7 +73,7 @@ Végéclic.
 """
                 ) % {'name': customer.main_address.__unicode__(), 'date': delivery.date, 'subscription_id': delivery.subscription.id})
             else:
-                message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s has been validated') % {'date': delivery.date}, body=_(
+                message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s has been validated') % {'date': delivery.get_date_display()}, body=_(
 """Hi %(name)s,
 
 we are pleased to announce your delivery %(date)s from the subscription %(subscription_id)d has been validated automatically.
@@ -83,6 +83,6 @@ Your cart will be prepared as soon as possible and send to you in 10-12 days.
 Best regards,
 Végéclic.
 """
-                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.date, 'subscription_id': delivery.subscription.id})
+                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
 
         translation.deactivate()
