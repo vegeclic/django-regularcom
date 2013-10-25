@@ -214,8 +214,7 @@ msgstr "La somme des proportions doit être égale à 100 au lieu de %d."
 msgid ""
 "Which size would you like to use for your cart ? (delivery fees included)"
 msgstr ""
-"Quelle taille souhaiteriez vous choisir pour votre panier ? (frais de port "
-"inclus)"
+"Quelle taille souhaiteriez vous choisir pour votre panier ? (frais de port et emballage isotherme inclus)"
 
 #: carts/forms.py:155 carts/templates/carts/subscription_list.html:18
 msgid "Size"
@@ -263,8 +262,7 @@ msgstr "Sélectionner les critères que vous souhaitez appliquer à votre panier
 msgid ""
 "Which carrier would you like to use for your cart ? (delivery fees included)"
 msgstr ""
-"Quel type de livraison souhaiteriez vous choisir pour votre panier ? (frais de port "
-"inclus)"
+"Quel type de livraison souhaiteriez vous choisir pour votre panier ? (frais de port et emballage isotherme inclus)"
 
 #: carts/forms.py:171
 msgid "Carrier"
