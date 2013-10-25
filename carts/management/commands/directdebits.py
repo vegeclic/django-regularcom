@@ -48,7 +48,7 @@ class Command(NoArgsCommand):
             delivery.status = 'e'
             delivery.save()
 
-        # secondly, get all the deliveries with a date higher or equal to J+10 and lesser than J+10+7 with a waiting status and a subscription which accepts direct debit.
+        # secondly, get all the deliveries with a date higher or equal to J+9 and lesser than J+9+7 with a waiting status and a subscription which accepts direct debit.
         deliveries = models.Delivery.objects.filter(date__gte=week_limit, date__lt=week_limit+1, status='w', subscription__direct_debit=True)
 
         for delivery in deliveries:
