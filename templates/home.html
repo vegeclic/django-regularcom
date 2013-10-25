@@ -5,41 +5,37 @@
 {% block section_title %}{% trans "Presentation" %}{% endblock %}
 
 {% block content %}
-  <div >
+  <div>
     <img src="{% static "banner3.png" %}" alt="Végéclic" title="Végéclic"/>
   </div>
 
-  <hr style="border: 1px solid grey"/>
-
-  <h3 class="text-center">{% trans "Our thematic carts" %}</h3>
-
-  <hr style="border: 1px solid grey"/>
+  <br/>
 
   <div class="well">
-    Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> ».
+    Nous vous proposant de <strong>créer un abonnement</strong> en <a href="{% url "create_thematic" %}">choisissant un de nos paniers thématiques</a> ou en <a href="{% url "create_custom" %}">composant vous même le contenu de votre panier</a>.
   </div>
 
   <div class="row">
-    {% for thematic in thematics|dictsortreversed:"date_created" %}
-    <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
-      <div class="panel panel-default">
-	<div class="panel-heading"><h4>{{thematic.name}}</h4></div>
-	<div class="panel-body text-center">
-	  <a href="{% url "create_thematic_id" thematic.pk %}"><img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:150px"/></a>
-	</div>
-	<div class="panel-body" style="height:130px; vertical-align:top; text-align: justify">
-	  {{thematic.body|truncatewords:35}}
-	</div>
-	<div class="panel-footer">
-	  <div class="form-group">
-	    <a href="{% url "create_thematic_id" thematic.pk %}" class="btn btn-primary btn-block">{% trans "Create" %}</a>
-	  </div>
-	</div>
-      </div>
+    <div class="col-md-5">
+      <a href="{% url "create_thematic" %}">
+	<img src="{% static "thematic_carts.png" %}" alt="Végéclic" title="Végéclic"/>
+      </a>
     </div>
-    {% endfor %}
+
+    <div class="col-md-2 text-center">
+      <img src="{% static "or.png" %}" alt="Végéclic" title="Végéclic"/>
+    </div>
+
+    <div class="col-md-5">
+      <a href="{% url "create_custom" %}">
+	<img src="{% static "custom_carts.png" %}" alt="Végéclic" title="Végéclic"/>
+      </a>
+    </div>
   </div>
+
+  <br/>
+
   <div class="alert alert-info">
-        <p>Les envois de colis se font le mardi et sont livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.</p>
+    Les envois de colis se font le mardi et sont livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.
   </div>
 {% endblock %}
