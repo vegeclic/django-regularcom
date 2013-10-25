@@ -108,19 +108,19 @@ class Price(models.Model):
 
     def price(self): return self.selling_price if self.selling_price else self.purchase_price
 
-    def margin_price(self): return self.selling_price if self.selling_price else (self.purchase_price * (1+settings.PRICE_MARGIN_RATE/100))
+    def margin_price(self): return round(self.selling_price if self.selling_price else (self.purchase_price * (1+settings.PRICE_MARGIN_RATE/100)), 2)
 
     def get_pre_tax_price(self): return self.margin_price()
 
-    def get_after_tax_price(self): return self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1)
+    def get_after_tax_price(self): return round(self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1), 2)
 
-    def get_after_tax_price_with_fee(self): return self.get_after_tax_price() + (self.product.weight/1000) * self.supplier.fee_per_weight().fee_per_weight
+    def get_after_tax_price_with_fee(self): return round(self.get_after_tax_price() + (self.product.weight/1000) * self.supplier.fee_per_weight().fee_per_weight, 2)
 
     def degressive_price(self, nb_deliveries=52):
         values = []
         for i in range(nb_deliveries):
             values.append(self.get_after_tax_price()/(1+settings.DEGRESSIVE_PRICE_RATE/100)**i)
-        return np.mean(values)
+        return round(np.mean(values), 2)
 
     def __unicode__(self):
         return ('%.2f %s' % (self.get_after_tax_price(), self.currency.symbol)).strip()
