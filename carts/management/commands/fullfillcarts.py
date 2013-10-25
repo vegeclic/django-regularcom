@@ -59,7 +59,10 @@ class Command(NoArgsCommand):
         for delivery in deliveries:
             logging.debug(delivery.__unicode__())
 
-            for extent in delivery.subscription.extent_set.all():
+            subscription = delivery.subscription
+            carrier = subscription.carrier
+
+            for extent in subscription.extent_set.all():
                 logging.debug(extent)
 
                 __extent = extent.extent
@@ -68,16 +71,20 @@ class Command(NoArgsCommand):
                     __products = []
                     for child in product.products_children.all():
                         __products += get_product_products(child)
-                    __products += product.product_product.all()
+                    # __products += product.product_product.all()
+                    __filter = product.product_product
+                    for c in subscription.criterias.all(): __filter = __filter.filter(criterias=c)
+                    __products += __filter.all()
                     return __products
 
-                # products = extent.product.product_product.all()
                 products = get_product_products(extent.product)
-                print(products)
-                prices = [p.price().purchase_price for p in products]
-                nbr_items = len(prices)
+                logging.debug(products)
+                prices = [p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price() for p in products]
+                weights = [p.weight for p in products]
+                nbr_items = len(products)
 
-                total_price = delivery.subscription.price().price*__extent/100
+                total_price = subscription.price().price*__extent/100
+                total_weight = subscription.size.weight*__extent/100
 
                 from deap import algorithms, base, creator, tools
 
@@ -86,7 +93,7 @@ class Command(NoArgsCommand):
                 algo = algorithms.eaMuPlusLambda
                 # algo = algorithms.eaMuCommaLambda
 
-                creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0))
+                creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
                 creator.create("Individual", list, fitness=creator.Fitness)
 
                 toolbox = base.Toolbox()
@@ -102,10 +109,13 @@ class Command(NoArgsCommand):
 
                 def eval(individual):
                     eval_total_price = 0.0
+                    eval_total_weight = 0.0
                     for i in range(nbr_items):
                         eval_total_price += individual[i] * prices[i]
+                        eval_total_weight += individual[i] * weights[i]
                     return \
                         abs(total_price - eval_total_price),\
+                        abs(total_weight - eval_total_weight),\
                         plt.mlab.entropy(individual, 1),\
                         individual.count(min_quantity),\
 
@@ -123,6 +133,7 @@ class Command(NoArgsCommand):
 
                 logging.debug("len(hof): %d" % len(hof))
                 logging.debug("prices: %s" % prices)
+                logging.debug("prices: %s" % weights)
                 logging.debug("total_price: %f" % total_price)
                 logging.debug("hof[0]: %s" % hof[0])
                 logging.debug("hof[0].fitness: %s" % hof[0].fitness)
@@ -148,9 +159,9 @@ class Command(NoArgsCommand):
 
             logging.debug("send a message to the delivery customer")
 
-            customer = delivery.subscription.customer
+            customer = subscription.customer
 
-            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.date}, body=_(
+            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.get_date_display()}, body=_(
 """Hi %(name)s,
 
 we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
@@ -160,6 +171,6 @@ Your cart will be send to you in 10 days.
 Best regards,
 Végéclic.
 """
-            ) % {'name': customer.main_address.__unicode__(), 'date': delivery.date, 'subscription_id': delivery.subscription.id})
+            ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
 
         translation.deactivate()
