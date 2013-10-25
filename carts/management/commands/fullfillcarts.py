@@ -42,16 +42,15 @@ class Command(NoArgsCommand):
         logging.debug('Command in progress')
 
         pop_size = 50
-        max_gen = 50
+        max_gen = 100
         lambda_algo = 100
         cxpb = .7
         mutpb = .2
         min_quantity = 0
-        max_quantity = 10
-        marging = .1
+        max_quantity = 2
+        margin = .1
         # marging = 0
         zero = True
-        # zero = False
 
         # week_limit = Week.withdate(datetime.date.today() + relativedelta(days=10))
         week_limit = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
@@ -63,27 +62,27 @@ class Command(NoArgsCommand):
             carrier = subscription.carrier
 
             for extent in subscription.extent_set.all():
-                logging.debug(extent)
-
                 __extent = extent.extent
+
+                logging.debug('meta-product: %s, extent: %s' % (extent.product.name, __extent))
 
                 def get_product_products(product):
                     __products = []
                     for child in product.products_children.all():
                         __products += get_product_products(child)
                     # __products += product.product_product.all()
-                    __filter = product.product_product
+                    __filter = product.product_product.language('fr')
                     for c in subscription.criterias.all(): __filter = __filter.filter(criterias=c)
                     __products += __filter.all()
                     return __products
 
                 products = get_product_products(extent.product)
-                prices = [p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price() for p in products]
-                weights = [p.weight for p in products]
+                prices = [int(p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price()) for p in products]
+                weights = [int(p.weight) for p in products]
                 nbr_items = len(products)
 
-                total_price = subscription.price().price*__extent/100
-                total_weight = subscription.size.weight*__extent/100
+                total_price = round(subscription.price().price*__extent/100, 2)
+                total_weight = round(subscription.size.weight*__extent/100*1000, 2)
 
                 from deap import algorithms, base, creator, tools
 
@@ -92,7 +91,10 @@ class Command(NoArgsCommand):
                 algo = algorithms.eaMuPlusLambda
                 # algo = algorithms.eaMuCommaLambda
 
-                creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
+                # creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
+                creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0))
+                # creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0))
+                # creator.create("Fitness", base.Fitness, weights=(-1.0,))
                 creator.create("Individual", list, fitness=creator.Fitness)
 
                 toolbox = base.Toolbox()
@@ -111,12 +113,12 @@ class Command(NoArgsCommand):
                     eval_total_weight = 0.0
                     for i in range(nbr_items):
                         eval_total_price += individual[i] * prices[i]
-                        eval_total_weight += individual[i] * (weights[i]/1000)
+                        eval_total_weight += individual[i] * weights[i]
                     return \
                         abs(total_price - eval_total_price),\
                         abs(total_weight - eval_total_weight),\
                         plt.mlab.entropy(individual, 1),\
-                        individual.count(min_quantity),\
+                        # individual.count(min_quantity),\
 
                 def cx(ind1, ind2): return tools.crossover.cxOnePoint(ind1, ind2)
                 def mut(individual): return tools.mutation.mutUniformInt(individual, min_quantity, max_quantity, mutpb)
@@ -135,13 +137,25 @@ class Command(NoArgsCommand):
                 logging.debug("prices: %s" % prices)
                 logging.debug("weights: %s" % weights)
                 logging.debug("total_price: %f" % total_price)
-                logging.debug("total_price: %f" % total_weight)
+                logging.debug("total_weight: %f" % total_weight)
                 logging.debug("hof[0]: %s" % hof[0])
                 logging.debug("hof[0].fitness: %s" % hof[0].fitness)
 
+                for x in hof:
+                    if margin:
+                        if x.fitness.values[0] <= (total_price*margin):
+                            logging.debug('%s %s' % (x, x.fitness))
+                    else:
+                        logging.debug('%s %s' % (x, x.fitness))
+
+
+                # for i in range(len(hof)):
+                #     logging.debug("hof[%d]: %s" % (i, hof[i]))
+                #     logging.debug("hof[%d].fitness: %s" % (i, hof[i].fitness))
+
                 logging.debug("create content object")
 
-                content = delivery.content_set.create(extent=extent)
+                # content = delivery.content_set.create(extent=extent)
                 sol = hof[0]
 
                 assert len(sol) == nbr_items
@@ -150,28 +164,28 @@ class Command(NoArgsCommand):
 
                 for i in range(nbr_items):
                     if sol[i]:
-                        logging.debug("add product %d with a quantity %d" % (i, sol[i]))
-                        content.contentproduct_set.create(product=products[i], quantity=sol[i])
+                        logging.debug("add product %s (%d) with a quantity %d (price: %f, weight: %f)" % (products[i].name, i, sol[i], prices[i], weights[i]))
+                        # content.contentproduct_set.create(product=products[i], quantity=sol[i])
 
-            logging.debug("change delivery status")
+#             logging.debug("change delivery status")
 
-            delivery.status = 'P'
-            delivery.save()
+#             delivery.status = 'P'
+#             delivery.save()
 
-            logging.debug("send a message to the delivery customer")
+#             logging.debug("send a message to the delivery customer")
 
-            customer = subscription.customer
+#             customer = subscription.customer
 
-            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.get_date_display()}, body=_(
-"""Hi %(name)s,
+#             message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.get_date_display()}, body=_(
+# """Hi %(name)s,
 
-we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
+# we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
 
-Your cart will be send to you in 10 days.
+# Your cart will be send to you in 10 days.
 
-Best regards,
-Végéclic.
-"""
-            ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
+# Best regards,
+# Végéclic.
+# """
+#             ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
 
         translation.deactivate()
