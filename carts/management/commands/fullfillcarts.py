@@ -111,7 +111,7 @@ class Command(NoArgsCommand):
                     eval_total_weight = 0.0
                     for i in range(nbr_items):
                         eval_total_price += individual[i] * prices[i]
-                        eval_total_weight += individual[i] * weights[i]
+                        eval_total_weight += individual[i] * (weights[i]/1000)
                     return \
                         abs(total_price - eval_total_price),\
                         abs(total_weight - eval_total_weight),\
