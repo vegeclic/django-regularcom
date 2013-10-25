@@ -8,43 +8,53 @@
 
 {% block content %}
   {% if signup_form %}
+
     <form role="form" class="account-form" method="post" action="{% url "accounts.views.signup" %}">
       {% csrf_token %}
+
       <h2 class="account-form-heading">{% trans "Please sign up" %}</h2>
+
       <div class="form-group">
 	<input name="email" type="text" class="form-control" placeholder="{{ signup_form.email.label }}"/>
       </div>
-      {% comment %}
-      <div class="form-group">
-	<input name="password1" type="password" class="form-control" placeholder="{{ signup_form.password1.label }}"/>
-      </div>
-      <div class="form-group">
-	<input name="password2" type="password" class="form-control" placeholder="{{ signup_form.password2.label }}"/>
-      </div>
-      {% endcomment %}
+
       <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign up" %}</button>
+
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
+
   {% else %}
-    <form role="form" class="account-form" method="post" action="{% url "accounts.views.login" %}">
+
+    <form role="form" class="account-form" method="post" action="{% url "login" %}">
       {% csrf_token %}
+
       <h2 class="account-form-heading">{% trans "Please sign in" %}</h2>
+
+      <div class="alert alert-info">
+	Si vous ne possédez par encore de compte sur Végéclic, nous vous invitons à vous inscrire en <a href="{% url "signup" %}"><strong>cliquant ici</strong></a>.
+      </div>
+
       <div class="form-group">
 	<input name="username" type="text" class="form-control" placeholder="{{ form.username.label }}"/>
       </div>
+
       <div class="form-group">
 	<input name="password" type="password" class="form-control" placeholder="{{ form.password.label }}"/>
       </div>
+
       <div class="checkbox">
 	<label>
 	  <input type="checkbox" value="remember-me"/> {% trans "Remember me" %}
 	</label>
       </div>
+
       <div class="form-group">
 	<button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
 	<a class="btn btn-lg btn-default btn-block" href="{% url "account_password_reset" %}">{% trans "I forgot my password" %}</a>
       </div>
+
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
+
   {% endif %}
 {% endblock %}
