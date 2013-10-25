@@ -97,6 +97,10 @@ class ThematicExtentAdminForm(forms.ModelForm):
     class Meta:
         model = models.ThematicExtent
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['product'].queryset = pm.Product.objects.language('fr').order_by('name')
+
 class DeliveryCreationAdminForm(forms.ModelForm):
     class Meta:
         model = models.Delivery
