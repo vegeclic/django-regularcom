@@ -47,6 +47,7 @@ class Command(NoArgsCommand):
         for delivery in deliveries_canceled:
             delivery.status = 'e'
             delivery.save()
+            logging.debug('delivery %d expired' % delivery.id)
 
         # secondly, get all the deliveries with a date higher or equal to J+9 and lesser than J+9+7 with a waiting status and a subscription which accepts direct debit.
         deliveries = models.Delivery.objects.filter(date__gte=week_limit, date__lt=week_limit+1, status='w', subscription__direct_debit=True)
@@ -57,6 +58,8 @@ class Command(NoArgsCommand):
             payed_deliveries = delivery.subscription.delivery_set.filter(status__in=delivery.SUCCESS_CHOICES)
             delivery.payed_price = delivery.subscription.price().price/(1+views.DeliveryView.q/100)**len(payed_deliveries.all())
             delivery.status = 'p'
+
+            logging.debug('delivery %d payed' % delivery.id)
 
             try:
                 delivery.save()
@@ -71,7 +74,7 @@ Please take a moment to credit your wallet first and validate the delivery back.
 Best regards,
 Végéclic.
 """
-                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.date, 'subscription_id': delivery.subscription.id})
+                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
             else:
                 message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s has been validated') % {'date': delivery.get_date_display()}, body=_(
 """Hi %(name)s,
