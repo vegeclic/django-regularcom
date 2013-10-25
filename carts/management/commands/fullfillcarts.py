@@ -42,24 +42,32 @@ class Command(NoArgsCommand):
         logging.debug('Command in progress')
 
         pop_size = 50
-        max_gen = 100
+        max_gen = 50
         lambda_algo = 100
         cxpb = .7
         mutpb = .2
         min_quantity = 0
         max_quantity = 2
         margin = .1
-        # marging = 0
         zero = True
 
-        # week_limit = Week.withdate(datetime.date.today() + relativedelta(days=10))
         week_limit = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
         deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p')
         for delivery in deliveries:
             logging.debug(delivery.__unicode__())
 
             subscription = delivery.subscription
+            subscription_weight = subscription.size.weight - subscription.size.weight*settings.PACKAGING_WEIGHT_RATE/100
+            subscription_price = subscription.price().price
             carrier = subscription.carrier
+            weight_level = carrier.carrierlevel_set.filter(weight__gte=subscription.size.weight)
+            if weight_level:
+                logging.debug('weight_level: %s kg (%s €)' % (weight_level[0].weight, weight_level[0].price))
+                subscription_price -= weight_level[0].price
+
+            logging.debug('carrier: %s' % carrier.name)
+            logging.debug('subscription_weight: %s kg' % subscription_weight)
+            logging.debug('subscription_price: %s € (%s €)' % (subscription_price, subscription.price().price))
 
             for extent in subscription.extent_set.all():
                 __extent = extent.extent
@@ -70,19 +78,18 @@ class Command(NoArgsCommand):
                     __products = []
                     for child in product.products_children.all():
                         __products += get_product_products(child)
-                    # __products += product.product_product.all()
-                    __filter = product.product_product.language('fr')
+                    __filter = product.product_product.language('fr').filter(status='p')
                     for c in subscription.criterias.all(): __filter = __filter.filter(criterias=c)
                     __products += __filter.all()
                     return __products
 
                 products = get_product_products(extent.product)
-                prices = [int(p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price()) for p in products]
+                prices = [p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price() for p in products]
                 weights = [int(p.weight) for p in products]
                 nbr_items = len(products)
 
-                total_price = round(subscription.price().price*__extent/100, 2)
-                total_weight = round(subscription.size.weight*__extent/100*1000, 2)
+                total_price = round(subscription_price*__extent/100, 2)
+                total_weight = round(subscription_weight*__extent/100*1000, 2)
 
                 from deap import algorithms, base, creator, tools
 
@@ -91,10 +98,7 @@ class Command(NoArgsCommand):
                 algo = algorithms.eaMuPlusLambda
                 # algo = algorithms.eaMuCommaLambda
 
-                # creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
-                creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0, -1.0))
-                # creator.create("Fitness", base.Fitness, weights=(-1.0, -1.0))
-                # creator.create("Fitness", base.Fitness, weights=(-1.0,))
+                creator.create("Fitness", base.Fitness, weights=(-1.0,-1.0,-1.0,-1.0,))
                 creator.create("Individual", list, fitness=creator.Fitness)
 
                 toolbox = base.Toolbox()
@@ -116,12 +120,22 @@ class Command(NoArgsCommand):
                         eval_total_weight += individual[i] * weights[i]
                     return \
                         abs(total_price - eval_total_price),\
-                        abs(total_weight - eval_total_weight),\
                         plt.mlab.entropy(individual, 1),\
-                        # individual.count(min_quantity),\
+                        abs(total_weight - eval_total_weight),\
+                        individual.count(min_quantity),\
 
-                def cx(ind1, ind2): return tools.crossover.cxOnePoint(ind1, ind2)
-                def mut(individual): return tools.mutation.mutUniformInt(individual, min_quantity, max_quantity, mutpb)
+                # def cx(ind1, ind2): return tools.crossover.cxOnePoint(ind1, ind2)
+                # def mut(individual): return tools.mutation.mutUniformInt(individual, min_quantity, max_quantity, 0.01)
+
+                def cx(ind1, ind2):
+                    site = random.randint(0, min(len(ind1), len(ind2)))
+                    ind1[:site], ind2[:site] = ind2[:site], ind1[:site]
+                    return ind1, ind2
+
+                def mut(individual):
+                    pos = random.randint(0, nbr_items-1)
+                    individual[pos] = random.randint(min_quantity, max_quantity)
+                    return individual,
 
                 toolbox.register("evaluate", eval)
                 toolbox.register("mate", cx)
@@ -133,11 +147,11 @@ class Command(NoArgsCommand):
                 new_pop, logbook = algo(pop, toolbox, pop_size, lambda_algo, cxpb, mutpb, max_gen, halloffame=hof, verbose=0)
 
                 logging.debug("len(hof): %d" % len(hof))
-                logging.debug("products len: %s" % len(products))
-                logging.debug("prices: %s" % prices)
-                logging.debug("weights: %s" % weights)
-                logging.debug("total_price: %f" % total_price)
-                logging.debug("total_weight: %f" % total_weight)
+                logging.debug("len(products): %s" % len(products))
+                logging.debug("prices (€): %s" % prices)
+                logging.debug("weights (g): %s" % weights)
+                logging.debug("total_price: %f €" % total_price)
+                logging.debug("total_weight: %f g" % total_weight)
                 logging.debug("hof[0]: %s" % hof[0])
                 logging.debug("hof[0].fitness: %s" % hof[0].fitness)
 
@@ -155,7 +169,7 @@ class Command(NoArgsCommand):
 
                 logging.debug("create content object")
 
-                # content = delivery.content_set.create(extent=extent)
+                content = delivery.content_set.create(extent=extent)
                 sol = hof[0]
 
                 assert len(sol) == nbr_items
@@ -165,27 +179,27 @@ class Command(NoArgsCommand):
                 for i in range(nbr_items):
                     if sol[i]:
                         logging.debug("add product %s (%d) with a quantity %d (price: %f, weight: %f)" % (products[i].name, i, sol[i], prices[i], weights[i]))
-                        # content.contentproduct_set.create(product=products[i], quantity=sol[i])
+                        content.contentproduct_set.create(product=products[i], quantity=sol[i])
 
-#             logging.debug("change delivery status")
+            logging.debug("change delivery status")
 
-#             delivery.status = 'P'
-#             delivery.save()
+            delivery.status = 'P'
+            delivery.save()
 
-#             logging.debug("send a message to the delivery customer")
+            logging.debug("send a message to the delivery customer")
 
-#             customer = subscription.customer
+            customer = subscription.customer
 
-#             message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.get_date_display()}, body=_(
-# """Hi %(name)s,
+            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s is in progress') % {'date': delivery.get_date_display()}, body=_(
+"""Hi %(name)s,
 
-# we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
+we are pleased to announce your delivery %(date)s content from the subscription %(subscription_id)d has been defined and will be prepared as soon as possible for sending.
 
-# Your cart will be send to you in 10 days.
+Your cart will be send to you in 10 days.
 
-# Best regards,
-# Végéclic.
-# """
-#             ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
+Best regards,
+Végéclic.
+"""
+            ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
 
         translation.deactivate()
