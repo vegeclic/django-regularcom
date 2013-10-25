@@ -268,11 +268,11 @@ msgstr ""
 
 #: carts/forms.py:171
 msgid "Carrier"
-msgstr ""
+msgstr "Livreur"
 
 #: carts/forms.py:179 carts/models.py:49
 msgid "Week"
-msgstr ""
+msgstr "Semaine"
 
 #: carts/models.py:36
 msgid "Once a week"
