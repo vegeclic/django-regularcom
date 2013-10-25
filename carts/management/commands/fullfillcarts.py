@@ -78,7 +78,6 @@ class Command(NoArgsCommand):
                     return __products
 
                 products = get_product_products(extent.product)
-                logging.debug(products)
                 prices = [p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price() for p in products]
                 weights = [p.weight for p in products]
                 nbr_items = len(products)
@@ -132,9 +131,11 @@ class Command(NoArgsCommand):
                 new_pop, logbook = algo(pop, toolbox, pop_size, lambda_algo, cxpb, mutpb, max_gen, halloffame=hof, verbose=0)
 
                 logging.debug("len(hof): %d" % len(hof))
+                logging.debug("products len: %s" % len(products))
                 logging.debug("prices: %s" % prices)
-                logging.debug("prices: %s" % weights)
+                logging.debug("weights: %s" % weights)
                 logging.debug("total_price: %f" % total_price)
+                logging.debug("total_price: %f" % total_weight)
                 logging.debug("hof[0]: %s" % hof[0])
                 logging.debug("hof[0].fitness: %s" % hof[0].fitness)
 
