@@ -143,14 +143,15 @@ class Delivery(models.Model):
     subscription = models.ForeignKey('Subscription', verbose_name=_('subscription'))
     date = models.CharField(_('date'), max_length=7, choices=WEEKS_CHOICES)
     STATUS_CHOICES = (
-        ('w', _('In waiting')),
+        ('w', _('Pending')),
         ('p', _('Payed')),
         ('P', _('In progress')),
+        ('s', _('Sent')),
         ('d', _('Delivered')),
         ('c', _('Canceled')),
         ('e', _('Expired')),
     )
-    SUCCESS_CHOICES = ['p', 'P', 'd']
+    SUCCESS_CHOICES = ['p', 'P', 's', 'd']
     FAILED_CHOICES = ['c', 'e']
     status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='w')
     payed_price = models.FloatField(_('payed price'), null=True, blank=True)
