@@ -165,7 +165,6 @@ class CreateForm1(forms.Form):
                                  label=_('Duration'))
     start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'),
                               label=_('Beginning of your subscription'))
-    customized = forms.BooleanField(label=_('Customized'), required=False)
     criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
                                                queryset=cm.Criteria.objects.order_by('id'),
                                                required=False, label=_('Criterias'),
@@ -173,6 +172,9 @@ class CreateForm1(forms.Form):
     carrier = forms.ModelChoiceField(queryset=models.Carrier.objects.order_by('id'), initial=3,
                                      help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
                                      label=_('Carrier'))
+
+    customized = forms.BooleanField(label=_('Customized'), required=False)
+    receive_only_once = forms.BooleanField(label=_('Receive only once'), required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
