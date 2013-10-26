@@ -16,11 +16,9 @@
           <li {% if section == 'how' %}class="active"{% endif %}>
 	    <a href="{% url 'how' %}"><i class="glyphicon glyphicon-book"></i> Comment Ça Marche ?</a>
 	  </li>
-	  {% comment %}
 	  <li {% if section == 'catalog' %}class="active"{% endif %}>
 	    <a href="{% url 'catalog_grid_page' 1 %}"><i class="glyphicon glyphicon-barcode"></i> {% trans "Catalog" %}</a>
 	  </li>
-	  {% endcomment %}
 	  {% if user.is_authenticated %}
 	    <li {% if section == 'cart' %}class="active"{% endif %}>
 	      <a href="{% url 'subscriptions' %}"><i class="glyphicon glyphicon-shopping-cart"></i> {% trans "Carts" %} {% if nb_subscriptions %}<span class="badge">{{nb_subscriptions}}</span>{% endif %}</a>
@@ -32,10 +30,10 @@
 	      <a href="{% url 'messages' %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<span class="badge">{{nb_messages}}</span>{% endif %}</a>
 	    </li>
 	    <li {% if section == 'customers' %}class="active"{% endif %}>
-	      <a href="{% url 'profile' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Profile" %}</a>
+	      <a href="{% url 'profile' %}"><i class="tooltip_link glyphicon glyphicon-user" title="{% trans "Profile" %}"></i></a>
 	    </li>
 	    <li {% if section == 'logout' %}class="active"{% endif %}>
-	      <a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i></a>
+	      <a href="{% url 'logout' %}"><i class="tooltip_link glyphicon glyphicon-off" title="{% trans "Logout" %}"></i></a>
 	    </li>
 	  {% else %}
 	    <li {% if section == 'login' %}class="active"{% endif %}>
