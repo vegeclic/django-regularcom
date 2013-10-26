@@ -13,44 +13,48 @@
     {% csrf_token %}
     <h3 class="wallet-form-heading well">{% trans "Credit your wallet" %}</h3>
 
-    <div class="form-group well">
-      <div class="one_slide">
-	<label for="amounts-slide">{% trans "Amount" %}</label>
-	<div class="row">
-	  <div class="col-md-9" id="amounts-slide"></div>
-	  <div class="col-md-3 input-group">
-	    <input type="text" name="amount" id="amount" class="form-control" value="0"/>
-	    <span class="input-group-addon">{{object.target_currency.symbol}}</span>
+    <div class="panel panel-success">
+      <div class="panel-heading"><h4>{% trans "Amount" %}</h4></div>
+      <div class="panel-body">
+	<div class="one_slide">
+	  <div class="row">
+	    <div class="col-md-9" id="amounts-slide"></div>
+	    <div class="col-md-3 input-group">
+	      <input type="text" name="amount" id="amount" class="form-control" value="0"/>
+	      <span class="input-group-addon">{{object.target_currency.symbol}}</span>
+	    </div>
 	  </div>
 	</div>
       </div>
-      <br/>
-      <div class="alert alert-info">
-	<span class="helptext">
-	  Choisissez le montant dont vous souhaitez créditer votre compte ou indiquer la somme de votre choix.
-	</span>
+      <div class="panel-footer">
+	Choisissez le montant dont vous souhaitez créditer votre compte ou indiquer la somme de votre choix.
       </div>
     </div>
 
-    <div class="form-group well">
-      {{ form.payment_type.label_tag }}
-      {{ form.payment_type }}
-      {% if form.payment_type.help_text %}
+    <div class="panel panel-info">
+      <div class="panel-heading"><h4>{{ form.payment_type.label }}</h4></div>
+      <div class="panel-body">
+	{{ form.payment_type }}
 	<br/>
-	<div class="alert alert-info">
-	  <span class="helptext">{{ form.payment_type.help_text }}</span>
+	<br/>
+	<div class="well">
+	  <div class="payment_type_detail" id="payment_type_c">Cheque</div>
+	  <div class="payment_type_detail" id="payment_type_t">Bank transfer</div>
+	  <div class="payment_type_detail" id="payment_type_p">Paypal</div>
 	</div>
+      </div>
+      {% if form.payment_type.help_text %}
+	<div class="panel-footer">{{ form.payment_type.help_text }}</div>
       {% endif %}
     </div>
 
-    <div class="form-group well">
-      {{ form.payment_date.label_tag }}
-      {{ form.payment_date }}
+    <div class="panel panel-warning">
+      <div class="panel-heading"><h4>{{ form.payment_date.label }}</h4></div>
+      <div class="panel-body">
+	{{ form.payment_date }}
+      </div>
       {% if form.payment_date.help_text %}
-	<br/>
-	<div class="alert alert-info">
-	  <span class="helptext">{{ form.payment_date.help_text }}</span>
-	</div>
+	<div class="panel-footer">{{ form.payment_date.help_text }}</div>
       {% endif %}
     </div>
 
@@ -79,6 +83,23 @@
 	    }
 	});
 	$('#amount')[0].value = amounts[parseInt($('#amounts-slide').slider('value'))];
+
+	$('.payment_type_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+		$('#payment_type_' + $(this).val()).show();
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
+	$('.radio-select').change(function() {
+	    $('.payment_type_detail').hide();
+	    $('#payment_type_' + $(this).val()).show();
+	});
     });
   </script>
 
