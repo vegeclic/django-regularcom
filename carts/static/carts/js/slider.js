@@ -133,6 +133,7 @@ function create_one_slider(choices, id, default_value, disabled) {
 	    var i = parseInt(ui.value);
 	    var v = choices[i];
 	    $('#id_' + id)[0].selectedIndex = i;
+	    $('#id_' + id).change();
 	    $('#' + id + '-slide-text').text( v[1] );
 	}
     });
@@ -140,6 +141,7 @@ function create_one_slider(choices, id, default_value, disabled) {
     var i = parseInt($('#' + id + '-slide').slider('value'));
     var v = choices[i];
     $('#id_' + id)[0].selectedIndex = i;
+    $('#id_' + id).change();
     $('#' + id + '-slide-text').text( v[1] );
 }
 

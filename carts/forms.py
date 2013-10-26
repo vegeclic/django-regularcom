@@ -153,6 +153,68 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
             id_ += '_0'
         return id_
 
+class MyRadioInput(forms.widgets.SubWidget):
+    """
+    An object used by RadioFieldRenderer that represents a single
+    <input type='radio'>.
+    """
+
+    def __init__(self, name, value, attrs, choice, index):
+        self.name, self.value = name, value
+        self.attrs = attrs
+        self.choice_value = forms.widgets.force_text(choice[0])
+        self.choice_label = forms.widgets.force_text(choice[1])
+        self.index = index
+
+    def __str__(self):
+        return self.render()
+
+    def render(self, name=None, value=None, attrs=None, choices=()):
+        name = name or self.name
+        value = value or self.value
+        attrs = attrs or self.attrs
+        if 'id' in self.attrs:
+            label_for = forms.widgets.format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
+        else:
+            label_for = ''
+        choice_label = forms.widgets.force_text(self.choice_label)
+        return forms.widgets.format_html('<label class="btn btn-default btn-lg" {0}>{1} {2}</label>', label_for, self.tag(), choice_label)
+
+    def is_checked(self):
+        return self.value == self.choice_value
+
+    def tag(self):
+        if 'id' in self.attrs:
+            self.attrs['id'] = '%s_%s' % (self.attrs['id'], self.index)
+        final_attrs = dict(self.attrs, type='radio', name=self.name, value=self.choice_value)
+        if self.is_checked():
+            final_attrs['checked'] = 'checked'
+        return forms.widgets.format_html('<input{0} />', forms.widgets.flatatt(final_attrs))
+
+class MyRadioFieldRenderer(object):
+    """
+    An object used by RadioSelect to enable customization of radio widgets.
+    """
+
+    def __init__(self, name, value, attrs, choices):
+        self.name, self.value, self.attrs = name, value, attrs
+        self.choices = choices
+
+    def __iter__(self):
+        for i, choice in enumerate(self.choices):
+            yield MyRadioInput(self.name, self.value, self.attrs.copy(), choice, i)
+
+    def __getitem__(self, idx):
+        choice = self.choices[idx] # Let the IndexError propogate
+        return MyRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
+
+    def __str__(self):
+        return self.render()
+
+    def render(self):
+        """Outputs a <div> for this set of radio fields."""
+        return forms.widgets.format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', forms.widgets.format_html_join('\n', '{0}', [(forms.widgets.force_text(w),) for w in self]))
+
 class CreateForm1(forms.Form):
     size = forms.ModelChoiceField(queryset=models.Size.objects.order_by('weight'), initial=2,
                                   help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
@@ -169,7 +231,8 @@ class CreateForm1(forms.Form):
                                                queryset=cm.Criteria.objects.order_by('id'),
                                                required=False, label=_('Criterias'),
                                                help_text=_('Select as much criterias as you want in your cart.'))
-    carrier = forms.ModelChoiceField(queryset=models.Carrier.objects.order_by('id'), initial=3,
+    carrier = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer),
+                                     queryset=models.Carrier.objects.order_by('id'), initial=3,
                                      help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
                                      label=_('Carrier'))
 
@@ -186,11 +249,14 @@ class CreateForm1(forms.Form):
         start.choices = zip(start_choices, start_date_choices)
         start.initial = cw
 
-        for field in ['size', 'carrier', 'frequency', 'duration', 'start']:
+        for field in ['size', 'frequency', 'duration', 'start']:
             self.fields[field].widget.attrs['class'] = 'slidebar-select'
 
         for field in ['criterias', 'receive_only_once']:
             self.fields[field].widget.attrs['class'] = 'checkbox-select'
+
+        for field in ['carrier']:
+            self.fields[field].widget.attrs['class'] = 'radio-select'
 
 class CreateForm2(forms.Form):
     def __init__(self, *args, **kwargs):

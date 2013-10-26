@@ -198,8 +198,6 @@ class CreateWizard(SessionWizardView):
                                           Week.fromstring(thematic.start_duration).day(1))
                     form.fields['duration'].initial = delta.months
 
-                print(form.fields['receive_only_once'])
-
                 for field, locked in [('size', thematic.locked_size),
                                       ('carrier', thematic.locked_carrier),
                                       ('receive_only_once', thematic.locked_receive_only_once),
@@ -224,6 +222,12 @@ class CreateWizard(SessionWizardView):
 
             form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.all())
             if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
+
+            form.carriers = cache.get('create_carriers') or models.Carrier.objects.all()
+            if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)
+
+            form.sizes = cache.get('create_sizes') or models.Size.objects.all()
+            if not cache.get('create_sizes'): cache.set('create_sizes', form.sizes)
 
             if not thematic: form.fields['customized'].initial = True
 
@@ -276,6 +280,7 @@ class CreateWizard(SessionWizardView):
 
         size = form_data[0].get('size')
         carrier = form_data[0].get('carrier')
+        receive_only_once = form_data[0].get('receive_only_once', False)
         frequency = int(form_data[0].get('frequency'))
         duration = int(form_data[0].get('duration'))
         bw = Week.fromstring(form_data[0].get('start'))
@@ -283,7 +288,7 @@ class CreateWizard(SessionWizardView):
         customer = self.request.user.customer
         criterias = form_data[0].get('criterias')
 
-        subscription = models.Subscription.objects.create(customer=customer, size=size, carrier=carrier, frequency=frequency, start=bw, end=ew)
+        subscription = models.Subscription.objects.create(customer=customer, size=size, carrier=carrier, receive_only_once=receive_only_once, frequency=frequency, start=bw, end=ew)
 
         subscription.criterias = criterias
 

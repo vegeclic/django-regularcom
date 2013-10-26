@@ -123,6 +123,7 @@ class Carrier(TranslatableModel):
         body = models.TextField(_('body'), blank=True),
     )
     apply_suppliers_fee = models.BooleanField(_('apply suppliers fee'), default=True)
+    weight_min = models.FloatField(_('weight min'), default=0)
     enabled = models.BooleanField(_('enabled'), default=True)
 
     def __unicode__(self): return self.lazy_translation_getter('name', 'Carrier: %s' % self.pk)
@@ -199,6 +200,7 @@ class Subscription(models.Model):
     customer = models.ForeignKey('customers.Customer', verbose_name=_('customer'))
     size = models.ForeignKey(Size, verbose_name=_('size'))
     carrier = models.ForeignKey(Carrier, verbose_name=_('carrier'))
+    receive_only_once = models.BooleanField(_('receive only once'), default=False)
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, default=FREQUENCY_DEFAULT, help_text=_('Delivery made sure Tuesday'))
     start = models.CharField(_('start'), max_length=7, choices=WEEKS_CHOICES,
                              help_text=_('Here is the beginnig week of the subscription.'))
@@ -211,7 +213,10 @@ class Subscription(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
+    def __unicode__(self):
+        if not self.receive_only_once:
+            return '%s, %s, %s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
+        return '%s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_start_display())
 
     def price(self): return self.size.default_price()
 
@@ -234,8 +239,11 @@ class Subscription(models.Model):
 
     def create_deliveries(self):
         s, e = Week.fromstring(str(self.start)), Week.fromstring(str(self.end))
-        for i in range(0, e+1-s, self.frequency):
-            d = self.delivery_set.create(date=s+i)
+        if self.receive_only_once:
+            d = self.delivery_set.create(date=s)
+        else:
+            for i in range(0, e+1-s, self.frequency):
+                d = self.delivery_set.create(date=s+i)
 
 class Extent(models.Model):
     class Meta:

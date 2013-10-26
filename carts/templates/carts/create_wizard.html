@@ -79,9 +79,37 @@
 	<div class="panel-footer">{{ wizard.form.criterias.help_text }}</div>
       </div>
 
-      {% with tname="carts/one_slide.html" %}
-	{% with id="0-carrier" field=wizard.form.carrier style="success" %}{% include tname %}{% endwith %}
-      {% endwith %}
+      <div class="panel panel-info">
+	<div class="panel-heading"><h4>{{ wizard.form.carrier.label }}</h4></div>
+	<div class="panel-body">
+	  {{ wizard.form.carrier }}
+	  <br/>
+	  <br/>
+	  <div class="well">
+	    {% for carrier in wizard.form.carriers %}
+	      <div class="carrier_detail" id="carrier_{{carrier.id}}">
+		<h3>{{carrier.name}}</h3>
+		<p>{{carrier.body}}</p>
+	      </div>
+	    {% endfor %}
+	  </div>
+
+	  <div class="well">
+	    <p>Ci-dessous la proportion des frais de port inclus dans le prix de votre panier pour ce moyen de livraison :</p>
+
+	    <div class="progress progress-striped">
+	      <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+	      <div class="progress-bar progress-bar-warning" style="width: 0%"></div>
+	    </div>
+
+	    <span class="label label-success">Produits</span>
+	    <span class="label label-warning">Frais de port</span>
+	  </div>
+	</div>
+	{% if wizard.form.carrier.help_text %}
+	  <div class="panel-footer">{{ wizard.form.carrier.help_text }}</div>
+	{% endif %}
+      </div>
 
       <div class="form-group">
 	<div data-toggle="buttons">
@@ -93,16 +121,20 @@
       </div>
 
       <div class="alert alert-info">
-	Vous pouvez personnaliser votre abonnement en choisissant des produits ou sous-produits que vous souhaitez retrouver dans vos paniers.
+	Vous pouvez personnaliser votre abonnement en choisissant des familles ou sous-familles de produits que vous souhaitez retrouver dans vos paniers.
       </div>
 
       <div class="panel panel-success collapse {% if thematic %}out{% else %}in{% endif %}" id="display_products">
 	<div class="panel-heading"><h4>{% trans "Products" %}</h4></div>
 	<div class="panel-body">
 	  <div class="alert alert-info">
-	    Pour choisir un produit cliquez simplement sur « ajouter ». Après validation, vous serrez invité à définir les proportions de chacun de vos produits.
-	    Il vous est possible d'affiner votre sélection en dépliant les produits « parents ».
-	    Une liste de sous-produits apparaîtra, il vous suffira alors d'ajouter ceux que vous souhaitez.
+	    Pour choisir une famille de produits, cliquez simplement sur « ajouter ». Après validation, vous serrez invité à définir les proportions de chacun de vos produits.
+	    Il vous est possible d'affiner votre sélection en dépliant les familles de produits.
+	    Une liste de sous-familles apparaîtra, il vous suffira alors d'ajouter ceux que vous souhaitez.
+	  </div>
+
+	  <div class="alert alert-warning">
+	    Le choix d'un produit spécifique au sein d'une famille de produit sera <strong>prochainement disponible</strong>.
 	  </div>
 
 	  <ul class="media-list">
@@ -207,6 +239,15 @@
 	    }
 	});
 
+	$('.checkbox-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
 	$('.tooltip_link').tooltip();
 
 	$('.expend_button').click(function() {
@@ -239,13 +280,13 @@
 		$(this).addClass('btn-danger');
 		i.removeClass('glyphicon-check');
 		i.addClass('glyphicon-unchecked');
-		$('#customized')[0].value = 0;
+		// $('#customized')[0].value = 0;
 	    } else {
 		$(this).removeClass('btn-danger');
 		$(this).addClass('btn-success');
 		i.removeClass('glyphicon-unchecked');
 		i.addClass('glyphicon-check');
-		$('#customized')[0].value = 1;
+		// $('#customized')[0].value = 1;
 	    }
 	});
 
@@ -256,14 +297,99 @@
 		$(this).addClass('btn-success');
 		i.removeClass('glyphicon-unchecked');
 		i.addClass('glyphicon-check');
-		$('#receive_only_once')[0].value = 0;
 	    } else {
 		$(this).removeClass('btn-success');
 		$(this).addClass('btn-danger');
 		i.removeClass('glyphicon-check');
 		i.addClass('glyphicon-unchecked');
-		$('#receive_only_once')[0].value = 1;
 	    }
+	});
+
+	$('.carrier_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+		$('#carrier_' + $(this).val()).show();
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
+	var carriers = [
+	    {% for carrier in wizard.form.carriers|dictsort:'id' %}
+	    [{% for level in carrier.carrierlevel_set.all %}[{{level.weight|stringformat:"f"}}, {{level.price|stringformat:"f"}}], {% endfor %}],
+	    {% endfor %}
+	];
+
+	var carriers_weight_min = [{% for carrier in wizard.form.carriers|dictsort:'id' %}{{carrier.weight_min|stringformat:"f"}}, {% endfor %}];
+	var sizes = [{% for size in wizard.form.sizes|dictsort:'weight' %}[{{size.weight|stringformat:"f"}}, {{size.default_price.price|stringformat:"f"}}], {% endfor %}];
+
+	function compute_progress_bar(id) {
+	    $('.radio-select').each(function() {
+		var id = $(this).val();
+		var weight_min = carriers_weight_min[id-1];
+		var size = sizes[$('#id_0-size')[0].selectedIndex];
+		var progress_bar = $('.progress-bar');
+
+		if ( size[0] < weight_min ) {
+		    progress_bar[0].style.width = "0%";
+		    progress_bar[1].style.width = "100%";
+		    $(this).addClass('disabled');
+		} else {
+		    $(this).removeClass('disabled');
+		}
+
+		if ($(this).hasClass('disabled')) {
+		    $(this).parent().addClass('disabled');
+		} else {
+		    $(this).parent().removeClass('disabled');
+		}
+	    });
+
+	    var div = $('#carrier_' + id)
+	    var carrier = carriers[id-1];
+	    var weight_min = carriers_weight_min[id-1];
+	    var size = sizes[$('#id_0-size')[0].selectedIndex];
+	    var progress_bar = $('.progress-bar');
+
+	    if ( size[0] < weight_min ) {
+		progress_bar[0].style.width = "0%";
+		progress_bar[1].style.width = "100%";
+	    } else if ( carrier.length ) {
+		for (var i = 0; i < carrier.length; i++) {
+		    if (carrier[i][0] >= size[0]) break;
+		};
+
+		var extent = parseInt(carrier[i][1]/size[1]*100)+1
+
+		progress_bar[0].style.width = (100-extent) + "%";
+		progress_bar[1].style.width = extent + "%";
+	    } else {
+		progress_bar[0].style.width = "100%";
+		progress_bar[1].style.width = "0%";
+	    }
+	}
+
+	$('.radio-select').change(function() {
+	    var id = $(this).val();
+	    $('.carrier_detail').hide();
+	    var div = $('#carrier_' + id)
+	    div.show();
+	    compute_progress_bar(id);
+	});
+
+	$('.radio-select').each(function() {
+	    if (!($(this)[0].checked)) return;
+	    compute_progress_bar($(this).val());
+	});
+
+	$('#id_0-size').change(function(){
+	    $('.radio-select').each(function() {
+		if (!($(this)[0].checked)) return;
+		compute_progress_bar($(this).val());
+	    });
 	});
     });
   </script>
