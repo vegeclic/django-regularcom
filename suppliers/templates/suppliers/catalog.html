@@ -66,12 +66,13 @@
 
       <div class="alert alert-info">
 	<p>Veuillez trouver ci-dessous tous les produits de nos fournisseurs.</p>
-        <p>Les produits sont mis à jour constamment. <p/>
+	<p>Les produits sont mis à jour constamment.<p/>
       </div>
-      <div class="alert alert-danger">
-        <p>L'ajout de produits spécifiques à votre panier sera <strong>bientôt possible</strong> dans le formulaire de création de panier personnalisé.</p>
+
+      <div class="alert alert-warning">
+	<p>L'ajout de produits spécifiques à votre panier sera <strong>bientôt possible</strong> dans le formulaire de création de panier personnalisé.</p>
       </div>
-      
+
       {% with product_path=product_path selected_product=selected_product view=view %}
 	{% include "suppliers/product_path.html" %}
       {% endwith %}
@@ -80,12 +81,10 @@
 	{% include "suppliers/pagination.html" %}
       {% endwith %}
 
-     
-      
       <div class="{% if view == "grid" %}row{% endif %}">
 	{% for product in object_list|dictsortreversed:"date_created" %}
 	  {% if view == "list" %}
-	    <div style="margin-bottom:80px;">
+	    <div style="margin-bottom:40px;">
 	      <div class="panel panel-default">
 		<div class="panel-heading"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="{% trans "read more about" %} {{product}}"><h4>{{product.name}}</h4></a></div>
 		<div class="panel-body">
@@ -98,10 +97,12 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="panel-footer pull-right">
-		  <span>{{product.price}}</span>
-		  <span>({{product.degressive_price|floatformat}} {{product.price.currency.symbol}})</span>
-		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
+		<div class="panel-footer text-center">
+		  <a class="pull-left tooltip_link" title="Prix TTC">{{product.price}}</a>
+		  <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
+		    <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{product.price.currency.symbol}}
+		  </a>
+		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
 		</div>
 	      </div>
 	    </div>
@@ -147,7 +148,7 @@
 		  <p style="text-align:justify">{{product.body}}</p>
 
 		  <h3>{% trans "Ingredients" %}</h3>
-		  <div class= "alert alert-danger">
+		  <div class= "alert alert-warning">
 		   <p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
 		  </div>
 		  <p style="text-align:justify">{{product.ingredients}}</p>
