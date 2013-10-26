@@ -66,7 +66,10 @@
 
       <div class="alert alert-info">
 	<p>Veuillez trouver ci-dessous tous les produits de nos fournisseurs.</p>
-        <p>Les produits sont mis à jour constamment. L'ajout de produits spécifiques à votre panier se fait par le formulaire de création de panier personnalisé après avoir renseigné les familles de produits.</p>
+        <p>Les produits sont mis à jour constamment. <p/>
+      </div>
+      <div class="alert alert-danger">
+        <p>L'ajout de produits spécifiques à votre panier sera <strong>bientôt possible</strong> dans le formulaire de création de panier personnalisé.</p>
       </div>
       
       {% with product_path=product_path selected_product=selected_product view=view %}
@@ -144,6 +147,9 @@
 		  <p style="text-align:justify">{{product.body}}</p>
 
 		  <h3>{% trans "Ingredients" %}</h3>
+		  <div class= "alert alert-danger">
+		   <p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
+		  </div>
 		  <p style="text-align:justify">{{product.ingredients}}</p>
 
 		  <h3>Poids</h3>
