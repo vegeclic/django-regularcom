@@ -9,7 +9,7 @@
 {% block content %}
   {% if signup_form %}
 
-    <form role="form" class="account-form" method="post" action="{% url "accounts.views.signup" %}">
+    <form role="form" class="account-form" method="post" action="{% url "signup" %}">
       {% csrf_token %}
 
       <h2 class="account-form-heading">{% trans "Please sign up" %}</h2>
