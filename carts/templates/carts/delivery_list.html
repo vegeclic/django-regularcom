@@ -14,17 +14,23 @@
       </tr>
     </table>
 
-    <div class="well text-center">
-      <canvas id="myChart" width="700px" height="400px"></canvas>
-    </div>
+    {% if not subscription.receive_only_once %}
+      <div class="well text-center">
+	<canvas id="myChart" width="700px" height="400px"></canvas>
+      </div>
+    {% endif %}
   {% endif %}
 
   <div class="alert alert-info">
-    Veuillez trouver ci-dessous l'échéancier des livraisons pour tous vos abonnements confondus. Le premier élément ayant la date de livraison la plus proche.
+    {% if subscription %}
+      Veuillez trouver ci-dessous l'échéancier des livraisons pour votre abonnement {{subscription.id}}. Le premier élément ayant la date de livraison la plus proche.
+    {% else %}
+      Veuillez trouver ci-dessous l'échéancier des livraisons pour tous vos abonnements confondus. Le premier élément ayant la date de livraison la plus proche.
+    {% endif %}
   </div>
 
   <div class="alert alert-info">
-        Pour que vos paniers soient bien préparés et livrés, il vous faut approvisionner votre compte au plus tard à J-10 de la date d'envoi du colis, le paiement du panier sera ensuite prélevé automatiquement à cette date-là. Pour cela, rendez-vous sur la partie « <a href="{% url "credit" %}">portemonnaie</a> » afin de créditer votre compte. Vous pouvez également valider votre échéances (ou plusieurs) en avance en cliquant sur le symbole à gauche du (des) panier(s) concerné(s). Attention cette étape valide définitivement la création de ce(s) panier(s), vous ne pourrez plus les annuler.
+    Pour que vos paniers soient bien préparés et livrés, il vous faut approvisionner votre compte au plus tard à J-10 de la date d'envoi du colis, le paiement du panier sera ensuite prélevé automatiquement à cette date-là. Pour cela, rendez-vous sur la partie « <a href="{% url "credit" %}">portemonnaie</a> » afin de créditer votre compte. Vous pouvez également valider votre échéances (ou plusieurs) en avance en cliquant sur le symbole à gauche du (des) panier(s) concerné(s). Attention cette étape valide définitivement la création de ce(s) panier(s), vous ne pourrez plus les annuler.
   </div>
 
   <table class="table table-bordered table-hover">
@@ -48,7 +54,7 @@
 	  <td>
 	    {% if delivery.status == "w" %}
 	      <div class="text-center">
-		<a href="#valid_link_modal_{{delivery.id}}" class="valid_link" data-toggle="modal" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
+		<a href="#valid_link_modal_{{delivery.id}}" class="tooltip_link" data-toggle="modal" title="{% trans "buy" %} {{delivery}}"><i class="glyphicon glyphicon-ok-sign"></i></a>
 	      </div>
 
 	      <!-- Modal -->
@@ -104,10 +110,7 @@
   <script type="text/javascript" src="{% static "chartjs/Chart.min.js" %}"></script>
 
   <script type="text/javascript">
-    $(function() {
-	$('.valid_link').tooltip();
-    });
-
+    {% if not subscription.receive_only_once %}
     $(function() {
     	var data = {
 	    labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.get_date_display}}",{% endfor %}],
@@ -136,6 +139,7 @@
     	var ctx = $("#myChart").get(0).getContext("2d");
     	var myNewChart = new Chart(ctx).Line(data, options);
     });
+    {% endif %}
   </script>
   {% endif %}
 {% endblock %}
