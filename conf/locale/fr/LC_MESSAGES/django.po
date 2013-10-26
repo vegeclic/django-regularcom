@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 01:15+0200\n"
+"POT-Creation-Date: 2013-10-26 22:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,15 +85,15 @@ msgstr ""
 msgid "account"
 msgstr "compte"
 
-#: accounts/models.py:130 carts/models.py:53 carts/models.py:90
-#: carts/models.py:120 common/models.py:78 common/models.py:86
+#: accounts/models.py:130 carts/models.py:53 carts/models.py:92
+#: carts/models.py:122 common/models.py:78 common/models.py:86
 #: common/models.py:96 products/models.py:39 products/models.py:51
 #: suppliers/models.py:30 suppliers/models.py:58 suppliers/models.py:91
 #: suppliers/models.py:141
 msgid "name"
 msgstr ""
 
-#: accounts/models.py:131 carts/models.py:81 carts/models.py:94
+#: accounts/models.py:131 carts/models.py:83 carts/models.py:96
 #: products/models.py:43 products/models.py:65 suppliers/models.py:36
 #: suppliers/models.py:75
 msgid "main image"
@@ -149,31 +149,31 @@ msgstr "Envoyer un nouveau mot de passe"
 
 #: accounts/templates/accounts/profile.html:6
 #: customers/templates/customers/base.html:13
-#: customers/templates/customers/customer_detail.html:5 templates/nav.html:36
+#: customers/templates/customers/customer_detail.html:5 templates/nav.html:33
 msgid "Profile"
 msgstr "Profil"
 
-#: accounts/templates/registration/login.html:13
+#: accounts/templates/registration/login.html:15
 msgid "Please sign up"
 msgstr "Inscrivez-vous"
 
-#: accounts/templates/registration/login.html:26
+#: accounts/templates/registration/login.html:21
 msgid "Sign up"
 msgstr "Inscription"
 
-#: accounts/templates/registration/login.html:32
+#: accounts/templates/registration/login.html:31
 msgid "Please sign in"
 msgstr "Connectez-vous"
 
-#: accounts/templates/registration/login.html:41
+#: accounts/templates/registration/login.html:47
 msgid "Remember me"
 msgstr "Se souvenir de moi"
 
-#: accounts/templates/registration/login.html:45
+#: accounts/templates/registration/login.html:52
 msgid "Sign in"
 msgstr "Connexion"
 
-#: accounts/templates/registration/login.html:46
+#: accounts/templates/registration/login.html:53
 msgid "I forgot my password"
 msgstr "J'ai oublié mon mot de passe"
 
@@ -210,65 +210,71 @@ msgstr "2 ans"
 msgid "The sum of extents should be equal to 100 instead %d."
 msgstr "La somme des proportions doit être égale à 100 au lieu de %d."
 
-#: carts/forms.py:154
+#: carts/forms.py:220
 msgid ""
 "Which size would you like to use for your cart ? (delivery fees included)"
 msgstr ""
-"Quelle taille souhaiteriez vous choisir pour votre panier ? (frais de port et emballage isotherme inclus)"
+"Quelle taille souhaiteriez vous choisir pour votre panier ? (frais de port "
+"et emballage isotherme inclus)"
 
-#: carts/forms.py:155 carts/templates/carts/subscription_list.html:18
+#: carts/forms.py:221 carts/templates/carts/subscription_list.html:25
 msgid "Size"
 msgstr "Taille"
 
-#: carts/forms.py:157
+#: carts/forms.py:223
 msgid "How often would you like to receive your cart ?"
 msgstr "À quelle fréquence souhaiteriez vous recevoir votre panier ?"
 
-#: carts/forms.py:158 carts/templates/carts/subscription_list.html:20
+#: carts/forms.py:224 carts/templates/carts/subscription_list.html:27
 msgid "Frequency"
 msgstr "Fréquence"
 
-#: carts/forms.py:160
+#: carts/forms.py:226
 msgid "How long would you like to receive your cart ?"
 msgstr "Quelle est la durée d'abonnement souhaitée ?"
 
-#: carts/forms.py:161 carts/templates/carts/subscription_list.html:21
+#: carts/forms.py:227 carts/templates/carts/subscription_list.html:28
 msgid "Duration"
 msgstr "Durée"
 
-#: carts/forms.py:162
+#: carts/forms.py:228
 msgid "When would you like to start your subscription ?"
 msgstr ""
 "À quel date souhaiteriez vous démarrer votre abonnement ? Par défaut "
 "l'abonnement démarre à J+10."
 
-#: carts/forms.py:163
+#: carts/forms.py:229
 msgid "Beginning of your subscription"
 msgstr "Début de l'abonnement"
 
-#: carts/forms.py:164
-msgid "Customized"
-msgstr "Personnaliser"
-
-#: carts/forms.py:167
+#: carts/forms.py:232
 msgid "Criterias"
 msgstr "Critères"
 
-#: carts/forms.py:168
+#: carts/forms.py:233
 msgid "Select as much criterias as you want in your cart."
 msgstr "Sélectionner les critères que vous souhaitez appliquer à votre panier"
 
-#: carts/forms.py:170
+#: carts/forms.py:236
 msgid ""
 "Which carrier would you like to use for your cart ? (delivery fees included)"
 msgstr ""
-"Quel type de livraison souhaiteriez vous choisir pour votre panier ? (frais de port et emballage isotherme inclus)"
+"Quel type de livraison souhaiteriez vous choisir pour votre panier ? (frais "
+"de port et emballage isotherme inclus)"
 
-#: carts/forms.py:171
+#: carts/forms.py:237
 msgid "Carrier"
 msgstr "Livreur"
 
-#: carts/forms.py:179 carts/models.py:49
+#: carts/forms.py:239
+msgid "Customized"
+msgstr "Personnaliser"
+
+#: carts/forms.py:240 carts/templates/carts/subscription_list.html:50
+msgid "Receive only once"
+msgstr "Recevoir une seule fois"
+
+#: carts/forms.py:248 carts/models.py:49
 msgid "Week"
 msgstr "Semaine"
 
@@ -300,13 +306,13 @@ msgstr "Une fois par trimestre"
 msgid "Every 6 months"
 msgstr "Une fois par semestre"
 
-#: carts/models.py:54 carts/models.py:91 carts/models.py:121
+#: carts/models.py:54 carts/models.py:93 carts/models.py:123
 #: mailbox/models.py:64 mailbox/models.py:86 products/models.py:52
 #: suppliers/models.py:59
 msgid "body"
 msgstr "corps"
 
-#: carts/models.py:56 carts/models.py:112 carts/models.py:197
+#: carts/models.py:56 carts/models.py:114 carts/models.py:201
 msgid "size"
 msgstr "taille"
 
@@ -314,7 +320,7 @@ msgstr "taille"
 msgid "locked size"
 msgstr "taille verrouillée"
 
-#: carts/models.py:58 carts/models.py:132 carts/models.py:198
+#: carts/models.py:58 carts/models.py:135 carts/models.py:202
 msgid "carrier"
 msgstr "livreur"
 
@@ -322,210 +328,226 @@ msgstr "livreur"
 msgid "locked carrier"
 msgstr "livreur verrouillé"
 
-#: carts/models.py:60 carts/models.py:199
+#: carts/models.py:60 carts/models.py:203
+msgid "receive only once"
+msgstr "recevoir une seule fois"
+
+#: carts/models.py:61
+msgid "locked receive only once"
+msgstr "recevoir une seule fois verrouillée"
+
+#: carts/models.py:62 carts/models.py:204
 msgid "frequency"
 msgstr "fréquence"
 
-#: carts/models.py:60 carts/models.py:199
+#: carts/models.py:62 carts/models.py:204
 msgid "Delivery made sure Tuesday"
 msgstr "Les livraisons sont envoyées le mardi"
 
-#: carts/models.py:61
+#: carts/models.py:63
 msgid "locked frequency"
 msgstr "fréquence verrouillée"
 
-#: carts/models.py:62
+#: carts/models.py:64
 msgid "start duration"
 msgstr "début de la période"
 
-#: carts/models.py:63
+#: carts/models.py:65
 msgid "Here is the beginnig week of the duration."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
-#: carts/models.py:65
+#: carts/models.py:67
 msgid "locked start"
 msgstr "début verrouillé"
 
-#: carts/models.py:66
+#: carts/models.py:68
 msgid "end duration"
 msgstr "fin de durée"
 
-#: carts/models.py:67
+#: carts/models.py:69
 msgid "Here is the ending week of the duration."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:69
+#: carts/models.py:71
 msgid "locked duration"
 msgstr "durée verrouillée"
 
-#: carts/models.py:70 carts/models.py:204 suppliers/models.py:72
+#: carts/models.py:72 carts/models.py:209 suppliers/models.py:72
 msgid "criterias"
 msgstr "critères"
 
-#: carts/models.py:71
+#: carts/models.py:73
 msgid "locked criterias"
 msgstr "critères verrouillés"
 
-#: carts/models.py:72
+#: carts/models.py:74
 msgid "locked products"
 msgstr "produits verrouillés"
 
-#: carts/models.py:73 carts/models.py:182 carts/models.py:205
+#: carts/models.py:75 carts/models.py:186 carts/models.py:210
 #: suppliers/models.py:134 suppliers/models.py:153
 msgid "quantity"
 msgstr "quantité"
 
-#: carts/models.py:74
+#: carts/models.py:76
 msgid "locked quantity"
 msgstr "quantité verrouillée"
 
-#: carts/models.py:75
+#: carts/models.py:77
 msgid "start period"
 msgstr "début de la période"
 
-#: carts/models.py:76
+#: carts/models.py:78
 msgid "Here is the beginnig week of the period."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
-#: carts/models.py:78
+#: carts/models.py:80
 msgid "end period"
 msgstr "fin de la période"
 
-#: carts/models.py:79
+#: carts/models.py:81
 msgid "Here is the ending week of the period."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:84 carts/models.py:95 carts/models.py:124
-#: carts/models.py:207
+#: carts/models.py:86 carts/models.py:97 carts/models.py:127
+#: carts/models.py:212
 msgid "enabled"
 msgstr "activé"
 
-#: carts/models.py:93 carts/models.py:133 suppliers/models.py:73
+#: carts/models.py:95 carts/models.py:136 suppliers/models.py:73
 msgid "weight"
 msgstr "poids"
 
-#: carts/models.py:113 carts/models.py:134 suppliers/models.py:51
-#: suppliers/models.py:104 wallets/models.py:71 wallets/models.py:94
+#: carts/models.py:115 carts/models.py:137 suppliers/models.py:51
+#: suppliers/models.py:104 wallets/models.py:75 wallets/models.py:98
 msgid "currency"
 msgstr "devise"
 
-#: carts/models.py:114 carts/models.py:135
+#: carts/models.py:116 carts/models.py:138
 msgid "price"
 msgstr "prix"
 
-#: carts/models.py:123
+#: carts/models.py:125
 msgid "apply suppliers fee"
 msgstr "appliquer les frais des fournisseurs"
 
-#: carts/models.py:141
+#: carts/models.py:126
+msgid "weight min"
+msgstr "poids min"
+
+#: carts/models.py:144
 msgid "deliveries"
 msgstr "livraisons"
 
-#: carts/models.py:143 carts/models.py:241
+#: carts/models.py:146 carts/models.py:252
 msgid "subscription"
 msgstr "abonnement"
 
-#: carts/models.py:144
+#: carts/models.py:147
 msgid "date"
 msgstr "date"
 
-#: carts/models.py:146 wallets/models.py:61
-msgid "In waiting"
+#: carts/models.py:149 wallets/models.py:65
+msgid "Pending"
 msgstr "En attente"
 
-#: carts/models.py:147
+#: carts/models.py:150
 msgid "Payed"
 msgstr "Payé"
 
-#: carts/models.py:148
+#: carts/models.py:151
 msgid "In progress"
 msgstr "En cours"
 
-#: carts/models.py:149
+#: carts/models.py:152
+msgid "Sent"
+msgstr "Envoyé"
+
+#: carts/models.py:153
 msgid "Delivered"
 msgstr "Livré"
 
-#: carts/models.py:150 wallets/models.py:63
+#: carts/models.py:154 wallets/models.py:67
 msgid "Canceled"
 msgstr "Annulé"
 
-#: carts/models.py:151 products/models.py:58 suppliers/models.py:67
+#: carts/models.py:155 products/models.py:58 suppliers/models.py:67
 #: suppliers/models.py:161
 msgid "Expired"
 msgstr "Expiré"
 
-#: carts/models.py:155 products/models.py:61 suppliers/models.py:70
+#: carts/models.py:159 products/models.py:61 suppliers/models.py:70
 #: suppliers/models.py:164
 msgid "status"
 msgstr "statut"
 
-#: carts/models.py:156
+#: carts/models.py:160
 msgid "payed price"
 msgstr "prix d'achat"
 
-#: carts/models.py:167
+#: carts/models.py:171
 msgid "You dont have enough money in your wallet to buy it."
 msgstr ""
 "Vous ne possédez pas assez d'argent dans votre portemonnaie pour l'acheter."
 
-#: carts/models.py:180
+#: carts/models.py:184
 msgid "content"
 msgstr "contenu"
 
-#: carts/models.py:181 carts/models.py:242 carts/models.py:252
+#: carts/models.py:185 carts/models.py:253 carts/models.py:263
 #: suppliers/models.py:63 suppliers/models.py:100 suppliers/models.py:133
 #: suppliers/models.py:152
 msgid "product"
 msgstr "produit"
 
-#: carts/models.py:190
+#: carts/models.py:194
 msgid "delivery"
 msgstr "livraison"
 
-#: carts/models.py:191 carts/models.py:243 carts/models.py:253
+#: carts/models.py:195 carts/models.py:254 carts/models.py:264
 msgid "extent"
 msgstr "proportion"
 
-#: carts/models.py:196 wallets/models.py:28
+#: carts/models.py:200 wallets/models.py:28
 msgid "customer"
 msgstr "client"
 
-#: carts/models.py:200
+#: carts/models.py:205
 msgid "start"
 msgstr "début"
 
-#: carts/models.py:201
+#: carts/models.py:206
 msgid "Here is the beginnig week of the subscription."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
-#: carts/models.py:202
+#: carts/models.py:207
 msgid "end"
 msgstr "fin"
 
-#: carts/models.py:203
+#: carts/models.py:208
 msgid "Here is the ending week of the subscription."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:206
+#: carts/models.py:211
 msgid "direct debit"
 msgstr "prélévement automatique"
 
-#: carts/models.py:227
+#: carts/models.py:235
 #, python-format
 msgid "%d years, "
 msgstr "%d ans, "
 
-#: carts/models.py:228
+#: carts/models.py:236
 #, python-format
 msgid "%d months, "
 msgstr "%d mois, "
 
-#: carts/models.py:229
+#: carts/models.py:237
 #, python-format
 msgid "%d days"
 msgstr "%d jours"
 
-#: carts/models.py:251
+#: carts/models.py:262
 msgid "thematic"
 msgstr "thème"
 
@@ -547,23 +569,23 @@ msgstr "L'échéance a bien été payée."
 msgid "Your wallet balance has been updated."
 msgstr "Le solde de votre portemonnaie a été mis à jour."
 
-#: carts/views.py:245
+#: carts/views.py:253
 msgid ""
 "In order to lock a product percent, please check the corresponding checkbox."
 msgstr ""
 "Pour conserver la proportion d'un produit, utilisez le bouton verrouiller "
 "correspondant."
 
-#: carts/views.py:290
+#: carts/views.py:299
 msgid "The subscription was sucessfuly created."
 msgstr "L'abonnement a été crée correctement."
 
-#: carts/management/commands/directdebits.py:64
+#: carts/management/commands/directdebits.py:67
 #, python-format
 msgid "Delivery %(date)s cannot be validated"
 msgstr "La livraison %(date)s ne peut pas être validée"
 
-#: carts/management/commands/directdebits.py:65
+#: carts/management/commands/directdebits.py:68
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -590,12 +612,12 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: carts/management/commands/directdebits.py:76
+#: carts/management/commands/directdebits.py:79
 #, python-format
 msgid "Delivery %(date)s has been validated"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/management/commands/directdebits.py:77
+#: carts/management/commands/directdebits.py:80
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -611,8 +633,8 @@ msgid ""
 msgstr ""
 "Bonjour %(name)s,\n"
 "\n"
-"nous sommes heureux de vous annoncer que votre livraison %(date)s de "
-"pour l'abonnement %(subscription_id)d a été validé automatiquement.\n"
+"nous sommes heureux de vous annoncer que votre livraison %(date)s de pour "
+"l'abonnement %(subscription_id)d a été validé automatiquement.\n"
 "\n"
 "Votre panier sera préparé aussi vite que possible et envoyé chez vous dans "
 "un délai de 10 à 12 jours.\n"
@@ -620,12 +642,12 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: carts/management/commands/fullfillcarts.py:163
+#: carts/management/commands/fullfillcarts.py:193
 #, python-format
 msgid "Delivery %(date)s is in progress"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/management/commands/fullfillcarts.py:164
+#: carts/management/commands/fullfillcarts.py:194
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -675,12 +697,12 @@ msgid "Deliveries"
 msgstr "Livraisons"
 
 #: carts/templates/carts/base.html:34
-#: suppliers/templates/suppliers/catalog.html:11
+#: suppliers/templates/suppliers/catalog.html:11 templates/nav.html:20
 msgid "Catalog"
 msgstr "Catalogue"
 
 #: carts/templates/carts/create_wizard.html:41
-#: carts/templates/carts/create_wizard.html:115
+#: carts/templates/carts/create_wizard.html:162
 #, python-format
 msgid ""
 "\n"
@@ -693,7 +715,7 @@ msgstr ""
 "\t"
 
 #: carts/templates/carts/create_wizard.html:45
-#: carts/templates/carts/create_wizard.html:119
+#: carts/templates/carts/create_wizard.html:166
 msgid ""
 "\n"
 "\t      <h4>Ready to create your new custom cart ?</h4>\n"
@@ -717,15 +739,19 @@ msgstr ""
 "semaine de début d'abonnement qui vous convient.</p>\n"
 "      "
 
-#: carts/templates/carts/create_wizard.html:75
+#: carts/templates/carts/create_wizard.html:62
+msgid "Click here if you want to receive your cart only once"
+msgstr "Cliquez ici si vous souhaitez recevoir votre panier une seule fois"
+
+#: carts/templates/carts/create_wizard.html:117
 msgid "customize your cart content"
 msgstr "personnaliser le contenu de votre panier"
 
-#: carts/templates/carts/create_wizard.html:86
+#: carts/templates/carts/create_wizard.html:129
 msgid "Products"
 msgstr "Produits"
 
-#: carts/templates/carts/create_wizard.html:124
+#: carts/templates/carts/create_wizard.html:171
 msgid ""
 "\n"
 "\t    <p>Vous pouvez maintenant déterminer la proportion souhaitée pour "
@@ -737,64 +763,65 @@ msgid ""
 "\t  "
 msgstr ""
 
-#: carts/templates/carts/create_wizard.html:136
+#: carts/templates/carts/create_wizard.html:183
 msgid "lock"
 msgstr "verrouiller"
 
-#: carts/templates/carts/create_wizard.html:163
+#: carts/templates/carts/create_wizard.html:210
 msgid "Submit"
 msgstr "Confirmer"
 
-#: carts/templates/carts/create_wizard.html:171
+#: carts/templates/carts/create_wizard.html:218
 msgid "prev step"
 msgstr ""
 
-#: carts/templates/carts/create_wizard.html:174 wallets/models.py:29
+#: carts/templates/carts/create_wizard.html:221 wallets/models.py:29
 msgid "balance"
 msgstr "équilibrer"
 
 #: carts/templates/carts/delivery_list.html:11
-#: carts/templates/carts/delivery_list.html:38
+#: carts/templates/carts/delivery_list.html:41
 #: carts/templates/carts/subscription_edit.html:5
 msgid "Subscription"
 msgstr "Abonnement"
 
-#: carts/templates/carts/delivery_list.html:39
-#: suppliers/templates/suppliers/catalog.html:135
+#: carts/templates/carts/delivery_list.html:42
+#: suppliers/templates/suppliers/catalog.html:148
 msgid "Description"
 msgstr ""
 
-#: carts/templates/carts/delivery_list.html:41
-#: carts/templates/carts/subscription_list.html:24
+#: carts/templates/carts/delivery_list.html:44
+#: carts/templates/carts/subscription_list.html:31
 #: mailbox/templates/mailbox/message_detail.html:22
 #: mailbox/templates/mailbox/message_detail.html:35
 #: mailbox/templates/mailbox/message_list.html:20
-#: wallets/templates/wallets/credit_list.html:15
-#: wallets/templates/wallets/history_list.html:13
-#: wallets/templates/wallets/withdraw_list.html:14
+#: wallets/templates/wallets/credit_list.html:19
+#: wallets/templates/wallets/history_list.html:17
+#: wallets/templates/wallets/withdraw_list.html:18
 msgid "Date"
 msgstr ""
 
-#: carts/templates/carts/delivery_list.html:43
-#: carts/templates/carts/subscription_list.html:19
+#: carts/templates/carts/delivery_list.html:46
+#: carts/templates/carts/subscription_list.html:26
+#: suppliers/templates/suppliers/catalog.html:160
 msgid "Price"
 msgstr "Prix"
 
-#: carts/templates/carts/delivery_list.html:45
-#: wallets/templates/wallets/credit_list.html:14
-#: wallets/templates/wallets/withdraw_list.html:13
+#: carts/templates/carts/delivery_list.html:48
+#: wallets/templates/wallets/credit_list.html:18
+#: wallets/templates/wallets/withdraw_list.html:17
 msgid "Status"
 msgstr "Statut"
 
-#: carts/templates/carts/delivery_list.html:54
+#: carts/templates/carts/delivery_list.html:57
 msgid "buy"
 msgstr "acheter"
 
-#: carts/templates/carts/delivery_list.html:64
+#: carts/templates/carts/delivery_list.html:67
 msgid "Confirmation"
 msgstr ""
 
-#: carts/templates/carts/delivery_list.html:67
+#: carts/templates/carts/delivery_list.html:70
 #, python-format
 msgid ""
 "\n"
@@ -807,12 +834,12 @@ msgstr ""
 "Votre portemonnaie sera mis à jour.\n"
 "\t\t      "
 
-#: carts/templates/carts/delivery_list.html:72
+#: carts/templates/carts/delivery_list.html:75
 #: customers/templates/customers/address_confirm_delete.html:16
 msgid "Yes"
 msgstr ""
 
-#: carts/templates/carts/delivery_list.html:73
+#: carts/templates/carts/delivery_list.html:76
 #: customers/templates/customers/address_confirm_delete.html:17
 msgid "No"
 msgstr ""
@@ -826,18 +853,12 @@ msgid "add"
 msgstr "ajouter"
 
 #: carts/templates/carts/products_tree.html:25
-#: suppliers/templates/suppliers/catalog.html:80
-#: suppliers/templates/suppliers/catalog.html:84
-#: suppliers/templates/suppliers/catalog.html:94
-#: suppliers/templates/suppliers/catalog.html:101
-#: suppliers/templates/suppliers/catalog.html:104
-#: suppliers/templates/suppliers/catalog.html:110
+#: suppliers/templates/suppliers/catalog.html:89
+#: suppliers/templates/suppliers/catalog.html:93
 msgid "read more about"
 msgstr "en savoir plus à propos de"
 
 #: carts/templates/carts/products_tree.html:25
-#: suppliers/templates/suppliers/catalog.html:94
-#: suppliers/templates/suppliers/catalog.html:110
 msgid "more"
 msgstr "plus"
 
@@ -853,8 +874,8 @@ msgstr "Éditer un abonnement"
 msgid "submit"
 msgstr "confirmer"
 
-#: carts/templates/carts/subscription_list.html:8
-#: carts/templates/carts/subscription_list.html:51
+#: carts/templates/carts/subscription_list.html:15
+#: carts/templates/carts/subscription_list.html:62
 #: customers/templates/customers/address_list.html:8
 #: customers/templates/customers/address_list.html:74
 #: mailbox/templates/mailbox/message_list.html:9
@@ -862,32 +883,32 @@ msgstr "confirmer"
 msgid "New"
 msgstr "Nouveau"
 
-#: carts/templates/carts/subscription_list.html:17
+#: carts/templates/carts/subscription_list.html:24
 msgid "ID"
 msgstr ""
 
-#: carts/templates/carts/subscription_list.html:22
+#: carts/templates/carts/subscription_list.html:29
 msgid "Quantity"
 msgstr "Quantité"
 
-#: carts/templates/carts/subscription_list.html:23
+#: carts/templates/carts/subscription_list.html:30
 msgid "#weeks"
 msgstr "#semaines"
 
-#: carts/templates/carts/subscription_list.html:25
+#: carts/templates/carts/subscription_list.html:32
 msgid "Enabled"
 msgstr "Activé"
 
-#: carts/templates/carts/subscription_list.html:33
+#: carts/templates/carts/subscription_list.html:40
 #: customers/templates/customers/address_list.html:29
 msgid "edit"
 msgstr "éditer"
 
-#: carts/templates/carts/thematic_list.html:6 templates/home.html:14
+#: carts/templates/carts/thematic_list.html:6
 msgid "Our thematic carts"
 msgstr "Nos paniers thématiques"
 
-#: carts/templates/carts/thematic_list.html:25 templates/home.html:35
+#: carts/templates/carts/thematic_list.html:25
 msgid "Create"
 msgstr "Créer"
 
@@ -959,11 +980,11 @@ msgstr "taux de change"
 msgid "site"
 msgstr ""
 
-#: common/models.py:97 products/models.py:28 wallets/models.py:43
+#: common/models.py:97 products/models.py:28 wallets/models.py:46
 msgid "content type"
 msgstr "type de contenu"
 
-#: common/models.py:98 products/models.py:29 wallets/models.py:44
+#: common/models.py:98 products/models.py:29 wallets/models.py:47
 msgid "object id"
 msgstr "identifiant de l'objet"
 
@@ -1114,7 +1135,7 @@ msgid "Your reply has been sent successfuly."
 msgstr "Votre réponse a été envoyé avec succès."
 
 #: mailbox/templates/mailbox/base.html:10
-#: mailbox/templates/mailbox/message_list.html:5 templates/nav.html:33
+#: mailbox/templates/mailbox/message_list.html:5 templates/nav.html:30
 msgid "Mailbox"
 msgstr "Boite de réception"
 
@@ -1295,7 +1316,7 @@ msgstr "écritures"
 msgid "order"
 msgstr "commande"
 
-#: suppliers/models.py:160 wallets/models.py:62
+#: suppliers/models.py:160 wallets/models.py:66
 msgid "Validated"
 msgstr "Validé"
 
@@ -1321,11 +1342,11 @@ msgstr "Liste"
 msgid "Our suppliers products"
 msgstr "Les produits de nos fournisseurs"
 
-#: suppliers/templates/suppliers/catalog.html:138
+#: suppliers/templates/suppliers/catalog.html:151
 msgid "Ingredients"
 msgstr "Ingrédients"
 
-#: suppliers/templates/suppliers/catalog.html:141
+#: suppliers/templates/suppliers/catalog.html:163
 msgid "Suppliers"
 msgstr "Fournisseurs"
 
@@ -1341,35 +1362,39 @@ msgstr "Licence publique générale GNU Affero"
 msgid "Presentation"
 msgstr "Présentation"
 
-#: templates/how.html:120 templates/how.html.py:193 templates/how.html:321
-#: templates/how.html.py:396 templates/how.html:456 templates/how.html.py:530
-#: templates/how.html:596 templates/how.html.py:660 templates/how.html:715
+#: templates/how.html:143 templates/how.html.py:216 templates/how.html:344
+#: templates/how.html.py:419 templates/how.html:479 templates/how.html.py:553
+#: templates/how.html:619 templates/how.html.py:683 templates/how.html:738
 msgid "Close"
 msgstr "Fermer"
 
-#: templates/nav.html:27
+#: templates/nav.html:24
 msgid "Carts"
 msgstr "Paniers"
 
-#: templates/nav.html:30 wallets/templates/wallets/base.html:10
+#: templates/nav.html:27 wallets/templates/wallets/base.html:10
 #: wallets/templates/wallets/wallet_detail.html:5
 msgid "Wallet"
 msgstr "Portemonnaie"
 
-#: templates/nav.html:43
+#: templates/nav.html:36
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: templates/nav.html:40
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/nav.html:46
+#: templates/nav.html:43
 msgid "Signup"
 msgstr "Inscription"
 
-#: wallets/forms.py:40 wallets/forms.py:58 wallets/forms.py:136
-#: wallets/forms.py:158
+#: wallets/forms.py:40 wallets/forms.py:58 wallets/forms.py:202
+#: wallets/forms.py:227
 msgid "The amount must be positive."
 msgstr "Le montant doit être positif."
 
-#: wallets/forms.py:47 wallets/forms.py:143
+#: wallets/forms.py:47
 msgid "The payment date is only needed for payment with cheque."
 msgstr ""
 "La date de paiement est uniquement nécessaire pour les paiements par chèque."
@@ -1386,54 +1411,71 @@ msgstr "Le statut est déja validé. Il ne plut être changé."
 msgid "target currency"
 msgstr "devise cible"
 
-#: wallets/models.py:40
+#: wallets/models.py:31
+msgid "RIB"
+msgstr ""
+
+#: wallets/models.py:32
+msgid "paypal"
+msgstr ""
+
+#: wallets/models.py:33
+msgid "bitcoin"
+msgstr ""
+
+#: wallets/models.py:43
 msgid "histories"
 msgstr "historiques"
 
-#: wallets/models.py:42 wallets/models.py:68 wallets/models.py:91
+#: wallets/models.py:45 wallets/models.py:72 wallets/models.py:95
 msgid "wallet"
 msgstr "portemonnaie"
 
-#: wallets/models.py:46 wallets/models.py:70 wallets/models.py:93
+#: wallets/models.py:49 wallets/models.py:74 wallets/models.py:97
 msgid "amount"
 msgstr "montant"
 
-#: wallets/models.py:55
+#: wallets/models.py:58
 msgid "Cheque"
 msgstr "Chèque"
 
-#: wallets/models.py:56
+#: wallets/models.py:59
 msgid "Bank transfer"
 msgstr "Virement"
 
-#: wallets/models.py:57
+#: wallets/models.py:60
 msgid "Paypal"
 msgstr ""
 
-#: wallets/models.py:64
+#: wallets/models.py:61
+msgid "Bitcoin"
+msgstr ""
+
+#: wallets/models.py:68
 msgid "Rejected"
 msgstr "Rejeté"
 
-#: wallets/models.py:69 wallets/models.py:92
+#: wallets/models.py:73 wallets/models.py:96
 msgid "payment type"
 msgstr "Type de paiement"
 
-#: wallets/models.py:69
+#: wallets/models.py:73
 msgid ""
 "Select your payment type. For cheque and bank transfer, your wallet will be "
 "credited once received."
 msgstr ""
-"Choisissez votre type de paiement. Pour les paiements par chèque et virement bancaire, votre portemonnaie sera crédité dès réception."
+"Choisissez votre type de paiement. Pour les paiements par chèque et virement "
+"bancaire, votre portemonnaie sera crédité dès réception."
 
-#: wallets/models.py:72
+#: wallets/models.py:76
 msgid "payment date"
 msgstr "date de paiement"
 
-#: wallets/models.py:72
+#: wallets/models.py:76
 msgid "This field may only be fullfilled for cheque payment."
 msgstr "Ce champs peut être renseigné uniquement pour les paiement par chèque."
 
-#: wallets/models.py:92
+#: wallets/models.py:96
 msgid "Select your payment type."
 msgstr "Choisissez votre type de paiement."
 
@@ -1470,14 +1512,12 @@ msgid "Your settings has been changed successfuly."
 msgstr "Vos paramètres de configuration ont été modifié avec succès."
 
 #: wallets/templates/wallets/base.html:18
-#: wallets/templates/wallets/credit.html:10
-#: wallets/templates/wallets/credit.html:58
+#: wallets/templates/wallets/credit.html:124
 msgid "Credit"
 msgstr "Approvisionner"
 
 #: wallets/templates/wallets/base.html:22
-#: wallets/templates/wallets/withdraw.html:10
-#: wallets/templates/wallets/withdraw.html:47
+#: wallets/templates/wallets/withdraw.html:68
 msgid "Withdraw"
 msgstr "Retirer"
 
@@ -1500,45 +1540,45 @@ msgstr "Requêtes d'approvisionnements"
 msgid "Withdraw requests"
 msgstr "Requêtes de retraits"
 
-#: wallets/templates/wallets/credit.html:14
+#: wallets/templates/wallets/credit.html:10
 msgid "Credit your wallet"
 msgstr "Créditer votre portemonnaie"
 
-#: wallets/templates/wallets/credit.html:18
-#: wallets/templates/wallets/credit_list.html:12
-#: wallets/templates/wallets/history_list.html:12
-#: wallets/templates/wallets/withdraw.html:18
-#: wallets/templates/wallets/withdraw_list.html:12
+#: wallets/templates/wallets/credit.html:20
+#: wallets/templates/wallets/credit_list.html:16
+#: wallets/templates/wallets/history_list.html:16
+#: wallets/templates/wallets/withdraw.html:20
+#: wallets/templates/wallets/withdraw_list.html:16
 msgid "Amount"
 msgstr "Montant"
 
-#: wallets/templates/wallets/credit_list.html:11
-#: wallets/templates/wallets/withdraw_list.html:11
+#: wallets/templates/wallets/credit_list.html:15
+#: wallets/templates/wallets/withdraw_list.html:15
 msgid "Payment type"
 msgstr "Type de paiement"
 
-#: wallets/templates/wallets/credit_list.html:13
+#: wallets/templates/wallets/credit_list.html:17
 msgid "Payment date"
 msgstr "Date de paiement"
 
-#: wallets/templates/wallets/credit_list.html:21
-#: wallets/templates/wallets/withdraw_list.html:20
+#: wallets/templates/wallets/credit_list.html:25
+#: wallets/templates/wallets/withdraw_list.html:24
 msgid "cancel"
 msgstr "annuler"
 
-#: wallets/templates/wallets/history_list.html:10
+#: wallets/templates/wallets/history_list.html:14
 msgid "Content type"
 msgstr "Type de contenu"
 
-#: wallets/templates/wallets/history_list.html:11
+#: wallets/templates/wallets/history_list.html:15
 msgid "Object"
 msgstr "Objet"
 
-#: wallets/templates/wallets/settings.html:9
+#: wallets/templates/wallets/settings.html:12
 msgid "Update your wallet parameters"
 msgstr "Mise à jour des paramètres de votre portemonnaie"
 
-#: wallets/templates/wallets/settings.html:28
+#: wallets/templates/wallets/settings.html:31
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -1546,12 +1586,12 @@ msgstr "Sauvegarder"
 msgid "Balance of your account"
 msgstr "Solde de votre compte"
 
-#: wallets/templates/wallets/withdraw.html:14
+#: wallets/templates/wallets/withdraw.html:10
 msgid "Withdraw from your wallet"
 msgstr "Retraît du portemonnaie"
 
-#~ msgid "Logout"
-#~ msgstr "Déconnexion"
+#~ msgid "In waiting"
+#~ msgstr "En attente"
 
 #~ msgid "Step"
 #~ msgstr "Étape"
