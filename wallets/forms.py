@@ -118,7 +118,8 @@ class SettingsForm(cf.ModelFormWithCurrency):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.get('target_currency').widget.attrs = {'class': 'form-control'}
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
 
 class MyRadioInput(forms.widgets.SubWidget):
     """
@@ -185,17 +186,15 @@ class MyRadioFieldRenderer(object):
 class CreditForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Credit
-        fields = ('payment_type', 'amount', 'payment_date',)
+        fields = ('payment_type', 'amount',)
         widgets = {
             'payment_type': forms.RadioSelect(renderer=MyRadioFieldRenderer),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.get('payment_date').widget.attrs = {'class': 'form-control'}
-
-        for field in ['payment_type']:
-            self.fields[field].widget.attrs['class'] = 'radio-select'
+        # self.fields.get('payment_date').widget.attrs = {'class': 'form-control'}
+        self.fields.get('payment_type').widget.attrs['class'] = 'radio-select'
 
     def clean_amount(self):
         amount = abs(self.cleaned_data.get('amount'))
@@ -203,21 +202,24 @@ class CreditForm(cf.ModelFormWithCurrency):
             raise forms.ValidationError(_('The amount must be positive.'))
         return amount
 
-    def clean_payment_date(self):
-        payment_type = self.cleaned_data.get('payment_type')
-        payment_date = self.cleaned_data.get('payment_date')
-        if payment_date and payment_type != 'c':
-            raise forms.ValidationError(_('The payment date is only needed for payment with cheque.'))
-        return payment_date
+    # def clean_payment_date(self):
+    #     payment_type = self.cleaned_data.get('payment_type')
+    #     payment_date = self.cleaned_data.get('payment_date')
+    #     if payment_date and payment_type != 'c':
+    #         raise forms.ValidationError(_('The payment date is only needed for payment with cheque.'))
+    #     return payment_date
 
 class WithdrawForm(cf.ModelFormWithCurrency):
     class Meta:
         model = models.Withdraw
         fields = ('payment_type', 'amount',)
+        widgets = {
+            'payment_type': forms.RadioSelect(renderer=MyRadioFieldRenderer),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.get('payment_type').widget.attrs = {'class': 'form-control'}
+        self.fields.get('payment_type').widget.attrs['class'] = 'radio-select'
 
     def clean_amount(self):
         amount = abs(self.cleaned_data.get('amount'))

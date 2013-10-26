@@ -7,11 +7,14 @@
 {% endblock %}
 
 {% block sub_content %}
-  <h2>{% trans "Credit" %}</h2>
+  <h2>{% trans "Credit your wallet" %}</h2>
+
+  <div class="alert alert-info">
+    Ce formulaire vous permet d'approvisionner votre compte en monnaie pour pouvoir bénéficier des services d'abonnement aux paniers. Nous vous invitons à suivre les instructions données ci-dessous.
+  </div>
 
   <form role="form" method="post" action="{% url "credit" %}">
     {% csrf_token %}
-    <h3 class="wallet-form-heading well">{% trans "Credit your wallet" %}</h3>
 
     <div class="panel panel-success">
       <div class="panel-heading"><h4>{% trans "Amount" %}</h4></div>
@@ -38,9 +41,64 @@
 	<br/>
 	<br/>
 	<div class="well">
-	  <div class="payment_type_detail" id="payment_type_c">Cheque</div>
-	  <div class="payment_type_detail" id="payment_type_t">Bank transfer</div>
-	  <div class="payment_type_detail" id="payment_type_p">Paypal</div>
+	  <div class="payment_type_detail" id="payment_type_c">
+	    <h3>Chèque</h3>
+
+	    <ul>
+	      <li><strong>Libeller</strong> le chèque au nom de « <strong>Geraldine Starke</strong> »</li>
+	      <li>et l'<strong>envoyer</strong> à l'adresse suivante : « <strong>71 rue de la Meignanne, 49100 Angers</strong> »</li>
+	    </ul>
+
+	    <p>Vous avez la possibilité de payer toutes vos échéances en avances en indiquant sur chaque chèque le montant moyen de votre panier. Les chèques seront encaissés à J-10 de l'envoi des paniers.</p>
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_t">
+	    <h3>Virement bancaire</h3>
+
+	    <p>Pour effectuer votre <strong>virement</strong> vous pouvez soit utiliser le <strong>RIB</strong> ou l'<strong>IBAN</strong> tous deux fournis ci-dessous.</p>
+
+	    <table class="table table-condensed table-hover">
+	      <caption><strong>Relevé d'identité bancaire (RIB)</strong></caption>
+	      <tr><th>Code Banque</th><th>Code guichet</th><th>Numéro compte<th><th>Clé RIB</th></tr>
+	      <tr><td>14690</td><td>00001</td><td>10320289210<td><td>02</td></tr>
+	    </table>
+
+	    <table class="table table-condensed table-hover">
+	      <caption><strong>IBAN</strong></caption>
+	      <tr><th>IBAN</th><td>FR76</td><td>1469</td><td>0000</td><td>0110<td><td>3202</td><td>8921</td><td>002</td></tr>
+	      <tr><th>BIC</th><td colspan="7">MONNFR22</td></tr>
+	    </table>
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_p">
+	    <h3>Paypal</h3>
+	    <p>Rendez-vous sur le site <a href="http://www.paypal.fr"><strong>Paypal.fr</strong></a> puis effectuez le paiement en indiquant le destinataire suivant : <strong>contact@vegeclic.fr</strong></p>
+
+	    {% comment %}
+	    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	      <input type="hidden" name="cmd" value="_cart"/>
+	      <input type="hidden" name="business" value="contact@vegeclic.fr"/>
+	      <!-- <input type="hidden" name="item_name" value="hat"/> -->
+	      <!-- <input type="hidden" name="item_number" value="123"/> -->
+	      <input type="hidden" name="amount" value="15.00"/>
+	      <!-- <input type="hidden" name="first_name" value="John"/> -->
+	      <!-- <input type="hidden" name="last_name" value="Doe"/> -->
+	      <!-- <input type="hidden" name="address1" value="9 Elm Street"/> -->
+	      <!-- <input type="hidden" name="address2" value="Apt 5"/> -->
+	      <!-- <input type="hidden" name="city" value="Berwyn"/> -->
+	      <!-- <input type="hidden" name="state" value="PA"/> -->
+	      <!-- <input type="hidden" name="zip" value="19312"/> -->
+	      <!-- <input type="hidden" name="night_phone_a" value="610"/> -->
+	      <!-- <input type="hidden" name="night_phone_b" value="555"/> -->
+	      <!-- <input type="hidden" name="night_phone_c" value="1234"/> -->
+	      <!-- <input type="hidden" name="email" value="contact@vegeclic.fr"/> -->
+	      <input type="image" name="submit" border="0" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_buynowCC_LG.gif" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !"/>
+	    </form>
+	    {% endcomment %}
+
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_b">
+	    <h3>Bitcoin</h3>
+	    <p>Vous pouvez effectuer votre paiement à l'aide de Bitcoin en adressant le montant à l'adresse Bitoin : <strong>15q1WMg7hcggv7QL4DhM3bVUNBkFYJ3rEL</strong><p>
+	  </div>
 	</div>
       </div>
       {% if form.payment_type.help_text %}
@@ -48,6 +106,7 @@
       {% endif %}
     </div>
 
+    {% comment %}
     <div class="panel panel-warning">
       <div class="panel-heading"><h4>{{ form.payment_date.label }}</h4></div>
       <div class="panel-body">
@@ -57,6 +116,7 @@
 	<div class="panel-footer">{{ form.payment_date.help_text }}</div>
       {% endif %}
     </div>
+    {% endcomment %}
 
     <div class="form-group">
       <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Credit" %}</button>

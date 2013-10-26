@@ -7,39 +7,60 @@
 {% endblock %}
 
 {% block sub_content %}
-  <h2>{% trans "Withdraw" %}</h2>
+  <h2>{% trans "Withdraw from your wallet" %}</h2>
+
+  <div class="alert alert-info">
+    Ce formulaire vous permet, à tout moment, de vous restituez de la monnaie disponible sur votre compte. Nous vous invitons à suivre les instructions données ci-dessous.
+  </div>
 
   <form role="form" method="post" action="{% url "withdraw" %}">
     {% csrf_token %}
-    <h3 class="wallet-form-heading well">{% trans "Withdraw from your wallet" %}</h3>
 
-    <div class="form-group well">
-      <div class="one_slide">
-	<label for="amounts-slide">{% trans "Amount" %}</label>
-	<div class="row">
-	  <div class="col-md-9" id="amounts-slide"></div>
-	  <div class="col-md-3 input-group">
-	    <input type="text" name="amount" id="amount" class="form-control" value="0"/>
-	    <span class="input-group-addon">{{object.target_currency.symbol}}</span>
+    <div class="panel panel-success">
+      <div class="panel-heading"><h4>{% trans "Amount" %}</h4></div>
+      <div class="panel-body">
+	<div class="one_slide">
+	  <div class="row">
+	    <div class="col-md-9" id="amounts-slide"></div>
+	    <div class="col-md-3 input-group">
+	      <input type="text" name="amount" id="amount" class="form-control" value="0"/>
+	      <span class="input-group-addon">{{object.target_currency.symbol}}</span>
+	    </div>
 	  </div>
 	</div>
       </div>
-      <br/>
-      <div class="alert alert-info">
-	<span class="helptext">
-	  Choisissez le montant dont vous souhaitez retirer de votre compte ou indiquer la somme de votre choix.
-	</span>
+      <div class="panel-footer">
+	Choisissez le montant que vous souhaitez retirer de votre compte ou indiquer la somme de votre choix.
       </div>
     </div>
 
-    <div class="form-group well">
-      {{ form.payment_type.label_tag }}
-      {{ form.payment_type }}
-      {% if form.payment_type.help_text %}
+    <div class="panel panel-info">
+      <div class="panel-heading"><h4>{{ form.payment_type.label }}</h4></div>
+      <div class="panel-body">
+	{{ form.payment_type }}
 	<br/>
-	<div class="alert alert-info">
-	  <span class="helptext">{{ form.payment_type.help_text }}</span>
+	<br/>
+	<div class="well">
+	  <div class="payment_type_detail" id="payment_type_c">
+	    <h3>Chèque</h3>
+	    <p>Nous vous adresserons un chèque du montant que vous souhaitez retirer à l'adresse principale que vous avez indiqué dans votre « <a href="{% url "addresses" %}">Profil</a> ».</p>
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_t">
+	    <h3>Virement bancaire</h3>
+	    <p>Nous effectuerons un virement du montant que vous souhaitez retirer à l'aide du RIB communiqué dans la rubrique « <a href="{% url "settings" %}">Paramétrage</a> ».</p>
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_p">
+	    <h3>Paypal</h3>
+	    <p>Nous effectuerons un versement du montant que vous souhaitez retirer à l'adresse Paypal que vous avez indiqué dans la rubrique « <a href="{% url "settings" %}">Paramétrage</a> ».</p>
+	  </div>
+	  <div class="payment_type_detail" id="payment_type_b">
+	    <h3>Bitcoin</h3>
+	    <p>Nous effectuerons un versement du montant que vous souhaitez retirer à l'adresse Bitcoin que vous avez indiqué dans la rubrique « <a href="{% url "settings" %}">Paramétrage</a> ».</p>
+	  </div>
 	</div>
+      </div>
+      {% if form.payment_type.help_text %}
+	<div class="panel-footer">{{ form.payment_type.help_text }}</div>
       {% endif %}
     </div>
 
@@ -68,6 +89,23 @@
 	    }
 	});
 	$('#amount')[0].value = $('#amounts-slide').slider('value');
+
+	$('.payment_type_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+		$('#payment_type_' + $(this).val()).show();
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
+	$('.radio-select').change(function() {
+	    $('.payment_type_detail').hide();
+	    $('#payment_type_' + $(this).val()).show();
+	});
     });
   </script>
 
