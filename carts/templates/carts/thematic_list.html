@@ -13,7 +13,7 @@
     {% for thematic in object_list|dictsortreversed:"date_created" %}
     <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
       <div class="panel panel-default">
-	<div class="panel-heading" style="height:100px"><h3>{{thematic.name}}</h3></div>
+	<div class="panel-heading" style="height:50px"><h4>{{thematic.name}}</h4></div>
 	<div class="panel-body text-center">
 	  <a href="{% url "create_thematic_id" thematic.pk %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px"/></a>
 	</div>
@@ -30,9 +30,11 @@
     {% endfor %}
   </div>
    <div class="alert alert-info">
-	<p>Abonnements sans engagements, annulables et les modifiables sans justifications.</p>
-        <p>Prix des paniers dégressifs en fonction de la durée d'abonnement et du nombre de panier validé. </p>
-        <p>Les frais de port sont inclus dans le prix des paniers. </p>
-        <p>Les envois de colis se font le mardi et livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.</p>
+     <ul>
+       <li>Abonnements sans engagements, annulables et les modifiables sans justifications.</li>
+       <li>Prix des paniers dégressifs en fonction de la durée d'abonnement et du nombre de panier validé. </li>
+       <li>Les frais de port sont inclus dans le prix des paniers. </li>
+       <li>Les envois de colis se font le mardi et livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.</li>
+     </ul>
   </div>
 {% endblock %}
