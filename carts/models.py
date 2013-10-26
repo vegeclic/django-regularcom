@@ -57,6 +57,8 @@ class Thematic(TranslatableModel):
     locked_size = models.BooleanField(_('locked size'), default=False)
     carrier = models.ForeignKey('Carrier', verbose_name=_('carrier'), null=True, blank=True)
     locked_carrier = models.BooleanField(_('locked carrier'), default=False)
+    receive_only_once = models.BooleanField(_('receive only once'), default=False)
+    locked_receive_only_once = models.BooleanField(_('locked receive only once'), default=False)
     frequency = models.PositiveIntegerField(_('frequency'), max_length=2, choices=FREQUENCY_CHOICES, help_text=_('Delivery made sure Tuesday'), null=True, blank=True)
     locked_frequency = models.BooleanField(_('locked frequency'), default=False)
     start_duration = models.CharField(_('start duration'), max_length=7, choices=WEEKS_CHOICES,

@@ -34,7 +34,7 @@ class ThematicExtentInline(admin.TabularInline):
 
 class ThematicAdmin(TranslatableAdmin):
     list_display = ('all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
-    fields = ('name', 'body', 'size', 'locked_size', 'carrier', 'locked_carrier', 'frequency', 'locked_frequency', 'start_duration', 'locked_start', 'end_duration', 'locked_duration', 'criterias', 'locked_criterias', 'locked_products', 'quantity', 'locked_quantity', 'start_period', 'end_period', 'main_image', 'enabled',)
+    fields = ('name', 'body', 'size', 'locked_size', 'carrier', 'locked_carrier', 'receive_only_once', 'locked_receive_only_once', 'frequency', 'locked_frequency', 'start_duration', 'locked_start', 'end_duration', 'locked_duration', 'criterias', 'locked_criterias', 'locked_products', 'quantity', 'locked_quantity', 'start_period', 'end_period', 'main_image', 'enabled',)
     list_filter = ('enabled',)
     inlines = [ca.ImageInline, ThematicExtentInline,]
 

@@ -189,7 +189,7 @@ class CreateForm1(forms.Form):
         for field in ['size', 'carrier', 'frequency', 'duration', 'start']:
             self.fields[field].widget.attrs['class'] = 'slidebar-select'
 
-        for field in ['criterias']:
+        for field in ['criterias', 'receive_only_once']:
             self.fields[field].widget.attrs['class'] = 'checkbox-select'
 
 class CreateForm2(forms.Form):

@@ -198,13 +198,17 @@ class CreateWizard(SessionWizardView):
                                           Week.fromstring(thematic.start_duration).day(1))
                     form.fields['duration'].initial = delta.months
 
-                for k, f in [('size', thematic.locked_size),
-                             ('carrier', thematic.locked_carrier),
-                             ('frequency', thematic.locked_frequency),
-                             ('start', thematic.locked_start),
-                             ('duration', thematic.locked_duration),
-                             ('criterias', thematic.locked_criterias)]:
-                    if f: form.fields[k].widget.attrs['class'] += ' disabled'
+                print(form.fields['receive_only_once'])
+
+                for field, locked in [('size', thematic.locked_size),
+                                      ('carrier', thematic.locked_carrier),
+                                      ('receive_only_once', thematic.locked_receive_only_once),
+                                      ('frequency', thematic.locked_frequency),
+                                      ('start', thematic.locked_start),
+                                      ('duration', thematic.locked_duration),
+                                      ('criterias', thematic.locked_criterias)]:
+                    if locked:
+                        form.fields[field].widget.attrs['class'] = form.fields[field].widget.attrs.get('class', '') + ' disabled'
 
                 if thematic.criterias:
                     form.fields['criterias'].initial = [v.id for v in thematic.criterias.all()]

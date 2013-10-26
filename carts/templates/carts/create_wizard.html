@@ -54,8 +54,22 @@
 
       {% with tname="carts/one_slide.html" %}
 	{% with id="0-size" field=wizard.form.size style="success" %}{% include tname %}{% endwith %}
-	{% with id="0-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
-	{% with id="0-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
+      {% endwith %}
+
+      <div class="form-group">
+	<div data-toggle="buttons">
+	  <label id="expend_duration" class="btn btn-lg btn-block tooltip_link {% if not thematic.receive_only_once %}btn-danger{% else %}btn-success active{% endif %}" title="{% trans "Click here if you want to receive your cart only once" %}" data-toggle="collapse" data-target="#display_duration">
+	    <i class="glyphicon glyphicon-{% if not thematic.receive_only_once %}unchecked{% else %}check{% endif %}"></i>
+	    {{ wizard.form.receive_only_once }} {{ wizard.form.receive_only_once.label }}
+	  </label>
+	</div>
+      </div>
+
+      {% with tname="carts/one_slide.html" %}
+	<div id="display_duration" class="collapse {% if not thematic.receive_only_once %}in{% else %}out{% endif %}">
+	  {% with id="0-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
+	  {% with id="0-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
+	</div>
 	{% with id="0-start" field=wizard.form.start style="danger" %}{% include tname %}{% endwith %}
       {% endwith %}
 
@@ -72,6 +86,7 @@
       <div class="form-group">
 	<div data-toggle="buttons">
 	  <label id="expend_products" class="btn btn-lg {% if thematic %}btn-danger{% else %}btn-success active{% endif %} btn-block tooltip_link" title="{% trans "customize your cart content" %}" data-toggle="collapse" data-target="#display_products">
+	    <i class="glyphicon glyphicon-{% if thematic %}unchecked{% else %}check{% endif %}"></i>
 	    {{ wizard.form.customized }} {{ wizard.form.customized.label }}
 	  </label>
 	</div>
@@ -218,14 +233,36 @@
 	});
 
 	$('#expend_products').click(function() {
+	    var i = $(this).find('i');
 	    if ( $(this).hasClass('btn-success') ) {
 		$(this).removeClass('btn-success');
 		$(this).addClass('btn-danger');
+		i.removeClass('glyphicon-check');
+		i.addClass('glyphicon-unchecked');
 		$('#customized')[0].value = 0;
 	    } else {
 		$(this).removeClass('btn-danger');
 		$(this).addClass('btn-success');
+		i.removeClass('glyphicon-unchecked');
+		i.addClass('glyphicon-check');
 		$('#customized')[0].value = 1;
+	    }
+	});
+
+	$('#expend_duration').click(function() {
+	    var i = $(this).find('i');
+	    if ( $(this).hasClass('btn-danger') ) {
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
+		i.removeClass('glyphicon-unchecked');
+		i.addClass('glyphicon-check');
+		$('#receive_only_once')[0].value = 0;
+	    } else {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+		i.removeClass('glyphicon-check');
+		i.addClass('glyphicon-unchecked');
+		$('#receive_only_once')[0].value = 1;
 	    }
 	});
     });
