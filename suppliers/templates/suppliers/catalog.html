@@ -13,7 +13,7 @@
 {% block content %}
   <div class="row">
 
-    {#{% cache 3600 catalog_sidebar %}#}
+    {% cache 3600 catalog_sidebar %}
     <div class="col-md-5">
       <div class="well sidebar-nav">
 	<ul class="media-list">
@@ -37,8 +37,9 @@
 	</ul>
       </div>
     </div>
-    {#{% endcache %}#}
+    {% endcache %}
 
+    {#{% cache 3600 catalog_content %}#}
     <div class="col-md-7">
       <ul class="nav nav-tabs pull-right">
 	{% if view == "grid" %}
@@ -181,6 +182,7 @@
       {% endwith %}
 
     </div>
+    {#{% endcache %}#}
 
   </div> <!--/.row-fluid -->
 {% endblock %}
