@@ -12,8 +12,12 @@
   </br>
 
   <div class="text-center" >
-    <img src="{% static "5eurosoffert.png" %}" alt="Offre de bienvenue" title="Offre de bienvenue"/>
+    <a href="{% url "signup" %}">
+      <img class="tooltip_link" src="{% static "5eurosoffert.png" %}" alt="Cliquez ici pour vous inscrire et profiter de l'offre de bienvenue" title="Cliquez ici pour vous inscrire et profiter de l'offre de bienvenue"/>
+    </a>
   </div>
+
+  </br>
 
   <div class="well">
     Nous vous proposant de <strong>créer un abonnement</strong> en <a href="{% url "create_thematic" %}">choisissant un de nos paniers thématiques</a> ou en <a href="{% url "create_custom" %}">composant vous même le contenu de votre panier</a>.
@@ -22,17 +26,17 @@
   <div class="row">
     <div class="col-md-5">
       <a href="{% url "create_thematic" %}">
-	<img src="{% static "thematic_carts.png" %}" alt="Végéclic" title="Végéclic"/>
+	<img class="tooltip_link" src="{% static "thematic_carts.png" %}" alt="Cliquez ici pour choisir un de nos paniers thématiques" title="Cliquez ici pour choisir un de nos paniers thématiques"/>
       </a>
     </div>
 
     <div class="col-md-2 text-center">
-      <img src="{% static "or.png" %}" alt="Végéclic" title="Végéclic"/>
+      <img src="{% static "or.png" %}" alt="Composer" title="Végéclic"/>
     </div>
 
     <div class="col-md-5">
       <a href="{% url "create_custom" %}">
-	<img src="{% static "custom_carts.png" %}" alt="Végéclic" title="Végéclic"/>
+	<img class="tooltip_link" src="{% static "custom_carts.png" %}" alt="Cliquez ici pour créer votre panier personnalisé" title="Cliquez ici pour créer votre panier personnalisé"/>
       </a>
     </div>
   </div>
