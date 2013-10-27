@@ -158,7 +158,12 @@
 
 		  <h3>{% trans "Price" %}</h3>
 		  <p>{{product.price}}</p>
-
+		  
+		  {% if product.criterias.all %}
+		  <h3>{% trans "Criterias" %}</h3>
+		  <p>{% for criteria in product.criterias.all %}{{criteria}}, {% endfor %}</p>
+                  {% endif %}
+                  
 		  <h3>{% trans "Suppliers" %}</h3>
 		  <p>{% for supplier in product.suppliers.all %}{{supplier}}, {% endfor %}</p>
 		</div>
