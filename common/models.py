@@ -86,6 +86,8 @@ class Criteria(TranslatableModel):
         name = models.CharField(_('name'), max_length=100, unique=True)
     )
 
+    enabled = models.BooleanField(_('enabled'), default=True)
+
     def __unicode__(self): return self.lazy_translation_getter('name', 'Criteria: %s' % self.pk)
 
 class Parameter(models.Model):

@@ -119,7 +119,7 @@ class ImageInline(generic.GenericTabularInline):
     extra = 1
 
 class CriteriaAdmin(TranslatableAdmin):
-    list_display = ('name_',)
+    list_display = ('name_', 'enabled',)
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
 

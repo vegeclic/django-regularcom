@@ -228,7 +228,7 @@ class CreateForm1(forms.Form):
     start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'),
                               label=_('Beginning of your subscription'))
     criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
-                                               queryset=cm.Criteria.objects.order_by('id'),
+                                               queryset=cm.Criteria.objects.filter(enabled=True).order_by('id'),
                                                required=False, label=_('Criterias'),
                                                help_text=_('Select as much criterias as you want in your cart.'))
     carrier = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer),
