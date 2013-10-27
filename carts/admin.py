@@ -81,7 +81,7 @@ class ExtentInline(admin.TabularInline):
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
     form = forms.SubscriptionAdminForm
-    list_display = ('customer', 'size', 'carrier', 'frequency', 'duration', 'quantity', 'enabled',)
+    list_display = ('customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled',)
     list_filter = ('enabled',)
     inlines = [ExtentInline,]
 

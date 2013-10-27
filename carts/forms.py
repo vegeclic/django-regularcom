@@ -62,7 +62,7 @@ class SubscriptionBaseAdminForm(forms.ModelForm):
 class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('enabled', 'customer', 'size', 'carrier', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
 
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
