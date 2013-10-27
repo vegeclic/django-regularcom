@@ -21,9 +21,7 @@ from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from . import models
-import common.forms as cf
-import common.models as cm
-import products.models as pm
+import customers.models as cm
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -39,6 +37,9 @@ class NewMessage(forms.ModelForm):
         for field in ['participants', 'subject', 'body',]:
             self.fields.get(field).widget.attrs['class'] = 'form-control'
         self.fields.get('body').widget.attrs['rows'] = '10'
+        customers = cm.Customer.objects.filter(account__is_admin=True).all()
+        ids = [c.id for c in customers]
+        self.fields['participants'].choices = zip(ids, customers)
 
 class ReplyMessage(forms.ModelForm):
     class Meta:
