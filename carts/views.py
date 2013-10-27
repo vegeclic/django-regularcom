@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.cache import cache
+from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -50,6 +51,7 @@ class ThematicListView(generic.ListView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class SubscriptionView(generic.ListView):
@@ -65,6 +67,7 @@ class SubscriptionView(generic.ListView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class SubscriptionUpdateView(generic.UpdateView):
@@ -88,6 +91,7 @@ class SubscriptionUpdateView(generic.UpdateView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class DeliveryView(generic.ListView):
@@ -130,6 +134,7 @@ class DeliveryView(generic.ListView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class DeliveryPaymentView(generic.View):
@@ -152,6 +157,7 @@ class DeliveryPaymentView(generic.View):
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % int(subscription_id))
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 def show_extent_form_condition(wizard):
@@ -300,4 +306,5 @@ class CreateWizard(SessionWizardView):
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
