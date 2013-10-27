@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load cache %}
 
 {% block section_title %}Comment Ça Marche ?{% endblock %}
 
 {% block content %}
+  {% cache 3600 how %}
   <h1><i class="glyphicon glyphicon-book"></i> Comment Ça Marche ?</h1>
 
   <ul class="nav nav-tabs">
@@ -742,4 +744,5 @@ Connexion</a></h3></div>
     </div>
 
   </div>
+  {% endcache %}
 {% endblock %}

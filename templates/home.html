@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load cache %}
 
 {% block section_title %}{% trans "Presentation" %}{% endblock %}
 
 {% block content %}
+  {% cache 3600 home %}
   <div>
     <img src="{% static "banner3.png" %}" alt="Végéclic" title="Végéclic"/>
   </div>
@@ -45,4 +47,6 @@
   <div class="alert alert-info">
     Les envois de colis se font le mardi et sont livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.
   </div>
+
+  {% endcache %}
 {% endblock %}
