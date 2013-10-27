@@ -23,7 +23,7 @@ msgstr ""
 
 #: accounts/forms.py:75
 msgid "A user with that email already exists."
-msgstr "Un utilisateur avec le même adresse email existe déjà dans notre base de données. Si vous êtes le propiétaire de ce compte mais que vous avez perdu votre mot de passe, vous pouvez demander à un nouveau mot de passe en cliquant sur « J'ai oublié mon mot de passe »."
+msgstr "Un utilisateur avec le même adresse email existe déjà dans notre base de données. Si vous êtes le propiétaire de ce compte mais que vous avez perdu votre mot de passe, vous pouvez demander à recevoir un nouveau mot de passe. Pour cela rendez-vous sur « Connexion » et cliquez sur « J'ai oublié mon mot de passe »."
 
 #: accounts/forms.py:78 accounts/forms.py:128
 msgid "Email address"
