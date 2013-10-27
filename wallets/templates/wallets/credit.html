@@ -1,12 +1,14 @@
 {% extends "wallets/base.html" %}
 {% load i18n %}
 {% load static %}
+{% load cache %}
 
 {% block sub_head %}
   <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
 {% endblock %}
 
 {% block sub_content %}
+  {% cache 3600 credit %}
   <h2>{% trans "Credit your wallet" %}</h2>
 
   <div class="alert alert-info">
@@ -122,9 +124,11 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Credit" %}</button>
     </div>
   </form>
+  {% endcache %}
 {% endblock %}
 
 {% block foot %}
+  {% cache 3600 credit_scripts %}
   <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
   <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
   <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
@@ -167,4 +171,5 @@
     .ui-slider .ui-slider-handle { height: 2.7em; }
     .ui-slider { height: 2.2em; }
   </style>
+  {% endcache %}
 {% endblock %}
