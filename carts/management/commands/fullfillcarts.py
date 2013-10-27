@@ -79,7 +79,8 @@ class Command(NoArgsCommand):
                     for child in product.products_children.all():
                         __products += get_product_products(child)
                     __filter = product.product_product.language('fr').filter(status='p')
-                    for c in subscription.criterias.all(): __filter = __filter.filter(criterias=c)
+                    for c in subscription.criterias.filter(enabled=True).all():
+                        __filter = __filter.filter(criterias=c)
                     __products += __filter.all()
                     return __products
 
