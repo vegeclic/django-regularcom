@@ -64,8 +64,16 @@ class CatalogView(generic.ListView):
             if not products_tree: return []
             product_list = []
             for product, products in products_tree.items():
-                product_list += self.model.objects.language('fr').filter(product=product, status='p')
-                product_list += get_suppliers_products(products)
+                __key = 'get_suppliers_products_from_%d' % product.id
+                if not cache.get(__key):
+                    cached_list = []
+                    cached_list += self.model.objects.language('fr').filter(product=product, status='p')
+                    cached_list += get_suppliers_products(products)
+                    product_list += cached_list
+                    cache.set(__key, cached_list)
+                else:
+                    product_list += cache.get(__key)
+
             return product_list
 
         def compute_degressive_price(product_list):
