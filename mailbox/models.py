@@ -34,7 +34,7 @@ import customers.models as csm
 import wallets.models as wm
 
 def create_mail(subject, body, participants=[], owner=None, mail_only=False, message=None, prefix=''):
-    if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+    if not owner: owner = csm.Customer.objects.get(account__email=settings.EMAIL_ADMIN)
 
     mail_body = body
     if not mail_only:
@@ -46,7 +46,7 @@ def create_mail(subject, body, participants=[], owner=None, mail_only=False, mes
 
 class MessageManager(models.Manager):
     def create_message(self, subject, body, participants=[], owner=None, mail_only=False):
-        if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+        if not owner: owner = csm.Customer.objects.get(account__email=settings.EMAIL_ADMIN)
 
         message = None
 
@@ -73,7 +73,7 @@ class Message(models.Model):
 
 class ReplyManager(models.Manager):
     def create_reply(self, message, owner, body):
-        if not owner: owner = csm.Customer.objects.get(account__email='geraldine@starke.fr')
+        if not owner: owner = csm.Customer.objects.get(account__email=settings.EMAIL_ADMIN)
         reply = self.create(message=message, participant=owner, body=body)
         return create_mail(message.subject, body, owner=owner, message=message, prefix='Re: ')
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-26 22:51+0200\n"
+"POT-Creation-Date: 2013-10-27 20:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,17 +23,17 @@ msgstr ""
 
 #: accounts/forms.py:75
 msgid "A user with that email already exists."
-msgstr ""
+msgstr "Un utilisateur avec le même adresse email existe déjà dans notre base de données. Si vous êtes le propiétaire de ce compte mais que vous avez perdu votre mot de passe, vous pouvez demander à recevoir un nouveau mot de passe. Pour cela rendez-vous sur « Connexion » et cliquez sur « J'ai oublié mon mot de passe »."
 
 #: accounts/forms.py:78 accounts/forms.py:128
 msgid "Email address"
 msgstr ""
 
-#: accounts/models.py:43
+#: accounts/models.py:44
 msgid "Welcome to Végéclic"
 msgstr "Bienvenue sur Végéclic"
 
-#: accounts/models.py:44
+#: accounts/models.py:45
 #, python-format
 msgid ""
 "Hi there,\n"
@@ -66,8 +66,7 @@ msgstr ""
 "email: %(email)s\n"
 "mot de passe: %(password)s\n"
 "\n"
-"ou cliquez directement sur le lien ci-dessous pour être connecté directement "
-"(sans passer par l'étape d'identification):\n"
+"Cliquez sur l'adresse suivante pour vous connecter :\n"
 "\n"
 "http://www.vegeclic.fr/accounts/login/\n"
 "\n"
@@ -77,33 +76,33 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: accounts/models.py:79
+#: accounts/models.py:80
 msgid "email address"
 msgstr ""
 
-#: accounts/models.py:129
+#: accounts/models.py:130
 msgid "account"
 msgstr "compte"
 
-#: accounts/models.py:130 carts/models.py:53 carts/models.py:92
+#: accounts/models.py:131 carts/models.py:53 carts/models.py:92
 #: carts/models.py:122 common/models.py:78 common/models.py:86
-#: common/models.py:96 products/models.py:39 products/models.py:51
+#: common/models.py:98 products/models.py:39 products/models.py:51
 #: suppliers/models.py:30 suppliers/models.py:58 suppliers/models.py:91
 #: suppliers/models.py:141
 msgid "name"
 msgstr ""
 
-#: accounts/models.py:131 carts/models.py:83 carts/models.py:96
+#: accounts/models.py:132 carts/models.py:83 carts/models.py:96
 #: products/models.py:43 products/models.py:65 suppliers/models.py:36
 #: suppliers/models.py:75
 msgid "main image"
 msgstr "image principale"
 
-#: accounts/views.py:92 customers/views.py:187
+#: accounts/views.py:92 customers/views.py:196
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: accounts/views.py:93 customers/views.py:188
+#: accounts/views.py:93 customers/views.py:197
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -130,7 +129,7 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: accounts/views.py:106 customers/views.py:201
+#: accounts/views.py:106 customers/views.py:210
 msgid ""
 "The password has been regenerated. You will receive an email with the new "
 "password."
@@ -410,7 +409,7 @@ msgid "Here is the ending week of the period."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
 #: carts/models.py:86 carts/models.py:97 carts/models.py:127
-#: carts/models.py:212
+#: carts/models.py:212 common/models.py:89
 msgid "enabled"
 msgstr "activé"
 
@@ -551,32 +550,32 @@ msgstr "%d jours"
 msgid "thematic"
 msgstr "thème"
 
-#: carts/views.py:81
+#: carts/views.py:84
 #, python-format
 msgid "Your subscription %d has been updated successfuly."
 msgstr "L'abonnement %d a été mis à jour correctement."
 
-#: carts/views.py:140
+#: carts/views.py:145
 #, python-format
 msgid "Delivery %d already payed or canceled."
 msgstr "Livraison %d déjà payée ou annulée."
 
-#: carts/views.py:150
+#: carts/views.py:155
 msgid "The delivery has been successfuly payed."
 msgstr "L'échéance a bien été payée."
 
-#: carts/views.py:151 wallets/views.py:164
+#: carts/views.py:156 wallets/views.py:171
 msgid "Your wallet balance has been updated."
 msgstr "Le solde de votre portemonnaie a été mis à jour."
 
-#: carts/views.py:253
+#: carts/views.py:259
 msgid ""
 "In order to lock a product percent, please check the corresponding checkbox."
 msgstr ""
 "Pour conserver la proportion d'un produit, utilisez le bouton verrouiller "
 "correspondant."
 
-#: carts/views.py:299
+#: carts/views.py:305
 msgid "The subscription was sucessfuly created."
 msgstr "L'abonnement a été crée correctement."
 
@@ -642,12 +641,12 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: carts/management/commands/fullfillcarts.py:193
+#: carts/management/commands/fullfillcarts.py:221
 #, python-format
 msgid "Delivery %(date)s is in progress"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/management/commands/fullfillcarts.py:194
+#: carts/management/commands/fullfillcarts.py:222
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -904,11 +903,11 @@ msgstr "Activé"
 msgid "edit"
 msgstr "éditer"
 
-#: carts/templates/carts/thematic_list.html:6
+#: carts/templates/carts/thematic_list.html:8
 msgid "Our thematic carts"
 msgstr "Nos paniers thématiques"
 
-#: carts/templates/carts/thematic_list.html:25
+#: carts/templates/carts/thematic_list.html:27
 msgid "Create"
 msgstr "Créer"
 
@@ -976,42 +975,42 @@ msgstr "symbole"
 msgid "exchange rate"
 msgstr "taux de change"
 
-#: common/models.py:95
+#: common/models.py:97
 msgid "site"
 msgstr ""
 
-#: common/models.py:97 products/models.py:28 wallets/models.py:46
+#: common/models.py:99 products/models.py:28 wallets/models.py:46
 msgid "content type"
 msgstr "type de contenu"
 
-#: common/models.py:98 products/models.py:29 wallets/models.py:47
+#: common/models.py:100 products/models.py:29 wallets/models.py:47
 msgid "object id"
 msgstr "identifiant de l'objet"
 
-#: customers/views.py:79
+#: customers/views.py:82
 msgid "Your new address has been well created."
 msgstr "Votre nouvelle adresse a bien été crée."
 
-#: customers/views.py:103
+#: customers/views.py:107
 msgid "Your address has been well deleted."
 msgstr "Votre adresse a bien été supprimé."
 
-#: customers/views.py:127
+#: customers/views.py:132
 #, python-format
 msgid "Your address %d has been updated successfuly."
 msgstr "Votre adresse %d a été mise à jour correctement."
 
-#: customers/views.py:146
+#: customers/views.py:152
 #, python-format
 msgid "The address %s has been defined as main address."
 msgstr "L'adresse %s a été défini comme adresse principale."
 
-#: customers/views.py:159
+#: customers/views.py:166
 #, python-format
 msgid "The address %s has been defined as shipping address."
 msgstr "L'adresse %s a été défini comme adresse de livraison."
 
-#: customers/views.py:172
+#: customers/views.py:180
 #, python-format
 msgid "The address %s has been defined as billing address."
 msgstr "L'adresse %s a été défini comme adresse de facturation."
@@ -1126,11 +1125,11 @@ msgstr ""
 msgid "participant"
 msgstr ""
 
-#: mailbox/views.py:86
+#: mailbox/views.py:89
 msgid "Your message has been sent successfuly."
 msgstr "Votre message a été envoyé avec succès."
 
-#: mailbox/views.py:120
+#: mailbox/views.py:124
 msgid "Your reply has been sent successfuly."
 msgstr "Votre réponse a été envoyé avec succès."
 
@@ -1358,13 +1357,13 @@ msgstr "Sous"
 msgid "GNU Affero General Public License"
 msgstr "Licence publique générale GNU Affero"
 
-#: templates/home.html:5
+#: templates/home.html:6
 msgid "Presentation"
 msgstr "Présentation"
 
-#: templates/how.html:143 templates/how.html.py:216 templates/how.html:344
-#: templates/how.html.py:419 templates/how.html:479 templates/how.html.py:553
-#: templates/how.html:619 templates/how.html.py:683 templates/how.html:738
+#: templates/how.html:145 templates/how.html.py:218 templates/how.html:346
+#: templates/how.html.py:421 templates/how.html:481 templates/how.html.py:555
+#: templates/how.html:621 templates/how.html.py:685 templates/how.html:740
 msgid "Close"
 msgstr "Fermer"
 
@@ -1479,7 +1478,7 @@ msgstr "Ce champs peut être renseigné uniquement pour les paiement par chèque
 msgid "Select your payment type."
 msgstr "Choisissez votre type de paiement."
 
-#: wallets/views.py:105
+#: wallets/views.py:110
 msgid ""
 "Your credit request has been sent successfuly. You will be noticed about its "
 "validation as soon as possible. If you made any mistakes, it is still "
@@ -1489,7 +1488,7 @@ msgstr ""
 "notifié sur sa validation aussi vite que possible. Si il s'agit d'une "
 "erreur, il est toujours temps d'annuler la requête (voir historique)."
 
-#: wallets/views.py:137
+#: wallets/views.py:143
 msgid ""
 "Your withdraw request has been sent successfuly. You will be noticed about "
 "its validation as soon as possible. If you made any mistakes, it is still "
@@ -1499,20 +1498,20 @@ msgstr ""
 "validation aussi vite que possible. Si il s'agit d'une erreur, il est "
 "toujours temps d'annuler la requête (voir historique)."
 
-#: wallets/views.py:163
+#: wallets/views.py:170
 msgid "The withdraw request has been canceled."
 msgstr "La requête de retrait a été annulé."
 
-#: wallets/views.py:180
+#: wallets/views.py:188
 msgid "The credit request has been canceled."
 msgstr "La requête d'approvisionnement a été annulé."
 
-#: wallets/views.py:197
+#: wallets/views.py:206
 msgid "Your settings has been changed successfuly."
 msgstr "Vos paramètres de configuration ont été modifié avec succès."
 
 #: wallets/templates/wallets/base.html:18
-#: wallets/templates/wallets/credit.html:124
+#: wallets/templates/wallets/credit.html:125
 msgid "Credit"
 msgstr "Approvisionner"
 
@@ -1540,11 +1539,11 @@ msgstr "Requêtes d'approvisionnements"
 msgid "Withdraw requests"
 msgstr "Requêtes de retraits"
 
-#: wallets/templates/wallets/credit.html:10
+#: wallets/templates/wallets/credit.html:11
 msgid "Credit your wallet"
 msgstr "Créditer votre portemonnaie"
 
-#: wallets/templates/wallets/credit.html:20
+#: wallets/templates/wallets/credit.html:21
 #: wallets/templates/wallets/credit_list.html:16
 #: wallets/templates/wallets/history_list.html:16
 #: wallets/templates/wallets/withdraw.html:20

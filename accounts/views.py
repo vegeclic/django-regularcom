@@ -17,6 +17,7 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -83,13 +84,18 @@ class PasswordResetView(generic.FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data.get('email')
-        account = models.Account.objects.get(email=email)
-        password = models.Account.objects.make_random_password()
-        account.set_password(password)
-        account.save()
-        customer = account.customer
 
-        mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Password reset'), body=_(
+        try:
+            account = models.Account.objects.get(email=email)
+        except models.Account.DoesNotExist:
+            messages.error(self.request, "Cette adresse email n'existe pas dans notre base de données. Assurez-vous qu'il s'agit bien de cette adresse que vous avez utilisé lors de l'inscription. Si le problème persiste contactez nous à l'adresse suivante: %s" % settings.EMAIL_ADMIN)
+        else:
+            password = models.Account.objects.make_random_password()
+            account.set_password(password)
+            account.save()
+            customer = account.customer
+
+            mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Password reset'), body=_(
 """Hi %(name)s,
 
 A request to reset your password was made with your account %(email)s from the website of Végéclic.
@@ -101,7 +107,8 @@ New password: %(password)s
 Best regards,
 Végéclic.
 """
-            ) % {'name': customer.main_address.__unicode__(), 'email': account.email, 'password': password})
+            ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'email': account.email, 'password': password})
 
-        messages.success(self.request, _('The password has been regenerated. You will receive an email with the new password.'))
+            messages.success(self.request, _('The password has been regenerated. You will receive an email with the new password.'))
+
         return super().form_valid(form)

@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.cache import never_cache, cache_control
 from . import forms, models
 import common.models as cm
 import accounts.models as am
@@ -44,6 +45,7 @@ class CustomerView(generic.DetailView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -60,6 +62,7 @@ class AddressListView(generic.ListView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -87,6 +90,7 @@ class AddressCreateView(generic.CreateView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -110,6 +114,7 @@ class AddressDeleteView(generic.DeleteView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -134,6 +139,7 @@ class AddressUpdateView(generic.UpdateView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -147,6 +153,7 @@ class AddressDefineAsMainView(generic.View):
         return HttpResponseRedirect('/customers/addresses/')
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -160,6 +167,7 @@ class AddressDefineAsShippingView(generic.View):
         return HttpResponseRedirect('/customers/addresses/')
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -173,6 +181,7 @@ class AddressDefineAsBillingView(generic.View):
         return HttpResponseRedirect('/customers/addresses/')
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -203,5 +212,6 @@ Végéclic.
         return HttpResponseRedirect('/customers/')
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)

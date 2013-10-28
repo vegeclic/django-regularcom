@@ -26,6 +26,7 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -45,6 +46,7 @@ class MessageListView(generic.ListView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -67,6 +69,7 @@ class MessageView(generic.DetailView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -97,6 +100,7 @@ class NewMessageView(generic.CreateView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -131,5 +135,6 @@ class ReplyMessageView(generic.CreateView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
