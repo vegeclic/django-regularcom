@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="{% static "accounts/css/styles.css" %}" />
 {% endblock %}
 
+{% block section_title %}{% if signup_form %}{% trans "Signup" %}{% else %}{% trans "Login" %}{% endif %}{% endblock %}
+
 {% block content %}
   {% if signup_form %}
 
