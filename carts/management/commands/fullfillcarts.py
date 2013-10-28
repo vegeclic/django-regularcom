@@ -230,6 +230,6 @@ Your cart will be send to you in 10 days.
 Best regards,
 Végéclic.
 """
-                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
+                ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': delivery.get_date_display(), 'subscription_id': subscription.id})
 
         translation.deactivate()

@@ -74,7 +74,7 @@ Please take a moment to credit your wallet first and validate the delivery back.
 Best regards,
 Végéclic.
 """
-                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
+                ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
             else:
                 message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s has been validated') % {'date': delivery.get_date_display()}, body=_(
 """Hi %(name)s,
@@ -86,6 +86,6 @@ Your cart will be prepared as soon as possible and send to you in 10-12 days.
 Best regards,
 Végéclic.
 """
-                ) % {'name': customer.main_address.__unicode__(), 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
+                ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': delivery.get_date_display(), 'subscription_id': delivery.subscription.id})
 
         translation.deactivate()
