@@ -27,6 +27,25 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 from pprint import pprint
 
+class MessageAdmin(forms.ModelForm):
+    class Meta:
+        model = models.Message
+        fields = ('owner', 'participants', 'subject', 'body',)
+
+    def save(self, commit=True):
+        message = super().save(commit=False)
+        message.owner = self.cleaned_data['owner']
+        message.save()
+        message.participants = self.cleaned_data['participants']
+        message.participants.add(message.owner)
+        message.participants_read.add(message.owner)
+        message.participants_notified.add(message.owner)
+        models.create_mail(subject=message.subject,
+                           body=message.body,
+                           participants=message.participants.exclude(id=message.owner.id),
+                           message=message)
+        return message
+
 class NewMessage(forms.ModelForm):
     class Meta:
         model = models.Message

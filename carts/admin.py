@@ -81,8 +81,11 @@ class ExtentInline(admin.TabularInline):
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
     form = forms.SubscriptionAdminForm
-    list_display = ('customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled',)
-    list_filter = ('enabled',)
+    list_display = ('customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled', 'date_created',)
+    list_filter = ('enabled', 'receive_only_once', 'direct_debit', 'size', 'carrier', 'frequency',)
+    ordering = ('-date_created',)
+    filter_horizontal = ('criterias',)
+
     inlines = [ExtentInline,]
 
     def price(self, obj): return obj.size.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
@@ -119,8 +122,9 @@ admin.site.register(models.Content, ContentAdmin)
 class DeliveryAdmin(ca.MyModelAdmin):
     add_form = forms.DeliveryCreationAdminForm
     form = forms.DeliveryAdminForm
-    list_display = ('subscription', 'date', 'status', 'payed_price',)
+    list_display = ('subscription', 'date', 'status', 'payed_price', )
     list_filter = ('status',)
+    ordering = ('-date',)
     # inlines = [ContentInline,]
 
 admin.site.register(models.Delivery, DeliveryAdmin)

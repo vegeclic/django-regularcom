@@ -76,14 +76,11 @@ Végéclic.
         return account
 
 class Account(AbstractBaseUser):
-    email = models.EmailField(
-        verbose_name=_('email address'),
-        max_length=255,
-        unique=True,
-        db_index=True,
-    )
+    email = models.EmailField(verbose_name=_('email address'), max_length=255, unique=True, db_index=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
 
     objects = AccountManager()
 

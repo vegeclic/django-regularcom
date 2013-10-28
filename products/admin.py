@@ -46,6 +46,7 @@ class ProductAdmin(TranslatableAdmin):
     list_filter = ('status',)
     # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
+    # search_fields = ('name_',)
     inlines = [ca.ImageInline, TaggedItemInline,]
 
     def name_(self, obj): return obj.lazy_translation_getter('name')

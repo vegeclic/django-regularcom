@@ -33,8 +33,11 @@ class ReplyInline(admin.StackedInline):
     extra = 1
 
 class MessageAdmin(ca.MyModelAdmin):
+    form = forms.MessageAdmin
     list_display = ('owner', 'subject', 'body', 'date_created',)
     list_filter = ('owner',)
+    ordering = ('-date_created',)
+    filter_horizontal = ('participants',)
     inlines = [ReplyInline,]
 
 admin.site.register(models.Message, MessageAdmin)

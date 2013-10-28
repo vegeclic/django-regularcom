@@ -31,6 +31,8 @@ class Customer(models.Model):
     billing_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     addresses = generic.GenericRelation(cm.Address)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return '%s%s' % (self.account.email, (' (%s)' % self.main_address.__unicode__()) if self.main_address else '')
 
