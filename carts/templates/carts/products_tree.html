@@ -11,18 +11,20 @@
   </a>
   <div class="media-body">
     <div class="well">
-    {% if products %}
-      <a data-toggle="collapse" data-target="#sub_products_{{product.id}}" class="expend_button tooltip_link" title="{% trans "expend/collapse products list" %}">
-	<h4 class="media-heading"><i class="glyphicon glyphicon-collapse-down"></i> {{ product }}</h4>
-      </a>
-    {% else %}
-      <h4 class="media-heading">{{ product }}</h4>
-    {% endif %}
-    {{ product.body }}
-    <br/>
-    <input type="hidden" class="value" name="product_{{product.id}}" value="{% if selected %}1{% else %}0{% endif %}"/>
-    <button type="button" class="btn tooltip_link add_link {% if selected %}btn-success active{% else %}btn-link{% endif %}" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
-    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
+      {% if products %}
+	<a data-toggle="collapse" data-target="#sub_products_{{product.id}}" class="expend_button tooltip_link" title="{% trans "expend/collapse products list" %}">
+	  <h4 class="media-heading"><i class="glyphicon glyphicon-collapse-down"></i> {{ product }}</h4>
+	</a>
+      {% else %}
+	<h4 class="media-heading">{{ product }}</h4>
+      {% endif %}
+      <p>{{ product.body }}</p>
+
+      <input type="hidden" class="value" name="product_{{product.id}}" value="{% if selected %}1{% else %}0{% endif %}"/>
+
+      <button type="button" class="btn tooltip_link add_link {% if selected %}btn-success active{% else %}btn-link{% endif %}" data-toggle="button" title="{% trans "add" %} {{product}}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "add" %}</button>
+
+      <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
     </div>
 
     <!-- Modal -->
