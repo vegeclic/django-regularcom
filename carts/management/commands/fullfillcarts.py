@@ -58,6 +58,9 @@ class Command(NoArgsCommand):
             logging.debug(delivery.__unicode__())
 
             subscription = delivery.subscription
+
+            if not subscription.enabled: continue
+
             subscription_weight = subscription.size.weight - subscription.size.weight*settings.PACKAGING_WEIGHT_RATE/100
             subscription_price = subscription.price().price
             carrier = subscription.carrier
