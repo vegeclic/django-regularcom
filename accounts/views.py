@@ -101,7 +101,7 @@ New password: %(password)s
 Best regards,
 Végéclic.
 """
-            ) % {'name': customer.main_address.__unicode__(), 'email': account.email, 'password': password})
+            ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'email': account.email, 'password': password})
 
         messages.success(self.request, _('The password has been regenerated. You will receive an email with the new password.'))
         return super().form_valid(form)
