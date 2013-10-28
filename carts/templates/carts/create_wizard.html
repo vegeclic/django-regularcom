@@ -270,10 +270,25 @@
 		$(this).removeClass('btn-success');
 		$(this).addClass('btn-link');
 		$(this).siblings('.value')[0].value = 0;
+		$(this).parent().parent().find('.media').find('.add_link').removeClass('disabled')
 	    } else {
 		$(this).removeClass('btn-link');
 		$(this).addClass('btn-success');
 		$(this).siblings('.value')[0].value = 1;
+		add_links = $(this).parent().parent().find('.media').find('.add_link')
+		add_links.addClass('disabled')
+		add_links.removeClass('btn-success')
+		add_links.addClass('btn-link');
+		add_links.removeClass('active')
+		add_links.siblings('.value')[0].value = 0;
+	    }
+	});
+
+	$('.add_link').each(function() {
+	    if ( $(this).hasClass('btn-success') ) {
+		$(this).parent().parent().find('.media').find('.add_link').addClass('disabled')
+	    } else {
+		$(this).parent().parent().find('.media').find('.add_link').removeClass('disabled')
 	    }
 	});
 
