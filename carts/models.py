@@ -31,6 +31,7 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import common.models as cm
 import wallets.models as wm
+from mailbox import models as mm
 
 FREQUENCY_CHOICES = (
     (1, _('Once a week')),
@@ -165,16 +166,44 @@ class Delivery(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == 'p':
-            wallet = self.subscription.customer.wallet
-            amount = self.payed_price if self.payed_price else self.subscription.price().price
-            if wallet.balance < amount:
+            customer = self.subscription.customer
+            wallet = customer.wallet
+            payed_deliveries = self.subscription.delivery_set.filter(status__in=self.SUCCESS_CHOICES)
+            self.payed_price = self.subscription.price().price/(1+settings.DEGRESSIVE_PRICE_RATE/100)**len(payed_deliveries.all())
+            if wallet.balance < self.payed_price:
+                message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s cannot be validated') % {'date': self.get_date_display()}, body=_(
+"""Hi %(name)s,
+
+with some regret I must report that we were unable to validate your delivery %(date)s from the subscription %(subscription_id)d since you dont have enough money in your wallet to buy it.
+
+Please take a moment to credit your wallet first and validate the delivery back.
+
+Best regards,
+Végéclic.
+"""
+                ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': self.get_date_display(), 'subscription_id': self.subscription.id})
+
                 raise ValueError(_('You dont have enough money in your wallet to buy it.'))
-            wallet.balance -= amount
+
+            wallet.balance -= self.payed_price
             wallet.save()
+
             h = wm.History(wallet=wallet, content_type=ContentType.objects.get(model='delivery'),
-                           object_id=self.id, amount=amount*-1)
+                           object_id=self.id, amount=self.payed_price*-1)
+
+            message = mm.Message.objects.create_message(participants=[customer], subject=_('Delivery %(date)s has been validated') % {'date': self.get_date_display()}, body=_(
+"""Hi %(name)s,
+
+we are pleased to announce your delivery %(date)s from the subscription %(subscription_id)d has been validated automatically.
+
+Your cart will be prepared as soon as possible and send to you in 10-12 days.
+
+Best regards,
+Végéclic.
+"""
+            ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': self.get_date_display(), 'subscription_id': self.subscription.id})
+
             h.save()
-            self.payed_price = amount
         super().save(*args, **kwargs)
 
 class ContentProduct(models.Model):

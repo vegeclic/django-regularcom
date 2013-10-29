@@ -17,6 +17,7 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -97,7 +98,6 @@ class SubscriptionUpdateView(generic.UpdateView):
 
 class DeliveryView(generic.ListView):
     model = models.Delivery
-    q = 1.5
 
     def get_queryset(self):
         subscription_id = self.kwargs.get('subscription_id')
@@ -111,7 +111,7 @@ class DeliveryView(generic.ListView):
             last_price = 0
             for delivery in deliveries:
                 if delivery.status not in self.model.FAILED_CHOICES:
-                    last_price = delivery.payed_price if delivery.payed_price else init/(1+self.q/100)**k
+                    last_price = delivery.payed_price if delivery.payed_price else init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k
                     k += 1
                 delivery.degressive_price = last_price
 
@@ -130,7 +130,7 @@ class DeliveryView(generic.ListView):
             deliveries = self.get_queryset()
             init = context['subscription'].price().price
 
-            context['mean_of_prices'] = (np.array([init/(1+self.q/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=self.model.FAILED_CHOICES))]).mean())
+            context['mean_of_prices'] = (np.array([init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=self.model.FAILED_CHOICES))]).mean())
 
         return context
 
@@ -147,7 +147,7 @@ class DeliveryPaymentView(generic.View):
 
         deliveries = models.Delivery.objects.filter(subscription=subscription, status__in=models.Delivery.SUCCESS_CHOICES)
         delivery.status = 'p'
-        delivery.payed_price = subscription.price().price/(1+DeliveryView.q/100)**len(deliveries)
+        delivery.payed_price = subscription.price().price/(1+settings.DEGRESSIVE_PRICE_RATE/100)**len(deliveries)
         try:
             delivery.save()
         except ValueError as e:
