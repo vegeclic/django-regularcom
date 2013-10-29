@@ -84,7 +84,24 @@ class Credit(models.Model):
     def __unicode__(self): return '%s, %s, %s, %s, %s' % (self.wallet.__unicode__(), self.get_payment_type_display(), self.amount, self.date_created, self.get_status_display())
 
     def save(self, *args, **kwargs):
-        if self.status == 'v':
+        if self.status == 'w':
+            mm.Message.objects.create_message(participants=[self.wallet.customer], subject=_("Requête d'approvisionnement d'un montant de %(amount)s %(amount_currency)s en cours") % {'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol}, body=_(
+"""Bonjour %(name)s,
+
+Nous avons bien reçu votre requête d'approvisionnement de votre compte d'un montant de %(amount)s %(amount_currency)s.
+
+Nous vous invitons, à présent, à procéder au paiement du montant de %(amount)s %(amount_currency)s en fonction du type de paiement choisit.
+
+Une fois votre paiement est effectué, nous procéderons à sa validation. Vous serez alors informé par mail.
+
+Si vous rencontrez des difficultées n'hesitez pas à nous écrire en répondant à ce mail.
+
+Bien cordialement,
+Végéclic.
+"""
+            ) % {'name': self.wallet.customer.main_address.__unicode__() if self.wallet.customer.main_address else '', 'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol, 'balance': self.wallet.balance_in_target_currency(), 'balance_currency': self.wallet.target_currency.symbol})
+
+        elif self.status == 'v':
             self.wallet.balance += self.amount
             self.wallet.save()
             h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='credit'),
@@ -120,14 +137,28 @@ class Withdraw(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+        amount = abs(round(self.amount/self.currency.exchange_rate,2))
+
         if self.status == 'w':
-            amount = abs(round(self.amount/self.currency.exchange_rate,2))
             if self.wallet.balance < amount:
                 raise ValueError('There is not enough money in your wallet.')
             self.wallet.balance -= amount
             self.wallet.save()
+
+            mm.Message.objects.create_message(participants=[self.wallet.customer], subject=_("Requête de retraits d'un montant de %(amount)s %(amount_currency)s en cours") % {'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol}, body=_(
+"""Bonjour %(name)s,
+
+Nous avons bien reçu votre requête de retraits de votre compte d'un montant de %(amount)s %(amount_currency)s.
+
+Nous allons, dans un bref délai, procéder à la validation de votre requête et effectuer le paiement du montant de %(amount)s %(amount_currency)s en fonction du type de paiement choisit.
+
+Bien cordialement,
+Végéclic.
+"""
+            ) % {'name': self.wallet.customer.main_address.__unicode__() if self.wallet.customer.main_address else '', 'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol, 'balance': self.wallet.balance_in_target_currency(), 'balance_currency': self.wallet.target_currency.symbol})
+
         elif self.status == 'c':
-            amount = abs(round(self.amount/self.currency.exchange_rate,2))
             self.wallet.balance += amount
             self.wallet.save()
         elif self.status == 'v':
