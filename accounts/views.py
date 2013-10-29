@@ -51,7 +51,6 @@ def signup(request):
         signup_form = forms.AccountCreationForm(request.POST)
 
         if signup_form.is_valid():
-            # account = models.Account.objects.create_user(email=signup_form.data['email'], password=signup_form.data['password1'])
             account = models.Account.objects.create_user(email=signup_form.data['email'])
             messages.success(request, "Your account has been successfully created.")
             return redirect('login')
@@ -62,7 +61,7 @@ def signup(request):
     return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': forms.AccountCreationForm()})
 
 def login(request):
-    response = auth_views_login(request, extra_context={'section': 'login'})
+    response = auth_views_login(request, extra_context={'section': 'login'}, authentication_form=forms.AccountAuthenticationForm)
     if request.method == 'POST':
         if 'context_data' in dir(response):
             form = response.context_data.get('form')
@@ -83,7 +82,7 @@ class PasswordResetView(generic.FormView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        email = form.cleaned_data.get('email')
+        email = form.cleaned_data.get('email').lower()
 
         try:
             account = models.Account.objects.get(email=email)
