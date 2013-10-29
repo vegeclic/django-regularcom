@@ -87,9 +87,10 @@ class NewMessageView(generic.CreateView):
         fi.participants_read.add(fi.owner)
         fi.participants_notified.add(fi.owner)
         messages.success(self.request, _('Your message has been sent successfuly.'))
-        to = list(fi.participants.all())
-        to.remove(fi.owner)
-        models.create_mail(subject=fi.subject, body=fi.body, participants=to, message=fi)
+        models.create_mail(subject=fi.subject,
+                           body=fi.body,
+                           participants=fi.participants.exclude(fi.owner),
+                           message=fi)
         return ret
 
     def get_context_data(self, **kwargs):
