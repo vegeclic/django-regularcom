@@ -53,14 +53,11 @@ class Command(NoArgsCommand):
         debug = False
 
         week_limit = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
-        deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p')
+        deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p', subscription__enabled=True)
         for delivery in deliveries:
             logging.debug(delivery.__unicode__())
 
             subscription = delivery.subscription
-
-            if not subscription.enabled: continue
-
             subscription_weight = subscription.size.weight - subscription.size.weight*settings.PACKAGING_WEIGHT_RATE/100
             subscription_price = subscription.price().price
             carrier = subscription.carrier

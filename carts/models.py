@@ -105,7 +105,7 @@ class Size(TranslatableModel):
     def __unicode__(self):
         price = self.default_price()
         return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
-                         (' (%s - %s kg)' % (price.__unicode__(), self.weight)) if price else "")
+                         (' (%s - %s kg max)' % (price.__unicode__(), self.weight)) if price else "")
 
 class Price(models.Model):
     class Meta:
@@ -165,8 +165,8 @@ class Delivery(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == 'p':
-            wallet = wm.Wallet.objects.get(customer__account=self.subscription.customer)
-            amount = self.payed_price
+            wallet = self.subscription.customer.wallet
+            amount = self.payed_price if self.payed_price else self.subscription.price().price
             if wallet.balance < amount:
                 raise ValueError(_('You dont have enough money in your wallet to buy it.'))
             wallet.balance -= amount
