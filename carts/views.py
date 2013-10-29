@@ -31,6 +31,7 @@ from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
 from . import forms, models
 import products.models as pm
+from mailbox import models as mm
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -303,6 +304,29 @@ class CreateWizard(SessionWizardView):
         subscription.create_deliveries()
 
         messages.success(self.request, _('The subscription was sucessfuly created.'))
+
+        deliveries = subscription.delivery_set.order_by('date')
+
+        mm.Message.objects.create_message(participants=[customer], subject=_('Votre abonnement %(subscription_id)d a été crée') % {'subscription_id': subscription.id}, body=_(
+"""Bonjour %(name)s,
+
+Nous sommes heureux de vous annoncer que votre abonnement %(subscription_id)d a été crée, il est accessible à l'adresse suivante :
+
+http://www.vegeclic.fr/carts/subscriptions/%(subscription_id)d/deliveries/
+
+Vous êtes invité, à présent, à approvisionner votre portemonnaie vers un solde suffisant afin que l'on valide la première échéance du %(date)s de votre abonnement en cliquant sur le lien suivant :
+
+http://www.vegeclic.fr/wallets/credit/
+
+Si ce n'est pas encore fait, merci de bien vouloir renseigner vos cordonnées à cette adresse :
+
+http://www.vegeclic.fr/customers/addresses/create/
+
+Bien cordialement,
+Végéclic.
+"""
+        ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': deliveries[0].get_date_display(), 'subscription_id': subscription.id})
+
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
 
     @method_decorator(login_required)

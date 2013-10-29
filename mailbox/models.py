@@ -31,7 +31,6 @@ from dateutil.relativedelta import relativedelta
 from isoweek import Week
 import common.models as cm
 import customers.models as csm
-import wallets.models as wm
 
 def create_mail(subject, body, participants=[], owner=None, mail_only=False, message=None, prefix=''):
     if not owner: owner = csm.Customer.objects.get(account__email=settings.EMAIL_ADMIN)

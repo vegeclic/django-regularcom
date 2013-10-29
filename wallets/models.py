@@ -23,6 +23,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 import common.models as cm
+import mailbox.models as mm
 
 class Wallet(models.Model):
     customer = models.OneToOneField('customers.Customer', verbose_name=_('customer'))
@@ -89,6 +90,19 @@ class Credit(models.Model):
             h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='credit'),
                         object_id=self.id, amount=self.amount)
             h.save()
+
+            mm.Message.objects.create_message(participants=[self.wallet.customer], subject=_("Requête d'approvisionnement d'un montant de %(amount)s %(amount_currency)s validée") % {'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol}, body=_(
+"""Bonjour %(name)s,
+
+Nous avons bien validé votre requête d'approvisionnement de votre compte d'un montant de %(amount)s %(amount_currency)s. Le nouveau solde de votre compte est de %(balance)s %(balance_currency)s.
+
+Si vous avez déjà des abonnements en cours, les échéances seront automatiquement validés en fonction du nouveau solde disponible sur votre compte. Dans le cas contraire nous vous invitons, à présent, à créer un nouvel abonnement.
+
+Bien cordialement,
+Végéclic.
+"""
+            ) % {'name': self.wallet.customer.main_address.__unicode__() if self.wallet.customer.main_address else '', 'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol, 'balance': self.wallet.balance_in_target_currency(), 'balance_currency': self.wallet.target_currency.symbol})
+
         super().save(*args, **kwargs)
 
 class Withdraw(models.Model):
@@ -120,3 +134,15 @@ class Withdraw(models.Model):
             h = History(wallet=self.wallet, content_type=ContentType.objects.get(model='withdraw'),
                         object_id=self.id, amount=self.amount*-1)
             h.save()
+
+            mm.Message.objects.create_message(participants=[self.wallet.customer], subject=_("Requête de retraits d'un montant de %(amount)s %(amount_currency)s validée") % {'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol}, body=_(
+"""Bonjour %(name)s,
+
+Nous avons bien validé votre requête de retraits de votre compte d'un montant de %(amount)s %(amount_currency)s. Le nouveau solde de votre compte est de %(balance)s %(balance_currency)s.
+
+Vous allez recevoir prochainement votre paiement en fonction du type de paiement choisit.
+
+Bien cordialement,
+Végéclic.
+"""
+            ) % {'name': self.wallet.customer.main_address.__unicode__() if self.wallet.customer.main_address else '', 'amount': self.amount_in_target_currency(), 'amount_currency': self.currency.symbol, 'balance': self.wallet.balance_in_target_currency(), 'balance_currency': self.wallet.target_currency.symbol})
