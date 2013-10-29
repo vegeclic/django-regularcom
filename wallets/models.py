@@ -92,7 +92,7 @@ Nous avons bien reçu votre requête d'approvisionnement de votre compte d'un mo
 
 Nous vous invitons, à présent, à procéder au paiement du montant de %(amount)s %(amount_currency)s en fonction du type de paiement choisit.
 
-Une fois votre paiement est effectué, nous procéderons à sa validation. Vous serez alors informé par mail.
+Une fois votre paiement effectué, nous procéderons à sa validation. Vous serez alors informé par mail.
 
 Si vous rencontrez des difficultées n'hesitez pas à nous écrire en répondant à ce mail.
 
