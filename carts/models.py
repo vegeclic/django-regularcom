@@ -99,7 +99,7 @@ class Size(TranslatableModel):
 
     def default_price(self):
         try:
-            return self.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
+            return self.price_set.get(currency__name=settings.DEFAULT_CURRENCY)
         except Size.DoesNotExist:
             return None
 

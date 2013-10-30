@@ -139,11 +139,6 @@
 		    <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="128x128" style="width: 128px; height: 128px; margin-left: 20px; margin-bottom: 20px"/>
 		  </a>
 
-		  {% comment %}
-		  <h4>Status</h4>
-		  <p>{{product.get_status_display}}</p>
-		  {% endcomment %}
-
 		  <h3>{% trans "Description" %}</h3>
 		  <p style="text-align:justify">{{product.body}}</p>
 
@@ -158,12 +153,12 @@
 
 		  <h3>{% trans "Price" %}</h3>
 		  <p>{{product.price}}</p>
-		  
+
 		  {% if product.criterias.all %}
 		  <h3>{% trans "Criterias" %}</h3>
 		  <p>{% for criteria in product.criterias.all %}{{criteria}}, {% endfor %}</p>
                   {% endif %}
-                  
+
 		  <h3>{% trans "Suppliers" %}</h3>
 		  <p>{% for supplier in product.suppliers.all %}{{supplier}}, {% endfor %}</p>
 		</div>

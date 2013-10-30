@@ -75,7 +75,7 @@ class Currency(models.Model):
     class Meta:
         verbose_name_plural = _("currencies")
 
-    name = models.CharField(_('name'), max_length=30, unique=True)
+    name = models.CharField(_('name'), max_length=30, unique=True, db_index=True)
     symbol = models.CharField(_('symbol'), max_length=30, unique=True)
     exchange_rate = models.FloatField(_('exchange rate'), default=1)
 

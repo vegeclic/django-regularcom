@@ -41,7 +41,7 @@ def get_products_tree(products, root_product=None, root_only=True):
     for product in products:
         if product == root_product: continue
         if product.status != 'p': continue
-        if not product.products_parent.all() or not root_only:
+        if not product.products_parent.exists() or not root_only:
             dict_[product] = get_products_tree(product.products_children.all(), root_product=product, root_only=False)
     return dict_
 
@@ -60,21 +60,21 @@ class CatalogView(generic.ListView):
                 if res: return res
             return None
 
-        def get_suppliers_products(products_tree):
-            if not products_tree: return []
-            product_list = []
-            for product, products in products_tree.items():
-                __key = 'get_suppliers_products_from_%d' % product.id
-                if not cache.get(__key):
-                    cached_list = []
-                    cached_list += self.model.objects.language('fr').filter(product=product, status='p')
-                    cached_list += get_suppliers_products(products)
-                    product_list += cached_list
-                    cache.set(__key, cached_list)
-                else:
-                    product_list += cache.get(__key)
+        # def get_suppliers_products(products_tree):
+        #     if not products_tree: return []
+        #     __filter = self.model.objects.language('fr')
+        #     for product, products in products_tree.items():
+        #         __filter = __filter.filter(product=product, status='p')
+        #         __filter = get_suppliers_products(products)
+        #     return __filter
 
-            return product_list
+        def products_tree_to_list(products_tree):
+            if not products_tree: return []
+            __list = []
+            for product, products in products_tree.items():
+                __list.append(product)
+                __list += products_tree_to_list(products)
+            return __list
 
         def compute_degressive_price(product_list):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
@@ -82,20 +82,23 @@ class CatalogView(generic.ListView):
         product_list = []
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
-            __key = 'get_suppliers_products_from_%d' % int(self.kwargs.get('product_id'))
-            product_list = cache.get(__key) or get_suppliers_products(root_product)
-            if not cache.get(__key):
-                compute_degressive_price(product_list)
-                cache.set(__key, product_list)
+            products_query = self.model.objects.language('fr').filter(product__in=products_tree_to_list(root_product))
+            # __key = 'get_suppliers_products_from_%d' % int(self.kwargs.get('product_id'))
+            # product_list = cache.get(__key) or get_suppliers_products(root_product)
+            # if not cache.get(__key):
+            #     compute_degressive_price(product_list)
+            #     cache.set(__key, product_list)
         else:
             __key = 'get_suppliers_products_from_root'
-            product_list = cache.get(__key) or get_suppliers_products(products_tree)
-            # product_list = cache.get('product_list') or self.model.objects.language('fr')
-            if not cache.get(__key):
-                compute_degressive_price(product_list)
-                cache.set(__key, product_list)
+            # product_list = cache.get(__key) or get_suppliers_products(products_tree)
+            products_query = self.model.objects.language('fr')
+            # if not cache.get(__key):
+            #     compute_degressive_price(product_list)
+            #     cache.set(__key, product_list)
 
-        paginator = Paginator(product_list, 24)
+        products_query = products_query.select_related('price', 'main_image').prefetch_related('criterias', 'suppliers')
+
+        paginator = Paginator(products_query, 24)
 
         page = self.kwargs.get('page')
         try:

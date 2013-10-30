@@ -286,8 +286,7 @@ class Command(NoArgsCommand):
             logger_db.debug('product object saved')
 
             logger_db.debug('looking for default currency object')
-            currency_id = cm.Parameter.objects.get(name='default currency').object_id
-            currency_obj = cm.Currency.objects.get(pk=currency_id)
+            currency_obj = cm.Currency.objects.get(name=settings.DEFAULT_CURRENCY)
 
             logger_db.debug('convert price to float')
             float_price = float(price.split(' ')[1].replace(',', '.'))
