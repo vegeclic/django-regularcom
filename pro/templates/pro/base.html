@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block section_title %}{% trans "Pro" %}{% endblock %}
+
+{% block content %}
+  <div class="row">
+{% comment %}
+    <div class="col-md-3">
+      <div class="well sidebar-nav">
+	<ul class="nav nav-pills nav-stacked">
+	  <li {% if sub_section == "new_message" %}class="active"{% endif %}>
+	    <a href="{% url "new_message" %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "New message" %}</a>
+	  </li>
+	  <li {% if not sub_section or sub_section == "messages" %}class="active"{% endif %}>
+	    <a href="{% url "messages" %}"><i class="glyphicon glyphicon-inbox"></i> {% trans "Messages" %}{% if nb_messages %}<span class="badge pull-right">{{nb_messages}}</span>{% endif %}</a>
+	  </li>
+	</ul>
+      </div>
+    </div>
+{% endcomment %}
+
+    <div class="col-md-12">
+      {% block sub_content %}{% endblock %}
+    </div>
+  </div> <!--/.row-fluid -->
+{% endblock %}

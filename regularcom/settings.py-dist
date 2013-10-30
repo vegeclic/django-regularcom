@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     'common',
     'customers',
     'mailbox',
+    'pro',
     'products',
     'suppliers',
     'wallets',

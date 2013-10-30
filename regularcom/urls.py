@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^mailbox/', include('mailbox.urls')),
     url(r'^suppliers/', include('suppliers.urls')),
     url(r'^wallets/', include('wallets.urls')),
+    url(r'^pro/', include('pro.urls')),
     # url(r'^celerytest/', include('celerytest.urls')),
 )
 
