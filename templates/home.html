@@ -7,7 +7,7 @@
 
 {% block content %}
   {#{% cache 3600 home %}#}
-  <div style="background-image: url('{% static "banner3.png" %}'); width: 1140px; height: 260px"></div>
+  <div style="background-image: url('{% static "banner4.png" %}'); width: 1140px; height: 260px"></div>
 
   </br>
 
@@ -16,7 +16,6 @@
       <img class="tooltip_link" src="{% static "5eurosoffert.png" %}" alt="Cliquez ici pour vous inscrire et profiter de l'offre de bienvenue" title="Cliquez ici pour vous inscrire et profiter de l'offre de bienvenue"/>
     </a>
   </div>
-
   </br>
   <div class="well">
     Nous vous proposant de <strong>créer un abonnement</strong> en <a href="{% url "create_thematic" %}">choisissant un de nos paniers thématiques</a> ou en <a href="{% url "create_custom" %}">composant vous même le contenu de votre panier</a>.
@@ -39,8 +38,12 @@
       </a>
     </div>
   </div>
-
-  <br/>
+<br/>
+  <div class="well">
+    <p style="text-align:justify">Vous pouvez soit vous laisser séduire par <strong>un panier « surprise » qui varie à chaque échéance ou décider vous-même du contenu de celui-ci.</strong> Nos paniers sont composés à partir d'un large choix de produits qui ne fait qu'augmenter avec <strong>des prix dégressifs imbattables</strong>, en fonction de la durée de l'abonnement. Le but étant de faire découvrir la cuisine végétale à un plus grand nombre de personnes, de faciliter les débuts des personnes en transition alimentaire et de <strong>faire baisser les prix de nos fournisseurs</strong> pour vous proposer des prix intéressants</p>
+    <p style="text-align:justify">Afin de n'infliger aucune contrainte aux « cliqueurs végés », nos abonnements sont <strong>sans engagements</strong>, les paniers peuvent être modifiés en cours de route et les <strong>frais de port sont inclus</strong>. De plus Végéclic, étant géré par des personnes humaines et vegan, à pour but primordial le respect des êtres-vivants et de l'environnement. Nos produits sont donc <strong>garantis sans aucune exploitation animale</strong>, nous faisons des envois de colis regroupés pour <strong>limiter les émissions de CO<sub>2</sub></strong> et proposons l'envoi par point relais ou le retrait à domicile pour que cela soit <strong>plus économique et écologique.</strong></p>
+    <p> Pour comprendre le fonctionnement du site rendez-vous sur la page « <a href="{% url "how" %}">Comment ça marche ?</a> ».
+  </div>
 
   <div class="alert alert-info">
     Les envois de colis se font le mardi et sont livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.
