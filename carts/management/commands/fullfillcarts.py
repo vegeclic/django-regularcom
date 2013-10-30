@@ -48,7 +48,7 @@ class Command(NoArgsCommand):
         mutpb = .2
         min_quantity = 0
         max_quantity = 2
-        margin = .2
+        margin = .1
         zero = True
         debug = False
 
