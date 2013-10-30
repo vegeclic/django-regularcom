@@ -32,6 +32,8 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = ('127.0.0.1',)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -119,7 +121,15 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
 
 # CACHES = {
 #     'default': {
@@ -127,6 +137,8 @@ MIDDLEWARE_CLASSES = (
 #         'LOCATION': 'unique-snowflake'
 #     }
 # }
+
+# CACHE_MIDDLEWARE_SECONDS = 3600
 
 ROOT_URLCONF = 'regularcom.urls'
 
@@ -163,6 +175,7 @@ INSTALLED_APPS = (
     'wallets',
     # 'celerytest',
     'south',
+    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
