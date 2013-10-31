@@ -57,9 +57,7 @@ class MessageView(generic.DetailView):
         message = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
         customer = cm.Customer.objects.get(account=self.request.user)
         if customer not in message.participants_read.all():
-            print(customer)
             message.participants_read.add(customer)
-            message.save()
         return message
 
     def get_context_data(self, **kwargs):

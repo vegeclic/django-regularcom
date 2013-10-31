@@ -28,6 +28,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
+import hvad
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -42,7 +43,7 @@ def get_products_tree(products, root_product=None, root_only=True):
         if product == root_product: continue
         if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
-            dict_[product] = get_products_tree(product.products_children.all(), root_product=product, root_only=False)
+            dict_[product] = get_products_tree(product.products_children.language('fr').all(), root_product=product, root_only=False)
     return dict_
 
 class CatalogView(generic.ListView):
@@ -50,7 +51,7 @@ class CatalogView(generic.ListView):
     template_name = 'suppliers/catalog.html'
 
     def get_queryset(self):
-        products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
+        products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').all())
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         def find_product(products_tree, product_pattern):
@@ -59,14 +60,6 @@ class CatalogView(generic.ListView):
                 res = find_product(products, product_pattern)
                 if res: return res
             return None
-
-        # def get_suppliers_products(products_tree):
-        #     if not products_tree: return []
-        #     __filter = self.model.objects.language('fr')
-        #     for product, products in products_tree.items():
-        #         __filter = __filter.filter(product=product, status='p')
-        #         __filter = get_suppliers_products(products)
-        #     return __filter
 
         def products_tree_to_list(products_tree):
             if not products_tree: return []
@@ -79,24 +72,15 @@ class CatalogView(generic.ListView):
         def compute_degressive_price(product_list):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
-        product_list = []
+        products_query = self.model.objects.language('fr')
+        # products_query = hvad.utils.get_translation_aware_manager(self.model)
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
-            products_query = self.model.objects.language('fr').filter(product__in=products_tree_to_list(root_product))
-            # __key = 'get_suppliers_products_from_%d' % int(self.kwargs.get('product_id'))
-            # product_list = cache.get(__key) or get_suppliers_products(root_product)
-            # if not cache.get(__key):
-            #     compute_degressive_price(product_list)
-            #     cache.set(__key, product_list)
-        else:
-            __key = 'get_suppliers_products_from_root'
-            # product_list = cache.get(__key) or get_suppliers_products(products_tree)
-            products_query = self.model.objects.language('fr')
-            # if not cache.get(__key):
-            #     compute_degressive_price(product_list)
-            #     cache.set(__key, product_list)
+            products_query = products_query.filter(product__in=products_tree_to_list(root_product))
 
-        products_query = products_query.select_related('price', 'main_image').prefetch_related('criterias', 'suppliers')
+        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers')
+        # products_query = products_query.select_related('name', 'main_image').prefetch_related('criterias', 'suppliers')
+        # products_query = products_query.prefetch_related()
 
         paginator = Paginator(products_query, 24)
 
@@ -108,13 +92,15 @@ class CatalogView(generic.ListView):
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
 
+        compute_degressive_price(products.object_list)
+
         return products
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
 
-        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
+        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').all())
         if not cache.get('products_tree'): cache.set('products_tree', context['products_tree'])
 
         if self.kwargs.get('product_id'):

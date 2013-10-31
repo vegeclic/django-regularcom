@@ -28,6 +28,5 @@ class CartMiddleware(object):
     def process_template_response(self, request, response):
         if not request.user.is_authenticated(): return response
         if 'context_data' in dir(response):
-            subscriptions = models.Subscription.objects.filter(customer__account=request.user, enabled=True)
-            response.context_data['nb_subscriptions'] = len(subscriptions.all())
+            response.context_data['nb_subscriptions'] = models.Subscription.objects.filter(customer__account=request.user, enabled=True).count()
         return response

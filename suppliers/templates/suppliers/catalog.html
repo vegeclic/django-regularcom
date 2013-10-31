@@ -83,92 +83,100 @@
 
       <div class="{% if view == "grid" %}row{% endif %}">
 	{% for product in object_list|dictsortreversed:"date_created" %}
-	  {% if view == "list" %}
-	    <div style="margin-bottom:40px;">
-	      <div class="panel panel-default">
-		<div class="panel-heading"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="{% trans "read more about" %} {{product}}"><h4>{{product.name}}</h4></a></div>
-		<div class="panel-body">
-		  <div class="media">
-		    <a class="pull-left" href="#modal_{{product.id}}" role="button" data-toggle="modal">
-		      <img class="media-object img-thumbnail tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{% trans "read more about" %} {{product}}" style="width:90px"/>
-		    </a>
-		    <div class="media-body">
-		      {{product.body|truncatewords:45}}
+	  {% with price=product.price %}
+	    {% if view == "list" %}
+	      <div style="margin-bottom:40px;">
+		<div class="panel panel-default">
+		  <div class="panel-heading"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="{% trans "read more about" %} {{product}}"><h4>{{product.name}}</h4></a></div>
+		  <div class="panel-body">
+		    <div class="media">
+		      <a class="pull-left" href="#modal_{{product.id}}" role="button" data-toggle="modal">
+			<img class="media-object img-thumbnail tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{% trans "read more about" %} {{product.name}}" style="width:90px"/>
+		      </a>
+		      <div class="media-body">
+			{{product.body|truncatewords:45}}
+		      </div>
 		    </div>
 		  </div>
-		</div>
-		<div class="panel-footer text-center">
-		  <a class="pull-left tooltip_link" title="Prix TTC">{{product.price}}</a>
-		  <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
-		    <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{product.price.currency.symbol}}
-		  </a>
-		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
-		</div>
-	      </div>
-	    </div>
-	  {% else %}
-	    <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
-	      <div class="panel panel-default">
-		<div class="panel-heading" style="height: 80px"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="En savoir plus"><h4>{{product.name}}</h4></a></div>
-		<div class="panel-body">
-		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal">
-		    <img class="tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="En savoir plus" style="width:170px; height:160px"/>
-		  </a>
-		</div>
-		<div class="panel-footer text-center">
-		  <a class="pull-left tooltip_link" title="Prix TTC">{{product.price}}</a>
-		  <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
-		    <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{product.price.currency.symbol}}
-		  </a>
-		  <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
-		</div>
-	      </div>
-	    </div>
-	  {% endif %}
-
-	  <!-- Modal -->
-	  <div id="modal_{{product.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_{{product.id}}_label" aria-hidden="true">
-	    <div class="modal-dialog">
-	      <div class="modal-content">
-		<div class="modal-header">
-		  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		  <h2 id="modal_{{product.id}}_label">{{product.name}}</h2>
-		</div>
-		<div class="modal-body">
-		  <a class="pull-right" href="#">
-		    <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="128x128" style="width: 128px; height: 128px; margin-left: 20px; margin-bottom: 20px"/>
-		  </a>
-
-		  <h3>{% trans "Description" %}</h3>
-		  <p style="text-align:justify">{{product.body}}</p>
-
-		  <h3>{% trans "Ingredients" %}</h3>
-		  <div class= "alert alert-warning">
-		   <p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
+		  <div class="panel-footer text-center">
+		    <a class="pull-left tooltip_link" title="Prix TTC">{{price}}</a>
+		    <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
+		      <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{price.currency.symbol}}
+		    </a>
+		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
 		  </div>
-		  <p style="text-align:justify">{{product.ingredients}}</p>
-
-		  <h3>Poids</h3>
-		  <p>{{product.weight}} g</p>
-
-		  <h3>{% trans "Price" %}</h3>
-		  <p>{{product.price}}</p>
-
-		  {% if product.criterias.all %}
-		  <h3>{% trans "Criterias" %}</h3>
-		  <p>{% for criteria in product.criterias.all %}{{criteria}}, {% endfor %}</p>
-                  {% endif %}
-
-		  <h3>{% trans "Suppliers" %}</h3>
-		  <p>{% for supplier in product.suppliers.all %}{{supplier}}, {% endfor %}</p>
 		</div>
-		<div class="modal-footer">
-		  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	      </div>
+	    {% else %}
+	      <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
+		<div class="panel panel-default">
+		  <div class="panel-heading" style="height: 80px"><a class="tooltip_link" href="#modal_{{product.id}}" role="button" data-toggle="modal" title="En savoir plus"><h4>{{product.name}}</h4></a></div>
+		  <div class="panel-body">
+		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal">
+		      <img class="tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="En savoir plus" style="width:170px; height:160px"/>
+		    </a>
+		  </div>
+		  <div class="panel-footer text-center">
+		    <a class="pull-left tooltip_link" title="Prix TTC">{{price}}</a>
+		    <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
+		      <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{price.currency.symbol}}
+		    </a>
+		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+		  </div>
+		</div>
+	      </div>
+	    {% endif %}
+
+	    <!-- Modal -->
+	    <div id="modal_{{product.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_{{product.id}}_label" aria-hidden="true">
+	      <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h2 id="modal_{{product.id}}_label">{{product.name}}</h2>
+		  </div>
+		  <div class="modal-body">
+		    <a class="pull-right" href="#">
+		      <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="128x128" style="width: 128px; height: 128px; margin-left: 20px; margin-bottom: 20px"/>
+		    </a>
+
+		    <h3>{% trans "Description" %}</h3>
+		    <p style="text-align:justify">{{product.body}}</p>
+
+		    <h3>{% trans "Ingredients" %}</h3>
+		    <div class= "alert alert-warning">
+		      <p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
+		    </div>
+		    <p style="text-align:justify">{{product.ingredients}}</p>
+
+		    <h3>Poids</h3>
+		    <p>{{product.weight}} g</p>
+
+		    <h3>{% trans "Price" %}</h3>
+		    <p>{{price}}</p>
+
+		    {% with criterias=product.criterias.all %}
+		      {% if criterias %}
+			<h3>{% trans "Criterias" %}</h3>
+			<p>{% for criteria in criterias %}{{criteria.name}}, {% endfor %}</p>
+                      {% endif %}
+		    {% endwith %}
+
+		    {% with suppliers=product.suppliers.all %}
+		      {% if suppliers %}
+			<h3>{% trans "Suppliers" %}</h3>
+			<p>{% for supplier in suppliers %}{{supplier}}, {% endfor %}</p>
+                      {% endif %}
+		    {% endwith %}
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		  </div>
 		</div>
 	      </div>
 	    </div>
-	  </div>
 
+	  {% endwith %}
 	{% endfor %}
       </div>
 

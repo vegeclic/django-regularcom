@@ -28,18 +28,14 @@ import customers.models as cm
 class MailboxMiddleware(object):
     def process_request(self, request):
         if not request.user.is_authenticated(): return None
-        msgs = models.Message.objects.filter(participants__account=request.user)
-        customer = cm.Customer.objects.get(account=request.user)
-        for msg in msgs:
-            if customer not in msg.participants_notified.all():
-                messages.success(request, _('You have received a new message: %s (see Mailbox).') % msg.subject)
-                msg.participants_notified.add(customer)
-                msg.save()
+        for msg in models.Message.objects.filter(participants__account=request.user).exclude(participants_notified__account=request.user).all():
+            messages.success(request, _('You have received a new message: %s (see Mailbox).') % msg.subject)
+            msg.participants_notified.add(customer)
+            msg.save()
         return None
 
     def process_template_response(self, request, response):
         if not request.user.is_authenticated(): return response
         if 'context_data' in dir(response):
-            msgs = models.Message.objects.filter(participants__account=request.user).exclude(participants_read__account=request.user)
-            if len(msgs): response.context_data['nb_messages'] = len(msgs)
+            response.context_data['nb_messages'] = models.Message.objects.filter(participants__account=request.user).exclude(participants_read__account=request.user).count()
         return response

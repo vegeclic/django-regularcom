@@ -32,6 +32,6 @@ class WalletMiddleware(object):
         if 'context_data' in dir(response):
             wallet = models.Wallet.objects.get(customer__account=request.user)
             response.context_data['wallet'] = wallet
-            response.context_data['nb_credit_in_waiting'] = len(wallet.credit_set.filter(status='w').all())
-            response.context_data['nb_withdraw_in_waiting'] = len(wallet.withdraw_set.filter(status='w').all())
+            response.context_data['nb_credit_in_waiting'] = wallet.credit_set.filter(status='w').count()
+            response.context_data['nb_withdraw_in_waiting'] = wallet.withdraw_set.filter(status='w').count()
         return response
