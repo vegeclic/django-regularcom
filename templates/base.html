@@ -69,17 +69,17 @@
     {% block foot %}{% endblock %}
 
     <script type="text/javascript">
-      jQuery.ajaxSetup({cache: true});
+      jQuery.ajaxSetup({cache: false});
       jQuery.getScript('https://static.jappix.com/php/get.php?l=fr&t=js&g=mini.xml', function() {
 	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
 	  MINI_ANIMATE = true;
 	  MINI_RANDNICK = true;
-	  launchMini(false, true, "anonymous.jappix.com");
+	  launchMini(true, true, "anonymous.jappix.com");
       });
     </script>
 
     <style type="text/css">
-      .jm_pane, .jm_chat-tab, .jm_position { height: 50px }
+      /* .jm_pane, .jm_chat-tab, .jm_position { height: 50px } */
     </style>
 
   </body>
