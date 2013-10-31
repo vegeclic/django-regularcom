@@ -30,7 +30,7 @@ class MailboxMiddleware(object):
         if not request.user.is_authenticated(): return None
         for msg in models.Message.objects.filter(participants__account=request.user).exclude(participants_notified__account=request.user).all():
             messages.success(request, _('You have received a new message: %s (see Mailbox).') % msg.subject)
-            msg.participants_notified.add(customer)
+            msg.participants_notified.add(request.user.customer)
             msg.save()
         return None
 
