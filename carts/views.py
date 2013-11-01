@@ -254,8 +254,9 @@ class CreateWizard(SessionWizardView):
                         dict_[(product, product in thematic_products)] = products_tree(products_children, root_product=product, root_only=False)
                 return dict_
 
-            form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.select_related().all())
-            if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
+            # form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.select_related().all())
+            # if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
+            form.products_tree = products_tree(pm.Product.objects.select_related().all())
 
             form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
             if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)
