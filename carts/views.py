@@ -354,7 +354,7 @@ Végéclic.
 """
         ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': deliveries[0].get_date_display(), 'subscription_id': subscription.id})
 
-        return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/' % subscription.id)
+        return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/page/1' % subscription.id)
 
     @method_decorator(login_required)
     @cache_control(private=True)

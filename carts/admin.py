@@ -83,6 +83,7 @@ class SubscriptionAdmin(ca.MyModelAdmin):
     form = forms.SubscriptionAdminForm
     list_display = ('id', 'customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled', 'date_created',)
     list_filter = ('enabled', 'receive_only_once', 'direct_debit', 'size', 'carrier', 'frequency',)
+    search_fields = ('customer__account__email', 'customer__main_address__first_name', 'customer__main_address__last_name')
     ordering = ('-date_created',)
     filter_horizontal = ('criterias',)
 
@@ -124,7 +125,7 @@ class DeliveryAdmin(ca.MyModelAdmin):
     form = forms.DeliveryAdminForm
     list_display = ('id', 'subscription', 'date', 'status', 'payed_price',)
     list_filter = ('status', 'subscription__enabled')
+    search_fields = ('subscription__id', 'subscription__customer__account__email', 'subscription__customer__main_address__first_name', 'subscription__customer__main_address__last_name')
     ordering = ('-date',)
-    # inlines = [ContentInline,]
 
 admin.site.register(models.Delivery, DeliveryAdmin)

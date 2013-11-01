@@ -44,6 +44,7 @@ class SupplierAdmin(ca.MyModelAdmin):
     form = forms.SupplierForm
     add_form = forms.SupplierCreationForm
     list_display = ('id', 'name','fee_per_weight',)
+    search_fields = ('name',)
     prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.AddressInline, ca.ImageInline, SupplierFeeInline,]
 
@@ -53,6 +54,7 @@ class ProductAdmin(TranslatableAdmin):
     form = forms.ProductForm
     list_display = ('id', 'all_translations', 'name_', 'slug', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
+    search_fields = ('slug', 'weight', 'product__slug',)
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
     fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image',)

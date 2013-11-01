@@ -32,6 +32,7 @@ class CategoryAdmin(TranslatableAdmin):
     # add_form = forms.CategoryCreationForm
     list_display = ('id', 'all_translations', 'name_',)
     fields = ('name', 'slug', 'categories', 'main_image', 'authors',)
+    search_fields = ('slug',)
     # prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.ImageInline, TaggedItemInline,]
 
@@ -44,6 +45,7 @@ class ProductAdmin(TranslatableAdmin):
     # add_form = forms.ProductCreationForm
     list_display = ('id', 'all_translations', 'name_', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
+    search_fields = ('slug',)
     # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     # search_fields = ('name_',)
