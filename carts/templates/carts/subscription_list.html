@@ -40,8 +40,8 @@ En cliquant sur un abonnement vous pourrez consulter l'échéancier de celui-ci 
 	      <a class="tooltip_link" href="{% url "subscription_edit" subscription.id %}" title="{% trans "edit" %} {{subscription}}"><i class="glyphicon glyphicon-edit"></i></a>
 	    </div>
 	  </td>
-	  <td><a href="{% url "subscription_deliveries" subscription.id %}">{{subscription.id}}</a></td>
-	  <td><a href="{% url "subscription_deliveries" subscription.id %}">{{subscription.size}}</a></td>
+	  <td><a href="{% url "subscription_deliveries" subscription.id 1 %}">{{subscription.id}}</a></td>
+	  <td><a href="{% url "subscription_deliveries" subscription.id 1 %}">{{subscription.size}}</a></td>
 	  <td>{{subscription.price}}</td>
 	  {% if not subscription.receive_only_once %}
 	    <td>{{subscription.frequency_name}}</td>
@@ -62,14 +62,6 @@ En cliquant sur un abonnement vous pourrez consulter l'échéancier de celui-ci 
     <a href="{% url "create_custom" %}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> {% trans "New" %}</a>
   </div>
 
-  {% comment %}
-  <div class="text-center">
-    <ul class="pagination">
-      <li class="disabled"><a href="#">«</a></li>
-      <li class="active"><a href="#">1</a></li>
-      <li class="disabled"><a href="#">»</a></li>
-    </ul>
-  </div>
-  {% endcomment %}
+  {% with link="subscriptions" %}{% include "wallets/pagination.html" %}{% endwith %}
 
 {% endblock %}

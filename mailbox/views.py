@@ -26,6 +26,7 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
 from . import forms, models
@@ -35,9 +36,22 @@ from isoweek import Week
 
 class MessageListView(generic.ListView):
     model = models.Message
+    template_name = 'mailbox/message_list.html'
 
     def get_queryset(self):
-        return models.Message.objects.filter(participants__account=self.request.user)
+        messages = models.Message.objects.select_related().prefetch_related('participants_read', 'participants_notified', 'participants', 'participants__main_address', 'participants__account', 'reply_set').filter(participants__account=self.request.user).order_by('-date_created')
+
+        paginator = Paginator(messages, 10)
+
+        page = self.kwargs.get('page', 1)
+        try:
+            messages_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            messages_per_page = paginator.page(1)
+        except EmptyPage:
+            messages_per_page = paginator.page(paginator.num_pages)
+
+        return messages_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -54,7 +68,7 @@ class MessageView(generic.DetailView):
     model = models.Message
 
     def get_object(self):
-        message = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
+        message = models.Message.objects.select_related().prefetch_related('participants_read', 'participants_notified').get(id=self.kwargs.get('pk'), participants__account=self.request.user)
         customer = cm.Customer.objects.get(account=self.request.user)
         if customer not in message.participants_read.all():
             message.participants_read.add(customer)
@@ -79,7 +93,7 @@ class NewMessageView(generic.CreateView):
 
     def form_valid(self, form):
         fi = form.instance
-        fi.owner = cm.Customer.objects.get(account=self.request.user)
+        fi.owner = self.request.user.customer
         ret = super().form_valid(form)
         fi.participants.add(fi.owner)
         fi.participants_read.add(fi.owner)
@@ -112,8 +126,8 @@ class ReplyMessageView(generic.CreateView):
     def form_valid(self, form):
         pk = self.kwargs.get('pk')
         fi = form.instance
-        fi.participant = cm.Customer.objects.get(account=self.request.user)
-        fi.message = models.Message.objects.get(id=pk, participants__account=self.request.user)
+        fi.participant = self.request.user.customer
+        fi.message = models.Message.objects.select_related().get(id=pk, participants__account=self.request.user)
         fi.message.participants_read.clear()
         fi.message.participants_notified.clear()
         fi.message.participants_read.add(fi.participant)
@@ -130,7 +144,7 @@ class ReplyMessageView(generic.CreateView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'mailbox'
         context['sub_section'] = 'messages'
-        context['object'] = models.Message.objects.get(id=self.kwargs.get('pk'), participants__account=self.request.user)
+        context['object'] = models.Message.objects.select_related().get(id=self.kwargs.get('pk'), participants__account=self.request.user)
         return context
 
     @method_decorator(login_required)

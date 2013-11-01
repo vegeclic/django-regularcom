@@ -38,3 +38,11 @@ class HowView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'how'
         return context
+
+class ChatView(generic.TemplateView):
+    template_name = 'chat.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'chat'
+        return context

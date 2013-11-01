@@ -22,7 +22,7 @@ from django.views.generic import TemplateView, DetailView, ListView
 from . import views, models, forms
 
 urlpatterns = patterns('carts.views',
-                       url(r'^messages/$', views.MessageListView.as_view(), name='messages'),
+                       url(r'^messages/page/(?P<page>\d+)/$', views.MessageListView.as_view(), name='messages'),
                        url(r'^messages/(?P<pk>\d+)/$', views.MessageView.as_view(), name='message_detail'),
                        url(r'^new/$', views.NewMessageView.as_view(), name='new_message'),
                        url(r'^reply/(?P<pk>\d+)/$', views.ReplyMessageView.as_view(), name='reply_message'),

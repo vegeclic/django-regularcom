@@ -1,0 +1,25 @@
+{% if object_list.paginator.num_pages > 1 %}
+  <div class="text-center">
+    <ul class="pagination">
+      {% if object_list.has_previous %}
+	<li><a href="{% url link object_list.previous_page_number %}">«</a></li>
+      {% else %}
+	<li class="disabled"><a>«</a></li>
+      {% endif %}
+
+      {% for i in object_list.paginator.page_range %}
+	{% if object_list.number == i %}
+	  <li class="active"><a>{{i}}</a></li>
+	{% else %}
+	  <li><a href="{% url link i %}">{{i}}</a></li>
+	{% endif %}
+      {% endfor %}
+
+      {% if object_list.has_next %}
+	<li><a href="{% url link object_list.next_page_number %}">»</a></li>
+      {% else %}
+	<li class="disabled"><a>»</a></li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

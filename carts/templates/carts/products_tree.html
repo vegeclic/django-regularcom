@@ -43,11 +43,6 @@
 		<img class="media-object" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACmUlEQVR4Xu2Y60tqQRTFl4r4TsEXKIkIikH4wOcH//60UEJExQdiKoqGYlIhKtrdA8Gte7vRDF1C9wbhyDlnz+w1e9ZPR7NYLA444dCwANwBvAXYA07YA8EmyBRgCjAFmAJMgRNWgDHIGGQMMgYZgycMAf4zxBhkDDIGGYOMQcbgCSugjMGnpyc0m02sVivo9XoEg0Gcn5+/kXQ8HqPRaMButyOTyXwq93fk/GhQJQH2+z2KxSK0Wq0o/P7+Hg8PD6JIo9EoxtxsNuIZetZqtX4qwHfk/JfiSgLM53Pc3t4ikUjA5XL9dZx6vY7tdiuE0Gg0QoDBYIB2u414PA63243pdIparYZoNAqTySSV89O2+uABJQH6/T663a5o+dlsJoaga+oGil8/slCtVpHP50WBrwLQvUqlgufnZ6RSKZTLZdhsNiSTSajklBFBSYBOp4O7uzs4nU4EAgGMRiOxDaios7MzXF9fw+fzCUFubm7eCLBer1EqlXA4HKDT6ZDL5WAwGKCS878L0Ov1QJ90Og2HwwEyL9rvoVBIFEZiUGG08u8FoMmSMZJB+v1+XFxciPmr5vyqCEod8Lp3Y7EYPB4PHh8fxaqGw2FMJhPx/X2QORYKBWGW1PoWi0UIR95AXaOS86vF0/NKAux2O1xdXQn80arTatK+p1WnoPuvQaikuLy8hNlsFh1BrU/bha4pstms6ByZnOQhMqEkAA1IK9lqtcRqk4OTEF6v94+5/L4FiADD4VAUTBNfLpeiG8hHIpGIVE6Z4pU7QHbQn/Secgf8pGJk5sIC8IkQnwjxiRCfCMm457G8wxRgCjAFmAJMgWNxdJk6mAJMAaYAU4ApIOOex/IOU4ApwBRgCjAFjsXRZepgCpw6BV4ALHRmn7YUTAEAAAAASUVORK5CYII=" data-src="holder.js/128x128" alt="128x128" style="width: 128px; height: 128px;"/>
 	      {% endif %}
 	    </a>
-	    <h4>Status</h4>
-	    <p>{{product.get_status_display}}</p>
-	    <h4>Categories</h4>
-	    <p>{% for category in product.categories.all %}{{category}}, {% endfor %}</p>
-	    <h4>Description</h4>
 	    <p>{{product.body}}</p>
 	  </div>
 	  <div class="modal-footer">

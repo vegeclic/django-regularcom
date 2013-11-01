@@ -30,7 +30,7 @@ class TaggedItemInline(generic.GenericTabularInline):
 class CategoryAdmin(TranslatableAdmin):
     # form = forms.CategoryForm
     # add_form = forms.CategoryCreationForm
-    list_display = ('all_translations', 'name_',)
+    list_display = ('id', 'all_translations', 'name_',)
     fields = ('name', 'slug', 'categories', 'main_image', 'authors',)
     # prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.ImageInline, TaggedItemInline,]
@@ -42,7 +42,7 @@ admin.site.register(models.Category, CategoryAdmin)
 class ProductAdmin(TranslatableAdmin):
     # form = forms.ProductForm
     # add_form = forms.ProductCreationForm
-    list_display = ('all_translations', 'name_', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
+    list_display = ('id', 'all_translations', 'name_', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
     # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]

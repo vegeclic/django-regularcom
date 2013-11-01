@@ -18,14 +18,19 @@
       </tr>
     </thead>
     <tbody>
-      {% for history in object_list|dictsortreversed:"date_created" %}
+      {% for history in object_list %}
+	{% with object=history.content_object %}
 	<tr class="{% cycle 'row1' 'row2' %}">
 	  <td><span class="badge">{{history.content_type}}</span></td>
-	  <td><a class="tooltip_link" title="{{history.content_object}}">{{history.content_object|truncatechars:60}}</a></td>
+	  <td><a class="tooltip_link" title="{{object}}">{{object|truncatechars:60}}</a></td>
 	  <td><span class="badge {% if history.target_amount < 0 %}alert-danger{% else %}alert-success{% endif %}">{{history.target_amount|floatformat}} {{history.wallet.target_currency.symbol}}</span></td>
 	  <td><a class="tooltip_link" title="{{history.date_created}}">{{history.date_created|date:"d F Y"}}</a></td>
 	</tr>
+	{% endwith %}
       {% endfor %}
     </tbody>
   </table>
+
+  {% with link="histories" %}{% include "wallets/pagination.html" %}{% endwith %}
+
 {% endblock %}

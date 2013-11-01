@@ -11,7 +11,7 @@
     <br/>
 
   <div class="alert alert-info">
-    {% trans "Balance of your account" %}: <a href="{% url "histories" %}" class="badge">{{ balance_in_target_currency|floatformat }} {{ object.target_currency.symbol }}</a>
+    {% trans "Balance of your account" %}: <a href="{% url "histories" 1 %}" class="badge">{{ balance_in_target_currency|floatformat }} {{ object.target_currency.symbol }}</a>
   </div>
 
   </div>
@@ -19,16 +19,16 @@
   <div class="well">
     Ceci est votre portemonnaie, vous pouvez dès lors l'approvisionner afin de pouvoir payer votre (vos) panier(s).
     Pour créditer votre compte, cliquez sur « <a href="{% url "credit" %}">approvisionner</a> » dans le menu à gauche.
-    Vous pouvez annuler une requête d'approvisionnement, en attente de validation, sur « <a href="{% url "credit_requests" %}">requêtes d'approvisionnement</a> ».
+    Vous pouvez annuler une requête d'approvisionnement, en attente de validation, sur « <a href="{% url "credit_requests" 1 %}">requêtes d'approvisionnement</a> ».
   </div>
 
   <div class="well">
     Vous pouvez à tout moment demander le remboursement du montant versé sur votre compte.
     Pour effectuer un remboursement, cliquer sur « <a href="{% url "withdraw" %}">retirer</a> » dans le menu à gauche.
-    Vous pouvez annuler une requête de retraîts, en attente de validation, sur « <a href="{% url "withdraw_requests" %}">requêtes de retraîts</a> ».
+    Vous pouvez annuler une requête de retraîts, en attente de validation, sur « <a href="{% url "withdraw_requests" 1 %}">requêtes de retraîts</a> ».
   </div>
 
   <div class="well">
-    Vous pouvez également consulter l'historique des opérations effectuées sur votre compte en allant sur « <a href="{% url "histories" %}">historique</a> » dans le menu à gauche.
+    Vous pouvez également consulter l'historique des opérations effectuées sur votre compte en allant sur « <a href="{% url "histories" 1 %}">historique</a> » dans le menu à gauche.
   </div>
 {% endblock %}

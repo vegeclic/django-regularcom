@@ -25,6 +25,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.cache import never_cache, cache_control
 from . import forms, models
 
@@ -32,7 +33,7 @@ class BalanceView(generic.DetailView):
     model = models.Wallet
 
     def get_object(self):
-        return models.Wallet.objects.get(customer__account=self.request.user)
+        return models.Wallet.objects.select_related().get(customer__account=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,9 +49,22 @@ class BalanceView(generic.DetailView):
 
 class HistoryView(generic.ListView):
     model = models.History
+    template_name = 'wallets/history_list.html'
 
     def get_queryset(self):
-        return models.History.objects.filter(wallet__customer__account=self.request.user)
+        histories = models.History.objects.select_related().prefetch_related('content_object').filter(wallet__customer__account=self.request.user).order_by('-date_created')
+
+        paginator = Paginator(histories, 5)
+
+        page = self.kwargs.get('page', 1)
+        try:
+            histories_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            histories_per_page = paginator.page(1)
+        except EmptyPage:
+            histories_per_page = paginator.page(paginator.num_pages)
+
+        return histories_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,9 +79,22 @@ class HistoryView(generic.ListView):
 
 class CreditRequestView(generic.ListView):
     model = models.Credit
+    template_name = 'wallets/credit_list.html'
 
     def get_queryset(self):
-        return models.Credit.objects.filter(wallet__customer__account=self.request.user)
+        requests = models.Credit.objects.select_related().filter(wallet__customer__account=self.request.user).order_by('-date_created')
+
+        paginator = Paginator(requests, 5)
+
+        page = self.kwargs.get('page', 1)
+        try:
+            requests_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            requests_per_page = paginator.page(1)
+        except EmptyPage:
+            requests_per_page = paginator.page(paginator.num_pages)
+
+        return requests_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,9 +109,22 @@ class CreditRequestView(generic.ListView):
 
 class WithdrawRequestView(generic.ListView):
     model = models.Withdraw
+    template_name = 'wallets/withdraw_list.html'
 
     def get_queryset(self):
-        return models.Withdraw.objects.filter(wallet__customer__account=self.request.user)
+        requests = models.Withdraw.objects.select_related().filter(wallet__customer__account=self.request.user).order_by('-date_created')
+
+        paginator = Paginator(requests, 5)
+
+        page = self.kwargs.get('page', 1)
+        try:
+            requests_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            requests_per_page = paginator.page(1)
+        except EmptyPage:
+            requests_per_page = paginator.page(paginator.num_pages)
+
+        return requests_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,7 +144,7 @@ class CreditView(generic.CreateView):
     success_url = '/wallets'
 
     def get_object(self):
-        return models.Wallet.objects.get(customer__account=self.request.user)
+        return models.Wallet.objects.select_related().get(customer__account=self.request.user)
 
     def form_valid(self, form):
         messages.success(self.request, _('Your credit request has been sent successfuly. You will be noticed about its validation as soon as possible. If you made any mistakes, it is still possible to undo (see Credit histories).'))
@@ -133,7 +173,7 @@ class WithdrawView(generic.CreateView):
     success_url = '/wallets'
 
     def get_object(self):
-        return models.Wallet.objects.get(customer__account=self.request.user)
+        return models.Wallet.objects.select_related().get(customer__account=self.request.user)
 
     def form_valid(self, form):
         form.instance.wallet = self.get_object()
@@ -200,7 +240,7 @@ class SettingsView(generic.UpdateView):
     success_url = '/wallets'
 
     def get_object(self):
-        return models.Wallet.objects.get(customer__account=self.request.user)
+        return models.Wallet.objects.select_related().get(customer__account=self.request.user)
 
     def form_valid(self, form):
         messages.success(self.request, _('Your settings has been changed successfuly.'))

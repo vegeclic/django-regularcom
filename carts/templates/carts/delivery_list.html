@@ -9,16 +9,10 @@
     <table class="table table-bordered table-hover">
       <tr>
 	<th class="col-md-2">{% trans "Subscription" %}</th>
-	<td><a href="{% url "subscriptions" %}">{{subscription}}</a></td>
-	<td><a href="{% url "subscriptions" %}">{{subscription.id}}</a></td>
+	<td><a href="{% url "subscriptions" 1 %}">{{subscription}}</a></td>
+	<td><a href="{% url "subscriptions" 1 %}">{{subscription.id}}</a></td>
       </tr>
     </table>
-
-    {% if not subscription.receive_only_once %}
-      <div class="well text-center">
-	<canvas id="myChart" width="700px" height="400px"></canvas>
-      </div>
-    {% endif %}
   {% endif %}
 
   <div class="alert alert-info">
@@ -81,8 +75,8 @@
 	    {% endif %}
 	  </td>
 	  {% if not subscription %}
-	    <td class="text-right"><a href="{% url "subscriptions" %}">{{delivery.subscription.id}}</a></td>
-	    <td><a href="{% url "subscriptions" %}">{{delivery.subscription}}</a></td>
+	    <td class="text-right"><a href="{% url "subscriptions" 1 %}">{{delivery.subscription.id}}</a></td>
+	    <td><a href="{% url "subscriptions" 1 %}">{{delivery.subscription}}</a></td>
 	  {% endif %}
 	  <td>{{delivery.get_date_display}}</td>
 	  {% if subscription %}
@@ -94,52 +88,53 @@
     </tbody>
   </table>
 
-  {% comment %}
-  <div class="text-center">
-    <ul class="pagination">
-      <li class="disabled"><a href="#">«</a></li>
-      <li class="active"><a href="#">1</a></li>
-      <li class="disabled"><a href="#">»</a></li>
-    </ul>
-  </div>
-  {% endcomment %}
+  {% if subscription %}
+    {% with link="subscription_deliveries" arg=subscription.id %}{% include "carts/pagination.html" %}{% endwith %}
+  {% else %}
+    {% with link="deliveries" %}{% include "carts/pagination.html" %}{% endwith %}
+  {% endif %}
+
+  {% if subscription and not subscription.receive_only_once %}
+    <div class="well text-center">
+      <canvas id="myChart" width="700px" height="400px"></canvas>
+    </div>
+  {% endif %}
+
 {% endblock %}
 
 {% block foot %}
-  {% if subscription %}
-  <script type="text/javascript" src="{% static "chartjs/Chart.min.js" %}"></script>
+  {% if subscription and not subscription.receive_only_once %}
+    <script type="text/javascript" src="{% static "chartjs/Chart.min.js" %}"></script>
 
-  <script type="text/javascript">
-    {% if not subscription.receive_only_once %}
-    $(function() {
-    	var data = {
-	    labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.get_date_display}}",{% endfor %}],
-    	    datasets: [
-		{
-		    fillColor: "rgba(220,220,220,0.5)",
-		    strokeColor: "rgba(220,220,220,1)",
-		    pointColor: "rgba(220,220,220,1)",
-		    pointStrokeColor: "#fff",
-		    data: [{% for delivery in object_list|dictsort:"date" %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
-		},
-    		{
-		    fillColor: "rgba(151,187,205,0.5)",
-		    strokeColor: "rgba(151,187,205,1)",
-		    pointColor: "rgba(151,187,205,1)",
-		    pointStrokeColor: "#fff",
-		    data: [{% for delivery in object_list|dictsort:"date" %}{{delivery.degressive_price|stringformat:"f"}}, {% endfor %}]
-    		},
-    	    ]
-    	}
+    <script type="text/javascript">
+      $(function() {
+    	  var data = {
+	      labels: [{% for delivery in object_list|dictsort:'date' %}"{{delivery.get_date_display}}",{% endfor %}],
+    	      datasets: [
+		  {
+		      fillColor: "rgba(220,220,220,0.5)",
+		      strokeColor: "rgba(220,220,220,1)",
+		      pointColor: "rgba(220,220,220,1)",
+		      pointStrokeColor: "#fff",
+		      data: [{% for delivery in object_list|dictsort:"date" %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
+		  },
+    		  {
+		      fillColor: "rgba(151,187,205,0.5)",
+		      strokeColor: "rgba(151,187,205,1)",
+		      pointColor: "rgba(151,187,205,1)",
+		      pointStrokeColor: "#fff",
+		      data: [{% for delivery in object_list|dictsort:"date" %}{{delivery.degressive_price|stringformat:"f"}}, {% endfor %}]
+    		  },
+    	      ]
+    	  }
 
-	var options = {
-	    bezierCurve: false,
-	}
+	  var options = {
+	      bezierCurve: false,
+	  }
 
-    	var ctx = $("#myChart").get(0).getContext("2d");
-    	var myNewChart = new Chart(ctx).Line(data, options);
-    });
-    {% endif %}
-  </script>
+    	  var ctx = $("#myChart").get(0).getContext("2d");
+    	  var myNewChart = new Chart(ctx).Line(data, options);
+      });
+    </script>
   {% endif %}
 {% endblock %}

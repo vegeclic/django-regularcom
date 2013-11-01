@@ -27,7 +27,7 @@ import common.models as cm
 
 class WalletAdmin(ca.MyModelAdmin):
     form = forms.WalletAdminForm
-    list_display = ('customer', 'balance', 'balance_in_target_currency', 'target_currency',)
+    list_display = ('id', 'customer', 'balance', 'balance_in_target_currency', 'target_currency',)
     list_filter = ('target_currency',)
 
 admin.site.register(models.Wallet, WalletAdmin)
@@ -35,13 +35,8 @@ admin.site.register(models.Wallet, WalletAdmin)
 class CreditAdmin(ca.MyModelAdmin):
     add_form = forms.CreditCreationAdminForm
     form = forms.CreditAdminForm
-    list_display = ('wallet', 'payment_type', 'amount', 'currency', 'payment_date', 'date_created', 'status',)
+    list_display = ('id', 'wallet', 'payment_type', 'amount', 'currency', 'payment_date', 'date_created', 'status',)
     list_filter = ('status', 'wallet', 'payment_type', 'currency',)
-    # readonly_fields = ('status',)
-    # fieldsets = (
-    #     (None, {'fields': ('status', 'wallet', 'payment_type', 'amount', 'currency',)}),
-    #     (_('Differ'), {'classes': ('collapse',), 'fields': ('payment_date',)}),
-    # )
     search_fields = ['wallet__customer__account__email']
     actions = ['make_draft', 'make_validated', 'make_expired', 'make_withdrawn',]
 
@@ -61,7 +56,7 @@ admin.site.register(models.Credit, CreditAdmin)
 class WithdrawAdmin(ca.MyModelAdmin):
     add_form = forms.WithdrawCreationAdminForm
     form = forms.WithdrawAdminForm
-    list_display = ('wallet', 'payment_type', 'amount', 'currency', 'date_created', 'status',)
+    list_display = ('id', 'wallet', 'payment_type', 'amount', 'currency', 'date_created', 'status',)
     list_filter = ('status', 'wallet', 'payment_type', 'currency',)
     search_fields = ['wallet__customer__account__email']
     actions = ['make_draft', 'make_validated', 'make_expired', 'make_withdrawn',]
@@ -82,7 +77,7 @@ admin.site.register(models.Withdraw, WithdrawAdmin)
 class HistoryAdmin(ca.MyModelAdmin):
     add_form = forms.HistoryCreationAdminForm
     form = forms.HistoryAdminForm
-    list_display = ('wallet', 'content_type', 'value', 'amount', 'wallet_amount', 'target_currency', 'date_created',)
+    list_display = ('id', 'wallet', 'content_type', 'value', 'amount', 'wallet_amount', 'target_currency', 'date_created',)
     list_filter = ('wallet', 'content_type',)
 
     def value(self, obj): return obj.content_object

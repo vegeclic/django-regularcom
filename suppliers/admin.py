@@ -25,7 +25,7 @@ import common.admin as ca
 import common.models as cm
 
 class TaxAdmin(ca.MyModelAdmin):
-    list_display = ('name', 'rate',)
+    list_display = ('id', 'name', 'rate',)
 
 admin.site.register(models.Tax, TaxAdmin)
 
@@ -43,7 +43,7 @@ class SupplierFeeInline(admin.TabularInline):
 class SupplierAdmin(ca.MyModelAdmin):
     form = forms.SupplierForm
     add_form = forms.SupplierCreationForm
-    list_display = ('name','fee_per_weight',)
+    list_display = ('id', 'name','fee_per_weight',)
     prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.AddressInline, ca.ImageInline, SupplierFeeInline,]
 
@@ -51,10 +51,8 @@ admin.site.register(models.Supplier, SupplierAdmin)
 
 class ProductAdmin(TranslatableAdmin):
     form = forms.ProductForm
-    list_display = ('all_translations', 'name_', 'slug', 'weight', 'date_created', 'date_last_modified', 'status',)
-    # list_display = ('name', 'weight', 'date_created', 'date_last_modified', 'status',)
+    list_display = ('id', 'all_translations', 'name_', 'slug', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
-    # prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
     fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image',)
@@ -73,7 +71,7 @@ class InventoryInline(admin.TabularInline):
     extra = 3
 
 class StoreAdmin(ca.MyModelAdmin):
-    list_display = ('name', 'date_last_modified',)
+    list_display = ('id', 'name', 'date_last_modified',)
     inlines = [InventoryInline, ca.AddressInline,]
 
 admin.site.register(models.Store, StoreAdmin)
@@ -83,7 +81,7 @@ class EntryInline(admin.TabularInline):
     extra = 3
 
 class OrderAdmin(ca.MyModelAdmin):
-    list_display = ('status', 'date_created', 'date_last_modified',)
+    list_display = ('id', 'status', 'date_created', 'date_last_modified',)
     list_filter = ('status',)
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [EntryInline,]

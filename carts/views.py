@@ -27,6 +27,7 @@ from django.contrib.formtools.wizard.views import WizardView, SessionWizardView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
@@ -40,9 +41,10 @@ import numpy as np
 
 class ThematicListView(generic.ListView):
     model = models.Thematic
+    template_name = 'carts/thematic_list.html'
 
     def get_queryset(self):
-        object_list = cache.get('thematic_list') or self.model.objects.all()
+        object_list = cache.get('thematic_list') or self.model.objects.language('fr').select_related('main_image').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', object_list)
         return object_list
 
@@ -58,9 +60,22 @@ class ThematicListView(generic.ListView):
 
 class SubscriptionView(generic.ListView):
     model = models.Subscription
+    template_name = 'carts/subscription_list.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(customer__account=self.request.user)
+        subscriptions = self.model.objects.select_related().filter(customer__account=self.request.user)
+
+        paginator = Paginator(subscriptions, 10)
+
+        page = self.kwargs.get('page', 1)
+        try:
+            subscriptions_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            subscriptions_per_page = paginator.page(1)
+        except EmptyPage:
+            subscriptions_per_page = paginator.page(paginator.num_pages)
+
+        return subscriptions_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -98,15 +113,18 @@ class SubscriptionUpdateView(generic.UpdateView):
 
 class DeliveryView(generic.ListView):
     model = models.Delivery
+    template_name = 'carts/delivery_list.html'
 
     def get_queryset(self):
+        deliveries = self.model.objects.filter(subscription__customer__account=self.request.user).select_related().order_by('date')
+
         subscription_id = self.kwargs.get('subscription_id')
-        if subscription_id:
-            subscription = models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
-            deliveries = self.model.objects.filter(subscription=subscription).order_by('date')
+        if subscription_id: deliveries = deliveries.filter(subscription__id=subscription_id)
 
-            init = subscription.price().price
+        deliveries = deliveries.all()
 
+        if subscription_id and deliveries:
+            init = deliveries[0].subscription.price().price
             k = 0
             last_price = 0
             for delivery in deliveries:
@@ -115,9 +133,17 @@ class DeliveryView(generic.ListView):
                     k += 1
                 delivery.degressive_price = last_price
 
-            return deliveries
+        paginator = Paginator(deliveries, 10)
 
-        return self.model.objects.filter(subscription__customer__account=self.request.user)
+        page = self.kwargs.get('page', 1)
+        try:
+            deliveries_per_page = paginator.page(page)
+        except PageNotAnInteger:
+            deliveries_per_page = paginator.page(1)
+        except EmptyPage:
+            deliveries_per_page = paginator.page(paginator.num_pages)
+
+        return deliveries_per_page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -125,9 +151,9 @@ class DeliveryView(generic.ListView):
         context['sub_section'] = 'deliveries'
         subscription_id = self.kwargs.get('subscription_id')
         if subscription_id:
-            context['subscription'] = models.Subscription.objects.get(id=subscription_id, customer__account=self.request.user)
+            context['subscription'] = models.Subscription.objects.select_related().get(id=subscription_id, customer__account=self.request.user)
 
-            deliveries = self.get_queryset()
+            deliveries = self.model.objects.filter(subscription=context['subscription']).select_related().order_by('date')
             init = context['subscription'].price().price
 
             context['mean_of_prices'] = (np.array([init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k for k, delivery in enumerate(deliveries.exclude(status__in=self.model.FAILED_CHOICES))]).mean())
@@ -174,7 +200,7 @@ class CreateWizard(SessionWizardView):
         thematic_id = self.kwargs.get('thematic_id')
         if thematic_id:
             context['sub_section'] = 'create_thematic'
-            context['thematic'] = models.Thematic.objects.get(id=thematic_id)
+            context['thematic'] = models.Thematic.objects.select_related().get(id=thematic_id)
         else:
             context['sub_section'] = 'create_custom'
         return context
@@ -186,7 +212,7 @@ class CreateWizard(SessionWizardView):
         if step is None: step = self.steps.current
 
         try:
-            thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
+            thematic = models.Thematic.objects.select_related().get(id=self.kwargs.get('thematic_id', None))
         except models.Thematic.DoesNotExist:
             thematic = None
 
@@ -220,27 +246,28 @@ class CreateWizard(SessionWizardView):
 
             def products_tree(products, root_product=None, root_only=True):
                 dict_ = {}
-                for product in products:
+                for product in products.prefetch_related('products_parent', 'products_children'):
                     if product == root_product: continue
                     if product.status != 'p': continue
-                    if not product.products_parent.all() or not root_only:
-                        dict_[(product, product in thematic_products)] = products_tree(product.products_children.all(), root_product=product, root_only=False)
+                    if not product.products_parent.exists() or not root_only:
+                        products_children = product.products_children.language('fr').select_related('main_image')
+                        dict_[(product, product in thematic_products)] = products_tree(products_children, root_product=product, root_only=False)
                 return dict_
 
-            form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.all())
+            form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.select_related().all())
             if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
 
-            form.carriers = cache.get('create_carriers') or models.Carrier.objects.all()
+            form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
             if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)
 
-            form.sizes = cache.get('create_sizes') or models.Size.objects.all()
+            form.sizes = cache.get('create_sizes') or models.Size.objects.select_related().all()
             if not cache.get('create_sizes'): cache.set('create_sizes', form.sizes)
 
             if not thematic: form.fields['customized'].initial = True
 
         elif step == '1':
             products = []
-            for product in pm.Product.objects.all():
+            for product in pm.Product.objects.select_related().all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
                     products.append(product)
 
@@ -266,7 +293,7 @@ class CreateWizard(SessionWizardView):
         customized = form_data[0].get('customized', False)
 
         try:
-            thematic = models.Thematic.objects.get(id=self.kwargs.get('thematic_id', None))
+            thematic = models.Thematic.objects.select_related().get(id=self.kwargs.get('thematic_id', None))
         except models.Thematic.DoesNotExist:
             thematic = None
 
@@ -274,7 +301,7 @@ class CreateWizard(SessionWizardView):
 
         products = {}
         if customized:
-            for product in pm.Product.objects.all():
+            for product in pm.Product.objects.select_related().all():
                 if ('product_%d' % product.id) in form_list[1].data:
                     products[product] = int(form_list[1].data['product_%d' % product.id])
         else:

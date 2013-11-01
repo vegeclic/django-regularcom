@@ -99,7 +99,7 @@ class ThematicExtentAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['product'].queryset = pm.Product.objects.language('fr').order_by('name')
+        self.fields['product'].queryset = pm.Product.objects.select_related().language('fr').order_by('name')
 
 class DeliveryCreationAdminForm(forms.ModelForm):
     class Meta:
@@ -216,7 +216,7 @@ class MyRadioFieldRenderer(object):
         return forms.widgets.format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', forms.widgets.format_html_join('\n', '{0}', [(forms.widgets.force_text(w),) for w in self]))
 
 class CreateForm1(forms.Form):
-    size = forms.ModelChoiceField(queryset=models.Size.objects.order_by('weight'), initial=2,
+    size = forms.ModelChoiceField(queryset=models.Size.objects.select_related().order_by('weight'), initial=2,
                                   help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
                                   label=_('Size'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
@@ -228,11 +228,11 @@ class CreateForm1(forms.Form):
     start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'),
                               label=_('Beginning of your subscription'))
     criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
-                                               queryset=cm.Criteria.objects.filter(enabled=True).order_by('id'),
+                                               queryset=cm.Criteria.objects.select_related().filter(enabled=True).order_by('id'),
                                                required=False, label=_('Criterias'),
                                                help_text=_('Select as much criterias as you want in your cart.'))
     carrier = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer),
-                                     queryset=models.Carrier.objects.order_by('id'), initial=3,
+                                     queryset=models.Carrier.objects.select_related().order_by('id'), initial=3,
                                      help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
                                      label=_('Carrier'))
 
