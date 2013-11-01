@@ -69,11 +69,11 @@
     {% block foot %}{% endblock %}
 
     <script type="text/javascript">
-      jQuery.ajaxSetup({cache: false});
+      jQuery.ajaxSetup({cache: true});
       jQuery.getScript('https://static.jappix.com/php/get.php?l=fr&t=js&g=mini.xml', function() {
 	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
 	  MINI_ANIMATE = true;
-	  MINI_RANDNICK = true;
+	  {% if user.is_authenticated %}MINI_NICKNAME = "{{user|slugify}}";{% else %}MINI_RANDNICK = true;{% endif %}
 	  launchMini(true, true, "anonymous.jappix.com");
 	  $('.jm_pane')[0].style.height = "25px";
 	  $('.jm_position')[0].style.height = "25px";
