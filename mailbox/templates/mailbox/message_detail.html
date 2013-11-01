@@ -6,7 +6,7 @@
   <h2>{% trans "Message" %}</h2>
 
   <div class="form-actions text-right">
-    <a href="{% url "messages" %}" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> {% trans "Return" %}</a>
+    <a href="{% url "messages" 1 %}" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> {% trans "Return" %}</a>
     <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="glyphicon glyphicon-envelope"></i> {% trans "Reply" %}</a>
   </div>
   <br/>
@@ -39,7 +39,7 @@
   {% endif %}
 
   <div class="form-actions text-right">
-    <a href="{% url "messages" %}" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> {% trans "Return" %}</a>
+    <a href="{% url "messages" 1 %}" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> {% trans "Return" %}</a>
     <a href="{% url "reply_message" object.id %}" class="btn btn-primary"><i class="glyphicon glyphicon-envelope"></i> {% trans "Reply" %}</a>
   </div>
 {% endblock %}
