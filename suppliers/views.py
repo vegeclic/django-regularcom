@@ -39,12 +39,11 @@ import numpy as np
 
 def get_products_tree(products, root_product=None, root_only=True):
     dict_ = {}
-    for product in products.prefetch_related('products_parent', 'products_children'):
+    for product in products.language('fr').prefetch_related('products_parent', 'products_children').select_related('main_image').order_by('name'):
         if product == root_product: continue
         if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
-            products_children = product.products_children.select_related('main_image')
-            dict_[product] = get_products_tree(products_children, root_product=product, root_only=False)
+            dict_[product] = get_products_tree(product.products_children, root_product=product, root_only=False)
     return dict_
 
 class CatalogView(generic.ListView):
@@ -74,14 +73,11 @@ class CatalogView(generic.ListView):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
         products_query = self.model.objects
-        # products_query = hvad.utils.get_translation_aware_manager(self.model)
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
 
         products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers')
-        # products_query = products_query.select_related('name', 'main_image').prefetch_related('criterias', 'suppliers')
-        # products_query = products_query.prefetch_related()
 
         paginator = Paginator(products_query, 24)
 
@@ -101,7 +97,7 @@ class CatalogView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
 
-        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.select_related('main_image'))
+        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects)
         if not cache.get('products_tree'): cache.set('products_tree', context['products_tree'])
 
         if self.kwargs.get('product_id'):
