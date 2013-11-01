@@ -246,7 +246,7 @@ class CreateWizard(SessionWizardView):
                 if thematic.criterias:
                     form.fields['criterias'].initial = [v.id for v in thematic.criterias.all()]
 
-            form.products_tree = cache.get('products_tree') or sw.get_products_tree(pm.Product.objects.select_related())
+            form.products_tree = cache.get('products_tree') or sw.get_products_tree(pm.Product.objects)
             if not cache.get('products_tree'): cache.set('products_tree', form.products_tree)
 
             form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
@@ -259,7 +259,7 @@ class CreateWizard(SessionWizardView):
 
         elif step == '1':
             products = []
-            for product in pm.Product.objects.select_related().all():
+            for product in pm.Product.objects.language('fr').order_by('name').all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
                     products.append(product)
 
@@ -269,12 +269,12 @@ class CreateWizard(SessionWizardView):
             extents = [e.extent for e in thematic.thematicextent_set.all()] if thematic else []
             shared_extent = int((100 - sum(extents))/(len(products) - len(extents))) if (len(products) - len(extents)) else 0
 
-            form.selected_products = {}
+            form.selected_products = []
             for product in products:
                 extent = None
                 if product in thematic_products:
                     extent = thematic.thematicextent_set.get(product=product)
-                form.selected_products[product] = extent.extent if extent else shared_extent
+                form.selected_products.append((product, extent.extent if extent else shared_extent))
 
             messages.info(self.request, _('In order to lock a product percent, please check the corresponding checkbox.'))
 

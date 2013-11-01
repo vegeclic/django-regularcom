@@ -56,7 +56,7 @@
     {% if products %}
       <div class="media collapse out" id="sub_products_{{product.id}}">
 	<ul class="media-list">
-	  {% for sub_product, sub_products in products.items %}
+	  {% for sub_product, sub_products in products %}
 	    {% with product=sub_product thematic_products=thematic_products products=sub_products template_name="carts/products_tree.html" %}
               {% include template_name %}
 	    {% endwith %}

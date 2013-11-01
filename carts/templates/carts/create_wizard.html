@@ -125,7 +125,7 @@
 	  </div>
 
 	  <ul class="media-list">
-	    {% for product, products in wizard.form.products_tree.items %}
+	    {% for product, products in wizard.form.products_tree %}
 	      {% with product=product thematic_products=wizard.form.thematic_products products=products %}
 		{% include "carts/products_tree.html" %}
 	      {% endwith %}
@@ -161,7 +161,7 @@
       </div>
 
       <div id="sliders">
-        {% for product, extent in wizard.form.selected_products.items %}
+        {% for product, extent in wizard.form.selected_products %}
 	  <div class="form-group">
 	    <label>{{ product }}</label>
 	    <div class="row">

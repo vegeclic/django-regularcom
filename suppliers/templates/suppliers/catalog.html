@@ -22,10 +22,10 @@
 	      <img class="media-object img-thumbnail" style="width:35px; height:35px"/>
 	    </span>
 	    <div class="media-body">
-	      {#<a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>#}
-	      <a class="btn" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>
+	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>
+	      {#<a class="btn" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>#}
 	      <ul class="media-list" style="margin-top:10px">
-		{% for product, products in products_tree.items %}
+		{% for product, products in products_tree %}
 		  {% with product=product products=products %}
 		    {% include "suppliers/products_tree.html" %}
 		  {% endwith %}
@@ -82,7 +82,7 @@
       {% endwith %}
 
       <div class="{% if view == "grid" %}row{% endif %}">
-	{% for product in object_list|dictsort:"name" %}
+	{% for product in object_list %}
 	  {% with price=product.price %}
 	    {% if view == "list" %}
 	      <div style="margin-bottom:40px;">

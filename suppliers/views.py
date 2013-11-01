@@ -38,13 +38,13 @@ from isoweek import Week
 import numpy as np
 
 def get_products_tree(products, root_product=None, root_only=True):
-    dict_ = {}
-    for product in products.language('fr').prefetch_related('products_parent', 'products_children').select_related('main_image').order_by('name'):
+    __list = []
+    for product in products.language('fr').order_by('name').prefetch_related('products_parent', 'products_children').select_related('main_image'):
         if product == root_product: continue
         if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
-            dict_[product] = get_products_tree(product.products_children, root_product=product, root_only=False)
-    return dict_
+            __list.append((product, get_products_tree(product.products_children, root_product=product, root_only=False)))
+    return __list
 
 class CatalogView(generic.ListView):
     model = models.Product
@@ -55,8 +55,8 @@ class CatalogView(generic.ListView):
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         def find_product(products_tree, product_pattern):
-            for product, products in products_tree.items():
-                if product.id == int(product_pattern): return {product: products}
+            for product, products in products_tree:
+                if product.id == int(product_pattern): return [(product, products)]
                 res = find_product(products, product_pattern)
                 if res: return res
             return None
@@ -64,7 +64,7 @@ class CatalogView(generic.ListView):
         def products_tree_to_list(products_tree):
             if not products_tree: return []
             __list = []
-            for product, products in products_tree.items():
+            for product, products in products_tree:
                 __list.append(product)
                 __list += products_tree_to_list(products)
             return __list
@@ -72,12 +72,12 @@ class CatalogView(generic.ListView):
         def compute_degressive_price(product_list):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
-        products_query = self.model.objects
+        products_query = self.model.objects.language('fr')
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
 
-        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers')
+        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('name')
 
         paginator = Paginator(products_query, 24)
 
@@ -104,7 +104,7 @@ class CatalogView(generic.ListView):
             context['selected_product'] = pm.Product.objects.get(id=self.kwargs.get('product_id'))
 
             def get_product_path(products_tree, product_pattern, path=()):
-                for product, products in products_tree.items():
+                for product, products in products_tree:
                     if product == product_pattern: return path+(product,)
                     res = get_product_path(products, product_pattern, path+(product,))
                     if res: return res
