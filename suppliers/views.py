@@ -39,9 +39,8 @@ import numpy as np
 
 def get_products_tree(products, root_product=None, root_only=True):
     __list = []
-    for product in products.language('fr').order_by('name').prefetch_related('products_parent', 'products_children').select_related('main_image'):
+    for product in products.language('fr').order_by('name').prefetch_related('products_parent', 'products_children').select_related('main_image').filter(status='p'):
         if product == root_product: continue
-        if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
             __list.append((product, get_products_tree(product.products_children, root_product=product, root_only=False)))
     return __list
@@ -72,7 +71,7 @@ class CatalogView(generic.ListView):
         def compute_degressive_price(product_list):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
-        products_query = self.model.objects.language('fr')
+        products_query = self.model.objects.language('fr').filter(status='p')
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
