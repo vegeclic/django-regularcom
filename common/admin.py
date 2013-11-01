@@ -101,12 +101,12 @@ class LimitedAdminInlineMixin(object):
         return getattr(self, 'filters', ())
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('id', 'name',)
 
 admin.site.register(models.Country, CountryAdmin)
 
 class CurrencyAdmin(MyModelAdmin):
-    list_display = ('name', 'symbol', 'exchange_rate',)
+    list_display = ('id', 'name', 'symbol', 'exchange_rate',)
 
 admin.site.register(models.Currency, CurrencyAdmin)
 
@@ -119,7 +119,7 @@ class ImageInline(generic.GenericTabularInline):
     extra = 1
 
 class CriteriaAdmin(TranslatableAdmin):
-    list_display = ('name_', 'enabled',)
+    list_display = ('id', 'name_', 'enabled',)
 
     def name_(self, obj): return obj.lazy_translation_getter('name')
 
@@ -128,7 +128,7 @@ admin.site.register(models.Criteria, CriteriaAdmin)
 class ParameterAdmin(MyModelAdmin):
     form = forms.ParameterForm
     add_form = forms.ParameterCreationForm
-    list_display = ('site', 'content_type', 'name', 'value',)
+    list_display = ('id', 'site', 'content_type', 'name', 'value',)
 
     def value(self, obj): return obj.content_object
 

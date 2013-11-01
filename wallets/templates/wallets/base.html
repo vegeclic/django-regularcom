@@ -27,15 +27,15 @@
 	  </li>
 
 	  <li {% if sub_section == "histories" %}class="active"{% endif %}>
-	    <a href="{% url "histories" %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Histories" %}</a>
+	    <a href="{% url "histories" 1 %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Histories" %}</a>
 	  </li>
 
 	  <li {% if sub_section == "credit_requests" %}class="active"{% endif %}>
-	    <a href="{% url "credit_requests" %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Credit requests" %} {% if nb_credit_in_waiting %}<span class="badge pull-right">{{nb_credit_in_waiting}}</span>{% endif %}</a>
+	    <a href="{% url "credit_requests" 1 %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Credit requests" %} {% if nb_credit_in_waiting %}<span class="badge pull-right">{{nb_credit_in_waiting}}</span>{% endif %}</a>
 	  </li>
 
 	  <li {% if sub_section == "withdraw_requests" %}class="active"{% endif %}>
-	    <a href="{% url "withdraw_requests" %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Withdraw requests" %} {% if nb_withdraw_in_waiting %}<span class="badge pull-right">{{nb_withdraw_in_waiting}}</span>{% endif %}</a>
+	    <a href="{% url "withdraw_requests" 1 %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Withdraw requests" %} {% if nb_withdraw_in_waiting %}<span class="badge pull-right">{{nb_withdraw_in_waiting}}</span>{% endif %}</a>
 	  </li>
 
 	  <li {% if sub_section == "settings" %}class="active"{% endif %}>

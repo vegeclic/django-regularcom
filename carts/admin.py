@@ -33,7 +33,7 @@ class ThematicExtentInline(admin.TabularInline):
     extra = 3
 
 class ThematicAdmin(TranslatableAdmin):
-    list_display = ('all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
+    list_display = ('id', 'all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
     fields = ('name', 'body', 'size', 'locked_size', 'carrier', 'locked_carrier', 'receive_only_once', 'locked_receive_only_once', 'frequency', 'locked_frequency', 'start_duration', 'locked_start', 'end_duration', 'locked_duration', 'criterias', 'locked_criterias', 'locked_products', 'quantity', 'locked_quantity', 'start_period', 'end_period', 'main_image', 'enabled',)
     list_filter = ('enabled',)
     inlines = [ca.ImageInline, ThematicExtentInline,]
@@ -53,7 +53,7 @@ class CarrierLevelInline(admin.TabularInline):
 
 class CarrierAdmin(TranslatableAdmin):
     extra = 1
-    list_display = ('all_translations', 'name_', 'body_', 'apply_suppliers_fee', 'weight_min', 'enabled',)
+    list_display = ('id', 'all_translations', 'name_', 'body_', 'apply_suppliers_fee', 'weight_min', 'enabled',)
     fields = ('name', 'body', 'apply_suppliers_fee', 'weight_min', 'enabled',)
     inlines = [CarrierLevelInline,]
 
@@ -63,7 +63,7 @@ class CarrierAdmin(TranslatableAdmin):
 admin.site.register(models.Carrier, CarrierAdmin)
 
 class SizeAdmin(TranslatableAdmin):
-    list_display = ('all_translations', 'name_', 'price', 'weight', 'enabled',)
+    list_display = ('id', 'all_translations', 'name_', 'price', 'weight', 'enabled',)
     fields = ('name', 'body', 'weight', 'main_image', 'enabled',)
     inlines = [PriceInline, ca.ImageInline,]
 
@@ -81,8 +81,9 @@ class ExtentInline(admin.TabularInline):
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
     form = forms.SubscriptionAdminForm
-    list_display = ('customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled', 'date_created',)
+    list_display = ('id', 'customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'quantity', 'enabled', 'date_created',)
     list_filter = ('enabled', 'receive_only_once', 'direct_debit', 'size', 'carrier', 'frequency',)
+    search_fields = ('customer__account__email', 'customer__main_address__first_name', 'customer__main_address__last_name')
     ordering = ('-date_created',)
     filter_horizontal = ('criterias',)
 
@@ -114,7 +115,7 @@ class ContentAdmin(ca.MyModelAdmin):
     form = forms.ContentAdminForm
     model = models.Content
     # fields = ('extent', 'product', 'quantity',)
-    list_display = ('delivery', 'extent',)
+    list_display = ('id', 'delivery', 'extent',)
     inlines = [ContentProductInline,]
 
 admin.site.register(models.Content, ContentAdmin)
@@ -122,9 +123,9 @@ admin.site.register(models.Content, ContentAdmin)
 class DeliveryAdmin(ca.MyModelAdmin):
     add_form = forms.DeliveryCreationAdminForm
     form = forms.DeliveryAdminForm
-    list_display = ('subscription', 'date', 'status', 'payed_price', )
-    list_filter = ('status',)
+    list_display = ('id', 'subscription', 'date', 'status', 'payed_price',)
+    list_filter = ('status', 'subscription__enabled')
+    search_fields = ('subscription__id', 'subscription__customer__account__email', 'subscription__customer__main_address__first_name', 'subscription__customer__main_address__last_name')
     ordering = ('-date',)
-    # inlines = [ContentInline,]
 
 admin.site.register(models.Delivery, DeliveryAdmin)

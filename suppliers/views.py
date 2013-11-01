@@ -39,11 +39,12 @@ import numpy as np
 
 def get_products_tree(products, root_product=None, root_only=True):
     dict_ = {}
-    for product in products:
+    for product in products.prefetch_related('products_parent', 'products_children'):
         if product == root_product: continue
         if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
-            dict_[product] = get_products_tree(product.products_children.language('fr').all(), root_product=product, root_only=False)
+            products_children = product.products_children.language('fr').select_related('main_image')
+            dict_[product] = get_products_tree(products_children, root_product=product, root_only=False)
     return dict_
 
 class CatalogView(generic.ListView):
@@ -100,7 +101,7 @@ class CatalogView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
 
-        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').all())
+        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').select_related('main_image').all())
         if not cache.get('products_tree'): cache.set('products_tree', context['products_tree'])
 
         if self.kwargs.get('product_id'):

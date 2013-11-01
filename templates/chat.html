@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  </head>
+  <body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <script src="https://static.jappix.com/php/get.php?l=fr&t=js&g=mini.xml"></script>
+    <script type="text/javascript">
+      $(function() {
+	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
+	  MINI_ANIMATE = true;
+	  MINI_RANDNICK = true;
+	  launchMini(true, true, "anonymous.jappix.com");
+	  $('.jm_pane')[0].style.height = "25px";
+	  $('.jm_position')[0].style.height = "25px";
+	  $('.jm_chat-tab')[0].style.height = "25px";
+	  $('.jm_name')[0].style.height = "25px";
+      });
+    </script>
+
+    {% comment %}
+    <script type="text/javascript">
+      $(function() {
+      jQuery.ajaxSetup({cache: false});
+      jQuery.getScript('https://static.jappix.com/php/get.php?l=fr&t=js&g=mini.xml', function() {
+	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
+	  MINI_ANIMATE = true;
+	  MINI_RANDNICK = true;
+	  launchMini(false, true, "anonymous.jappix.com");
+      });
+      $('.jm_pane')[0].style.height = "25px";
+      });
+    </script>
+    {% endcomment %}
+  </body>
+</html>

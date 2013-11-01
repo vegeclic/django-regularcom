@@ -2,12 +2,6 @@
 {% load i18n %}
 {% load static %}
 
-{% comment %}
-{% block head %}
-  {{ wizard.form.media }}
-{% endblock %}
-{% endcomment %}
-
 {% block sub_head %}
   <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
 {% endblock %}
@@ -17,13 +11,6 @@
 
   <form role="form" class="" method="post" action="{% if thematic %}{% url "create_thematic_id" thematic.pk %}{% else %}{% url "create_custom" %}{% endif %}">
     {% csrf_token %}
-
-    {% comment %}
-    {# Include the hidden fields #}
-    {% for hidden in wizard.form.hidden_fields %}
-      {{ hidden }}
-    {% endfor %}
-    {% endcomment %}
 
     {#<h3 class="cart-form-heading well">{% trans "Step" %} {{ wizard.steps.step1 }} {% trans "of" %} {{ wizard.steps.count }}</h3>#}
 
@@ -280,7 +267,7 @@
 		add_links.removeClass('btn-success')
 		add_links.addClass('btn-link');
 		add_links.removeClass('active')
-		add_links.siblings('.value')[0].value = 0;
+		add_links.siblings('.value').each(function(){ $(this)[0].value = 0; })
 	    }
 	});
 

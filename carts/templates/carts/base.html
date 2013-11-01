@@ -23,11 +23,11 @@
 	  </li>
 
 	  <li {% if not sub_section or sub_section == "subscriptions" %}class="active"{% endif %}>
-	    <a href="{% url "subscriptions" %}"><i class="glyphicon glyphicon-shopping-cart"></i> {% trans "Subscriptions" %}</a>
+	    <a href="{% url "subscriptions" 1 %}"><i class="glyphicon glyphicon-shopping-cart"></i> {% trans "Subscriptions" %}</a>
 	  </li>
 
 	  <li {% if sub_section == "deliveries" %}class="active"{% endif %}>
-	    <a href="{% url "deliveries" %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Deliveries" %}</a>
+	    <a href="{% url "deliveries" 1 %}"><i class="glyphicon glyphicon-calendar"></i> {% trans "Deliveries" %}</a>
 	  </li>
 
 	  <li {% if section == "catalog" %}class="active"{% endif %}>

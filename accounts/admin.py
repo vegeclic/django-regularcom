@@ -26,7 +26,7 @@ import common.admin as ca
 class AccountAdmin(UserAdmin):
     form = forms.AccountChangeAdminForm
     add_form = forms.AccountCreationAdminForm
-    list_display = ('email', 'is_admin', 'date_created', 'last_login',)
+    list_display = ('id', 'email', 'is_admin', 'date_created', 'last_login',)
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
@@ -50,7 +50,7 @@ class AuthorAdmin(ca.MyModelAdmin):
     add_form = forms.AuthorCreationForm
     form = forms.AuthorForm
     fieldsets = []
-    list_display = ('name',)
+    list_display = ('id', 'name',)
     inlines = [ca.ImageInline,]
 
 admin.site.register(models.Author, AuthorAdmin)

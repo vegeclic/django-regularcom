@@ -76,6 +76,7 @@ class AccountCreationForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
+        print(email)
         try:
             models.Account._default_manager.get(email=email)
         except models.Account.DoesNotExist:
