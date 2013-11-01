@@ -99,7 +99,7 @@ class ThematicExtentAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['product'].queryset = pm.Product.objects.select_related().language('fr').order_by('name')
+        self.fields['product'].queryset = pm.Product.objects.select_related().order_by('name')
 
 class DeliveryCreationAdminForm(forms.ModelForm):
     class Meta:

@@ -43,7 +43,7 @@ def get_products_tree(products, root_product=None, root_only=True):
         if product == root_product: continue
         if product.status != 'p': continue
         if not product.products_parent.exists() or not root_only:
-            products_children = product.products_children.language('fr').select_related('main_image')
+            products_children = product.products_children.select_related('main_image')
             dict_[product] = get_products_tree(products_children, root_product=product, root_only=False)
     return dict_
 
@@ -52,7 +52,7 @@ class CatalogView(generic.ListView):
     template_name = 'suppliers/catalog.html'
 
     def get_queryset(self):
-        products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').all())
+        products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects.all())
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         def find_product(products_tree, product_pattern):
@@ -73,7 +73,7 @@ class CatalogView(generic.ListView):
         def compute_degressive_price(product_list):
             for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
-        products_query = self.model.objects.language('fr')
+        products_query = self.model.objects
         # products_query = hvad.utils.get_translation_aware_manager(self.model)
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
@@ -101,7 +101,7 @@ class CatalogView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'catalog'
 
-        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.language('fr').select_related('main_image').all())
+        context['products_tree'] = cache.get('products_tree') or get_products_tree(pm.Product.objects.select_related('main_image').all())
         if not cache.get('products_tree'): cache.set('products_tree', context['products_tree'])
 
         if self.kwargs.get('product_id'):

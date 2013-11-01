@@ -44,7 +44,7 @@ class ThematicListView(generic.ListView):
     template_name = 'carts/thematic_list.html'
 
     def get_queryset(self):
-        object_list = cache.get('thematic_list') or self.model.objects.language('fr').select_related('main_image').all()
+        object_list = cache.get('thematic_list') or self.model.objects.select_related('main_image').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', object_list)
         return object_list
 
@@ -250,7 +250,7 @@ class CreateWizard(SessionWizardView):
                     if product == root_product: continue
                     if product.status != 'p': continue
                     if not product.products_parent.exists() or not root_only:
-                        products_children = product.products_children.language('fr').select_related('main_image')
+                        products_children = product.products_children.select_related('main_image')
                         dict_[(product, product in thematic_products)] = products_tree(products_children, root_product=product, root_only=False)
                 return dict_
 
