@@ -252,7 +252,7 @@ msgstr "Critères"
 
 #: carts/forms.py:233
 msgid "Select as much criterias as you want in your cart."
-msgstr "Sélectionner les critères que vous souhaitez appliquer à votre panier"
+msgstr "Sélectionner les critères que vous souhaitez appliquer à votre panier (les critères seront appliqués, dans la mesure du possible, en fonction des produits disponibles dans les familles et sous-familles de produits choisit)."
 
 #: carts/forms.py:236
 msgid ""
