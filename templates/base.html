@@ -74,7 +74,7 @@
 	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
 	  MINI_ANIMATE = true;
 	  {% if user.is_authenticated %}MINI_NICKNAME = "{{user|slugify}}";{% else %}MINI_RANDNICK = true;{% endif %}
-	  launchMini(true, true, "anonymous.jappix.com");
+	  launchMini(false, true, "anonymous.jappix.com");
 	  $('.jm_pane')[0].style.height = "25px";
 	  $('.jm_position')[0].style.height = "25px";
 	  $('.jm_chat-tab')[0].style.height = "25px";
