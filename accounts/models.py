@@ -33,7 +33,7 @@ class AccountManager(BaseUserManager):
         """
         if not email: raise ValueError('Users must have an email address')
 
-        account = self.model(email=AccountManager.normalize_email(email))
+        account = self.model(email=AccountManager.normalize_email(email.lower()))
         password = self.make_random_password()
         account.set_password(password)
         account.save(using=self._db)
@@ -68,9 +68,7 @@ Végéclic.
         """
         Creates and saves a superuser with the given email and password.
         """
-        account = self.create_user(email,
-            password=password
-        )
+        account = self.create_user(email, password=password)
         account.is_admin = True
         account.save(using=self._db)
         return account
