@@ -18,9 +18,12 @@
 #
 
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.utils.http import is_safe_url
+from django.shortcuts import render, redirect, resolve_url
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+import django.contrib.auth as auth
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.views import login as auth_views_login
 from django.contrib.auth.decorators import login_required
@@ -52,7 +55,7 @@ def signup(request):
 
         if signup_form.is_valid():
             account = models.Account.objects.create_user(email=signup_form.data['email'])
-            messages.success(request, "Your account has been successfully created.")
+            messages.success(request, _("Your account has been successfully created."))
             return redirect('login')
 
         cv.messages_from_form(request, signup_form)
@@ -68,12 +71,41 @@ def login(request):
             if form:
                 cv.messages_from_form(request, form)
                 return response
-        messages.success(request, "You're logged in.")
+        messages.success(request, _("You're logged in."))
     return response
+
+def login_link(request, **kwargs):
+    email = kwargs.get('email')
+    password = kwargs.get('password')
+
+    redirect_to = request.REQUEST.get(auth.REDIRECT_FIELD_NAME, '')
+
+    if request.method == "GET":
+        user = auth.authenticate(username=email, password=password)
+
+        if user is not None:
+            # Ensure the user-originating redirection url is safe.
+            if not is_safe_url(url=redirect_to, host=request.get_host()):
+                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+
+            # Okay, security check complete. Log the user in.
+            auth.login(request, user)
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            messages.success(request, _("You're logged in."))
+
+            return HttpResponseRedirect(redirect_to)
+
+    messages.error(request, _("Vos identifiants de connexion sont incorrects. Si vous n'êtes pas encore inscrit, nous vous invitons à vous inscrire en cliquant sur « Inscription » dans le cas contraire, cliquez sur le lien « J'ai oublié mon mot de passe »."))
+    redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+
+    return HttpResponseRedirect(redirect_to)
 
 def logout(request):
     auth_logout(request)
-    messages.success(request, "You're logged out.")
+    messages.success(request, _("You're logged out."))
     return login(request)
 
 class PasswordResetView(generic.FormView):

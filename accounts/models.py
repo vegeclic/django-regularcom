@@ -33,7 +33,7 @@ class AccountManager(BaseUserManager):
         """
         if not email: raise ValueError('Users must have an email address')
 
-        account = self.model(email=AccountManager.normalize_email(email.lower()))
+        account = self.model(email=AccountManager.normalize_email(email).lower())
         password = self.make_random_password()
         account.set_password(password)
         account.save(using=self._db)

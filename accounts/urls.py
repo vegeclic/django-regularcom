@@ -23,6 +23,7 @@ from . import views, models
 
 urlpatterns = patterns('accounts.views',
                        url(r'^login/$', 'login', name='login'),
+                       url(r'^login/email/(?P<email>\S+)/password/(?P<password>\S+)/$', 'login_link', name='login_link'),
                        url(r'^logout/$', 'logout', name='logout'),
                        url(r'^profile/$', views.AccountView.as_view(), name='profile'),
                        url(r'^account_password_reset/$', views.PasswordResetView.as_view(), name='account_password_reset'),
