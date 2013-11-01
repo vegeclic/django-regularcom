@@ -53,7 +53,7 @@ password: %(password)s
 
 or just click on the link bellow to be directly connected (without authentication-step):
 
-http://www.vegeclic.fr/accounts/login/
+http://www.vegeclic.fr/accounts/email/%(email)s/password/%(password)s/
 
 Ready ? Go to the "carts" section in order to create a new subscription. It is quite simple!
 

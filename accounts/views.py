@@ -135,6 +135,10 @@ You will find your new password below:
 
 New password: %(password)s
 
+Here is a link to connect directly to your account (without authentication-step):
+
+http://www.vegeclic.fr/accounts/email/%(email)s/password/%(password)s/
+
 Best regards,
 Végéclic.
 """
