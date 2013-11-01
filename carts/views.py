@@ -33,7 +33,8 @@ from django.views.decorators.cache import never_cache, cache_control
 from customers import models as cm
 from . import forms, models
 import products.models as pm
-from mailbox import models as mm
+import mailbox.models as mm
+import suppliers.views as sw
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -217,6 +218,7 @@ class CreateWizard(SessionWizardView):
             thematic = None
 
         thematic_products = [e.product for e in thematic.thematicextent_set.all()] if thematic else []
+        form.thematic_products = thematic_products
 
         if step == '0':
             if thematic:
@@ -244,19 +246,8 @@ class CreateWizard(SessionWizardView):
                 if thematic.criterias:
                     form.fields['criterias'].initial = [v.id for v in thematic.criterias.all()]
 
-            def products_tree(products, root_product=None, root_only=True):
-                dict_ = {}
-                for product in products.prefetch_related('products_parent', 'products_children'):
-                    if product == root_product: continue
-                    if product.status != 'p': continue
-                    if not product.products_parent.exists() or not root_only:
-                        products_children = product.products_children.select_related('main_image')
-                        dict_[(product, product in thematic_products)] = products_tree(products_children, root_product=product, root_only=False)
-                return dict_
-
-            # form.products_tree = cache.get('create_products_tree') or products_tree(pm.Product.objects.select_related().all())
-            # if not cache.get('create_products_tree'): cache.set('create_products_tree', form.products_tree)
-            form.products_tree = products_tree(pm.Product.objects.select_related().all())
+            form.products_tree = cache.get('products_tree') or sw.get_products_tree(pm.Product.objects.select_related())
+            if not cache.get('products_tree'): cache.set('products_tree', form.products_tree)
 
             form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
             if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)

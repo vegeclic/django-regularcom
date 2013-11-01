@@ -126,7 +126,7 @@
 
 	  <ul class="media-list">
 	    {% for product, products in wizard.form.products_tree.items %}
-	      {% with product=product.0 selected=product.1 products=products %}
+	      {% with product=product thematic_products=wizard.form.thematic_products products=products %}
 		{% include "carts/products_tree.html" %}
 	      {% endwith %}
 	    {% endfor %}
