@@ -30,7 +30,7 @@ def pro_required(function=None, redirect_field_name=ad.REDIRECT_FIELD_NAME, logi
     to the log-in page if necessary.
     """
     actual_decorator = ad.user_passes_test(
-        lambda u: u.customer.is_pro(),
+        lambda u: u.is_authenticated() and u.customer.is_pro(),
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
