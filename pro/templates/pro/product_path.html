@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<ol class="breadcrumb">
+  {% if not selected_product %}
+    <li class="active">{% trans "All products" %}</li>
+  {% else %}
+    <li><a href="{% if view == "list" %}{% url "pro_catalog_list_page" 1 %}{% else %}{% url "pro_catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a></li>
+  {% endif %}
+
+  {% for product in product_path %}
+    {% if product == selected_product %}
+      <li class="active">{{product}}</li>
+    {% else %}
+      {% if view == "list" %}
+	<li class="active"><a href="{% url "pro_catalog_list_product_id_page" product.id 1 %}">{{product}}</a></li>
+      {% else %}
+	<li class="active"><a href="{% url "pro_catalog_grid_product_id_page" product.id 1 %}">{{product}}</a></li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</ol>

@@ -25,7 +25,8 @@ class CustomerAdmin(ca.MyModelAdmin):
     form = forms.CustomerForm
     add_form = forms.CustomerCreationForm
     fieldsets = []
-    list_display = ('id', 'account', 'main_address', 'date_of_birth', 'date_created',)
+    list_display = ('id', 'account', 'main_address', 'date_of_birth', 'date_created', 'pro',)
+    list_filter = ('pro',)
     search_fields = ('account__email', 'main_address__first_name', 'main_address__last_name', 'main_address__gender', 'main_address__street', 'main_address__postal_code', 'main_address__city', 'main_address__country__name')
     ordering = ('-date_created',)
     filter_horizontal = ()

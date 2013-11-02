@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load static %}
+
+<li class="media">
+  <span class="pull-left">
+    <img class="media-object img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" style="width:35px; height:35px"/>
+    {#<img class="media-object img-thumbnail" style="width:35px; height:35px"/>#}
+  </span>
+  <div class="media-body">
+    <a class="btn {% if selected_product == product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "pro_catalog_list_product_id_page" product.id 1 %}{% else %}{% url "pro_catalog_grid_product_id_page" product.id 1 %}{% endif %}">{{ product }}</a>
+    {#<a class="btn" href="{% if view == "list" %}{% url "pro_catalog_list_product_id_page" product.id 1 %}{% else %}{% url "pro_catalog_grid_product_id_page" product.id 1 %}{% endif %}">{{ product }}</a>#}
+    {% if products %}
+      <ul class="media-list" style="margin-top:10px">
+	{% for sub_product, sub_products in products %}
+	  {% with product=sub_product products=sub_products template_name="pro/products_tree.html" %}
+            {% include template_name %}
+	  {% endwith %}
+	{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</li>

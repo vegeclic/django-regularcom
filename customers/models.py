@@ -31,6 +31,7 @@ class Customer(models.Model):
     billing_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     addresses = generic.GenericRelation(cm.Address)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
+    pro = models.BooleanField(_('pro'), default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
@@ -39,3 +40,5 @@ class Customer(models.Model):
     def get_shipping_address(self): return self.shipping_address if self.shipping_address else self.main_address
 
     def get_billing_address(self): return self.billing_address if self.billing_address else self.main_address
+
+    def is_pro(self): return self.pro

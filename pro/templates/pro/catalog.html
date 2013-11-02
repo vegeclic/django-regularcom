@@ -4,7 +4,7 @@
 {% load cache %}
 
 {% block head %}
-  {#<link rel="stylesheet" href="{% static "suppliers/css/styles.css" %}" />#}
+  {#<link rel="stylesheet" href="{% static "pro/css/styles.css" %}" />#}
   {#<link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />#}
 {% endblock %}
 
@@ -22,12 +22,12 @@
 	      <img class="media-object img-thumbnail" style="width:35px; height:35px"/>
 	    </span>
 	    <div class="media-body">
-	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>
-	      {#<a class="btn" href="{% if view == "list" %}{% url "catalog_list_page" 1 %}{% else %}{% url "catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>#}
+	      <a class="btn {% if not selected_product %}active btn-primary{% endif %}" href="{% if view == "list" %}{% url "pro_catalog_list_page" 1 %}{% else %}{% url "pro_catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>
+	      {#<a class="btn" href="{% if view == "list" %}{% url "pro_catalog_list_page" 1 %}{% else %}{% url "pro_catalog_grid_page" 1 %}{% endif %}">{% trans "All products" %}</a>#}
 	      <ul class="media-list" style="margin-top:10px">
 		{% for product, products in products_tree %}
 		  {% with product=product products=products %}
-		    {% include "suppliers/products_tree.html" %}
+		    {% include "pro/products_tree.html" %}
 		  {% endwith %}
 		{% endfor %}
 	      </ul>
@@ -45,9 +45,9 @@
 	  <li class="active"><a title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
+	    <li><a href="{% url "pro_catalog_grid_product_id_page" selected_product.id object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% else %}
-	    <li><a href="{% url "catalog_grid_page" object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
+	    <li><a href="{% url "pro_catalog_grid_page" object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% endif %}
 	{% endif %}
 
@@ -55,9 +55,9 @@
 	  <li class="active"><a title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
+	    <li><a href="{% url "pro_catalog_list_product_id_page" selected_product.id object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% else %}
-	    <li><a href="{% url "catalog_list_page" object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
+	    <li><a href="{% url "pro_catalog_list_page" object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% endif %}
 	{% endif %}
       </ul>
@@ -69,17 +69,20 @@
 	<p>Les produits sont mis à jour constamment.<p/>
       </div>
 
-      <div class="alert alert-warning">
-	<p>L'ajout de produits spécifiques à votre panier sera <strong>bientôt possible</strong> dans le formulaire de création de panier personnalisé.</p>
-      </div>
-
       {% with product_path=product_path selected_product=selected_product view=view %}
-	{% include "suppliers/product_path.html" %}
+	{% include "pro/product_path.html" %}
       {% endwith %}
 
       {% with object_list=object_list selected_product=selected_product view=view %}
-	{% include "suppliers/pagination.html" %}
+	{% include "pro/pagination.html" %}
       {% endwith %}
+
+      <div class="text-center">
+	<span class="label label-success">Prix HT</span>
+	<span class="label label-info">Prix TTC</span>
+      </div>
+
+      <br/>
 
       <div class="{% if view == "grid" %}row{% endif %}">
 	{% for product in object_list %}
@@ -98,12 +101,20 @@
 		      </div>
 		    </div>
 		  </div>
-		  <div class="panel-footer text-center">
-		    <a class="pull-left tooltip_link" title="Prix TTC">{{price}}</a>
-		    <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
-		      <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{price.currency.symbol}}
-		    </a>
-		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+		  <div class="panel-footer" style="height:52px">
+		    <div class="col-md-4 pull-right">
+		    <div class="row">
+		      <div class="col-md-4">
+			<a class="btn btn-success btn-sm tooltip_link" title="Prix HT"><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></a>
+		      </div>
+		      <div class="col-md-4">
+			<a class="btn btn-info btn-sm tooltip_link" title="Prix TTC">{{price.get_pro_after_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</a>
+		      </div>
+		      <div class="col-md-2">
+			<a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-default btn-sm tooltip_link" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+		      </div>
+		      </div>
+		    </div>
 		  </div>
 		</div>
 	      </div>
@@ -117,11 +128,17 @@
 		    </a>
 		  </div>
 		  <div class="panel-footer text-center">
-		    <a class="pull-left tooltip_link" title="Prix TTC">{{price}}</a>
-		    <a class="btn btn-link btn-xs tooltip_link" title="Prix TTC moyen pour un abonnement d'un an à raison d'un panier toutes les deux semaines.">
-		      <i class="glyphicon glyphicon-star"></i> {{product.degressive_price|floatformat}} {{price.currency.symbol}}
-		    </a>
-		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link btn-xs tooltip_link pull-right" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+		    <div class="row">
+		      <div class="col-md-4">
+			<a class="btn btn-success btn-sm tooltip_link" title="Prix HT"><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></a>
+		      </div>
+		      <div class="col-md-4">
+			<a class="btn btn-info btn-sm tooltip_link" title="Prix TTC">{{price.get_pro_after_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</a>
+		      </div>
+		      <div class="col-md-2">
+			<a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-default btn-sm tooltip_link" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+		      </div>
+		    </div>
 		  </div>
 		</div>
 	      </div>
@@ -154,8 +171,11 @@
 		    <h3>Poids</h3>
 		    <p>{{product.weight}} g</p>
 
-		    <h3>{% trans "Price" %}</h3>
-		    <p>{{price}}</p>
+		    <h3>Prix HT</h3>
+		    <p><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></p>
+
+		    <h3>Prix TTC</h3>
+		    <p>{{price.get_pro_after_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</p>
 
 		    {% with criterias=product.criterias.all %}
 		      {% if criterias %}
@@ -183,11 +203,11 @@
       </div>
 
       {% with object_list=object_list selected_product=selected_product view=view %}
-	{% include "suppliers/pagination.html" %}
+	{% include "pro/pagination.html" %}
       {% endwith %}
 
       {% with product_path=product_path selected_product=selected_product view=view %}
-	{% include "suppliers/product_path.html" %}
+	{% include "pro/product_path.html" %}
       {% endwith %}
 
     </div>
