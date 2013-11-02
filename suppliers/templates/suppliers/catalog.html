@@ -143,11 +143,13 @@
 		    <h3>{% trans "Description" %}</h3>
 		    <p style="text-align:justify">{{product.body}}</p>
 
-		    <h3>{% trans "Ingredients" %}</h3>
-		    <div class= "alert alert-warning">
-		      <p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
-		    </div>
-		    <p style="text-align:justify">{{product.ingredients}}</p>
+		    {% if product.ingredients %}
+		      <h3>{% trans "Ingredients" %}</h3>
+		      <div class= "alert alert-warning">
+			<p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>
+		      </div>
+		      <p style="text-align:justify">{{product.ingredients}}</p>
+		    {% endif %}
 
 		    <h3>Poids</h3>
 		    <p>{{product.weight}} g</p>
@@ -158,14 +160,14 @@
 		    {% with criterias=product.criterias.all %}
 		      {% if criterias %}
 			<h3>{% trans "Criterias" %}</h3>
-			<p>{% for criteria in criterias %}{{criteria.name}}, {% endfor %}</p>
+			<p>{{criterias|safeseq|join:", "}}</p>
                       {% endif %}
 		    {% endwith %}
 
 		    {% with suppliers=product.suppliers.all %}
 		      {% if suppliers %}
 			<h3>{% trans "Suppliers" %}</h3>
-			<p>{% for supplier in suppliers %}{{supplier}}, {% endfor %}</p>
+			<p>{{suppliers|safeseq|join:", "}}</p>
                       {% endif %}
 		    {% endwith %}
 		  </div>
