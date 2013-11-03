@@ -30,7 +30,7 @@ from pprint import pprint
 class MessageAdmin(forms.ModelForm):
     class Meta:
         model = models.Message
-        fields = ('owner', 'participants', 'subject', 'body',)
+        fields = ('owner', 'participants', 'subject', 'body', 'participants_notified', 'participants_read',)
 
     def save(self, commit=True):
         message = super().save(commit=False)

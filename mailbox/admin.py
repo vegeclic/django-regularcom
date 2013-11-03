@@ -28,16 +28,15 @@ import common.models as cm
 
 class ReplyInline(admin.StackedInline):
     model = models.Reply
-    list_display = ('id', 'message', 'participant', 'body', 'date_created',)
-    list_filter = ('message', 'participant',)
     extra = 1
 
 class MessageAdmin(ca.MyModelAdmin):
     form = forms.MessageAdmin
     list_display = ('id', 'owner', 'subject', 'body', 'date_created',)
     list_filter = ('owner',)
+    search_fields = ('participants__main_address__last_name', 'participants__main_address__first_name', 'participants__account__email', 'owner__main_address__last_name', 'owner__main_address__first_name', 'owner__account__email',)
     ordering = ('-date_created',)
-    filter_horizontal = ('participants',)
+    filter_horizontal = ('participants', 'participants_notified', 'participants_read',)
     inlines = [ReplyInline,]
 
 admin.site.register(models.Message, MessageAdmin)
