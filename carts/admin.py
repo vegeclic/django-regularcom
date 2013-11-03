@@ -116,6 +116,7 @@ class ContentAdmin(ca.MyModelAdmin):
     model = models.Content
     # fields = ('extent', 'product', 'quantity',)
     list_display = ('id', 'delivery', 'extent',)
+    search_fields = ('delivery__subscription__customer__account__email', 'delivery__subscription__customer__main_address__first_name', 'delivery__subscription__customer__main_address__last_name')
     inlines = [ContentProductInline,]
 
 admin.site.register(models.Content, ContentAdmin)
@@ -126,6 +127,6 @@ class DeliveryAdmin(ca.MyModelAdmin):
     list_display = ('id', 'subscription', 'date', 'status', 'payed_price',)
     list_filter = ('status', 'subscription__enabled')
     search_fields = ('subscription__id', 'subscription__customer__account__email', 'subscription__customer__main_address__first_name', 'subscription__customer__main_address__last_name')
-    ordering = ('-date',)
+    ordering = ('date',)
 
 admin.site.register(models.Delivery, DeliveryAdmin)
