@@ -45,7 +45,7 @@ class ThematicListView(generic.ListView):
     template_name = 'carts/thematic_list.html'
 
     def get_queryset(self):
-        object_list = cache.get('thematic_list') or self.model.objects.select_related('main_image').all()
+        object_list = cache.get('thematic_list') or self.model.objects.language('fr').select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', object_list)
         return object_list
 
@@ -349,5 +349,121 @@ Végéclic.
         return HttpResponseRedirect('/carts/subscriptions/%d/deliveries/page/1' % subscription.id)
 
     @method_decorator(login_required)
+    @cache_control(private=True)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
+
+CREATEALL_TEMPLATES = {
+    'cart': 'carts/create_all/cart.html',
+    'subscription': 'carts/create_all/subscription.html',
+    'products': 'carts/create_all/products.html',
+    'extents': 'carts/create_all/extents.html',
+    'suppliers': 'carts/create_all/suppliers.html',
+    'preview': 'carts/create_all/preview.html',
+    'authentication': 'carts/create_all/authentication.html',
+    'payment': 'carts/create_all/payment.html',
+    'address': 'carts/create_all/address.html',
+    'comment': 'carts/create_all/comment.html',
+    'resume': 'carts/create_all/resume.html',
+    'validation': 'carts/create_all/validation.html',
+}
+
+class CreateAllCartStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        form.thematic_list = cache.get('thematic_list') or models.Thematic.objects.language('fr').select_related('main_image').order_by('name').all()
+        if not cache.get('thematic_list'): cache.set('thematic_list', form.thematic_list)
+        return form
+
+class CreateAllSubscriptionStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllProductsStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllExtentsStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllSuppliersStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllPreviewStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllAuthenticationStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllPaymentStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllAddressStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllCommentStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllResumeStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+class CreateAllValidationStep:
+    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+        return form
+
+CREATEALL_STEPS = {
+    'cart': CreateAllCartStep(),
+    'subscription': CreateAllSubscriptionStep(),
+    'products': CreateAllProductsStep(),
+    'extents': CreateAllExtentsStep(),
+    'suppliers': CreateAllSuppliersStep(),
+    'preview': CreateAllPreviewStep(),
+    'authentication': CreateAllAuthenticationStep(),
+    'payment': CreateAllPaymentStep(),
+    'address': CreateAllAddressStep(),
+    'comment': CreateAllCommentStep(),
+    'resume': CreateAllResumeStep(),
+    'validation': CreateAllValidationStep(),
+}
+
+class CreateAll(SessionWizardView):
+    def get_template_names(self): return [CREATEALL_TEMPLATES[self.steps.current]]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'cart'
+        context['sub_section'] = 'create_all'
+        return context
+
+    def get_form(self, step=None, data=None, files=None):
+        form = super().get_form(step, data, files)
+        if step is None: step = self.steps.current
+
+        form.current_progress_value = 0
+        if step == 'cart':
+            form.progress_value = 0
+        elif step == 'validation':
+            form.progress_value = 100
+        else:
+            form.progress_value = int(self.steps.step1/self.steps.count*100)
+            form.current_progress_value = int(1/self.steps.count*100)
+        form.inverse_progress_value = 100-(form.progress_value + form.current_progress_value)
+
+        return CREATEALL_STEPS[step](self, form, step, data, files)
+
+    def done(self, form_list, **kwargs):
+        steps = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume', 'validation']
+        form_data = dict(zip(steps, [form.cleaned_data for form in form_list]))
+        print(form_data)
+        raise ValueError('done')
+        # return HttpResponseRedirect('/carts/create/all')
+
+    # @method_decorator(login_required)
     @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)

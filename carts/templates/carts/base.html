@@ -14,6 +14,10 @@
     <div class="col-md-3">
       <div class="well sidebar-nav">
 	<ul class="nav nav-pills nav-stacked">
+	  <li {% if sub_section == "create_all" %}class="active"{% endif %}>
+	    <a href="{% url "create_all" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Create all" %}</a>
+	  </li>
+
 	  <li {% if sub_section == "create_thematic" %}class="active"{% endif %}>
 	    <a href="{% url "create_thematic" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Create a thematic cart" %}</a>
 	  </li>

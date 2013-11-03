@@ -21,6 +21,21 @@ from django.conf.urls.defaults import *
 from django.views.generic import TemplateView, DetailView, ListView
 from . import views, models, forms
 
+CREATEALL_FORMS = [
+    ('cart', forms.CreateAllCartForm),
+    ('subscription', forms.CreateAllSubscriptionForm),
+    ('products', forms.CreateAllProductsForm),
+    ('extents', forms.CreateAllExtentsForm),
+    ('suppliers', forms.CreateAllSuppliersForm),
+    ('preview', forms.CreateAllPreviewForm),
+    ('authentication', forms.CreateAllAuthenticationForm),
+    ('payment', forms.CreateAllPaymentForm),
+    ('address', forms.CreateAllAddressForm),
+    ('comment', forms.CreateAllCommentForm),
+    ('resume', forms.CreateAllResumeForm),
+    ('validation', forms.CreateAllValidationForm),
+]
+
 urlpatterns = patterns('carts.views',
                        url(r'^subscriptions/page/(?P<page>\d+)/$', views.SubscriptionView.as_view(), name='subscriptions'),
                        url(r'^subscriptions/(?P<subscription_id>\d+)/edit/$', views.SubscriptionUpdateView.as_view(), name='subscription_edit'),
@@ -30,4 +45,5 @@ urlpatterns = patterns('carts.views',
                        url(r'^create/custom/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2], condition_dict={'1': views.show_extent_form_condition}), name='create_custom'),
                        url(r'^create/thematic/$', views.ThematicListView.as_view(), name='create_thematic'),
                        url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2], condition_dict={'1': views.show_extent_form_condition}), name='create_thematic_id'),
+                       url(r'^create/all/$', views.CreateAll.as_view(CREATEALL_FORMS), name='create_all'),
 )

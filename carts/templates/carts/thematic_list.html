@@ -4,7 +4,7 @@
 {% load cache %}
 
 {% block sub_content %}
-  {% cache 3600 thematic_list %}
+  {#{% cache 3600 thematic_list %}#}
   <h2>{% trans "Our thematic carts" %}</h2>
 
   <div class="alert alert-info">
@@ -12,14 +12,14 @@
   </div>
 
   <div class="row">
-    {% for thematic in object_list|dictsortreversed:"date_created" %}
+    {% for thematic in object_list %}
     <div class="col-sm-8 col-md-4" style="margin-bottom:40px;">
       <div class="panel panel-default">
 	<div class="panel-heading" style="height:50px"><h4>{{thematic.name}}</h4></div>
 	<div class="panel-body text-center">
 	  <a href="{% url "create_thematic_id" thematic.pk %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" title="{{thematic.name}}" style="width:200px; height:160px"/></a>
 	</div>
-	<div class="panel-body" style="height:180px; vertical-align:top; text-align: justify">
+	<div class="panel-body" style="height:155px; vertical-align:top; text-align: justify">
 	  {{thematic.body}}
 	</div>
 	<div class="panel-footer">
@@ -31,13 +31,14 @@
     </div>
     {% endfor %}
   </div>
-   <div class="alert alert-info">
-     <ul>
-       <li>Abonnements sans engagements, annulables et les modifiables sans justifications.</li>
-       <li>Prix des paniers dégressifs en fonction de la durée d'abonnement et du nombre de panier validé. </li>
-       <li>Les frais de port sont inclus dans le prix des paniers. </li>
-       <li>Les envois de colis se font le mardi et livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.</li>
-     </ul>
+
+  <div class="alert alert-info">
+    <ul>
+      <li>Abonnements sans engagements, annulables et les modifiables sans justifications.</li>
+      <li>Prix des paniers dégressifs en fonction de la durée d'abonnement et du nombre de panier validé. </li>
+      <li>Les frais de port sont inclus dans le prix des paniers. </li>
+      <li>Les envois de colis se font le mardi et livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.</li>
+    </ul>
   </div>
-  {% endcache %}
+  {#{% endcache %}#}
 {% endblock %}
