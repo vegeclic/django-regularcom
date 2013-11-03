@@ -172,24 +172,21 @@ class Command(NoArgsCommand):
 
                 margin_hof = []
 
-                for x in hof:
-                    if margin:
-                        if x.fitness.values[0] <= (total_price*margin):
-                            # logging.debug('%s %s' % (x, x.fitness))
-                            margin_hof.append(x)
-                    # else:
-                    #     logging.debug('%s %s' % (x, x.fitness))
+                for m in np.arange(margin, 1, margin):
+                    logging.debug("trial margin hof with %.2f", m)
+                    trial_margin_hof = []
+                    for x in hof:
+                        if x.fitness.values[0] <= (total_price*m): trial_margin_hof.append(x)
+                    if len(trial_margin_hof) > 0:
+                        margin_hof = trial_margin_hof
+                        break
+
+                assert len(margin_hof) > 0
 
                 sorted = np.sort(np.array([(i,) + x.fitness.values for i, x in enumerate(margin_hof)],
                                           dtype=[('i', int), ('price', float), ('criterias', float),
                                                  ('diversity', float), ('weight', float)]),
                                           order=['criterias', 'diversity', 'weight', 'price'])
-
-                # print(sorted)
-
-                # for i in range(len(hof)):
-                #     logging.debug("hof[%d]: %s" % (i, hof[i]))
-                #     logging.debug("hof[%d].fitness: %s" % (i, hof[i].fitness))
 
                 sol = hof[ sorted[0][0] ]
 
