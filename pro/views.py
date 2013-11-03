@@ -45,7 +45,7 @@ class HomeView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'pro'
         return context
-        
+
 class PartnersView(generic.TemplateView):
     template_name = 'pro/partners.html'
 
@@ -70,6 +70,8 @@ class CatalogGridView(sw.CatalogView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = 'grid'
+        context['section'] = 'pro'
+        context['sub_section'] = 'catalog'
         return context
 
     @method_decorator(pro_required)
@@ -81,6 +83,8 @@ class CatalogListView(sw.CatalogView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = 'list'
+        context['section'] = 'pro'
+        context['sub_section'] = 'catalog'
         return context
 
     @method_decorator(pro_required)

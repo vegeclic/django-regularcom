@@ -106,20 +106,20 @@
 		    <div class="row">
 		      <div class="col-md-8">
 		        <div class="btn btn-sm"><strong>Réf :</strong> {{product.id}}</div>
-		      </div>  
-		    <div class="col-md-4">
-		    <div class="row">
-		      <div class="col-md-4">
-			<a class="btn btn-success btn-sm tooltip_link" title="Prix HT"><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></a>
 		      </div>
 		      <div class="col-md-4">
-			<a class="btn btn-info btn-sm tooltip_link" title="Prix TTC">{{price.get_pro_after_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</a>
+			<div class="row">
+			  <div class="col-md-4">
+			    <a class="btn btn-success btn-sm tooltip_link" title="Prix HT"><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></a>
+			  </div>
+			  <div class="col-md-4">
+			    <a class="btn btn-info btn-sm tooltip_link" title="Prix TTC">{{price.get_pro_after_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</a>
+			  </div>
+			  <div class="col-md-2">
+			    <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-default btn-sm tooltip_link" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
+			  </div>
+			</div>
 		      </div>
-		      <div class="col-md-2">
-			<a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-default btn-sm tooltip_link" title="En savoir plus"><i class="glyphicon glyphicon-info-sign"></i></a>
-		      </div>
-		      </div>
-		    </div>
 		    </div>
 		  </div>
 		</div>
