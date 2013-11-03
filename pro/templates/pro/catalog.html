@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "pro/base.html" %}
 {% load i18n %}
 {% load static %}
 {% load cache %}
@@ -10,7 +10,8 @@
 
 {% block section_title %}{% trans "Catalog" %}{% endblock %}
 
-{% block content %}
+{% block sub_content %}
+  <br/>
   <div class="row">
 
     {#{% cache 3600 catalog_sidebar %}#}
@@ -102,7 +103,11 @@
 		    </div>
 		  </div>
 		  <div class="panel-footer" style="height:52px">
-		    <div class="col-md-4 pull-right">
+		    <div class="row">
+		      <div class="col-md-8">
+		        <div class="btn btn-sm"><strong>Réf :</strong> {{product.id}}</div>
+		      </div>  
+		    <div class="col-md-4">
 		    <div class="row">
 		      <div class="col-md-4">
 			<a class="btn btn-success btn-sm tooltip_link" title="Prix HT"><strong>{{price.get_pro_pre_tax_price|stringformat:".2f"}} {{price.currency.symbol}}</strong></a>
@@ -115,6 +120,7 @@
 		      </div>
 		      </div>
 		    </div>
+		    </div>
 		  </div>
 		</div>
 	      </div>
@@ -126,6 +132,13 @@
 		    <a href="#modal_{{product.id}}" role="button" data-toggle="modal">
 		      <img class="tooltip_link" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="En savoir plus" style="width:170px; height:160px"/>
 		    </a>
+		  </div>
+		  <div class="panel-footer text-center" style="height: 40px">
+		    <div class="row">
+		      <div class="col-md-6 pull-right">
+		        <p><strong>Réf :</strong> {{product.id}}</p>
+		      </div>
+		    </div>
 		  </div>
 		  <div class="panel-footer text-center">
 		    <div class="row">

@@ -5,5 +5,19 @@
 {% block section_title %}{% trans "Pro" %}{% endblock %}
 
 {% block content %}
-  {% block sub_content %}{% endblock %}
+<ul class="nav nav-tabs">
+  <li><a href="{% url "pro_home"%}"><i class="glyphicon glyphicon-chevron-right"></i> Page d'accueil pour professionnels</a></li>
+  <li><a href="{% url "pro_partners"%}"><i class="glyphicon glyphicon-chevron-right"></i> Offre de partenariat pour pro et associations</a></li>
+  <li><a href="{% url "pro_wholesaler"%}"><i class="glyphicon glyphicon-chevron-right"></i> Vente en gros des produits Végéclic</a></li>
+  <li><a href="{% url "pro_catalog"%}"><i class="glyphicon glyphicon-chevron-right"></i> Notre catalogue de produits</a></li>  
+</ul>
+
+{% block sub_content %}{% endblock %}
+
+<div class="alert alert-info">
+  <p style="text-align:justify">Si nos produits vous intéressent ou pour toutes questions, prenez contact avec nous:</p>
+  <br/>
+  <p><span class="glyphicon glyphicon-envelope"></span> geraldine.starke@vegeclic.fr</p>
+  <p><span class="glyphicon glyphicon-earphone"></span> (+33) 06 47 78 24 00</p>
+</div>
 {% endblock %}

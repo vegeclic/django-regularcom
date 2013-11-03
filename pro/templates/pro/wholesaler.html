@@ -1,0 +1,80 @@
+{% extends "pro/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+<h3 class="alert alert-info text-center">Vente en gros des produits Végéclic pour professionnels</h3>
+
+<div class="well">
+  <p style="text-align:justify">Vous êtes <strong>un professionnel</strong> qui se soucie du bien-être animal, de l'environnement et de la santé ? Vous souhaitez élargir votre gamme de produits pour <strong>faire découvrir la cuisine végétale</strong> à vos clients ? Dans ce cas vous êtes au bon endroit. 
+  </p>
+  <p style="text-align:justify">Végéclic se propose de faire <strong>l'intermédiaire entre vous et nos divers fournisseurs</strong>. Vous aurez ainsi accès à une <strong>interface facile à utiliser</strong> et d'un <strong>catalogue de produits adapté</strong>. Vous profiterez de <strong>notre experience</strong> dans l'alimentation végétale ainsi que de nos contacts. <strong>Simple et rapide</strong>, vous n'aurez pas de recherche à faire ou à contacter des dizaines d'entreprises afin de trouver les produits qui vous conviennent.
+  </p>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="well" style="height:200px">
+      <h4>Quels sont les conditions ?</h4>
+      <ul>
+        <li>Pas de minimum de commande</li>
+        <li>Prix catalogue hors frais de port</li>
+        <li>Délais de livrason de 5 à 10 jours</li>
+        <li>Première commande à payer en avance</li>
+        <li>Ensuite délai de 15 jours</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="well" style="height:200px">
+      <h4>Quels sont les frais de port ?</h4>
+      <br/>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h4 class="panel-title text-center"> De 0 à 60 kg</h4>
+            </div>
+            <div class="panel-body text-center">20 € par colis de 30 kg
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title text-center"> À patir de 60 kg</h4>
+            </div>
+            <div class="panel-body text-center">15 € par colis de 30 kg
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> 
+
+<div class="well"> 
+  <h4> Comment procéder ? </h4>
+  <ol>
+    {%comment%}
+    <li>Si vous souhaiter vous procurer des produits chez nous, il vous faut nous <strong>faire une demande de « compte pro » par mail ou téléphone</strong> en indiquant votre adresse e-mail (voir ci-dessous).</li>
+    <li>Vous recevrez ensuite un mail vous indiquant votre mot de passe et un lien de connexion direct <strong>pour accéder à votre compte</strong></li>
+    {%endcomment%}
+    <li>Vous pouvez visiter notre <strong>catalogue de produits</strong> en <a href="{% url "pro_catalog" %}">cliquant ici</a></li>
+    <li>Ensuite contactez nous par mail en nous indiquant <strong>les données relatives à votre entreprise:</strong>
+      <ul>
+        <li>Nom et prénom du gérant</li>
+        <li>Nom et prénom du contact pour les commandes et les paiements</li>
+        <li>Nom de la société</li>
+        <li>Numéro de siret</li>
+        <li>Numéro de TVA intracommunautaire</li>
+        <li>Extrait K-bis</li>
+      </ul>
+    </li>
+    <li>Puis vous pourrez <strong>passer votre commande</strong> dans un second mail en indiquant la <strong>réference des produits</strong> ainsi que leurs <strong>quantités</strong>. </li>
+    <li>Votre commande sera expédiée au bout de <strong>5 à 10 jours</strong> et vous recevrez un mail vous indiquant le lien de suivi de votre colis</li>
+  </ol>
+</div>
+{% endblock %}

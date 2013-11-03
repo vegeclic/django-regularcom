@@ -23,6 +23,8 @@ from . import views
 
 urlpatterns = patterns('pro.views',
                        url(r'^$', views.HomeView.as_view(), name='pro_home'),
+                       url(r'^wholesaler/$', views.WholesalerView.as_view(), name='pro_wholesaler'),
+                       url(r'^partners/$', views.PartnersView.as_view(), name='pro_partners'),
 
                        url(r'^catalog/$', views.CatalogGridView.as_view(), name='pro_catalog'),
                        url(r'^catalog/grid/$', views.CatalogGridView.as_view(), name='pro_catalog_grid'),

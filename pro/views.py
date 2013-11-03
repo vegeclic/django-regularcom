@@ -45,6 +45,24 @@ class HomeView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'pro'
         return context
+        
+class PartnersView(generic.TemplateView):
+    template_name = 'pro/partners.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'pro'
+        context['sub_section'] = 'partners'
+        return context
+
+class WholesalerView(generic.TemplateView):
+    template_name = 'pro/wholesaler.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'pro'
+        context['sub_section'] = 'wholesaler'
+        return context
 
 class CatalogGridView(sw.CatalogView):
     template_name = "pro/catalog.html"
