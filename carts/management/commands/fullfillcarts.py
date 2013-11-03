@@ -191,9 +191,6 @@ class Command(NoArgsCommand):
                 #     logging.debug("hof[%d]: %s" % (i, hof[i]))
                 #     logging.debug("hof[%d].fitness: %s" % (i, hof[i].fitness))
 
-                logging.debug("create content object")
-
-                content = delivery.content_set.create(extent=extent) if not debug else None
                 sol = hof[ sorted[0][0] ]
 
                 logging.debug("sol: %s" % sol)
@@ -202,6 +199,9 @@ class Command(NoArgsCommand):
                 assert len(sol) == nbr_items
 
                 logging.debug("start fullfilling the delivery cart content")
+
+                logging.debug("create content object")
+                content = delivery.content_set.create(extent=extent) if not debug else None
 
                 for i in range(nbr_items):
                     if sol[i]:
