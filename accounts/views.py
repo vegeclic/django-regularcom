@@ -30,6 +30,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.contrib import messages
+from django.core.cache import cache
+from django.views.decorators.cache import never_cache, cache_control
 from common import views as cv
 from . import forms, models
 import mailbox.models as mm
@@ -46,9 +48,11 @@ class AccountView(generic.DetailView):
         return context
 
     @method_decorator(login_required)
+    @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+@cache_control(private=True)
 def signup(request):
     if request.method == "POST":
         signup_form = forms.AccountCreationForm(request.POST)
@@ -63,6 +67,7 @@ def signup(request):
 
     return render(request, 'registration/login.html', {'section': 'signup', 'signup_form': forms.AccountCreationForm()})
 
+@cache_control(private=True)
 def login(request):
     response = auth_views_login(request, extra_context={'section': 'login'}, authentication_form=forms.AccountAuthenticationForm)
     if request.method == 'POST':
@@ -74,6 +79,7 @@ def login(request):
         messages.success(request, _("You're logged in."))
     return response
 
+@cache_control(private=True)
 def login_link(request, **kwargs):
     email = kwargs.get('email')
     password = kwargs.get('password')
@@ -103,6 +109,7 @@ def login_link(request, **kwargs):
 
     return HttpResponseRedirect(redirect_to)
 
+@cache_control(private=True)
 def logout(request):
     auth_logout(request)
     messages.success(request, _("You're logged out."))
@@ -147,3 +154,7 @@ Végéclic.
             messages.success(self.request, _('The password has been regenerated. You will receive an email with the new password.'))
 
         return super().form_valid(form)
+
+    @cache_control(private=True)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
