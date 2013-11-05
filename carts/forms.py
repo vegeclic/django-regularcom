@@ -142,7 +142,9 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
             option_value = forms.widgets.force_text(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = forms.widgets.force_text(option_label)
-            output.append(forms.widgets.format_html('<label class="btn btn-default btn-lg"{0}>{1} {2}</label>',
+            output.append(forms.widgets.format_html('<label class="btn btn-default btn-lg {0} {1}"{2}>{3} {4}</label>',
+                                                    'active' if cb.check_test(option_value) else '',
+                                                    'disabled' if 'disabled' in attrs else '',
                                                     label_for, rendered_cb, option_label))
         output.append('</div>')
         return forms.widgets.mark_safe('\n'.join(output))
@@ -178,7 +180,10 @@ class MyRadioInput(forms.widgets.SubWidget):
         else:
             label_for = ''
         choice_label = forms.widgets.force_text(self.choice_label)
-        return forms.widgets.format_html('<label class="btn btn-default btn-lg" {0}>{1} {2}</label>', label_for, self.tag(), choice_label)
+        return forms.widgets.format_html('<label class="btn btn-default btn-lg {0} {1}" {2}>{3} {4}</label>',
+                                         'active' if self.is_checked() else '',
+                                         'disabled' if 'disabled' in attrs else '',
+                                         label_for, self.tag(), choice_label)
 
     def is_checked(self):
         return self.value == self.choice_value
@@ -277,8 +282,47 @@ class CreateAllCartForm(forms.Form):
         super().__init__(*args, **kwargs)
 
 class CreateAllSubscriptionForm(forms.Form):
+    size = forms.ModelChoiceField(queryset=models.Size.objects.select_related().order_by('weight'), initial=2,
+                                  help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
+                                  label=_('Size'))
+    frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
+                                  help_text=_('How often would you like to receive your cart ?'),
+                                  label=_('Frequency'))
+    duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=DURATION_DEFAULT,
+                                 help_text=_('How long would you like to receive your cart ?'),
+                                 label=_('Duration'))
+    start = forms.ChoiceField(help_text=_('When would you like to start your subscription ?'),
+                              label=_('Beginning of your subscription'))
+    criterias = forms.ModelMultipleChoiceField(widget=MyCheckboxSelectMultiple,
+                                               queryset=cm.Criteria.objects.select_related().filter(enabled=True).order_by('id'),
+                                               required=False, label=_('Criterias'),
+                                               help_text=_('Select as much criterias as you want in your cart.'))
+    carrier = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer),
+                                     queryset=models.Carrier.objects.select_related().order_by('id'), initial=3,
+                                     help_text=_('Which carrier would you like to use for your cart ? (delivery fees included)'),
+                                     label=_('Carrier'))
+
+    customized = forms.BooleanField(label=_('Customized'), required=False, initial=True)
+    receive_only_once = forms.BooleanField(label=_('Receive only once'), required=False, initial=False)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        cw = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
+        start = self.fields['start']
+        start_choices = [str(w + cw.week - 1) for w in Week.weeks_of_year(cw.year)]
+        start_date_choices = ['%s (%s %s)' % ((w + cw.week - 1).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (w + cw.week - 1).week) for w in Week.weeks_of_year(cw.year)]
+        start.choices = zip(start_choices, start_date_choices)
+        start.initial = cw
+
+        for field in ['size', 'frequency', 'duration', 'start']:
+            self.fields[field].widget.attrs['class'] = 'slidebar-select'
+
+        for field in ['criterias', 'receive_only_once']:
+            self.fields[field].widget.attrs['class'] = 'checkbox-select'
+
+        for field in ['carrier']:
+            self.fields[field].widget.attrs['class'] = 'radio-select'
 
 class CreateAllProductsForm(forms.Form):
     def __init__(self, *args, **kwargs):

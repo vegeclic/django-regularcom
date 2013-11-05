@@ -92,7 +92,7 @@ class SubscriptionUpdateView(generic.UpdateView):
     form_class = forms.SubscriptionUpdateForm
     model = models.Subscription
     template_name = 'carts/subscription_edit.html'
-    success_url = '/carts/subscriptions'
+    success_url = '/carts/subscriptions/page/1'
 
     def get_object(self):
         subscription_id = self.kwargs.get('subscription_id')
@@ -373,48 +373,97 @@ class CreateAllCartStep:
         if not cache.get('thematic_list'): cache.set('thematic_list', form.thematic_list)
         return form
 
+def get_thematic(wizard):
+    cart_data = wizard.get_cleaned_data_for_step('cart') or {}
+    try:
+        thematic = models.Thematic.objects.select_related().get(id=cart_data.get('choice', None))
+    except models.Thematic.DoesNotExist:
+        thematic = None
+    except ValueError:
+        thematic = None
+    return thematic
+
 class CreateAllSubscriptionStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
+        cart_data = wizard.get_cleaned_data_for_step('cart') or {}
+
+        form.thematic = get_thematic(wizard)
+
+        if form.thematic:
+            for k, f in [('size', form.thematic.size),
+                         ('carrier', form.thematic.carrier),
+                         ('frequency', form.thematic.frequency),
+                         ('start', form.thematic.start_duration)]:
+                if f: form.fields[k].initial = f
+
+            if form.thematic.end_duration:
+                delta = relativedelta(Week.fromstring(form.thematic.end_duration).day(1),
+                                      Week.fromstring(form.thematic.start_duration).day(1))
+                form.fields['duration'].initial = delta.months
+
+            for field, locked in [('size', form.thematic.locked_size),
+                                  ('carrier', form.thematic.locked_carrier),
+                                  ('receive_only_once', form.thematic.locked_receive_only_once),
+                                  ('frequency', form.thematic.locked_frequency),
+                                  ('start', form.thematic.locked_start),
+                                  ('duration', form.thematic.locked_duration),
+                                  ('criterias', form.thematic.locked_criterias)]:
+                if locked:
+                    form.fields[field].widget.attrs['class'] = form.fields[field].widget.attrs.get('class', '') + ' disabled'
+
+            if form.thematic.criterias:
+                form.fields['criterias'].initial = [v.id for v in form.thematic.criterias.all()]
+
+            form.fields['receive_only_once'].initial = form.thematic.receive_only_once
+            form.fields['customized'].initial = False
+
+        form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
+        if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)
+
+        form.sizes = cache.get('create_sizes') or models.Size.objects.select_related().all()
+        if not cache.get('create_sizes'): cache.set('create_sizes', form.sizes)
+
         return form
 
 class CreateAllProductsStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
+        form.thematic = get_thematic(wizard)
         return form
 
 class CreateAllExtentsStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllSuppliersStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllPreviewStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllAuthenticationStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllPaymentStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllAddressStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllCommentStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllResumeStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 class CreateAllValidationStep:
-    def __call__(self, view=None, form=None, step=None, data=None, files=None):
+    def __call__(self, wizard=None, form=None, step=None, data=None, files=None):
         return form
 
 CREATEALL_STEPS = {
@@ -432,6 +481,12 @@ CREATEALL_STEPS = {
     'validation': CreateAllValidationStep(),
 }
 
+CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume', 'validation',]
+
+def show_create_all_products_form_condition(wizard):
+    subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
+    return subscription_data.get('customized', False)
+
 class CreateAll(SessionWizardView):
     def get_template_names(self): return [CREATEALL_TEMPLATES[self.steps.current]]
 
@@ -445,21 +500,28 @@ class CreateAll(SessionWizardView):
         form = super().get_form(step, data, files)
         if step is None: step = self.steps.current
 
+        step_idx = CREATEALL_STEPS_ORDER.index(step)
+        count = len(CREATEALL_STEPS_ORDER)
+
+        form.progress_value = 0
         form.current_progress_value = 0
         if step == 'cart':
             form.progress_value = 0
         elif step == 'validation':
             form.progress_value = 100
         else:
-            form.progress_value = int(self.steps.step1/self.steps.count*100)
-            form.current_progress_value = int(1/self.steps.count*100)
+            form.progress_value = int(step_idx/count*100)
+            form.current_progress_value = int(1/count*100)
         form.inverse_progress_value = 100-(form.progress_value + form.current_progress_value)
 
         return CREATEALL_STEPS[step](self, form, step, data, files)
 
+    def process_step(self, form):
+        print(self.get_all_cleaned_data())
+        return super().process_step(form)
+
     def done(self, form_list, **kwargs):
-        steps = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume', 'validation']
-        form_data = dict(zip(steps, [form.cleaned_data for form in form_list]))
+        form_data = dict(zip(CREATEALL_STEPS_ORDER, [form.cleaned_data for form in form_list]))
         print(form_data)
         raise ValueError('done')
         # return HttpResponseRedirect('/carts/create/all')

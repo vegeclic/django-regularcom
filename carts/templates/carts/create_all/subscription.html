@@ -3,4 +3,212 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="media alert alert-info">
+    {% if wizard.form.thematic %}
+      <div class="pull-left">
+	<img class="img-thumbnail" src="{% get_media_prefix %}{{wizard.form.thematic.main_image}}" alt="{{wizard.form.thematic.name}}" title="{{wizard.form.thematic.name}}" style="width:200px; height:160px; display: block;"/>
+      </div>
+    {% endif %}
+
+    <div class="body">
+      {% if wizard.form.thematic %}
+	{% blocktrans with name=wizard.form.thematic.name %}
+	  <h4>Ready to create your new {{name}} thematic cart ?</h4>
+	{% endblocktrans %}
+      {% else %}
+	{% blocktrans %}
+	  <h4>Ready to create your new custom cart ?</h4>
+	{% endblocktrans %}
+      {% endif %}
+
+      {% blocktrans %}
+	<p>Be free to choice below the size of your cart as well as its frequency and duration. You can even push the beginning week of your subscription to your convenience.</p>
+      {% endblocktrans %}
+    </div>
+  </div>
+
+  {% with tname="carts/one_slide.html" %}
+    {% with id="subscription-size" field=wizard.form.size style="success" %}{% include tname %}{% endwith %}
+  {% endwith %}
+
+  <div class="form-group">
+    <div data-toggle="buttons">
+      <label id="expend_duration" class="btn btn-lg btn-block tooltip_link {% if wizard.form.receive_only_once.value %}btn-success active{% else %}btn-danger{% endif %}" title="{% trans "Click here if you want to receive your cart only once" %}" data-toggle="collapse" data-target="#display_duration">
+	<i class="glyphicon glyphicon-{% if wizard.form.receive_only_once.value %}check{% else %}unchecked{% endif %}"></i>
+	{{ wizard.form.receive_only_once }} {{ wizard.form.receive_only_once.label }}
+      </label>
+    </div>
+  </div>
+
+  {% with tname="carts/one_slide.html" %}
+    <div id="display_duration" class="collapse {% if wizard.form.receive_only_once.value %}out{% else %}in{% endif %}">
+      {% with id="subscription-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
+      {% with id="subscription-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
+    </div>
+    {% with id="subscription-start" field=wizard.form.start style="danger" %}{% include tname %}{% endwith %}
+  {% endwith %}
+
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4>{{ wizard.form.criterias.label }}</h4></div>
+    <div class="panel-body">{{ wizard.form.criterias }}</div>
+    <div class="panel-footer">{{ wizard.form.criterias.help_text }}</div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ wizard.form.carrier.label }}</h4></div>
+    <div class="panel-body">
+      {{ wizard.form.carrier }}
+      <br/>
+      <br/>
+      <div class="well">
+	{% for carrier in wizard.form.carriers %}
+	  <div class="carrier_detail" id="carrier_{{carrier.id}}">
+	    <h3>{{carrier.name}}</h3>
+	    <p>{{carrier.body}}</p>
+	  </div>
+	{% endfor %}
+      </div>
+
+      <div class="well">
+	<p>Ci-dessous la proportion des frais de port inclus dans le prix de votre panier pour ce moyen de livraison :</p>
+
+	<div id="carrier-progress" class="progress progress-striped">
+	  <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+	  <div class="progress-bar progress-bar-warning" style="width: 0%"></div>
+	</div>
+
+	<span class="label label-success">Produits</span>
+	<span class="label label-warning">Frais de port</span>
+      </div>
+    </div>
+    {% if wizard.form.carrier.help_text %}
+      <div class="panel-footer">{{ wizard.form.carrier.help_text }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    <div data-toggle="buttons">
+      <label id="customize-button" class="btn btn-lg {% if not wizard.form.customized.value %}btn-danger{% else %}btn-success active{% endif %} btn-block tooltip_link" title="{% trans "customize your cart content" %}">
+	<i class="glyphicon glyphicon-{% if not wizard.form.customized.value %}unchecked{% else %}check{% endif %}"></i>
+	{{ wizard.form.customized }} {{ wizard.form.customized.label }}
+      </label>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    Vous pouvez personnaliser votre abonnement en choisissant des familles ou sous-familles de produits que vous souhaitez retrouver dans vos paniers.
+  </div>
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('#customize-button').click(function() {
+	    var i = $(this).find('i');
+	    if ( $(this).hasClass('btn-success') ) {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+		i.removeClass('glyphicon-check');
+		i.addClass('glyphicon-unchecked');
+	    } else {
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
+		i.removeClass('glyphicon-unchecked');
+		i.addClass('glyphicon-check');
+	    }
+	});
+
+	$('#expend_duration').click(function() {
+	    var i = $(this).find('i');
+	    if ( $(this).hasClass('btn-danger') ) {
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
+		i.removeClass('glyphicon-unchecked');
+		i.addClass('glyphicon-check');
+	    } else {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+		i.removeClass('glyphicon-check');
+		i.addClass('glyphicon-unchecked');
+	    }
+	});
+
+	$('.carrier_detail').hide();
+
+	var carriers = [
+	    {% for carrier in wizard.form.carriers|dictsort:'id' %}
+	    [{% for level in carrier.carrierlevel_set.all %}[{{level.weight|stringformat:"f"}}, {{level.price|stringformat:"f"}}], {% endfor %}],
+	    {% endfor %}
+	];
+
+	var carriers_weight_min = [{% for carrier in wizard.form.carriers|dictsort:'id' %}{{carrier.weight_min|stringformat:"f"}}, {% endfor %}];
+	var sizes = [{% for size in wizard.form.sizes|dictsort:'weight' %}[{{size.weight|stringformat:"f"}}, {{size.default_price.price|stringformat:"f"}}], {% endfor %}];
+
+	function compute_progress_bar(id) {
+	    $('.radio-select').each(function() {
+		var id = $(this).val();
+		var weight_min = carriers_weight_min[id-1];
+		var size = sizes[$('#id_subscription-size')[0].selectedIndex];
+		var progress_bar = $('#carrier-progress .progress-bar');
+
+		if ( size[0] < weight_min ) {
+		    progress_bar[0].style.width = "0%";
+		    progress_bar[1].style.width = "100%";
+		    $(this).addClass('disabled');
+		} else {
+		    $(this).removeClass('disabled');
+		}
+
+		if ($(this).hasClass('disabled')) {
+		    $(this).parent().addClass('disabled');
+		} else {
+		    $(this).parent().removeClass('disabled');
+		}
+	    });
+
+	    var div = $('#carrier_' + id)
+	    var carrier = carriers[id-1];
+	    var weight_min = carriers_weight_min[id-1];
+	    var size = sizes[$('#id_subscription-size')[0].selectedIndex];
+	    var progress_bar = $('#carrier-progress .progress-bar');
+
+	    if ( size[0] < weight_min ) {
+		progress_bar[0].style.width = "0%";
+		progress_bar[1].style.width = "100%";
+	    } else if ( carrier.length ) {
+		for (var i = 0; i < carrier.length; i++) {
+		    if (carrier[i][0] >= size[0]) break;
+		};
+
+		var extent = parseInt(carrier[i][1]/size[1]*100)+1
+
+		progress_bar[0].style.width = (100-extent) + "%";
+		progress_bar[1].style.width = extent + "%";
+	    } else {
+		progress_bar[0].style.width = "100%";
+		progress_bar[1].style.width = "0%";
+	    }
+	}
+
+	$('.radio-select').change(function() {
+	    var id = $(this).val();
+	    $('.carrier_detail').hide();
+	    var div = $('#carrier_' + id)
+	    div.show();
+	    compute_progress_bar(id);
+	});
+
+	$('.radio-select').each(function() {
+	    if (!($(this)[0].checked)) return;
+	    compute_progress_bar($(this).val());
+	});
+
+	$('#id_subscription-size').change(function(){
+	    $('.radio-select').each(function() {
+		if (!($(this)[0].checked)) return;
+		compute_progress_bar($(this).val());
+	    });
+	});
+    });
+  </script>
 {% endblock %}

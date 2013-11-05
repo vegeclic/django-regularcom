@@ -3,19 +3,42 @@
 {% load static %}
 
 {% block sub_content %}
-  <div class="btn-group" data-toggle="buttons">
-    {% for thematic in wizard.form.thematic_list %}
-      <label class="choice btn btn-default btn-lg tooltip_link" title="{{thematic.body|truncatewords:20}}">
-	<input type="radio" name="cart-choice" value="{{thematic.id}}"/>
-	<img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" style="width:215px"/>
-      </label>
-    {% endfor %}
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
 
-    <label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
-    <label class="choice btn btn-default btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
-      <input type="radio" name="cart-choice" value="perso"/> <strong>Personnaliser</strong>
-    </label>
+      {% comment %}
+      {% for field in form %}
+	<div class="well">
+	  {% if field.errors %}
+	    <div class="errorlist">
+	      {% for error in field.errors %}
+		<div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
+	      {% endfor %}
+	    </div>
+	  {% endif %}
+	</div>
+      {% endfor %}
+      {% endcomment %}
+
+      <div class="btn-group" data-toggle="buttons">
+	{% for thematic in wizard.form.thematic_list %}
+	  <label class="choice btn btn-default btn-lg tooltip_link" title="{{thematic.body|truncatewords:20}}">
+	    <input type="radio" name="cart-choice" value="{{thematic.id}}"/>
+	    <img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" style="width:215px"/>
+	  </label>
+	{% endfor %}
+
+	<label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
+	<label class="choice btn btn-default btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
+	  <input type="radio" name="cart-choice" value="perso"/> <strong>Personnaliser</strong>
+	</label>
+      </div>
+
+    </div>
+    <div class="col-md-2"></div>
   </div>
+
 {% endblock %}
 
 {% block sub_foot %}
