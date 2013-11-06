@@ -325,12 +325,12 @@ class Command(NoArgsCommand):
             if outofstock_area:
                 if product_obj.status != 'o':
                     logger_article.debug('out of stock for this article means the status will be changed to out of stock.')
-                    updated_data.append('product status changed from %s to outofstock' % product_obj.status)
+                    updated_data.append('product %d: status changed from %s to outofstock' % (product.id, product_obj.get_status_display()))
                     product_obj.status = 'o'
             else:
                 if not product_obj.status or product_obj.status in ['o', 'w']:
                     logger_article.debug('article available means the status will be changed to published since it was known as out of stock.')
-                    updated_data.append('product status changed from %s to published' % product_obj.status)
+                    updated_data.append('product %d: status changed from %s to published' % (product.id, product_obj.get_status_display()))
                     product_obj.status = 'p'
 
             logger_article.debug('%s,%s', article_title, article_price)
