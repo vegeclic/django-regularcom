@@ -73,8 +73,6 @@ def download(url, slug, data=None, filename=None, media_root=settings.MEDIA_ROOT
 class Command(NoArgsCommand):
     help = 'Get the AVE supplier products and save it into database'
 
-    debug = True
-
     def handle_noargs(self, **options):
         translation.activate('fr')
 
