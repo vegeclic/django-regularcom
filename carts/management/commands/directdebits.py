@@ -25,8 +25,8 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
 from ... import models, views
-from mailbox import models as mm
-from customers import models as cm
+import mailbox.models as mm
+import customers.models as cm
 import logging, logging.config
 
 logging.config.fileConfig('carts/management/commands/logging.conf')
