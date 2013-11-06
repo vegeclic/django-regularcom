@@ -70,6 +70,8 @@ class Command(NoArgsCommand):
 
         logging.debug('Command in progress')
 
+        debug = False
+
         try:
             supplier_obj = models.Supplier.objects.get(slug=slugify(settings.AVE_SUPPLIER_NAME))
             logging.debug('supplier object exists in %s', supplier_obj)
@@ -84,7 +86,7 @@ class Command(NoArgsCommand):
 
         withdrawn_products = []
 
-        for product in models.Product.objects.language('de').all():
+        for product in models.Product.objects.language('de').exclude(status__in=['d','w']).all():
             price = product.price_set.get(supplier=supplier_obj)
             ref = price.reference
             url = price.supplier_product_url
@@ -110,12 +112,13 @@ class Command(NoArgsCommand):
 
             logger_db.debug('changed the status of product %d to withdrawn' % product.id)
 
-            product.status = 'w'
-            product.save()
+            if not debug:
+                product.status = 'w'
+                product.save()
 
             withdrawn_products.append("%d: %s" % (product.id, product.name))
 
-        if withdrawn_products:
+        if not debug and withdrawn_products:
             admin = am.Account.objects.get(email=settings.EMAIL_ADMIN)
             mm.Message.objects.create_message(participants=[admin.customer], subject=_("Produits retirés du catalogue"), body=_(
 """Bonjour %(name)s,
