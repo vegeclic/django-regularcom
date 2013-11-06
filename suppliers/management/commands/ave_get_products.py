@@ -125,10 +125,10 @@ class Command(NoArgsCommand):
             exist = False
             try:
                 price_obj = sm.Price.objects.get(reference=ref)
-                logger_db.debug('price object already exists in %s', price_obj)
             except sm.Price.DoesNotExist:
                 logger_db.debug('price object doesnot exists yet')
             else:
+                logger_db.debug('price object already exists in %s', price_obj)
                 exist = True
 
             logger_article.debug('parsing of brief information from the article %s', ref)
@@ -350,7 +350,7 @@ class Command(NoArgsCommand):
                 logger_db.debug('price object exists now in %s', price_obj)
             else:
                 if price_obj.purchase_price != float_price:
-                    logger_db.debug('new purchase_price updated')
+                    logger_db.debug('new purchase_price updated for product %d. Old: %.2f, New: %.2f' % (product_obj.id, price_obj.purchase_price, float_price))
                     updated_data.append('product %d: purchase_price updated. Old: %.2f, New: %.2f' % (product_obj.id, price_obj.purchase_price, float_price))
                     price_obj.purchase_price = float_price
                     price_obj.save()
