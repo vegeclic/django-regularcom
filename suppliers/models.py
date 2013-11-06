@@ -63,6 +63,7 @@ class Product(TranslatableModel):
     STATUS_CHOICES = (
         ('d', _('Draft')),
         ('p', _('Published')),
+        ('o', _('Out of stock')),
         ('e', _('Expired')),
         ('w', _('Withdrawn')),
     )
