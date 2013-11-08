@@ -37,7 +37,7 @@ class Category(TranslatableModel):
 
     translations = TranslatedFields(
         name = models.CharField(_('name'), max_length=100, unique=True),
-        slug = models.SlugField(_('slug'), unique=True),
+        slug = models.SlugField(_('slug'), null=True, blank=True),
     )
     categories = models.ManyToManyField('self', null=True, blank=True, related_name='+', verbose_name=_('categories'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
@@ -49,7 +49,7 @@ class Category(TranslatableModel):
 class Product(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(_('name'), max_length=100, unique=True),
-        slug = models.SlugField(_('slug'), unique=True),
+        slug = models.SlugField(_('slug'), null=True, blank=True),
         body = models.TextField(_('body'), blank=True),
     )
     STATUS_CHOICES = (
