@@ -8,24 +8,10 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'CategoryTranslation.new_slug'
-        db.delete_column('products_category_translation', 'new_slug')
-
-        # Adding field 'CategoryTranslation.slug'
-        db.add_column('products_category_translation', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(blank=True, null=True, max_length=50),
-                      keep_default=False)
-
+        db.rename_column('products_category_translation', 'new_slug', 'slug')
 
     def backwards(self, orm):
-        # Adding field 'CategoryTranslation.new_slug'
-        db.add_column('products_category_translation', 'new_slug',
-                      self.gf('django.db.models.fields.SlugField')(blank=True, max_length=50, null=True),
-                      keep_default=False)
-
-        # Deleting field 'CategoryTranslation.slug'
-        db.delete_column('products_category_translation', 'slug')
-
+        db.rename_column('products_category_translation', 'slug', 'new_slug')
 
     models = {
         'accounts.account': {

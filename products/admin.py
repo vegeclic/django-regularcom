@@ -32,7 +32,7 @@ class CategoryAdmin(TranslatableAdmin):
     # add_form = forms.CategoryCreationForm
     list_display = ('id', 'all_translations', 'name_',)
     fields = ('name', 'slug', 'categories', 'main_image', 'authors',)
-    search_fields = ('slug',)
+    # search_fields = ('slug',)
     # prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.ImageInline, TaggedItemInline,]
 

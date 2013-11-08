@@ -15,6 +15,7 @@ class Migration(DataMigration):
         for c in orm.CategoryTranslation.objects.all():
             c.new_slug = c.master.slug
             c.save()
+            print(c.new_slug, c.master.slug)
 
     def backwards(self, orm):
         "Write your backwards methods here."
