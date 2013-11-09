@@ -51,4 +51,4 @@ initial_data.json
 
 # in addition
 *.db
-*.png
+#*.png
