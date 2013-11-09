@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-01 20:59+0100\n"
+"POT-Creation-Date: 2013-11-09 23:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,46 +90,46 @@ msgstr "adresse email"
 msgid "account"
 msgstr "compte"
 
-#: accounts/models.py:126 carts/models.py:54 carts/models.py:93
-#: carts/models.py:123 common/models.py:78 common/models.py:86
-#: common/models.py:98 products/models.py:39 products/models.py:51
-#: suppliers/models.py:30 suppliers/models.py:57 suppliers/models.py:90
-#: suppliers/models.py:140
+#: accounts/models.py:126 blog/models.py:40 carts/models.py:54
+#: carts/models.py:93 carts/models.py:123 common/models.py:78
+#: common/models.py:86 common/models.py:98 products/models.py:39
+#: products/models.py:51 suppliers/models.py:30 suppliers/models.py:57
+#: suppliers/models.py:91 suppliers/models.py:151
 msgid "name"
 msgstr "nom"
 
-#: accounts/models.py:127 carts/models.py:84 carts/models.py:97
-#: products/models.py:43 products/models.py:65 suppliers/models.py:35
-#: suppliers/models.py:74
+#: accounts/models.py:127 blog/models.py:57 carts/models.py:84
+#: carts/models.py:97 products/models.py:43 products/models.py:65
+#: suppliers/models.py:35 suppliers/models.py:75
 msgid "main image"
 msgstr "image principale"
 
-#: accounts/views.py:58
+#: accounts/views.py:62
 msgid "Your account has been successfully created."
 msgstr ""
 "Votre compte a été crée avec succès. Vous allez recevoir d'ici peu un mail "
 "contenant votre mot de passe."
 
-#: accounts/views.py:74 accounts/views.py:97
+#: accounts/views.py:79 accounts/views.py:103
 msgid "You're logged in."
 msgstr "Vous êtes connecté."
 
-#: accounts/views.py:101
+#: accounts/views.py:107
 msgid ""
 "Vos identifiants de connexion sont incorrects. Si vous n'êtes pas encore "
 "inscrit, nous vous invitons à vous inscrire en cliquant sur « Inscription » "
 "dans le cas contraire, cliquez sur le lien « J'ai oublié mon mot de passe »."
 msgstr ""
 
-#: accounts/views.py:108
+#: accounts/views.py:115
 msgid "You're logged out."
 msgstr "Vous êtes déconnecté."
 
-#: accounts/views.py:129 customers/views.py:196
+#: accounts/views.py:136 customers/views.py:196
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: accounts/views.py:130
+#: accounts/views.py:137
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -158,14 +158,15 @@ msgstr ""
 "\n"
 "Nouveau mot de passe : %(password)s\n"
 "\n"
-"Voici un lien pour vous connecter directement à votre compte (sans étape d'authentication) :\n"
+"Voici un lien pour vous connecter directement à votre compte (sans étape "
+"d'authentication) :\n"
 "\n"
 "http://www.vegeclic.fr/accounts/email/%(email)s/password/%(password)s/\n"
 "\n"
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: accounts/views.py:147 customers/views.py:210
+#: accounts/views.py:154 customers/views.py:210
 msgid ""
 "The password has been regenerated. You will receive an email with the new "
 "password."
@@ -221,107 +222,186 @@ msgstr "Connexion"
 msgid "I forgot my password"
 msgstr "J'ai oublié mon mot de passe"
 
-#: carts/forms.py:33
+#: blog/models.py:28 products/models.py:27
+msgid "tag"
+msgstr "tag"
+
+#: blog/models.py:29 common/models.py:99 products/models.py:28
+#: wallets/models.py:47
+msgid "content type"
+msgstr "type de contenu"
+
+#: blog/models.py:30 common/models.py:100 products/models.py:29
+#: wallets/models.py:48
+msgid "object id"
+msgstr "identifiant de l'objet"
+
+#: blog/models.py:37 blog/models.py:61 products/models.py:36
+#: products/models.py:42 products/models.py:62
+msgid "categories"
+msgstr "catégories"
+
+#: blog/models.py:49
+msgid "title"
+msgstr "titre"
+
+#: blog/models.py:50 blog/models.py:66 carts/models.py:55 carts/models.py:94
+#: carts/models.py:124 mailbox/models.py:63 mailbox/models.py:85
+#: products/models.py:53 suppliers/models.py:59
+msgid "body"
+msgstr "corps"
+
+#: blog/models.py:52 products/models.py:45
+msgid "authors"
+msgstr "auteurs"
+
+#: blog/models.py:58
+msgid "title image"
+msgstr "image de titre"
+
+#: blog/models.py:59
+msgid "thumb image"
+msgstr "image de vignette"
+
+#: blog/models.py:60 products/models.py:44 products/models.py:64
+msgid "tags"
+msgstr "tags"
+
+#: blog/models.py:64 mailbox/models.py:84
+msgid "participant"
+msgstr "participant"
+
+#: blog/models.py:65
+msgid "article"
+msgstr "article"
+
+#: blog/views.py:151
+msgid "Your comment has been sent successfuly."
+msgstr "Votre commentaire a été envoyé avec succès."
+
+#: blog/templates/blog/base.html:5
+msgid "Blog"
+msgstr "Blog"
+
+#: blog/templates/blog/new_comment.html:6
+msgid "New comment"
+msgstr "Nouveau commentaire"
+
+#: blog/templates/blog/new_comment.html:26
+#: carts/templates/carts/subscription_edit.html:28
+#: customers/templates/customers/address_create.html:28
+#: customers/templates/customers/address_edit.html:28
+#: mailbox/templates/mailbox/new_message.html:29
+#: mailbox/templates/mailbox/reply_message.html:28
+msgid "submit"
+msgstr "confirmer"
+
+#: carts/forms.py:34
 msgid "1 month"
 msgstr "1 mois"
 
-#: carts/forms.py:34
+#: carts/forms.py:35
 msgid "3 months"
 msgstr "3 mois"
 
-#: carts/forms.py:35
+#: carts/forms.py:36
 msgid "6 months"
 msgstr "6 mois"
 
-#: carts/forms.py:36
+#: carts/forms.py:37
 msgid "9 months"
 msgstr "9 mois"
 
-#: carts/forms.py:37
+#: carts/forms.py:38
 msgid "1 year"
 msgstr "1 an"
 
-#: carts/forms.py:38
+#: carts/forms.py:39
 msgid "18 months"
 msgstr "18 mois"
 
-#: carts/forms.py:39
+#: carts/forms.py:40
 msgid "2 years"
 msgstr "2 ans"
 
-#: carts/forms.py:59
+#: carts/forms.py:60
 #, python-format
 msgid "The sum of extents should be equal to 100 instead %d."
 msgstr "La somme des proportions doit être égale à 100 au lieu de %d."
 
-#: carts/forms.py:220
+#: carts/forms.py:226 carts/forms.py:287
 msgid ""
 "Which size would you like to use for your cart ? (delivery fees included)"
 msgstr ""
 "Quelle taille souhaiteriez vous choisir pour votre panier ? (frais de port "
 "et emballage isotherme inclus)"
 
-#: carts/forms.py:221 carts/templates/carts/subscription_list.html:25
+#: carts/forms.py:227 carts/forms.py:288
+#: carts/templates/carts/subscription_list.html:25
 msgid "Size"
 msgstr "Taille"
 
-#: carts/forms.py:223
+#: carts/forms.py:229 carts/forms.py:290
 msgid "How often would you like to receive your cart ?"
 msgstr "À quelle fréquence souhaiteriez vous recevoir votre panier ?"
 
-#: carts/forms.py:224 carts/templates/carts/subscription_list.html:27
+#: carts/forms.py:230 carts/forms.py:291
+#: carts/templates/carts/subscription_list.html:27
 msgid "Frequency"
 msgstr "Fréquence"
 
-#: carts/forms.py:226
+#: carts/forms.py:232 carts/forms.py:293
 msgid "How long would you like to receive your cart ?"
 msgstr "Quelle est la durée d'abonnement souhaitée ?"
 
-#: carts/forms.py:227 carts/templates/carts/subscription_list.html:28
+#: carts/forms.py:233 carts/forms.py:294
+#: carts/templates/carts/subscription_list.html:28
 msgid "Duration"
 msgstr "Durée"
 
-#: carts/forms.py:228
+#: carts/forms.py:234 carts/forms.py:295
 msgid "When would you like to start your subscription ?"
 msgstr ""
 "À quel date souhaiteriez vous démarrer votre abonnement ? Par défaut "
 "l'abonnement démarre à J+10."
 
-#: carts/forms.py:229
+#: carts/forms.py:235 carts/forms.py:296
 msgid "Beginning of your subscription"
 msgstr "Début de l'abonnement"
 
-#: carts/forms.py:232 suppliers/templates/suppliers/catalog.html:160
+#: carts/forms.py:238 carts/forms.py:299 pro/templates/pro/catalog.html:195
+#: suppliers/templates/suppliers/catalog.html:162
 msgid "Criterias"
 msgstr "Critères"
 
-#: carts/forms.py:233
+#: carts/forms.py:239 carts/forms.py:300
 msgid "Select as much criterias as you want in your cart."
 msgstr ""
 "Sélectionner les critères que vous souhaitez appliquer à votre panier (les "
 "critères seront appliqués, dans la mesure du possible, en fonction des "
 "produits disponibles dans les familles et sous-familles de produits choisit)."
 
-#: carts/forms.py:236
+#: carts/forms.py:242 carts/forms.py:303
 msgid ""
 "Which carrier would you like to use for your cart ? (delivery fees included)"
 msgstr ""
 "Quel type de livraison souhaiteriez vous choisir pour votre panier ? (frais "
 "de port et emballage isotherme inclus)"
 
-#: carts/forms.py:237
+#: carts/forms.py:243 carts/forms.py:304
 msgid "Carrier"
 msgstr "Livreur"
 
-#: carts/forms.py:239
+#: carts/forms.py:245 carts/forms.py:306
 msgid "Customized"
 msgstr "Personnaliser"
 
-#: carts/forms.py:240 carts/templates/carts/subscription_list.html:50
+#: carts/forms.py:246 carts/forms.py:307
+#: carts/templates/carts/subscription_list.html:50
 msgid "Receive only once"
 msgstr "Recevoir une seule fois"
 
-#: carts/forms.py:248 carts/models.py:50
+#: carts/forms.py:254 carts/forms.py:315 carts/models.py:50
 msgid "Week"
 msgstr "Semaine"
 
@@ -352,12 +432,6 @@ msgstr "Une fois par trimestre"
 #: carts/models.py:43
 msgid "Every 6 months"
 msgstr "Une fois par semestre"
-
-#: carts/models.py:55 carts/models.py:94 carts/models.py:124
-#: mailbox/models.py:63 mailbox/models.py:85 products/models.py:52
-#: suppliers/models.py:58
-msgid "body"
-msgstr "corps"
 
 #: carts/models.py:57 carts/models.py:115 carts/models.py:230
 msgid "size"
@@ -419,7 +493,7 @@ msgstr "Il s'agit de la semaine de fin de l'abonnement."
 msgid "locked duration"
 msgstr "durée verrouillée"
 
-#: carts/models.py:73 carts/models.py:238 suppliers/models.py:71
+#: carts/models.py:73 carts/models.py:238 suppliers/models.py:72
 msgid "criterias"
 msgstr "critères"
 
@@ -432,7 +506,7 @@ msgid "locked products"
 msgstr "produits verrouillés"
 
 #: carts/models.py:76 carts/models.py:215 carts/models.py:239
-#: suppliers/models.py:133 suppliers/models.py:152
+#: suppliers/models.py:144 suppliers/models.py:163
 msgid "quantity"
 msgstr "quantité"
 
@@ -461,12 +535,12 @@ msgstr "Il s'agit de la semaine de fin de l'abonnement."
 msgid "enabled"
 msgstr "activé"
 
-#: carts/models.py:96 carts/models.py:137 suppliers/models.py:72
+#: carts/models.py:96 carts/models.py:137 suppliers/models.py:73
 msgid "weight"
 msgstr "poids"
 
 #: carts/models.py:116 carts/models.py:138 suppliers/models.py:50
-#: suppliers/models.py:103 wallets/models.py:76 wallets/models.py:129
+#: suppliers/models.py:105 wallets/models.py:76 wallets/models.py:129
 msgid "currency"
 msgstr "devise"
 
@@ -518,13 +592,13 @@ msgstr "Livré"
 msgid "Canceled"
 msgstr "Annulé"
 
-#: carts/models.py:156 products/models.py:58 suppliers/models.py:66
-#: suppliers/models.py:160
+#: carts/models.py:156 products/models.py:58 suppliers/models.py:67
+#: suppliers/models.py:171
 msgid "Expired"
 msgstr "Expiré"
 
-#: carts/models.py:160 products/models.py:61 suppliers/models.py:69
-#: suppliers/models.py:163
+#: carts/models.py:160 products/models.py:61 suppliers/models.py:70
+#: suppliers/models.py:174
 msgid "status"
 msgstr "statut"
 
@@ -605,8 +679,8 @@ msgid "content"
 msgstr "contenu"
 
 #: carts/models.py:214 carts/models.py:282 carts/models.py:292
-#: suppliers/models.py:62 suppliers/models.py:99 suppliers/models.py:132
-#: suppliers/models.py:151
+#: suppliers/models.py:62 suppliers/models.py:100 suppliers/models.py:143
+#: suppliers/models.py:162
 msgid "product"
 msgstr "produit"
 
@@ -661,41 +735,41 @@ msgstr "%d jours"
 msgid "thematic"
 msgstr "thème"
 
-#: carts/views.py:101
+#: carts/views.py:103
 #, python-format
 msgid "Your subscription %d has been updated successfuly."
 msgstr "L'abonnement %d a été mis à jour correctement."
 
-#: carts/views.py:172
+#: carts/views.py:174
 #, python-format
 msgid "Delivery %d already payed or canceled."
 msgstr "Livraison %d déjà payée ou annulée."
 
-#: carts/views.py:182
+#: carts/views.py:184
 msgid "The delivery has been successfuly payed."
 msgstr "L'échéance a bien été payée."
 
-#: carts/views.py:183 wallets/views.py:211
+#: carts/views.py:185 wallets/views.py:211
 msgid "Your wallet balance has been updated."
 msgstr "Le solde de votre portemonnaie a été mis à jour."
 
-#: carts/views.py:287
+#: carts/views.py:280
 msgid ""
 "In order to lock a product percent, please check the corresponding checkbox."
 msgstr ""
 "Pour conserver la proportion d'un produit, utilisez le bouton verrouiller "
 "correspondant."
 
-#: carts/views.py:333
+#: carts/views.py:326
 msgid "The subscription was sucessfuly created."
 msgstr "L'abonnement a été crée correctement."
 
-#: carts/views.py:337
+#: carts/views.py:330
 #, python-format
 msgid "Votre abonnement %(subscription_id)d a été crée"
 msgstr ""
 
-#: carts/views.py:338
+#: carts/views.py:331
 #, python-format
 msgid ""
 "Bonjour %(name)s,\n"
@@ -720,12 +794,12 @@ msgid ""
 "Végéclic.\n"
 msgstr ""
 
-#: carts/management/commands/fullfillcarts.py:222
+#: carts/management/commands/fullfillcarts.py:219
 #, python-format
 msgid "Delivery %(date)s is in progress"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/management/commands/fullfillcarts.py:223
+#: carts/management/commands/fullfillcarts.py:220
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -754,27 +828,27 @@ msgstr ""
 msgid "Cart"
 msgstr "Panier"
 
-#: carts/templates/carts/base.html:18
+#: carts/templates/carts/base.html:25
 #: carts/templates/carts/create_wizard.html:10
 msgid "Create a thematic cart"
 msgstr "Choisissez un panier thématique"
 
-#: carts/templates/carts/base.html:22
+#: carts/templates/carts/base.html:29
 #: carts/templates/carts/create_wizard.html:10
 msgid "Create a custom cart"
 msgstr "Créer votre panier personnalisé"
 
-#: carts/templates/carts/base.html:26
+#: carts/templates/carts/base.html:33
 #: carts/templates/carts/subscription_list.html:5
 msgid "Subscriptions"
 msgstr "Abonnements"
 
-#: carts/templates/carts/base.html:30
+#: carts/templates/carts/base.html:37
 #: carts/templates/carts/delivery_list.html:6
 msgid "Deliveries"
 msgstr "Livraisons"
 
-#: carts/templates/carts/base.html:34
+#: carts/templates/carts/base.html:41 pro/templates/pro/catalog.html:11
 #: suppliers/templates/suppliers/catalog.html:11 templates/nav.html:20
 msgid "Catalog"
 msgstr "Catalogue"
@@ -818,14 +892,17 @@ msgstr ""
 "      "
 
 #: carts/templates/carts/create_wizard.html:48
+#: carts/templates/carts/create_all/subscription.html:36
 msgid "Click here if you want to receive your cart only once"
 msgstr "Cliquez ici si vous souhaitez recevoir votre panier une seule fois"
 
 #: carts/templates/carts/create_wizard.html:103
+#: carts/templates/carts/create_all/subscription.html:91
 msgid "customize your cart content"
 msgstr "personnaliser le contenu de votre panier"
 
 #: carts/templates/carts/create_wizard.html:115
+#: carts/templates/carts/create_all/products.html:7
 msgid "Products"
 msgstr "Produits"
 
@@ -842,6 +919,7 @@ msgid ""
 msgstr ""
 
 #: carts/templates/carts/create_wizard.html:169
+#: carts/templates/carts/create_all/extents.html:40
 msgid "lock"
 msgstr "verrouiller"
 
@@ -853,7 +931,8 @@ msgstr "Confirmer"
 msgid "prev step"
 msgstr "étape précedente"
 
-#: carts/templates/carts/create_wizard.html:211 wallets/models.py:30
+#: carts/templates/carts/create_wizard.html:211
+#: carts/templates/carts/create_all/extents.html:31 wallets/models.py:30
 msgid "balance"
 msgstr "équilibrer"
 
@@ -864,6 +943,7 @@ msgid "Subscription"
 msgstr "Abonnement"
 
 #: carts/templates/carts/delivery_list.html:36
+#: pro/templates/pro/catalog.html:173
 #: suppliers/templates/suppliers/catalog.html:143
 msgid "Description"
 msgstr ""
@@ -881,7 +961,7 @@ msgstr ""
 
 #: carts/templates/carts/delivery_list.html:40
 #: carts/templates/carts/subscription_list.html:26
-#: suppliers/templates/suppliers/catalog.html:155
+#: suppliers/templates/suppliers/catalog.html:157
 msgid "Price"
 msgstr "Prix"
 
@@ -923,34 +1003,32 @@ msgid "No"
 msgstr "Non"
 
 #: carts/templates/carts/products_tree.html:15
+#: carts/templates/carts/create_all/products_tree.html:15
 msgid "expend/collapse products list"
 msgstr "plier/déplier la liste des produits"
 
 #: carts/templates/carts/products_tree.html:25
+#: carts/templates/carts/create_all/products_tree.html:26
+#: carts/templates/carts/create_all/products_tree.html:27
 msgid "add"
 msgstr "ajouter"
 
 #: carts/templates/carts/products_tree.html:27
+#: carts/templates/carts/create_all/products_tree.html:34
+#: pro/templates/pro/catalog.html:94 pro/templates/pro/catalog.html.py:98
 #: suppliers/templates/suppliers/catalog.html:90
 #: suppliers/templates/suppliers/catalog.html:94
 msgid "read more about"
 msgstr "en savoir plus à propos de"
 
 #: carts/templates/carts/products_tree.html:27
+#: carts/templates/carts/create_all/products_tree.html:34
 msgid "more"
 msgstr "plus"
 
 #: carts/templates/carts/subscription_edit.html:9
 msgid "Edit a subscription"
 msgstr "Éditer un abonnement"
-
-#: carts/templates/carts/subscription_edit.html:28
-#: customers/templates/customers/address_create.html:28
-#: customers/templates/customers/address_edit.html:28
-#: mailbox/templates/mailbox/new_message.html:29
-#: mailbox/templates/mailbox/reply_message.html:28
-msgid "submit"
-msgstr "confirmer"
 
 #: carts/templates/carts/subscription_list.html:15
 #: carts/templates/carts/subscription_list.html:62
@@ -989,6 +1067,72 @@ msgstr "Nos paniers thématiques"
 #: carts/templates/carts/thematic_list.html:27
 msgid "Create"
 msgstr "Créer"
+
+#: carts/templates/carts/create_all/base.html:10
+msgid "Create your subscription"
+msgstr "Crée votre abonnement"
+
+#: carts/templates/carts/create_all/base.html:66
+msgid "Previous step"
+msgstr "Étape précedente"
+
+#: carts/templates/carts/create_all/base.html:67
+msgid "Next step"
+msgstr "Étape précedente"
+
+#: carts/templates/carts/create_all/extents.html:16
+#: carts/templates/carts/create_all/subscription.html:15
+#, python-format
+msgid ""
+"\n"
+"\t  <h4>Ready to create your new %(name)s thematic cart ?</h4>\n"
+"\t"
+msgstr ""
+"\n"
+"\t  <h4>Prêt pour choisir votre nouveau panier thématique « %(name)s » ?</"
+"h4>\n"
+"\t"
+
+#: carts/templates/carts/create_all/extents.html:20
+#: carts/templates/carts/create_all/subscription.html:19
+msgid ""
+"\n"
+"\t  <h4>Ready to create your new custom cart ?</h4>\n"
+"\t"
+msgstr ""
+"\n"
+"\t  <h4>Prêt pour créer votre nouveau panier personnalisé ?</h4>\n"
+"\t"
+
+#: carts/templates/carts/create_all/extents.html:25
+msgid ""
+"\n"
+"\t<p>Vous pouvez maintenant déterminer la proportion souhaitée pour chaque "
+"produit en déplaçant les jauges respectives. Pour verrouiller ou "
+"déverrouiller une jauge, cliquez sur le l'icone du verrou correspondant. "
+"Pour équilibrer les jauges, cliquez sur « équilibrer ». Une fois les "
+"proportions déterminées, vous pouvez finaliser la création de votre "
+"abonnement en cliquant sur « Confirmer ».</p>\n"
+"      "
+msgstr ""
+
+#: carts/templates/carts/create_all/extents.html:31
+msgid "Click here in order to balance the whole of product extents"
+msgstr ""
+
+#: carts/templates/carts/create_all/subscription.html:24
+msgid ""
+"\n"
+"\t<p>Be free to choice below the size of your cart as well as its frequency "
+"and duration. You can even push the beginning week of your subscription to "
+"your convenience.</p>\n"
+"      "
+msgstr ""
+"\n"
+"\t<p>Vous pouvez choisir ci-dessous la taille de votre panier, ainsi que la "
+"fréquence et la durée de votre abonnement. Vous pouvez même choisir la "
+"semaine de début d'abonnement qui vous convient.</p>\n"
+"      "
 
 #: celerytest/templates/celerytest/home.html:8
 msgid "Celery test"
@@ -1058,13 +1202,9 @@ msgstr "taux de change"
 msgid "site"
 msgstr ""
 
-#: common/models.py:99 products/models.py:28 wallets/models.py:47
-msgid "content type"
-msgstr "type de contenu"
-
-#: common/models.py:100 products/models.py:29 wallets/models.py:48
-msgid "object id"
-msgstr "identifiant de l'objet"
+#: customers/models.py:34
+msgid "pro"
+msgstr "pro"
 
 #: customers/views.py:82
 msgid "Your new address has been well created."
@@ -1227,10 +1367,6 @@ msgstr "réponses"
 msgid "message"
 msgstr ""
 
-#: mailbox/models.py:84
-msgid "participant"
-msgstr ""
-
 #: mailbox/views.py:101
 msgid "Your message has been sent successfuly."
 msgstr "Votre message a été envoyé avec succès."
@@ -1321,27 +1457,50 @@ msgstr "Envoyer une réponse"
 msgid "Pro"
 msgstr ""
 
-#: products/models.py:27
-msgid "tag"
-msgstr ""
+#: pro/templates/pro/catalog.html:26 pro/templates/pro/product_path.html:5
+#: pro/templates/pro/product_path.html:7
+#: suppliers/templates/suppliers/catalog.html:25
+#: suppliers/templates/suppliers/product_path.html:5
+#: suppliers/templates/suppliers/product_path.html:7
+msgid "All products"
+msgstr "Tous les produits"
 
-#: products/models.py:36 products/models.py:42 products/models.py:62
-msgid "categories"
-msgstr "catégories"
+#: pro/templates/pro/catalog.html:46 pro/templates/pro/catalog.html.py:49
+#: pro/templates/pro/catalog.html:51
+#: suppliers/templates/suppliers/catalog.html:45
+#: suppliers/templates/suppliers/catalog.html:48
+#: suppliers/templates/suppliers/catalog.html:50
+msgid "Grid"
+msgstr "Grille"
 
-#: products/models.py:41 products/models.py:54
+#: pro/templates/pro/catalog.html:56 pro/templates/pro/catalog.html.py:59
+#: pro/templates/pro/catalog.html:61
+#: suppliers/templates/suppliers/catalog.html:55
+#: suppliers/templates/suppliers/catalog.html:58
+#: suppliers/templates/suppliers/catalog.html:60
+msgid "List"
+msgstr "Liste"
+
+#: pro/templates/pro/catalog.html:66
+#: suppliers/templates/suppliers/catalog.html:65
+msgid "Our suppliers products"
+msgstr "Les produits de nos fournisseurs"
+
+#: pro/templates/pro/catalog.html:177
+#: suppliers/templates/suppliers/catalog.html:147
+msgid "Ingredients"
+msgstr "Ingrédients"
+
+#: pro/templates/pro/catalog.html:202
+#: suppliers/templates/suppliers/catalog.html:169
+msgid "Suppliers"
+msgstr "Fournisseurs"
+
+#: products/models.py:40 products/models.py:52
 msgid "slug"
 msgstr ""
 
-#: products/models.py:44 products/models.py:64
-msgid "tags"
-msgstr ""
-
-#: products/models.py:45
-msgid "authors"
-msgstr "auteurs"
-
-#: products/models.py:56 suppliers/models.py:64 suppliers/models.py:158
+#: products/models.py:56 suppliers/models.py:64 suppliers/models.py:169
 msgid "Draft"
 msgstr "Brouillon"
 
@@ -1349,7 +1508,7 @@ msgstr "Brouillon"
 msgid "Published"
 msgstr "Publié"
 
-#: products/models.py:59 suppliers/models.py:67 suppliers/models.py:161
+#: products/models.py:59 suppliers/models.py:68 suppliers/models.py:172
 msgid "Withdrawn"
 msgstr "Retiré"
 
@@ -1357,7 +1516,7 @@ msgstr "Retiré"
 msgid "products parent"
 msgstr "produits parent"
 
-#: suppliers/models.py:32 suppliers/models.py:70
+#: suppliers/models.py:32 suppliers/models.py:71
 msgid "suppliers"
 msgstr "fournisseurs"
 
@@ -1369,7 +1528,7 @@ msgstr "délai de livraison"
 msgid "threshold order"
 msgstr "seuil de commande"
 
-#: suppliers/models.py:49 suppliers/models.py:100
+#: suppliers/models.py:49 suppliers/models.py:101
 msgid "supplier"
 msgstr "fournisseur"
 
@@ -1377,87 +1536,101 @@ msgstr "fournisseur"
 msgid "fee per weight"
 msgstr "les frais par poids"
 
-#: suppliers/models.py:59
+#: suppliers/models.py:60
 msgid "ingredients"
 msgstr "ingrédients"
 
-#: suppliers/models.py:88
+#: suppliers/models.py:66
+msgid "Out of stock"
+msgstr "Rupture de stock"
+
+#: suppliers/models.py:89
 msgid "taxes"
 msgstr ""
 
-#: suppliers/models.py:91
+#: suppliers/models.py:92
 msgid "rate"
 msgstr "taux"
 
-#: suppliers/models.py:101
+#: suppliers/models.py:102
 msgid "reference"
 msgstr "référence"
 
-#: suppliers/models.py:102
+#: suppliers/models.py:103
 msgid "supplier product url"
 msgstr "URL du produit chez le fournisseur"
 
 #: suppliers/models.py:104
+msgid "limited product"
+msgstr "produit limité"
+
+#: suppliers/models.py:106
 msgid "purchase price"
 msgstr "prix d'achat"
 
-#: suppliers/models.py:105
+#: suppliers/models.py:107
 msgid "selling price"
 msgstr "prix de vente"
 
-#: suppliers/models.py:106
+#: suppliers/models.py:108
 msgid "tax"
-msgstr ""
+msgstr "tax"
 
-#: suppliers/models.py:129
+#: suppliers/models.py:140
 msgid "inventories"
 msgstr "inventaires"
 
-#: suppliers/models.py:131
+#: suppliers/models.py:142
 msgid "store"
 msgstr "magasin"
 
-#: suppliers/models.py:148
+#: suppliers/models.py:159
 msgid "entries"
 msgstr "écritures"
 
-#: suppliers/models.py:150
+#: suppliers/models.py:161
 msgid "order"
 msgstr "commande"
 
-#: suppliers/models.py:159 wallets/models.py:67
+#: suppliers/models.py:170 wallets/models.py:67
 msgid "Validated"
 msgstr "Validé"
 
-#: suppliers/templates/suppliers/catalog.html:26
-#: suppliers/templates/suppliers/product_path.html:5
-#: suppliers/templates/suppliers/product_path.html:7
-msgid "All products"
-msgstr "Tous les produits"
+#: suppliers/management/commands/ave_get_products.py:346
+msgid "Mise à jour du catalogue"
+msgstr ""
 
-#: suppliers/templates/suppliers/catalog.html:45
-#: suppliers/templates/suppliers/catalog.html:48
-#: suppliers/templates/suppliers/catalog.html:50
-msgid "Grid"
-msgstr "Grille"
+#: suppliers/management/commands/ave_get_products.py:347
+#, python-format
+msgid ""
+"Bonjour %(name)s,\n"
+"\n"
+"Le catalogue a été mis à jour, ci-dessous se trouve la liste des changements "
+"opérés :\n"
+"\n"
+"%(updated_data)s\n"
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
+msgstr ""
 
-#: suppliers/templates/suppliers/catalog.html:55
-#: suppliers/templates/suppliers/catalog.html:58
-#: suppliers/templates/suppliers/catalog.html:60
-msgid "List"
-msgstr "Liste"
+#: suppliers/management/commands/ave_withdraw_products.py:120
+msgid "Produits retirés du catalogue"
+msgstr ""
 
-#: suppliers/templates/suppliers/catalog.html:65
-msgid "Our suppliers products"
-msgstr "Les produits de nos fournisseurs"
-
-#: suppliers/templates/suppliers/catalog.html:146
-msgid "Ingredients"
-msgstr "Ingrédients"
-
-#: suppliers/templates/suppliers/catalog.html:167
-msgid "Suppliers"
-msgstr "Fournisseurs"
+#: suppliers/management/commands/ave_withdraw_products.py:121
+#, python-format
+msgid ""
+"Bonjour %(name)s,\n"
+"\n"
+"Le catalogue a été mis à jour, certains produits ont été retirés du "
+"catalogue, voici la liste :\n"
+"\n"
+"%(withdrawn_products)s\n"
+"\n"
+"Bien cordialement,\n"
+"Végéclic.\n"
+msgstr ""
 
 #: templates/footer.html:15
 msgid "Under"
@@ -1514,15 +1687,15 @@ msgstr "devise cible"
 
 #: wallets/models.py:32
 msgid "RIB"
-msgstr ""
+msgstr "RIB"
 
 #: wallets/models.py:33
 msgid "paypal"
-msgstr ""
+msgstr "paypal"
 
 #: wallets/models.py:34
 msgid "bitcoin"
-msgstr ""
+msgstr "bitcoin"
 
 #: wallets/models.py:44
 msgid "histories"
@@ -1546,11 +1719,11 @@ msgstr "Virement"
 
 #: wallets/models.py:61
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 #: wallets/models.py:62
 msgid "Bitcoin"
-msgstr ""
+msgstr "Bitcoin"
 
 #: wallets/models.py:69
 msgid "Rejected"
