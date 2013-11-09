@@ -76,14 +76,15 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         translation.activate('fr')
 
+        updated_data = []
+
         logging.debug('Command in progress')
 
-        try:
-            supplier_obj = models.Supplier.objects.get(slug=slugify(settings.AVE_SUPPLIER_NAME))
-            logging.debug('supplier object exists in %s', supplier_obj)
-        except models.Supplier.DoesNotExist:
-            supplier_obj = models.Supplier.objects.create(name=settings.AVE_SUPPLIER_NAME, slug=slugify(settings.AVE_SUPPLIER_NAME))
-            logging.debug('since supplier object doesnot exist yet, it was created in %s', supplier_obj)
+        supplier_object, supplier_created = models.Supplier.objects.get_or_create(name=settings.AVE_SUPPLIER_NAME, slug=slugify(settings.AVE_SUPPLIER_NAME))
+
+        if supplier_created:
+            info = 'new supplier object "%s" created' % supplier_object
+            logging.debug(info); updated_data.append(info)
 
         data = parse.urlencode({'a': 'login',
                                 'frm_cid': settings.AVE_LOGIN,
@@ -108,8 +109,6 @@ class Command(NoArgsCommand):
 
         logging.debug('num: %d', len(articles))
 
-        updated_data = []
-
         for article in articles:
             url = article.a['href']
             url_split = url.split('/')
@@ -121,15 +120,6 @@ class Command(NoArgsCommand):
 
             logger_article = logging.getLogger('article %s' % ref)
             logger_db = logging.getLogger('database %s' % ref)
-
-            exist = False
-            try:
-                price_obj = sm.Price.objects.get(reference=ref)
-            except sm.Price.DoesNotExist:
-                logger_db.debug('price object doesnot exists yet')
-            else:
-                logger_db.debug('price object already exists in %s', price_obj)
-                exist = True
 
             logger_article.debug('parsing of brief information from the article %s', ref)
 
@@ -159,119 +149,82 @@ class Command(NoArgsCommand):
             article_soup = BeautifulSoup(article_src)
             logger_article.debug('bs4 done')
 
-            category_obj = None
+            category_object = None
             category_area = article_soup.find(class_='active')
             if category_area:
                 category = category_area.text.title()
-                logger_article.debug('category: %s', category)
+                category_object, category_created = pm.Category.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
-                try:
-                    category_obj = pm.Category.objects.language('de').get(name=category)
-                except pm.Category.DoesNotExist:
-                    try:
-                        category_obj = pm.Category.objects.language('de').get(slug=slugify(category))
-                    except pm.Category.DoesNotExist:
-                        category_obj = pm.Category.objects.language('de').create(name=category, slug=slugify(category))
+                if category_created:
+                    info = 'new category "%s" created' % category
+                    logger_db.debug(info); updated_data.append(info)
 
-            base_product_obj = None
+            base_product_object, base_product_created = pm.Product.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
-            try:
-                base_product_obj = pm.Product.objects.language('de').get(name=category)
-            except pm.Product.DoesNotExist:
-                try:
-                    base_product_obj = pm.Product.objects.language('de').get(slug=slugify(category))
-                except pm.Product.DoesNotExist:
-                    logger_db.debug('base product object doesnot exists yet')
-                    base_product_obj = pm.Product.objects.language('de').create(name=category, slug=slugify(category))
-                    base_product_obj.categories.add(category_obj)
-                    logger_db.debug('base product object exists now in %s', base_product_obj)
-                else:
-                    logger_db.debug('base product object already exists in %s', base_product_obj)
-            else:
-                logger_db.debug('base product object already exists in %s', base_product_obj)
+            if base_product_created:
+                info = 'new base product object "%s" created' % base_product_object
+                logger_article.debug(info); updated_data.append(info)
 
-            product_obj = None
+            product_object, product_created = sm.Product.objects.language('de').get_or_create(price__reference=ref, price__supplier=supplier_object, defaults={'name': title2, 'slug': slug, 'product': base_product_object})
 
-            if exist:
-                product_obj = sm.Product.objects.language('de').get(price=price_obj)
-            else:
-                logger_db.debug('check if product already exists thanks to the name')
-                try:
-                    product_obj = sm.Product.objects.language('de').get(name=title2)
-                except sm.Product.DoesNotExist:
-                    logger_db.debug('no product found with the name')
+            if product_created:
+                product_object.suppliers.add(supplier_object)
+                info = 'new product "%s" added' % product_object
+                logger_article.debug(info); updated_data.append(info)
 
-                    logger_db.debug('check if product already exists thanks to the slug')
-                    try:
-                        product_obj = sm.Product.objects.language('de').get(slug=slug)
-                    except sm.Product.DoesNotExist:
-                        logger_db.debug('no product found with the slug')
-
-                        logger_db.debug('creation of product object in progress')
-                        product_obj = sm.Product.objects.language('de').create(name=title2, slug=slug, product=base_product_obj)
-                        product_obj.suppliers.add(supplier_obj)
-                        logger_db.debug('product object exists now in %s', product_obj)
-                        updated_data.append('product %d: a new product has been added. Name: "%s", Category: %s' % (product_obj.id, product_obj.name, base_product_obj.name))
-                    else:
-                        logger_db.debug('a product already exists with the same slug, we stop here.')
-                        exist = True
-                else:
-                    logger_db.debug('a product already exists with the same name, we stop here.')
-                    exist = True
-
-            logger_db.debug('product_obj id is %d' % product_obj.id)
+            logger_db.debug('product_object id is %d' % product_object.id)
 
             body = article_soup.find(class_='spalterechts')
 
-            logger_db.debug('creation of thumb image object in progress')
-            thumb_obj = cm.Image.objects.create(image=thumb_path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_obj.pk)
-            logger_db.debug('thumb image object exists now in %s', thumb_obj)
+            if not cm.Image.objects.filter(image=thumb_path).exists():
 
-            if not exist:
-                big_img_area = body.find(class_='artikelbild')
-                if big_img_area:
-                    src = big_img_area.img['src']
-                    path = download(src, slug, data=data)
-                    logger_article.debug('big_img: %s', path)
-                    logger_db.debug('creation of big image object in progress')
-                    obj = cm.Image.objects.create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_obj.pk)
-                    logger_db.debug('big image object exists now in %s', obj)
-                    product_obj.main_image = obj
+                thumb_object, thumb_created = cm.Image.objects.get_or_create(image=thumb_path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_object.pk)
 
-                big_img2_area = body.find(id='picture-inner')
-                if big_img2_area:
-                    objs = []
-                    for div in big_img2_area.find_all('div'):
-                        src = div.img['src']
+                if thumb_created:
+                    info = 'new thumb "%s" added' % thumb_object
+                    logger_db.debug(info); updated_data.append(info)
+
+                    big_img_area = body.find(class_='artikelbild')
+                    if big_img_area:
+                        src = big_img_area.img['src']
                         path = download(src, slug, data=data)
-                        logger_article.debug('big_img2_path: %s', path)
-                        logger_db.debug('creation of big image (v2) object in progress')
-                        obj = cm.Image.objects.create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_obj.pk)
-                        objs += [obj]
-                        logger_db.debug('big image (v2) object exists now in %s', obj)
-                    if objs:
-                        product_obj.main_image = objs[0]
+                        obj, created = cm.Image.objects.get_or_create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_object.pk)
+                        info = 'new big image "%s" added' % obj
+                        logger_db.debug(info); updated_data.append(info)
+                        product_object.main_image = obj
 
-                highres_area = body.find(text=re.compile('Download:'))
-                if highres_area:
-                    href = highres_area.parent.parent.a['href']
-                    path = download(href, slug, data=data, filename='%s.jpg' % ref)
-                    logger_article.debug('highres_img_path: %s', path)
-                    logger_db.debug('creation of high resolution image object in progress')
-                    obj = cm.Image.objects.create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_obj.pk)
-                    logger_db.debug('high resolution image object exists now in %s', obj)
+                    big_img2_area = body.find(id='picture-inner')
+                    if big_img2_area:
+                        objs = []
+                        for div in big_img2_area.find_all('div'):
+                            src = div.img['src']
+                            path = download(src, slug, data=data)
+                            obj, created = cm.Image.objects.get_or_create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_object.pk)
+                            objs += [obj]
+                            info = 'new big image (v2) "%s" added' % obj
+                            logger_db.debug(info); updated_data.append(info)
+                        if objs:
+                            product_object.main_image = objs[0]
+
+                    highres_area = body.find(text=re.compile('Download:'))
+                    if highres_area:
+                        href = highres_area.parent.parent.a['href']
+                        path = download(href, slug, data=data, filename='%s.jpg' % ref)
+                        obj, created = cm.Image.objects.get_or_create(image=path, content_type=ContentType.objects.get(app_label='suppliers', model='product'), object_id=product_object.pk)
+                        info = 'new high resolution image "%s" added' % obj
+                        logger_db.debug(info); updated_data.append(info)
 
             article_title = body.find(class_='first').text
             article_price = body.find(class_='preis').text
             article_data = body.find(class_='artikelbeschreibung')
 
             description = article_data.p.text
-            product_obj.body = description
+            product_object.body = description
 
             ingredients_area = article_data.find(text=re.compile('Zutaten:'))
             if ingredients_area:
                 ingredients = ingredients_area.parent.parent.text
-                product_obj.ingredients = ingredients
+                product_object.ingredients = ingredients
 
             number_area = article_data.find(text=re.compile('Art.Nr.:'))
             if number_area:
@@ -283,15 +236,13 @@ class Command(NoArgsCommand):
                 supplier = supplier_area.parent.next_sibling.strip()
                 logger_article.debug('supplier: %s', supplier)
 
-                try:
-                    product_supplier_obj = sm.Supplier.objects.get(slug=slugify(supplier))
-                    logger_db.debug('supplier object exists in %s', product_supplier_obj)
-                except sm.Supplier.DoesNotExist:
-                    product_supplier_obj = sm.Supplier.objects.create(name=supplier, slug=slugify(supplier))
-                    supplier_obj.suppliers.add(product_supplier_obj)
-                    logger_db.debug('since supplier object doesnot exist yet, it was created in %s', product_supplier_obj)
+                product_supplier_object, product_supplier_created = sm.Supplier.objects.get_or_create(name=supplier, slug=slugify(supplier))
 
-                product_obj.suppliers.add(product_supplier_obj)
+                if product_supplier_created:
+                    supplier_object.suppliers.add(product_supplier_object)
+                    product_object.suppliers.add(product_supplier_object)
+                    info = 'new product supplier "%s" created' % product_supplier_object
+                    logger_db.debug(info); updated_data.append(info)
 
             weight2_area = article_data.find(text=re.compile('Gewicht:'))
             if weight2_area:
@@ -299,7 +250,7 @@ class Command(NoArgsCommand):
                 if weight2 and weight2 != '-':
                     logger_article.debug('weight2: %s', weight2)
                     logger_db.debug('convert weight to float')
-                    product_obj.weight = float(weight2.strip().replace(',','.').split(' ')[0])
+                    product_object.weight = float(weight2.strip().replace(',','.').split(' ')[0])
 
             price2_area = article_data.find(text=re.compile('Einkaufspreis (EK):'))
             if price2_area:
@@ -323,46 +274,70 @@ class Command(NoArgsCommand):
 
             outofstock_area = article_data.find(text=re.compile('Derzeit leider nicht lieferbar.'))
             if outofstock_area:
-                if product_obj.status != 'o':
-                    logger_article.debug('out of stock for this article means the status will be changed to out of stock.')
-                    updated_data.append('product %d: status changed from %s to outofstock' % (product.id, product_obj.get_status_display()))
-                    product_obj.status = 'o'
+                if product_object.status != 'o':
+                    info = 'product %d: status changed from %s to outofstock' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'o'
             else:
-                if not product_obj.status or product_obj.status in ['o', 'w']:
-                    logger_article.debug('article available means the status will be changed to published since it was known as out of stock.')
-                    updated_data.append('product %d: status changed from %s to published' % (product.id, product_obj.get_status_display()))
-                    product_obj.status = 'p'
+                if not product_object.status or product_object.status in ['o', 'w']:
+                    info = 'product %d: status changed from %s to published' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'p'
+
+            outofstock2_area = article_data.find(text=re.compile('Leider bereits ausverkauft!'))
+            if outofstock2_area:
+                if product_object.status != 'o':
+                    info = 'product %d: status changed from %s to outofstock (2)' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'o'
+            else:
+                if not product_object.status or product_object.status in ['o', 'w']:
+                    info = 'product %d: status changed from %s to published (2)' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'p'
+
+            limited_area = article_data.find(text=re.compile('Nur solange der Vorrat reicht!'))
 
             logger_article.debug('%s,%s', article_title, article_price)
 
-            product_obj.save()
+            product_object.save()
             logger_db.debug('product object saved')
 
             logger_db.debug('looking for default currency object')
-            currency_obj = cm.Currency.objects.get(name=settings.DEFAULT_CURRENCY)
+            currency_object = cm.Currency.objects.get(name=settings.DEFAULT_CURRENCY)
 
             logger_db.debug('convert price to float')
             float_price = float(price.split(' ')[1].replace(',', '.'))
 
-            if not exist:
-                logger_db.debug('creation of price object in progress')
-                price_obj = sm.Price.objects.create(product=product_obj, supplier=supplier_obj, reference=ref, currency=currency_obj, purchase_price=float_price, supplier_product_url=url)
-                logger_db.debug('price object exists now in %s', price_obj)
-            else:
-                if price_obj.purchase_price != float_price:
-                    logger_db.debug('new purchase_price updated for product %d. Old: %.2f, New: %.2f' % (product_obj.id, price_obj.purchase_price, float_price))
-                    updated_data.append('product %d: purchase_price updated. Old: %.2f, New: %.2f' % (product_obj.id, price_obj.purchase_price, float_price))
-                    price_obj.purchase_price = float_price
-                    price_obj.save()
+            price_object, price_created = sm.Price.objects.get_or_create(product=product_object, supplier=supplier_object, defaults={'reference': ref, 'currency': currency_object, 'purchase_price': float_price, 'supplier_product_url': url})
 
-                if price_obj.reference != ref:
-                    logger_db.debug('new reference and url updated')
-                    updated_data.append('product %d: reference and url updated. Old: %s, New: %s' % (product_obj.id, price_obj.reference, ref))
-                    price_obj.reference = ref
-                    price_obj.supplier_product_url = url
-                    price_obj.save()
+            if not price_created:
+                changed = False
+
+                if price_object.purchase_price != float_price:
+                    info = 'product %d: purchase_price updated. Old: %.2f, New: %.2f' % (product_object.id, price_object.purchase_price, float_price)
+                    logger_db.debug(info); updated_data.append(info)
+                    price_object.purchase_price = float_price
+                    changed = True
+
+                if price_object.reference != ref:
+                    info = 'product %d: reference and url updated. Old: %s, New: %s' % (product_object.id, price_object.reference, ref)
+                    logger_db.debug(info); updated_data.append(info)
+                    price_object.reference = ref
+                    price_object.supplier_product_url = url
+                    changed = True
+
+                if price_object.limited != limited_area:
+                    info = 'product %d: limited status Old: %s, New: %s' % (product_object.id, price_object.limited, limited_area)
+                    logger_db.debug(info); updated_data.append(info)
+                    price_object.limited = True if limited_area else False
+
+                if changed:
+                    price_object.save()
 
         if updated_data:
+            logging.debug('ready to send the mail')
+
             admin = am.Account.objects.get(email=settings.EMAIL_ADMIN)
             mm.Message.objects.create_message(participants=[admin.customer], subject=_("Mise à jour du catalogue"), body=_(
 """Bonjour %(name)s,

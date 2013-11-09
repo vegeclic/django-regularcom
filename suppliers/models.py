@@ -54,11 +54,11 @@ class SupplierFee(models.Model):
 
 class Product(TranslatableModel):
     translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
+        name = models.CharField(_('name'), max_length=100),
+        slug = models.SlugField(max_length=100, null=True, blank=True),
         body = models.TextField(_('body'), blank=True),
         ingredients = models.TextField(_('ingredients'), blank=True),
     )
-    slug = models.SlugField(unique=True, max_length=100)
     product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),
@@ -101,6 +101,7 @@ class Price(models.Model):
     supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
     reference = models.CharField(_('reference'), max_length=30, null=True, blank=True)
     supplier_product_url = models.URLField(_('supplier product url'), null=True, blank=True)
+    limited = models.BooleanField(_('limited product'), default=False)
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
