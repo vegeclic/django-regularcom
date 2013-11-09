@@ -17,7 +17,7 @@
 
   <br/>
   <div style="text-align:justify; max-height:188px">
-    {{ article.body|safe|truncatechars:900 }}
+    {{ article.body|striptags|truncatechars:900 }}
   </div>
   <div class="pull-right">
     <a href="{% url "article" article.id %}" class="btn btn-link btn-xs tooltip_link badge alert-warning" style="color:black" title="Continuer la lecture">Continuer</a>
