@@ -72,12 +72,7 @@ class Command(NoArgsCommand):
 
         debug = False
 
-        try:
-            supplier_obj = models.Supplier.objects.get(slug=slugify(settings.AVE_SUPPLIER_NAME))
-            logging.debug('supplier object exists in %s', supplier_obj)
-        except models.Supplier.DoesNotExist:
-            supplier_obj = models.Supplier.objects.create(name=settings.AVE_SUPPLIER_NAME, slug=slugify(settings.AVE_SUPPLIER_NAME))
-            logging.debug('since supplier object doesnot exist yet, it was created in %s', supplier_obj)
+        supplier_object, supplier_created = models.Supplier.objects.get_or_create(name=settings.AVE_SUPPLIER_NAME, slug=slugify(settings.AVE_SUPPLIER_NAME))
 
         data = parse.urlencode({'a': 'login',
                                 'frm_cid': settings.AVE_LOGIN,
@@ -86,8 +81,8 @@ class Command(NoArgsCommand):
 
         withdrawn_products = []
 
-        for product in models.Product.objects.language('de').exclude(status__in=['d','w']).all():
-            price = product.price_set.get(supplier=supplier_obj)
+        for product in models.Product.objects.language('de').filter(price__supplier=supplier_object).exclude(status__in=['d','w']).all():
+            price = product.price()
             ref = price.reference
             url = price.supplier_product_url
 
@@ -119,6 +114,8 @@ class Command(NoArgsCommand):
             withdrawn_products.append("%d: %s" % (product.id, product.name))
 
         if not debug and withdrawn_products:
+            logging.debug('ready to send the mail')
+
             admin = am.Account.objects.get(email=settings.EMAIL_ADMIN)
             mm.Message.objects.create_message(participants=[admin.customer], subject=_("Produits retirés du catalogue"), body=_(
 """Bonjour %(name)s,

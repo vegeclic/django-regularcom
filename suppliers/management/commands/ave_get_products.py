@@ -153,16 +153,11 @@ class Command(NoArgsCommand):
             category_area = article_soup.find(class_='active')
             if category_area:
                 category = category_area.text.title()
-
-                logger_db.debug('taat')
-
                 category_object, category_created = pm.Category.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
                 if category_created:
                     info = 'new category "%s" created' % category
                     logger_db.debug(info); updated_data.append(info)
-
-            logger_db.debug('toto')
 
             base_product_object, base_product_created = pm.Product.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
@@ -286,6 +281,18 @@ class Command(NoArgsCommand):
             else:
                 if not product_object.status or product_object.status in ['o', 'w']:
                     info = 'product %d: status changed from %s to published' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'p'
+
+            outofstock2_area = article_data.find(text=re.compile('Leider bereits ausverkauft!'))
+            if outofstock2_area:
+                if product_object.status != 'o':
+                    info = 'product %d: status changed from %s to outofstock (2)' % (product_object.id, product_object.get_status_display())
+                    logger_article.debug(info); updated_data.append(info)
+                    product_object.status = 'o'
+            else:
+                if not product_object.status or product_object.status in ['o', 'w']:
+                    info = 'product %d: status changed from %s to published (2)' % (product_object.id, product_object.get_status_display())
                     logger_article.debug(info); updated_data.append(info)
                     product_object.status = 'p'
 
