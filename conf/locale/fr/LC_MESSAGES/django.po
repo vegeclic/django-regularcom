@@ -1078,7 +1078,7 @@ msgstr "Étape précedente"
 
 #: carts/templates/carts/create_all/base.html:67
 msgid "Next step"
-msgstr "Étape précedente"
+msgstr "Étape suivante"
 
 #: carts/templates/carts/create_all/extents.html:16
 #: carts/templates/carts/create_all/subscription.html:15
