@@ -153,19 +153,24 @@ class Command(NoArgsCommand):
             category_area = article_soup.find(class_='active')
             if category_area:
                 category = category_area.text.title()
-                category_object, category_created = pm.Category.objects.language('de').get_or_create(slug=slugify(category), defaults={'name': category})
+
+                logger_db.debug('taat')
+
+                category_object, category_created = pm.Category.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
                 if category_created:
                     info = 'new category "%s" created' % category
                     logger_db.debug(info); updated_data.append(info)
 
-            base_product_object, base_product_created = pm.Product.objects.language('de').get_or_create(slug=slugify(category), defaults={'name': category})
+            logger_db.debug('toto')
+
+            base_product_object, base_product_created = pm.Product.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
 
             if base_product_created:
                 info = 'new base product object "%s" created' % base_product_object
                 logger_article.debug(info); updated_data.append(info)
 
-            product_object, product_created = sm.Product.objects.language('de').get_or_create(slug=slug, defaults={'name': title2, 'product': base_product_object})
+            product_object, product_created = sm.Product.objects.language('de').get_or_create(price__reference=ref, price__supplier=supplier_object, defaults={'name': title2, 'slug': slug, 'product': base_product_object})
 
             if product_created:
                 product_object.suppliers.add(supplier_object)
@@ -317,6 +322,8 @@ class Command(NoArgsCommand):
                     price_object.save()
 
         if updated_data:
+            logging.debug('ready to send the mail')
+
             admin = am.Account.objects.get(email=settings.EMAIL_ADMIN)
             mm.Message.objects.create_message(participants=[admin.customer], subject=_("Mise à jour du catalogue"), body=_(
 """Bonjour %(name)s,

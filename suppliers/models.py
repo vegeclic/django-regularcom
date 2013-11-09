@@ -54,7 +54,7 @@ class SupplierFee(models.Model):
 
 class Product(TranslatableModel):
     translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
+        name = models.CharField(_('name'), max_length=100),
         slug = models.SlugField(max_length=100, null=True, blank=True),
         body = models.TextField(_('body'), blank=True),
         ingredients = models.TextField(_('ingredients'), blank=True),
