@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+
+{% for article in object_list %}
+<div class="well">
+  <div class="panel-warning">
+    <h4 class="panel panel-heading"><a href="{% url "article" article.id %}" style="text-decoration:none;color:black"><strong>{{ article.title }}</strong></a></h4>
+  </div>
+  {% if article.title_image %}
+  <div>
+    <img src="{% get_media_prefix %}{{ article.title_image }}" style="width:808px; height:188px"/>
+  </div>
+  {% endif %}
+
+  <br/>
+  <div style="text-align:justify; max-height:188px">
+    {{ article.body|safe|truncatechars:900 }}
+  </div>
+  <div class="pull-right">
+    <a href="{% url "article" article.id %}" class="btn btn-link btn-xs tooltip_link badge alert-warning" style="color:black" title="Continuer la lecture">Continuer</a>
+  </div>
+  <br/>
+  <br/>
+  <div class="row">
+    <div class="col-md-2 pull-left"><span class="badge">{{ article.date_created|date:"D d M y" }}</span></div>
+    <div class="col-md-10">
+      {% for author in article.authors.all %}
+      <span class="badge pull-right" style="margin-left:10px">{{author.name}}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+<ul class="pager">
+  <li class="previous"><a href="#">&larr; Plus récents</a></li>
+  <li class="next"><a href="#">Plus anciens &rarr;</a></li>
+</ul>
+
+{% endblock %}

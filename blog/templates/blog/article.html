@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_content %}
+
+<div class="well">
+  <div class="panel-warning">
+    <h4 class="panel panel-heading"><a href="#" style="text-decoration:none;color:black"><strong>{{ object.title }}</strong></a></h4>
+  </div>
+  {% if object.main_image %}
+  <div>
+    <img src="{% get_media_prefix %}{{ object.main_image }}" style="width:400px; margin-left:20px; margin-bottom:10px" class="img-thumbnail pull-right"/>
+  </div>
+  {% endif %}
+  <div style="text-align:justify">
+    {{ object.body|safe|linebreaksbr }}
+  </div>
+  <br/>
+  <br/>
+  <div class="row">
+    <div class="col-md-2 pull-left"><span class="badge">{{ object.date_created|date:"D d M y" }}</span></div>
+    <div class="col-md-10">
+      {% for author in object.authors.all %}
+      <span class="badge pull-right" style="margin-left:10px">{{author.name}}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<h3>Les autres articles de notre blog</h3>
+<div class="row">
+  {% for object in articles %}
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail well" style="height:200px">
+      <a href="{% url "article" object.id %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{ object.thumb_image }}"/></a>
+      <div class="caption alert alert-warning">
+        <a href="{% url "article" object.id %}" style="text-decoration:none; color:black">{{ object.title }}</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<br/>
+<a class="btn btn-default btn-warning" href="{% url "new_comment" object.id %}">Ajouter un commentaire</a>
+<div>
+  <h3>Commentaires</h3>
+  {% for comment in object.comment_set.all|dictsortreversed:"date_created" %}
+  <ul class="media-list">
+    <li class="media">
+      <div class="media-body well">
+        <div>Le <strong>{{comment.date_created|date:"D d M y à H:m" }}</strong> de :  {% if comment.participant %}<span class="badge">{{comment.participant.customer}}</span>{% else %}Non-identifié{% endif %}</div>
+        <div>{{comment.body}}</div>
+      </div>
+    </li>
+  </ul>
+  {% endfor %}
+</div>
+<a class="btn btn-default btn-warning" href="{% url "new_comment" object.id %}">Ajouter un commentaire</a>
+
+{% endblock %}

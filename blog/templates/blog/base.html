@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block section_title %}{% trans "Blog" %}{% endblock %}
+
+{% block content %}
+{% if sub_section %}
+<ul class="pager">
+  <li class="previous"><a href="{% url "blog" %}">&larr; Retour au blog</a></li>
+</ul>
+{% endif %}
+
+<div class="row">
+  <div class="col-md-9">
+
+    {% block sub_content %}{% endblock %}
+
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">Catégories</h4>
+      </div>
+      <div class="panel-body" style="height:200px; text-align:justify">
+        {% for category in categories %}
+        <a href="{% url "category" category.id %}"><span class="badge alert-warning" style="margin:5px">{{ category.name }}</span></a>
+        <br/>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">Derniers articles</h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+        {% for article in last_articles|slice:":5"  %}
+        <a href="{% url "article" article.id %}"><span class="badge alert-warning" style="margin:5px">{{article.title}}</span></a>
+        <br/>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">Les tags</h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+        {% for tag in tags|slice:":20" %}
+        <a href="{% url "tag" tag.tag %}"><span class="badge alert-warning" style="margin:5px">{{tag.tag}}</span></a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">Derniers commentaires</h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+        {% for comment in comments|slice:":5" %}
+        <a href="{% url "article" comment.article.id %}#comment_{{comment.id}}"><span class="badge alert-warning" style="margin:5px; width:219px">{{comment.article.title|truncatechars:30}}<br/><span class="badge" style="margin:5px"> {{comment.body|truncatechars:30}}</span></a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
