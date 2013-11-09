@@ -11,8 +11,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1140.0066"
-   height="137.82251"
+   width="860"
+   height="260"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -2330,10 +2330,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="653.25007"
-     inkscape:cy="-112.22009"
+     inkscape:cx="365.11828"
+     inkscape:cy="22.061224"
      inkscape:document-units="px"
-     inkscape:current-layer="g4399"
+     inkscape:current-layer="g4361"
      showgrid="false"
      inkscape:window-width="1440"
      inkscape:window-height="826"
@@ -2354,7 +2354,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2362,7 +2362,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(226.13824,52.311643)">
+     transform="translate(226.13824,174.48913)">
     <text
        xml:space="preserve"
        style="font-size:20.79619217px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Wargames;-inkscape-font-specification:Wargames"
@@ -2516,10 +2516,10 @@
                            id="g4361">
                           <g
                              style="stroke-width:0.53275651;stroke-miterlimit:4;stroke-dasharray:none"
-                             transform="matrix(1.4985118,0,0,0.94429056,92.709139,-19.20273)"
+                             transform="matrix(2.1432615,0,0,1.843537,346.17619,-162.94791)"
                              id="g4423-6">
                             <g
-                               transform="matrix(0.660401,0,0,1,-51.55167,-20.00366)"
+                               transform="matrix(0.3500622,0,0,1,-212.38557,-102.45666)"
                                id="g10206-6"
                                style="fill:#a10d59;fill-opacity:1;stroke-width:0.65557879;stroke-miterlimit:4;stroke-dasharray:none">
                               <g
@@ -2539,7 +2539,7 @@
                           <g
                              style="stroke-width:0.88051659;stroke-miterlimit:4;stroke-dasharray:none"
                              id="g9340"
-                             transform="matrix(0.75098764,0,0,0.6897878,-35.580309,131.03681)">
+                             transform="matrix(0.88830416,0,0,0.81591406,-105.80884,57.46523)">
                             <g
                                style="stroke-width:0.88051659;stroke-miterlimit:4;stroke-dasharray:none"
                                id="g10214"
@@ -2561,7 +2561,7 @@
                                    id="rect8418" /></flowRegion><flowPara
                                    style="font-size:36px;text-align:justify;text-anchor:start;fill:#ffffff"
                                    id="flowPara8420">5 € d'offre de lancement </flowPara></flowRoot>                                <flowRoot
-                                   transform="matrix(0.76937162,0,0,0.76937162,-402.36188,-74.528905)"
+                                   transform="matrix(0.76937162,0,0,0.76937162,-409.22012,-74.528905)"
                                    style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
                                    id="flowRoot9332"
                                    xml:space="preserve"><flowRegion
@@ -2572,13 +2572,13 @@
                                    width="730.28546"
                                    id="rect9336" /></flowRegion><flowPara
                                    style="font-size:28px;fill:#ffffff"
-                                   id="flowPara9338">pour toute inscription jusqu'au 5 novembre 2013 2013 inclus !</flowPara></flowRoot>                              </g>
+                                   id="flowPara9338">pour toute inscription jusqu'au 15 novembre 2013 2013 inclus !</flowPara></flowRoot>                              </g>
                             </g>
                           </g>
                           <g
                              style="stroke-width:0.68026352;stroke-miterlimit:4;stroke-dasharray:none"
                              id="g4762-4"
-                             transform="matrix(2.0147121,0,0,0.4307805,263.0689,63.742445)">
+                             transform="matrix(1.5219084,0,0,0.82005572,75.785537,-142.87563)">
                             <rect
                                y="451.70197"
                                x="-376.36215"
@@ -2589,7 +2589,7 @@
                           </g>
                           <g
                              style="stroke-width:0.63532913;stroke-miterlimit:4;stroke-dasharray:none"
-                             transform="matrix(0.99750002,0,0,0.99750002,21.281052,0.73597966)"
+                             transform="matrix(1.2960812,0,0,1.2960812,-22.225557,-96.252087)"
                              id="g3556">
                             <flowRoot
                                transform="matrix(0.47467732,0,0,0.47467732,-325.86989,59.002719)"
