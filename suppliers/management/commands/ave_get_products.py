@@ -296,6 +296,8 @@ class Command(NoArgsCommand):
                     logger_article.debug(info); updated_data.append(info)
                     product_object.status = 'p'
 
+            limited_area = article_data.find(text=re.compile('Nur solange der Vorrat reicht!'))
+
             logger_article.debug('%s,%s', article_title, article_price)
 
             product_object.save()
@@ -324,6 +326,11 @@ class Command(NoArgsCommand):
                     price_object.reference = ref
                     price_object.supplier_product_url = url
                     changed = True
+
+                if price_object.limited != limited_area:
+                    info = 'product %d: limited status Old: %s, New: %s' % (product_object.id, price_object.limited, limited_area)
+                    logger_db.debug(info); updated_data.append(info)
+                    price_object.limited = True if limited_area else False
 
                 if changed:
                     price_object.save()

@@ -101,6 +101,7 @@ class Price(models.Model):
     supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
     reference = models.CharField(_('reference'), max_length=30, null=True, blank=True)
     supplier_product_url = models.URLField(_('supplier product url'), null=True, blank=True)
+    limited = models.BooleanField(_('limited product'), default=False)
     currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
     purchase_price = models.FloatField(_('purchase price'))
     selling_price = models.FloatField(_('selling price'), null=True, blank=True)
