@@ -6,42 +6,41 @@
 {% block section_title %}{% trans "Presentation" %}{% endblock %}
 
 {% block content %}
-{#{% cache 3600 home %}#}
 
-<div class="row">  
+<div class="row">
   <div class="col-md-9">
     <div id="carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+	<div class="item active">
+	  <a href="{% url "how" %}"><img src="{% static "intro.png" %}" alt="#"></a>
+	  {#<div class="carousel-caption">...</div>#}
+	</div>
+	<div class="item">
+	  <a href="{% url "create_thematic" %}"><img src="{% static "chrismasbanner.png" %}" alt="#"></a>
+	  {#<div class="carousel-caption">...</div>#}
+	</div>
+	<div class="item">
+	  <a href="{% url "signup" %}"><img src="{% static "5eurosoffert.png" %}" alt="#"></a>
+	  {#<div class="carousel-caption">...</div>#}
+	</div>
+      </div>
+      <a class="left carousel-control" href="#carousel" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#carousel" data-slide="next">
+	<span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
       <ol class="carousel-indicators">
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
 	<li data-target="#carousel" data-slide-to="1"></li>
-	<li data-target="#carousel" data-slide-to="2"></li> 
+	<li data-target="#carousel" data-slide-to="2"></li>
       </ol>
-      <div class="carousel-inner">
-	<div class="item active">
-          <img src="{% static "intro.png" %}" alt="#">
-          <div class="carousel-caption">...</div>
-	</div>
-	<div class="item">
-          <img src="{% static "banniereNoelnew.png" %}" alt="#">
-          <div class="carousel-caption">...</div>
-	</div>
-	<div class="item">
-          <img src="{% static "5eurosoffert.png" %}" alt="#">
-          <div class="carousel-caption">...</div>
-	</div>
-      </div>
-      <a class="left carousel-control" href="carousel" data-slide="prev">
-	<span class="glyphicon glyphicon-chevron-left"></span>
-      </a>
-      <a class="right carousel-control" href="carousel" data-slide="next">
-	<span class="glyphicon glyphicon-chevron-right"></span>
-      </a>
     </div>
   </div>
   <div class="col-md-3">
-    <div style="background-image: url('{% static "banner4.png" %}'); width: 280px; height:260px"></div>
+    <div style="background-image: url('{% static "banner.png" %}'); width: 280px; height:260px"></div>
   </div>
-</div> 
+</div>
 
 <br/>
 
@@ -79,5 +78,16 @@
   Les envois de colis se font le mardi et sont livrés en 48-72h. Les colis contenant des produits frais seront envoyés avec accumulateur de froid et emballage isotherme.
 </div>
 
-{#{% endcache %}#}
+{% endblock %}
+
+{% block foot %}
+<style type="text/css">
+.carousel-indicators li {
+  border: 1px solid #000;
+}
+
+.carousel-indicators li.active {
+  background-color: #000;
+}
+</style>
 {% endblock %}
