@@ -68,7 +68,11 @@ def download(url, slug, data=None, filename=None, media_root=settings.MEDIA_ROOT
     if os.path.exists(dest_path): return dest_path.replace(settings.MEDIA_ROOT+'/', settings.MEDIA_URL)
     local_path, headers = request.urlretrieve(url, dest_path, data=data)
     # return local_path.replace(settings.MEDIA_ROOT+'/', settings.MEDIA_URL)
-    return local_path.replace(settings.MEDIA_ROOT+'/', '')
+
+    res_path = local_path.replace(settings.MEDIA_ROOT+'/', '')
+    res_path = res_path.replace(settings.MEDIA_URL, '')
+
+    return res_path
 
 class Command(NoArgsCommand):
     help = 'Get the AVE supplier products and save it into database'
