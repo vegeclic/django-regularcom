@@ -76,7 +76,7 @@ class CatalogView(generic.ListView):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
 
-        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('name')
+        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
 
         paginator = Paginator(products_query, 24)
 
