@@ -27,7 +27,7 @@ from . import models, forms
 def set_common_context_data(context):
     context['categories'] = models.Category.objects.all()
     context['tags'] = models.TaggedItem.objects.distinct('tag').order_by('tag').all()
-    context['last_articles'] = models.Article.objects.order_by('-date_created').all()
+    context['last_articles'] = models.Article.objects.order_by('-date_last_modified').all()
     context['comments'] = models.Comment.objects.order_by('-date_created').all()
 
 class BlogView(generic.ListView):
@@ -35,7 +35,7 @@ class BlogView(generic.ListView):
     template_name = 'blog/blog.html'
 
     def get_queryset(self):
-        articles = models.Article.objects.order_by('-date_created').all()
+        articles = models.Article.objects.order_by('-date_last_modified').all()
 
         paginator = Paginator(articles, 10)
 
@@ -63,7 +63,7 @@ class CategoryView(generic.ListView):
     template_name = 'blog/blog.html'
 
     def get_queryset(self):
-        articles = models.Article.objects.order_by('-date_created').filter(categories__id=self.kwargs.get('pk')).all()
+        articles = models.Article.objects.order_by('-date_last_modified').filter(categories__id=self.kwargs.get('pk')).all()
 
         paginator = Paginator(articles, 10)
 
@@ -92,7 +92,7 @@ class TagView(generic.ListView):
     template_name = 'blog/blog.html'
 
     def get_queryset(self):
-        articles = models.Article.objects.order_by('-date_created').filter(tags__tag=self.kwargs.get('tag')).all()
+        articles = models.Article.objects.order_by('-date_last_modified').filter(tags__tag=self.kwargs.get('tag')).all()
 
         paginator = Paginator(articles, 10)
 
