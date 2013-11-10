@@ -76,7 +76,7 @@ class Product(TranslatableModel):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return '%s, %s' % (self.lazy_translation_getter('name', 'Product: %s' % self.pk), self.price().purchase_price)
+    def __unicode__(self): return self.lazy_translation_getter('name', 'Product: %s' % self.pk)
 
     def price(self):
         try:

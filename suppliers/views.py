@@ -45,6 +45,24 @@ def get_products_tree(products, root_product=None, root_only=True):
             __list.append((product, get_products_tree(product.products_children, root_product=product, root_only=False)))
     return __list
 
+def find_product(products_tree, product_pattern):
+    for product, products in products_tree:
+        if product.id == int(product_pattern): return [(product, products)]
+        res = find_product(products, product_pattern)
+        if res: return res
+    return None
+
+def products_tree_to_list(products_tree):
+    if not products_tree: return []
+    __list = []
+    for product, products in products_tree:
+        __list.append(product)
+        __list += products_tree_to_list(products)
+    return __list
+
+def compute_degressive_price(product_list):
+    for p in product_list: p.degressive_price = p.price().degressive_price(26)
+
 class CatalogView(generic.ListView):
     model = models.Product
     template_name = 'suppliers/catalog.html'
@@ -52,24 +70,6 @@ class CatalogView(generic.ListView):
     def get_queryset(self):
         products_tree = cache.get('products_tree') or get_products_tree(pm.Product.objects)
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
-
-        def find_product(products_tree, product_pattern):
-            for product, products in products_tree:
-                if product.id == int(product_pattern): return [(product, products)]
-                res = find_product(products, product_pattern)
-                if res: return res
-            return None
-
-        def products_tree_to_list(products_tree):
-            if not products_tree: return []
-            __list = []
-            for product, products in products_tree:
-                __list.append(product)
-                __list += products_tree_to_list(products)
-            return __list
-
-        def compute_degressive_price(product_list):
-            for p in product_list: p.degressive_price = p.price().degressive_price(26)
 
         products_query = self.model.objects.language('fr').filter(status='p')
         if self.kwargs.get('product_id'):
