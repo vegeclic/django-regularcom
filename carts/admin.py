@@ -107,7 +107,7 @@ class ContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     extra = 1
 
     # def get_filters(self, obj): return (('content', {'extent__product': obj.product}),)
-    def get_filters(self, obj): return (('product', {'product': obj}),)
+    # def get_filters(self, obj): return (('product', {'product': obj}),)
 
 class ContentAdmin(ca.MyModelAdmin):
     form = forms.ContentAdminForm

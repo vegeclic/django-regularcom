@@ -77,6 +77,19 @@ class Command(NoArgsCommand):
 
                 logging.debug('meta-product: %s, extent: %s' % (extent.product.name, __extent))
 
+                if extent.customized:
+                    logging.debug("start fullfilling the delivery cart with a custom content")
+
+                    logging.debug("create custom content object")
+                    content = delivery.content_set.create(product=extent.product, extent=extent.extent, customized=extent.customized) if not debug else None
+
+                    for content in models.ExtentContentProduct.objects.filter(content__extent=extent):
+                        logging.debug("add product %s (%d) with a quantity %d (price: %f, weight: %f)" % (content.product.name, content.product.id, content.quantity, content.product.price(), content.product.weight))
+                        if not debug:
+                            content.contentproduct_set.create(product=content.product, quantity=content.quantity)
+
+                    continue
+
                 def get_product_products(product):
                     __products = []
                     for child in product.products_children.all():
@@ -198,7 +211,7 @@ class Command(NoArgsCommand):
                 logging.debug("start fullfilling the delivery cart content")
 
                 logging.debug("create content object")
-                content = delivery.content_set.create(extent=extent) if not debug else None
+                content = delivery.content_set.create(product=extent.product, extent=extent.extent, customized=extent.customized) if not debug else None
 
                 for i in range(nbr_items):
                     if sol[i]:
