@@ -513,13 +513,20 @@ class CreateAllProductsDone(CreateAllDone):
 
         products_data = form_data.get('products') or {}
         extents_data = form_data.get('extents') or {}
+        suppliers_data = form_data.get('suppliers') or {}
 
         products = products_data.get('products', [])
 
         for product in products:
-            extent = extents_data.get('product_%d' % product.id, 0)
+            extent_value = extents_data.get('product_%d' % product.id, 0)
             custom = extents_data.get('choice_supplier_product_%d' % product.id, 'false') == 'true'
-            subscription.extent_set.create(product=product, extent=extent, customized=custom)
+            extent = subscription.extent_set.create(product=product, extent=extent_value, customized=custom)
+
+            if custom:
+                supplier_products = suppliers_data.get('supplier_product_%d' % product.id) or []
+                extent_content = extent.extentcontent_set.create()
+                for sp in supplier_products:
+                    extent_content.extentcontentproduct_set.create(product=sp, quantity=1)
 
         return True
 

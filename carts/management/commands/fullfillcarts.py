@@ -82,11 +82,14 @@ class Command(NoArgsCommand):
 
                     logging.debug("create custom content object")
                     content = delivery.content_set.create(product=extent.product, extent=extent.extent, customized=extent.customized) if not debug else None
+                    extent_content = extent.extentcontent_set.get()
 
-                    for content in models.ExtentContentProduct.objects.filter(content__extent=extent):
-                        logging.debug("add product %s (%d) with a quantity %d (price: %f, weight: %f)" % (content.product.name, content.product.id, content.quantity, content.product.price(), content.product.weight))
+                    logging.debug('after')
+
+                    for ecp in extent_content.extentcontentproduct_set.all():
+                        logging.debug("add product %s (%d) with a quantity %d (price: %s, weight: %s)" % (ecp.product.name, ecp.product.id, ecp.quantity, ecp.product.price().__unicode__(), ecp.product.weight))
                         if not debug:
-                            content.contentproduct_set.create(product=content.product, quantity=content.quantity)
+                            content.contentproduct_set.create(product=ecp.product, quantity=ecp.quantity)
 
                     continue
 

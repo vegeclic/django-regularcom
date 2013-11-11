@@ -288,7 +288,7 @@ class Extent(models.Model):
     def __unicode__(self): return '%s, %s, %s' % (self.subscription.__unicode__(), self.product.__unicode__(), self.extent)
 
 class ExtentContent(models.Model):
-    extent = models.ForeignKey('Extent', verbose_name=_('extent'))
+    extent = models.ForeignKey('Extent', verbose_name=_('extent'), unique=True)
 
 class ExtentContentProduct(models.Model):
     class Meta:
