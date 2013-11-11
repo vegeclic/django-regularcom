@@ -23,15 +23,15 @@
 
       <div class="btn-group" data-toggle="buttons">
 	{% for thematic in wizard.form.thematic_list %}
-	  <label class="choice btn btn-default btn-lg tooltip_link" title="{{thematic.body|truncatewords:20}}">
-	    <input type="radio" name="cart-choice" value="{{thematic.id}}"/>
+	  <label class="choice btn {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}btn-success active{% else %}btn-default{% endif %} btn-lg tooltip_link" title="{{thematic.body|truncatewords:20}}">
+	    <input type="radio" name="cart-choice" value="{{thematic.id}}" {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}checked="checked"{% endif %} />
 	    <img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" style="width:215px"/>
 	  </label>
 	{% endfor %}
 
 	<label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
-	<label class="choice btn btn-default btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
-	  <input type="radio" name="cart-choice" value="perso"/> <strong>Personnaliser</strong>
+	<label class="choice btn {% if wizard.form.choice.value == "perso" %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
+	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} /> <strong>Personnaliser</strong>
 	</label>
       </div>
 

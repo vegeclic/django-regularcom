@@ -23,29 +23,29 @@
 
     <div class="row text-center">
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'cart' %}btn-info popover_link{% elif wizard.steps.step1 >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-th"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'cart' %}btn-info popover_link{% elif wizard.form.step_idx >= 0 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-th"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'subscription' %}btn-info popover_link{% elif wizard.steps.step1 >= 2 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-wrench"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'subscription' %}btn-info popover_link{% elif wizard.form.step_idx >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-wrench"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'products' %}btn-info popover_link{% elif wizard.steps.step1 >= 3 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix des familles de produits" data-content="Choisissez les familles de produits que vous souhaitez avoir dans votre panier." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-list"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'products' %}btn-info popover_link{% elif wizard.form.step_idx >= 2 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix des familles de produits" data-content="Choisissez les familles de produits que vous souhaitez avoir dans votre panier." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-list"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'extents' %}btn-info popover_link{% elif wizard.steps.step1 >= 4 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Proportions des produits" data-content="Définissez la proportion que doit avoir chacune des familles de produits." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-sort"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'extents' %}btn-info popover_link{% elif wizard.form.step_idx >= 3 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Proportions des produits" data-content="Définissez la proportion que doit avoir chacune des familles de produits." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-sort"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'suppliers' %}btn-info popover_link{% elif wizard.steps.step1 >= 5 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Sélection des articles" data-content="Sélectionnez les articles de nos fournisseurs relatifs aux familles choisis précédemment." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-check"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'suppliers' %}btn-info popover_link{% elif wizard.form.step_idx >= 4 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Sélection des articles" data-content="Sélectionnez les articles de nos fournisseurs relatifs aux familles choisis précédemment." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-check"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'preview' %}btn-info popover_link{% elif wizard.steps.step1 >= 6 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu du contenu du panier" data-content="Verifier le contenu de votre abonnement avant de continuer." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-eye-open"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'preview' %}btn-info popover_link{% elif wizard.form.step_idx >= 5 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu du contenu du panier" data-content="Verifier le contenu de votre abonnement avant de continuer." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-eye-open"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'authentication' %}btn-info popover_link{% elif wizard.steps.step1 >= 7 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Identification" data-content="Connectez-vous ou inscrivez-vous. C'est très simple !" data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-user"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'authentication' %}btn-info popover_link{% elif wizard.form.step_idx >= 6 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Identification" data-content="Connectez-vous ou inscrivez-vous. C'est très simple !" data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-user"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'payment' %}btn-info popover_link{% elif wizard.steps.step1 >= 8 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Paiement" data-content="Procédez au paiement de la première échéance ou de la durée totale de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-credit-card"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'payment' %}btn-info popover_link{% elif wizard.form.step_idx >= 7 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Paiement" data-content="Procédez au paiement de la première échéance ou de la durée totale de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-credit-card"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'address' %}btn-info popover_link{% elif wizard.steps.step1 >= 9 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Coordonnées" data-content="Nous avons besoin de vos coordonnées pour la livraison et facturation." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-home"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'address' %}btn-info popover_link{% elif wizard.form.step_idx >= 8 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Coordonnées" data-content="Nous avons besoin de vos coordonnées pour la livraison et facturation." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-home"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'comment' %}btn-info popover_link{% elif wizard.steps.step1 >= 10 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Commentaire" data-content="Si vous avez une suggestion ou une remarque quelconque n'hesitez pas à l'indiquer ici." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-comment"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'comment' %}btn-info popover_link{% elif wizard.form.step_idx >= 9 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Commentaire" data-content="Si vous avez une suggestion ou une remarque quelconque n'hesitez pas à l'indiquer ici." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-comment"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'resume' %}btn-info popover_link{% elif wizard.steps.step1 >= 11 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu avant validation" data-content="Dernière verification avant la création de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-asterisk"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'resume' %}btn-info popover_link{% elif wizard.form.step_idx >= 10 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu avant validation" data-content="Dernière verification avant la création de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-asterisk"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'validation' %}btn-info popover_link{% elif wizard.steps.step1 >= 12 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Validation" data-content="Votre abonnement a bien été crée." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-saved"></i></button></div>
+      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'validation' %}btn-info popover_link{% elif wizard.form.step_idx >= 11 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Validation" data-content="Votre abonnement a bien été crée." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-saved"></i></button></div>
 
     </div>
 
@@ -62,20 +62,18 @@
 
     {{ wizard.management_form.as_p }}
 
-    <div class="form-group row">
-      <div class="col-md-6"><button class="btn btn-default btn-lg btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button></div>
-      <div class="col-md-6"><button class="btn btn-lg btn-primary btn-block tooltip_link" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% trans "Submit" %}</button></div>
+    <div class="form-group row" id="buttons">
+      <div class="col-md-6">
+	<button class="btn btn-lg btn-primary btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% trans "Next" %}</button>
+      </div>
+      <div class="col-md-6">
+	<button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>
+      </div>
     </div>
   </form>
 {% endblock %}
 
 {% block foot %}
-  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
-  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
-  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
-  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
-  <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
-
   <script type="text/javascript">
     $(function() {
 	$('.popover_link').popover('show');
@@ -83,8 +81,8 @@
   </script>
 
   <style type="text/css">
-    .ui-slider { height: 1.9em; }
-    .ui-slider .ui-slider-handle { height: 2.3em; }
+    #buttons { overflow: hidden }
+    #buttons .col-md-6 { float: right }
   </style>
 
   {% block sub_foot %}{% endblock %}

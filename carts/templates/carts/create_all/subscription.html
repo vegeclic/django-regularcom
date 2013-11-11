@@ -101,8 +101,23 @@
 {% endblock %}
 
 {% block sub_foot %}
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
+  <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
+
+  <style type="text/css">
+    .ui-slider { height: 1.9em; }
+    .ui-slider .ui-slider-handle { height: 2.3em; }
+  </style>
+
   <script type="text/javascript">
     $(function() {
+	if ( $('#customize-button input').hasClass('disabled') ) {
+	    $('#customize-button').addClass('disabled');
+	}
+
 	$('#customize-button').click(function() {
 	    var i = $(this).find('i');
 	    if ( $(this).hasClass('btn-success') ) {
@@ -134,6 +149,12 @@
 	});
 
 	$('.carrier_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$('#carrier_' + $(this).val()).show();
+	    }
+	});
 
 	var carriers = [
 	    {% for carrier in wizard.form.carriers|dictsort:'id' %}

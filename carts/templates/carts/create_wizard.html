@@ -221,15 +221,6 @@
 
   <script type="text/javascript">
     $(function() {
-	$('.checkbox-select').each(function() {
-	    if ($(this)[0].checked) {
-		$(this).parent().addClass('active');
-	    }
-	    if ($(this).hasClass('disabled')) {
-		$(this).parent().addClass('disabled');
-	    }
-	});
-
 	$('.expend_button').click(function() {
 	    i = $(this).find('i');
 	    if ( i.hasClass('glyphicon-collapse-down') ) {
@@ -301,16 +292,6 @@
 	});
 
 	$('.carrier_detail').hide();
-
-	$('.radio-select').each(function() {
-	    if ($(this)[0].checked) {
-		$(this).parent().addClass('active');
-		$('#carrier_' + $(this).val()).show();
-	    }
-	    if ($(this).hasClass('disabled')) {
-		$(this).parent().addClass('disabled');
-	    }
-	});
 
 	var carriers = [
 	    {% for carrier in wizard.form.carriers|dictsort:'id' %}

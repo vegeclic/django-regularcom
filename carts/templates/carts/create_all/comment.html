@@ -3,4 +3,7 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="alert alert-info">{% trans "Vous pouvez, si vous le souhaitez, ajouter un commentaire à votre abonnement." %}</div>
+
+  {{wizard.form.comment}}
 {% endblock %}

@@ -3,4 +3,73 @@
 {% load static %}
 
 {% block sub_content %}
+
+  {% for field in wizard.form %}
+    <div class="form-group well">
+      <h3>{{field.label}}</h3>
+
+      <div class="progress progress-striped">
+	<div class="progress-bar progress-bar-success" style="width: 0%"></div>
+	<div class="progress-bar progress-bar-warning" style="width: 100%"></div>
+      </div>
+
+      {{field}}
+    </div>
+  {% endfor %}
+
+{% endblock %}
+
+{% block sub_foot %}
+  <style type="text/css">
+    .price {
+	display: none;
+    }
+  </style>
+
+  <script type="text/javascript">
+    $(function() {
+	$('.choice').change(function() {
+	    var price_percent = parseFloat($(this).find('.price').text());
+	    var bars = $(this).parent().parent().find('.progress-bar');
+	    var size = parseFloat(bars[0].style.width);
+
+	    if ($(this).hasClass('btn-default')) {
+		if ((size+price_percent) > 100) {
+		    alert("{% trans "Vous ne pouvez pas sélectionner plus de familles de produits." %}");
+		    $(this).removeClass('active');
+		    $(this).find('input')[0].checked = false;
+		    return;
+		}
+		$(this).removeClass('btn-default');
+		$(this).addClass('btn-success');
+		price_percent *= 1;
+	    } else {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-default');
+		price_percent *= -1;
+	    }
+
+	    bars[0].style.width = (size+price_percent) + "%";
+	    bars[1].style.width = (100-(size+price_percent)) + "%";
+	});
+
+	$('.choice').each(function() {
+	    if ($(this).find('input')[0].checked == false) { return; }
+
+	    var price_percent = parseFloat($(this).find('.price').text());
+	    var bars = $(this).parent().parent().find('.progress-bar');
+	    var size = parseFloat(bars[0].style.width);
+
+	    bars[0].style.width = (size+price_percent) + "%";
+	    bars[1].style.width = (100-(size+price_percent)) + "%";
+	})
+
+	$('.choice input').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().removeClass('btn-default');
+		$(this).parent().addClass('btn-success');
+	    }
+	});
+    });
+  </script>
 {% endblock %}

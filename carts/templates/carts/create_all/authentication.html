@@ -3,4 +3,71 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+      {% if wizard.form.user %}
+	<div class="alert alert-success">
+	  <strong>Vous êtes déjà identifié !</strong>
+	</div>
+      {% else %}
+	<div class="alert alert-info">
+	  <strong>Vous n'êtes pas encore connecté !</strong> Nous vous invitons à vous inscrire ou vous connecter en renseignant le formulaire ci-dessous.
+	</div>
+
+	{% for error in wizard.form.non_field_errors %}
+	  <div class="alert alert-danger">{{error}}</div>
+        {% endfor %}
+
+	<div class="form-group">
+	  {{wizard.form.sign_type}}
+	</div>
+
+	<div class="form-group">
+	  {{wizard.form.email}}
+	</div>
+
+	<div class="form-group">
+	  {{wizard.form.password}}
+	</div>
+      {% endif %}
+
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript">
+    $(function() {
+	function highlight(obj) {
+	    $('.btn-group label').not(obj).each(function() {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-default');
+	    });
+	    obj.removeClass('btn-default');
+	    obj.addClass('btn-success');
+	}
+
+	$('.btn-group label').change(function() { highlight($(this)) });
+	$('.btn-group label').each(function() {
+	    if ($(this).find('input')[0].checked) {
+		highlight($(this));
+	    }
+	});
+
+	$('#id_authentication-sign_type_0').change(function() {
+	    $('#id_authentication-password').hide();
+	});
+
+	$('#id_authentication-sign_type_1').change(function() {
+	    $('#id_authentication-password').show();
+	});
+
+	if ($('#id_authentication-sign_type_0')[0].checked) {
+	    $('#id_authentication-password').hide();
+	}
+    });
+  </script>
 {% endblock %}

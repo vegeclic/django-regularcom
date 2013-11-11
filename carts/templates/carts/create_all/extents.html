@@ -3,4 +3,71 @@
 {% load static %}
 
 {% block sub_content %}
+
+  <div class="media alert alert-info">
+    {% if wizard.form.thematic %}
+      <div class="pull-left">
+	<img class="img-thumbnail" src="{% get_media_prefix %}{{wizard.form.thematic.main_image}}" alt="{{wizard.form.thematic.name}}" title="{{wizard.form.thematic.name}}" style="width:200px; height:160px; display: block;"/>
+      </div>
+    {% endif %}
+
+    <div class="body">
+      {% if wizard.form.thematic %}
+	{% blocktrans with name=wizard.form.thematic.name %}
+	  <h4>Ready to create your new {{name}} thematic cart ?</h4>
+	{% endblocktrans %}
+      {% else %}
+	{% blocktrans %}
+	  <h4>Ready to create your new custom cart ?</h4>
+	{% endblocktrans %}
+      {% endif %}
+
+      {% blocktrans %}
+	<p>Vous pouvez maintenant déterminer la proportion souhaitée pour chaque produit en déplaçant les jauges respectives. Pour verrouiller ou déverrouiller une jauge, cliquez sur le l'icone du verrou correspondant. Pour équilibrer les jauges, cliquez sur « équilibrer ». Une fois les proportions déterminées, vous pouvez finaliser la création de votre abonnement en cliquant sur « Confirmer ».</p>
+      {% endblocktrans %}
+    </div>
+  </div>
+
+  <div><a class="btn btn-default btn-lg btn-block tooltip_link" id="balance" title="{% trans "Click here in order to balance the whole of product extents" %}">{% trans "balance" %}</a></div>
+  <br/>
+
+  <div id="sliders">
+    {% for field in wizard.form %}
+      <div class="form-group well">
+	{% if field.label == "boolean" %}
+	  {% trans "Choix des produits" %} : {{field}}
+	{% else %}
+	<h4>{{ field.label }}</h4>
+	<div class="row">
+	  <div class="col-md-1">
+	    <button type="button" class="btn btn-link tooltip_link lock" data-toggle="button" title="{% trans "lock" %} {{field.label}}"><i class="glyphicon glyphicon-lock"></i></button>
+	  </div>
+          <div class="col-md-10 slider"></div>
+          <div class="col-md-1 value_content"><span class="badge"><span class="value">{{ field.value }}</span> %</span></div>
+	  {{field}}
+	</div>
+	{% endif %}
+      </div>
+    {% endfor %}
+    {# <span id="sliders_total">100</span> #}
+  </div>
+
+  <div class="alert alert-warning">
+    Si vous choisissez des proportions trop petites, assurez-vous que le montant de la taille de votre panier est suffisant au risque de ne pas retrouver ces familles de produits dans votre panier.
+    Si vous souhaitez désactiver une famille de produit, choisissez une proportion à « 0 % ».
+  </div>
+
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
+  <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
+
+  <style type="text/css">
+    .ui-slider { height: 1.9em; }
+    .ui-slider .ui-slider-handle { height: 2.3em; }
+  </style>
 {% endblock %}

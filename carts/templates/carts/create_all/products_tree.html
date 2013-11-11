@@ -1,0 +1,75 @@
+{% load i18n %}
+{% load static %}
+
+<li class="media">
+  <a class="pull-left" href="#">
+    {% if product.main_image %}
+      <img class="media-object" src="{% get_media_prefix %}{{product.main_image}}" alt="64x64" style="width: 64px; height: 64px;"/>
+    {% else %}
+      <img class="media-object" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACmUlEQVR4Xu2Y60tqQRTFl4r4TsEXKIkIikH4wOcH//60UEJExQdiKoqGYlIhKtrdA8Gte7vRDF1C9wbhyDlnz+w1e9ZPR7NYLA444dCwANwBvAXYA07YA8EmyBRgCjAFmAJMgRNWgDHIGGQMMgYZgycMAf4zxBhkDDIGGYOMQcbgCSugjMGnpyc0m02sVivo9XoEg0Gcn5+/kXQ8HqPRaMButyOTyXwq93fk/GhQJQH2+z2KxSK0Wq0o/P7+Hg8PD6JIo9EoxtxsNuIZetZqtX4qwHfk/JfiSgLM53Pc3t4ikUjA5XL9dZx6vY7tdiuE0Gg0QoDBYIB2u414PA63243pdIparYZoNAqTySSV89O2+uABJQH6/T663a5o+dlsJoaga+oGil8/slCtVpHP50WBrwLQvUqlgufnZ6RSKZTLZdhsNiSTSajklBFBSYBOp4O7uzs4nU4EAgGMRiOxDaios7MzXF9fw+fzCUFubm7eCLBer1EqlXA4HKDT6ZDL5WAwGKCS878L0Ov1QJ90Og2HwwEyL9rvoVBIFEZiUGG08u8FoMmSMZJB+v1+XFxciPmr5vyqCEod8Lp3Y7EYPB4PHh8fxaqGw2FMJhPx/X2QORYKBWGW1PoWi0UIR95AXaOS86vF0/NKAux2O1xdXQn80arTatK+p1WnoPuvQaikuLy8hNlsFh1BrU/bha4pstms6ByZnOQhMqEkAA1IK9lqtcRqk4OTEF6v94+5/L4FiADD4VAUTBNfLpeiG8hHIpGIVE6Z4pU7QHbQn/Secgf8pGJk5sIC8IkQnwjxiRCfCMm457G8wxRgCjAFmAJMgWNxdJk6mAJMAaYAU4ApIOOex/IOU4ApwBRgCjAFjsXRZepgCpw6BV4ALHRmn7YUTAEAAAAASUVORK5CYII=" data-src="holder.js/64x64" alt="64x64" style="width: 64px; height: 64px;"/>
+    {% endif %}
+  </a>
+  <div class="media-body">
+    <div class="well">
+      {% if products %}
+	<a data-toggle="collapse" data-target="#sub_products_{{product.id}}" class="expend_button tooltip_link" title="{% trans "expend/collapse products list" %}">
+	  <h4 class="media-heading"><i class="glyphicon glyphicon-collapse-down"></i> {{ product }}</h4>
+	</a>
+      {% else %}
+	<h4 class="media-heading">{{ product }}</h4>
+      {% endif %}
+      <div class="row">
+	<div class="col-md-10">{{ product.body|truncatewords:50 }}</div>
+	<div class="col-md-2">
+	  <div class="form-group">
+	    <div data-toggle="buttons">
+	      <label class="btn {% if product.id|floatformat in wizard.form.products.value %}btn-success active{% elif not wizard.form.modified and product in wizard.form.thematic_products %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link add_link" title="{% trans "add" %} {{product}}">
+		<input class="checkbox-select" type="checkbox" name="products-products" value="{{product.id}}" {% if product.id|floatformat in wizard.form.products.value %}checked="checked"{% elif not wizard.form.modified and product in wizard.form.thematic_products %}checked="checked"{% endif %} /> <i class="glyphicon glyphicon-plus-sign"></i> <strong>{% trans "add" %}</strong>
+	      </label>
+	    </div>
+	  </div>
+	</div>
+      </div>
+
+      <a href="#modal_{{product.id}}" role="button" data-toggle="modal" class="btn btn-link tooltip_link" title="{% trans "read more about" %} {{product}}"><i class="glyphicon glyphicon-info-sign"></i> {% trans "more" %}</a>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal_{{product.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_{{product.id}}_label" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="modal_{{product.id}}_label">{{product}}</h3>
+	  </div>
+	  <div class="modal-body">
+	    <a class="pull-right" href="#">
+	      {% if product.main_image %}
+		<img class="media-object" src="{% get_media_prefix %}{{product.main_image}}" alt="128x128" style="width: 128px; height: 128px;"/>
+	      {% else %}
+		<img class="media-object" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACmUlEQVR4Xu2Y60tqQRTFl4r4TsEXKIkIikH4wOcH//60UEJExQdiKoqGYlIhKtrdA8Gte7vRDF1C9wbhyDlnz+w1e9ZPR7NYLA444dCwANwBvAXYA07YA8EmyBRgCjAFmAJMgRNWgDHIGGQMMgYZgycMAf4zxBhkDDIGGYOMQcbgCSugjMGnpyc0m02sVivo9XoEg0Gcn5+/kXQ8HqPRaMButyOTyXwq93fk/GhQJQH2+z2KxSK0Wq0o/P7+Hg8PD6JIo9EoxtxsNuIZetZqtX4qwHfk/JfiSgLM53Pc3t4ikUjA5XL9dZx6vY7tdiuE0Gg0QoDBYIB2u414PA63243pdIparYZoNAqTySSV89O2+uABJQH6/T663a5o+dlsJoaga+oGil8/slCtVpHP50WBrwLQvUqlgufnZ6RSKZTLZdhsNiSTSajklBFBSYBOp4O7uzs4nU4EAgGMRiOxDaios7MzXF9fw+fzCUFubm7eCLBer1EqlXA4HKDT6ZDL5WAwGKCS878L0Ov1QJ90Og2HwwEyL9rvoVBIFEZiUGG08u8FoMmSMZJB+v1+XFxciPmr5vyqCEod8Lp3Y7EYPB4PHh8fxaqGw2FMJhPx/X2QORYKBWGW1PoWi0UIR95AXaOS86vF0/NKAux2O1xdXQn80arTatK+p1WnoPuvQaikuLy8hNlsFh1BrU/bha4pstms6ByZnOQhMqEkAA1IK9lqtcRqk4OTEF6v94+5/L4FiADD4VAUTBNfLpeiG8hHIpGIVE6Z4pU7QHbQn/Secgf8pGJk5sIC8IkQnwjxiRCfCMm457G8wxRgCjAFmAJMgWNxdJk6mAJMAaYAU4ApIOOex/IOU4ApwBRgCjAFjsXRZepgCpw6BV4ALHRmn7YUTAEAAAAASUVORK5CYII=" data-src="holder.js/128x128" alt="128x128" style="width: 128px; height: 128px;"/>
+	      {% endif %}
+	    </a>
+	    <p>{{product.body}}</p>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	    <!-- <button class="btn btn-primary">Save changes</button> -->
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    {% if products %}
+      <div class="media collapse out" id="sub_products_{{product.id}}">
+	<ul class="media-list">
+	  {% for sub_product, sub_products in products %}
+	    {% with product=sub_product products=sub_products template_name="carts/create_all/products_tree.html" %}
+              {% include template_name %}
+	    {% endwith %}
+	  {% endfor %}
+	</ul>
+      </div>
+    {% endif %}
+  </div>
+</li>

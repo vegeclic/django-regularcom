@@ -3,4 +3,58 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="panel panel-success">
+    <div class="panel-heading"><h4>{% trans "Products" %}</h4></div>
+    <div class="panel-body">
+      <div class="alert alert-info">
+	Pour choisir une famille de produits, cliquez simplement sur « ajouter ». Après validation, vous serrez invité à définir les proportions de chacun de vos produits.
+	Il vous est possible d'affiner votre sélection en dépliant les familles de produits.
+	Une liste de sous-familles apparaîtra, il vous suffira alors d'ajouter ceux que vous souhaitez.
+      </div>
+
+      <div class="alert alert-warning">
+	Le choix d'un produit spécifique au sein d'une famille de produit sera <strong>prochainement disponible</strong>.
+      </div>
+
+      <ul class="media-list">
+	{% for product, products in wizard.form.products_tree %}
+	  {% with product=product products=products %}
+	    {% include "carts/create_all/products_tree.html" %}
+	  {% endwith %}
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('.add_link').click(function() {
+	    add_links = $(this).parent().parent().parent().parent().parent().parent().find('.media').find('.add_link')
+	    if ( $(this).hasClass('btn-success') ) {
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-default');
+		add_links.removeClass('disabled');
+	    } else {
+		$(this).removeClass('btn-default');
+		$(this).addClass('btn-success');
+		add_links.addClass('disabled')
+		add_links.removeClass('btn-success')
+		add_links.addClass('btn-default');
+		add_links.removeClass('active');
+		add_links.find('.checkbox-select').each(function(){ $(this)[0].checked = false; });
+	    }
+	});
+
+	$('.add_link').each(function() {
+	    add_link = $(this).parent().parent().find('.media').find('.add_link')
+	    if ( $(this).hasClass('btn-success') ) {
+		add_link.addClass('disabled')
+	    } else {
+		add_link.removeClass('disabled')
+	    }
+	});
+    });
+  </script>
 {% endblock %}

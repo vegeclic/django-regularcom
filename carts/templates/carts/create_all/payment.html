@@ -3,4 +3,105 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-info">
+	<div class="panel-heading"><h4>{% trans "Montant à payer" %}</h4></div>
+	<div class="panel-body text-center"><h1>{{wizard.form.price}}</h1></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+	<div class="panel-heading"><h4>{% trans "Solde disponible sur votre portemonnaie Végéclic" %}</h4></div>
+	<div class="panel-body text-center"><h1>{{wizard.form.balance}} {{wizard.form.currency.symbol}}</h1></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ form.payment_type.label }}</h4></div>
+    <div class="panel-body">
+      {{ form.payment_type }}
+      <br/>
+      <br/>
+      <div class="well">
+	<div class="payment_type_detail" id="payment_type_c">
+	  <h3>Chèque</h3>
+
+	  <ul>
+	    <li><strong>Libeller</strong> le chèque au nom de « <strong>Geraldine Starke</strong> »</li>
+	    <li>et l'<strong>envoyer</strong> à l'adresse suivante : « <strong>71 rue de la Meignanne, 49100 Angers</strong> »</li>
+	  </ul>
+
+	  <p>Vous avez la possibilité de payer toutes vos échéances en avances en indiquant sur chaque chèque le montant moyen de votre panier. Les chèques seront encaissés à J-10 de l'envoi des paniers.</p>
+	</div>
+	<div class="payment_type_detail" id="payment_type_t">
+	  <h3>Virement bancaire</h3>
+
+	  <p>Pour effectuer votre <strong>virement</strong> vous pouvez soit utiliser le <strong>RIB</strong> ou l'<strong>IBAN</strong> tous deux fournis ci-dessous.</p>
+
+	  <table class="table table-condensed table-hover">
+	    <caption><strong>Relevé d'identité bancaire (RIB)</strong></caption>
+	    <tr><th>Code Banque</th><th>Code guichet</th><th>Numéro compte<th><th>Clé RIB</th></tr>
+	    <tr><td>14690</td><td>00001</td><td>10320289210<td><td>02</td></tr>
+	  </table>
+
+	  <table class="table table-condensed table-hover">
+	    <caption><strong>IBAN</strong></caption>
+	    <tr><th>IBAN</th><td>FR76</td><td>1469</td><td>0000</td><td>0110<td><td>3202</td><td>8921</td><td>002</td></tr>
+	    <tr><th>BIC</th><td colspan="7">MONNFR22</td></tr>
+	  </table>
+	</div>
+	<div class="payment_type_detail" id="payment_type_p">
+	  <h3>Paypal</h3>
+	  <p>Rendez-vous sur le site <a href="http://www.paypal.fr"><strong>Paypal.fr</strong></a> puis :
+	  <ol>
+	    <li>Créer un compte ou connectez-vous à votre compte paypal.</li>
+	    <li>Cliquer sur « envoi de fonds » dans le menu du haut.</li>
+	    <li>Indiquez le montant dont vous souhaitez créditer votre compte.</li>
+	    <li>Indiquez le destinataire suivant : <strong>contact@vegeclic.fr</strong></li>
+	    <li>Vous devrez ensuite choisir votre moyen de paiement.</li>
+	    <li>Il suffit de valider et la transaction sera effectuée.</li>
+	  </ol>
+	  </p>
+	</div>
+	<div class="payment_type_detail" id="payment_type_b">
+	  <h3>Bitcoin</h3>
+	  <p>Vous pouvez effectuer votre paiement à l'aide de Bitcoin en adressant le montant à l'adresse Bitoin : <strong>15q1WMg7hcggv7QL4DhM3bVUNBkFYJ3rEL</strong><p>
+	</div>
+      </div>
+    </div>
+    {% if form.payment_type.help_text %}
+      <div class="panel-footer">{{ form.payment_type.help_text }}</div>
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('.payment_type_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+		$('#payment_type_' + $(this).val()).show();
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
+	$('.radio-select').change(function() {
+	    $('.payment_type_detail').hide();
+	    $('#payment_type_' + $(this).val()).show();
+	});
+    });
+  </script>
+
+  <style type="text/css">
+    .ui-slider .ui-slider-handle { height: 2.7em; }
+    .ui-slider { height: 2.2em; }
+  </style>
 {% endblock %}

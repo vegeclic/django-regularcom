@@ -281,6 +281,7 @@ class Extent(models.Model):
     subscription = models.ForeignKey(Subscription, verbose_name=_('subscription'))
     product = models.ForeignKey('products.Product', verbose_name=_('product'))
     extent = models.PositiveSmallIntegerField(_('extent'))
+    customized = models.BooleanField(_('customized'), default=False)
 
     def __unicode__(self): return '%s, %s, %s' % (self.subscription.__unicode__(), self.product.__unicode__(), self.extent)
 

@@ -20,10 +20,14 @@
 from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+import django.contrib.auth as auth
 from . import models
 import common.forms as cf
 import common.models as cm
+import suppliers.models as sm
 import products.models as pm
+import accounts.models as am
+import wallets.models as wm
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -325,12 +329,50 @@ class CreateAllSubscriptionForm(forms.Form):
             self.fields[field].widget.attrs['class'] = 'radio-select'
 
 class CreateAllProductsForm(forms.Form):
+    products = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                              queryset=pm.Product.objects.all())
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 class CreateAllExtentsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class MyImageCheckboxSelectMultiple(forms.SelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        if value is None: value = []
+        has_id = attrs and 'id' in attrs
+        final_attrs = self.build_attrs(attrs, name=name)
+        output = ['<div class="btn-group" data-toggle="buttons">']
+        # Normalize to strings
+        str_values = set([forms.widgets.force_text(v) for v in value])
+        for i, (option_value, option_label) in enumerate(forms.widgets.chain(self.choices, choices)):
+            # If an ID attribute was given, add a numeric index as a suffix,
+            # so that the checkboxes don't all have the same ID attribute.
+            if has_id:
+                final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
+                label_for = forms.widgets.format_html(' for="{0}"', final_attrs['id'])
+            else:
+                label_for = ''
+
+            cb = forms.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
+            option_value = forms.widgets.force_text(option_value)
+            rendered_cb = cb.render(name, option_value)
+            option_label = forms.widgets.force_text(option_label)
+            option_labels = option_label.split('|')
+            output.append(forms.widgets.format_html('<label class="choice btn btn-default btn-lg {0} {1}"{2}>{3} <img class="img-thumbnail tooltip_link" src="{4}{5}" style="width:100px" title="{6}" alt="{6}"/><span class="price">{7}</span></label>',
+                                                    'active' if cb.check_test(option_value) else '',
+                                                    'disabled' if 'disabled' in attrs else '',
+                                                    label_for, rendered_cb, settings.MEDIA_URL, option_labels[1], option_labels[0], option_labels[2]))
+        output.append('</div>')
+        return forms.widgets.mark_safe('\n'.join(output))
+
+    def id_for_label(self, id_):
+        # See the comment for RadioSelect.id_for_label()
+        if id_:
+            id_ += '_0'
+        return id_
 
 class CreateAllSuppliersForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -341,25 +383,109 @@ class CreateAllPreviewForm(forms.Form):
         super().__init__(*args, **kwargs)
 
 class CreateAllAuthenticationForm(forms.Form):
+    sign_type = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label='Type', initial = 'up', choices = [('up', _('Inscription')), ('in', _('Connexion'))], required=False)
+    email = forms.EmailField(label=_('Email address'), max_length=255, required=False)
+    password = forms.CharField(widget=forms.PasswordInput, label=_('Password'), required=False)
+
+    error_messages = {
+        'duplicate_email': _("A user with that email already exists."),
+        'incorrect': _("Vos identifiants de connexion sont incorrects. Si vous n'êtes pas encore inscrit, nous vous invitons à vous inscrire en cliquant sur « Inscription » dans le cas contraire, cliquez sur le lien « J'ai oublié mon mot de passe »."),
+        'empty': _('Users must have an email address'),
+    }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        for field in ['sign_type', 'email', 'password']:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['class'] = 'form-control'
+
+        for field in ['email', 'password']:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['placeholder'] = f.label
+
+    def clean(self):
+        print(self.user)
+
+        if self.user: return super().clean()
+
+        email = self.cleaned_data['email'].lower()
+
+        if not email:
+            raise forms.ValidationError(self.error_messages['empty'])
+
+        if self.cleaned_data['sign_type'] == 'up':
+            try:
+                am.Account._default_manager.get(email=email)
+            except am.Account.DoesNotExist:
+                return super().clean()
+            raise forms.ValidationError(self.error_messages['duplicate_email'])
+
+        # sign in
+        password = self.cleaned_data['password']
+        user = auth.authenticate(username=email, password=password)
+        if user is None:
+            raise forms.ValidationError(self.error_messages['incorrect'])
+        return super().clean()
 
 class CreateAllPaymentForm(forms.Form):
+    payment_type = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('payment type'), choices=wm.PAYMENT_TYPES, initial='c', help_text=_('Select your payment type. For cheque and bank transfer, your wallet will be credited once received.'))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields.get('payment_type').widget.attrs['class'] = 'radio-select'
 
 class CreateAllAddressForm(forms.Form):
+    gender = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('Gender'), choices=cm.Address.GENDER_CHOICES, required=False)
+    first_name = forms.CharField(label=_('First name'), max_length=30, required=False)
+    last_name = forms.CharField(label=_('Last name'), max_length=30, required=False)
+    street = forms.CharField(label=_('Street'), max_length=100, required=False)
+    postal_code = forms.CharField(label=_('Postal code'), max_length=100, required=False)
+    city = forms.CharField(label=_('City'), max_length=100, required=False)
+    country = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), queryset=cm.Country.objects.all(), label=_('Country'), required=False, empty_label=None)
+    home_phone = forms.CharField(label=_('Home phone'), max_length=100, required=False)
+    mobile_phone = forms.CharField(label=_('Mobile phone'), max_length=100, required=False)
+
+    relay_name = forms.CharField(label=_('Relay name'), max_length=100, required=False)
+    relay_street = forms.CharField(label=_('Relay street'), max_length=100, required=False)
+    relay_postal_code = forms.CharField(label=_('Relay postal code'), max_length=100, required=False)
+    relay_city = forms.CharField(label=_('Relay city'), max_length=100, required=False)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        for field in self.fields:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['class'] = 'form-control'
+
+        for field in ['first_name', 'last_name', 'street', 'postal_code', 'city', 'home_phone', 'mobile_phone', 'relay_name', 'relay_street', 'relay_postal_code', 'relay_city']:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['placeholder'] = f.label
+
 class CreateAllCommentForm(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea, label=_('Write down your comment here.'), required=False)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['class'] = 'form-control'
+
+        for field in ['comment']:
+            f = self.fields.get(field)
+            attrs = f.widget.attrs
+            attrs['placeholder'] = f.label
 
 class CreateAllResumeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-class CreateAllValidationForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+# class CreateAllValidationForm(forms.Form):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
