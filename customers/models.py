@@ -29,6 +29,7 @@ class Customer(models.Model):
     main_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     shipping_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     billing_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
+    relay_address = models.OneToOneField('common.Address', null=True, blank=True, related_name='+')
     addresses = generic.GenericRelation(cm.Address)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+')
     pro = models.BooleanField(_('pro'), default=False)

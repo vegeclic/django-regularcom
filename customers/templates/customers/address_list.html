@@ -19,6 +19,7 @@
 	<th class="col-md-1">{% trans "Main" %}</th>
 	<th class="col-md-1">{% trans "Shipping" %}</th>
 	<th class="col-md-1">{% trans "Billing" %}</th>
+	<th class="col-md-1">{% trans "Relay" %}</th>
       </tr>
     </thead>
     <tbody>
@@ -62,6 +63,15 @@
 		<i class="glyphicon glyphicon-check"></i>
 	      {% else %}
 		<a class="tooltip_link" href="{% url "address_define_as_billing" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
+	      {% endif %}
+	    </div>
+	  </td>
+	  <td>
+	    <div class="text-center">
+	      {% if user.customer.relay_address and address == user.customer.relay_address %}
+		<i class="glyphicon glyphicon-check"></i>
+	      {% else %}
+		<a class="tooltip_link" href="{% url "address_define_as_relay" address.id %}" title="{% trans "select" %} {{address}}"><i class="glyphicon glyphicon-unchecked"></i></a>
 	      {% endif %}
 	    </div>
 	  </td>

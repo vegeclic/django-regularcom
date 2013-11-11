@@ -31,5 +31,6 @@ urlpatterns = patterns('customers.views',
                        url(r'^addresses/(?P<address_id>\d+)/define_as_main/$', views.AddressDefineAsMainView.as_view(), name='address_define_as_main'),
                        url(r'^addresses/(?P<address_id>\d+)/define_as_shipping/$', views.AddressDefineAsShippingView.as_view(), name='address_define_as_shipping'),
                        url(r'^addresses/(?P<address_id>\d+)/define_as_billing/$', views.AddressDefineAsBillingView.as_view(), name='address_define_as_billing'),
+                       url(r'^addresses/(?P<address_id>\d+)/define_as_relay/$', views.AddressDefineAsRelayView.as_view(), name='address_define_as_relay'),
                        # url(r'^settings/$', views.SettingsView.as_view(), name='settings'),
 )

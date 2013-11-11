@@ -185,6 +185,20 @@ class AddressDefineAsBillingView(generic.View):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+class AddressDefineAsRelayView(generic.View):
+    def get(self, request, address_id):
+        customer = self.request.user.customer
+        address = customer.addresses.get(id=address_id)
+        customer.relay_address = address
+        customer.save()
+        messages.success(request, _('The address %s has been defined as relay address.') % address.__unicode__())
+        return HttpResponseRedirect('/customers/addresses/')
+
+    @method_decorator(login_required)
+    @cache_control(private=True)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 class PasswordResetView(generic.View):
     def get(self, request):
         account = self.request.user
