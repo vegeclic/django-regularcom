@@ -125,6 +125,10 @@ class ContentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Content
 
+class ExtentContentAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.ExtentContent
+
 class MyCheckboxSelectMultiple(forms.SelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
         if value is None: value = []

@@ -218,12 +218,14 @@ class ContentProduct(models.Model):
 
 class Content(models.Model):
     class Meta:
-        unique_together = ('delivery', 'extent')
+        unique_together = ('delivery', 'product')
 
     delivery = models.ForeignKey('Delivery', verbose_name=_('delivery'))
-    extent = models.ForeignKey('Extent', verbose_name=_('extent'))
+    product = models.ForeignKey('products.Product', verbose_name=_('product'))
+    extent = models.PositiveSmallIntegerField(_('extent'), default=0)
+    customized = models.BooleanField(_('customized'), default=False)
 
-    def __unicode__(self): return '%s, %s' % (self.delivery.__unicode__(), self.extent.__unicode__())
+    def __unicode__(self): return '%s, %s, %d' % (self.delivery.__unicode__(), self.product.__unicode__(), self.extent)
 
 class Subscription(models.Model):
     customer = models.ForeignKey('customers.Customer', verbose_name=_('customer'))
@@ -244,8 +246,8 @@ class Subscription(models.Model):
 
     def __unicode__(self):
         if not self.receive_only_once:
-            return '%s, %s, %s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
-        return '%s, %s, %s' % (self.customer.__unicode__(), self.size.name, self.get_start_display())
+            return '%d, %s, %s, %s, %s, %s' % (self.id, self.customer.__unicode__(), self.size.name, self.get_frequency_display(), self.get_start_display(), self.get_end_display())
+        return '%d, %s, %s, %s' % (self.id, self.customer.__unicode__(), self.size.name, self.get_start_display())
 
     def price(self): return self.size.default_price()
 
@@ -284,6 +286,19 @@ class Extent(models.Model):
     customized = models.BooleanField(_('customized'), default=False)
 
     def __unicode__(self): return '%s, %s, %s' % (self.subscription.__unicode__(), self.product.__unicode__(), self.extent)
+
+class ExtentContent(models.Model):
+    extent = models.ForeignKey('Extent', verbose_name=_('extent'))
+
+class ExtentContentProduct(models.Model):
+    class Meta:
+        unique_together = ('content', 'product')
+
+    content = models.ForeignKey('ExtentContent', verbose_name=_('content'))
+    product = models.ForeignKey('suppliers.Product', verbose_name=_('product'))
+    quantity = models.PositiveIntegerField(_('quantity'), default=1)
+
+    def __unicode__(self): return self.product.__unicode__()
 
 class ThematicExtent(models.Model):
     class Meta:

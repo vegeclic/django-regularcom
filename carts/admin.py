@@ -103,19 +103,15 @@ class SubscriptionAdmin(ca.MyModelAdmin):
 admin.site.register(models.Subscription, SubscriptionAdmin)
 
 class ContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
-    # form = forms.ContentProductAdminForm
     model = models.ContentProduct
     extra = 1
-    # fields = ('extent', 'proudct', 'quantity',)
 
     # def get_filters(self, obj): return (('content', {'extent__product': obj.product}),)
     def get_filters(self, obj): return (('product', {'product': obj}),)
 
 class ContentAdmin(ca.MyModelAdmin):
     form = forms.ContentAdminForm
-    model = models.Content
-    # fields = ('extent', 'product', 'quantity',)
-    list_display = ('id', 'delivery', 'extent',)
+    list_display = ('id', 'delivery', 'product', 'extent', 'customized',)
     search_fields = ('delivery__subscription__customer__account__email', 'delivery__subscription__customer__main_address__first_name', 'delivery__subscription__customer__main_address__last_name')
     inlines = [ContentProductInline,]
 
@@ -130,3 +126,16 @@ class DeliveryAdmin(ca.MyModelAdmin):
     ordering = ('date',)
 
 admin.site.register(models.Delivery, DeliveryAdmin)
+
+class ExtentContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
+    model = models.ExtentContentProduct
+    extra = 1
+
+    # def get_filters(self, obj): return (('product', {'product': obj}),)
+
+class ExtentContentAdmin(ca.MyModelAdmin):
+    form = forms.ExtentContentAdminForm
+    list_display = ('id', 'extent',)
+    inlines = [ExtentContentProductInline,]
+
+admin.site.register(models.ExtentContent, ExtentContentAdmin)
