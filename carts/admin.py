@@ -30,7 +30,7 @@ import common.models as cm
 class ThematicExtentInline(admin.TabularInline):
     form = forms.ThematicExtentAdminForm
     model = models.ThematicExtent
-    extra = 3
+    extra = 1
 
 class ThematicAdmin(TranslatableAdmin):
     list_display = ('id', 'all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
@@ -76,7 +76,7 @@ admin.site.register(models.Size, SizeAdmin)
 class ExtentInline(admin.TabularInline):
     form = forms.ExtentAdminForm
     model = models.Extent
-    extra = 3
+    extra = 1
 
 class SubscriptionAdmin(ca.MyModelAdmin):
     add_form = forms.SubscriptionCreationAdminForm
@@ -105,7 +105,7 @@ admin.site.register(models.Subscription, SubscriptionAdmin)
 class ContentProductInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     # form = forms.ContentProductAdminForm
     model = models.ContentProduct
-    extra = 3
+    extra = 1
     # fields = ('extent', 'proudct', 'quantity',)
 
     # def get_filters(self, obj): return (('content', {'extent__product': obj.product}),)
