@@ -12,8 +12,8 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-    	{% block menu %}
-          
+	{% block menu %}
+
 	  <li {% if section == 'catalog' %}class="active"{% endif %}>
 	    <a href="{% url 'catalog_grid_page' 1 %}"><i class="glyphicon glyphicon-barcode"></i> {% trans "Catalog" %}</a>
 	  </li>
@@ -30,19 +30,19 @@
 	    <li {% if section == 'mailbox' %}class="active"{% endif %}>
 	      <a href="{% url 'messages' 1 %}"><i class="glyphicon glyphicon-envelope"></i> {% trans "Mailbox" %} {% if nb_messages %}<span class="badge">{{nb_messages}}</span>{% endif %}</a>
 	    </li>
-	    
+
 	    <li {% if section == 'customers' %}class="active"{% endif %}>
 	      <a href="{% url 'profile' %}"><i class="tooltip_link glyphicon glyphicon-user" title="{% trans "Profile" %}"></i></a>
 	    </li>
 	    <li {% if section == 'how' %}class="active"{% endif %}>
-	      <a href="{% url 'how' %}"><i class="tooltip_link glyphicon glyphicon-info-sign" title="{% trans "How" %}"></i></a>
+	      <a href="{% url 'how' %}"><i class="tooltip_link glyphicon glyphicon-question-sign" title="{% trans "How" %}"></i></a>
 	    </li>
 	    <li {% if section == 'logout' %}class="active"{% endif %}>
 	      <a href="{% url 'logout' %}"><i class="tooltip_link glyphicon glyphicon-off" title="{% trans "Logout" %}"></i></a>
 	    </li>
 	  {% else %}
 	    <li {% if section == 'how' %}class="active"{% endif %}>
-	      <a href="{% url 'how' %}"><i class="glyphicon glyphicon-info-sign" title="{% trans "How" %}"></i> {% trans "How" %}</a>
+	      <a href="{% url 'how' %}"><i class="glyphicon glyphicon-question-sign" title="{% trans "How" %}"></i> {% trans "How" %}</a>
 	    </li>
 	    <li {% if section == 'login' %}class="active"{% endif %}>
 	      <a href="{% url 'login' %}"><i class="glyphicon glyphicon-lock"></i> {% trans "Login" %}</a>
