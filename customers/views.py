@@ -70,7 +70,6 @@ class AddressCreateView(generic.CreateView):
     form_class = forms.AddressCreateForm
     model = cm.Address
     template_name = 'customers/address_create.html'
-    # success_url = '/customers/addresses/'
     success_url = reverse_lazy('addresses')
 
     def get_object(self): return self.request.user.customer
