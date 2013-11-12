@@ -24,7 +24,7 @@
       </div>
       <div class="panel-body" style="height:200px; text-align:justify">
         {% for category in categories %}
-        <a href="{% url "category" category.id %}"><span class="badge alert-warning" style="margin:5px">{{ category.name }}</span></a>
+        <a href="{% url "category" category.id %}"><span class="badge alert-warning" style="margin:5px">{{ category.name|truncatechars:35 }}</span></a>
         <br/>
         {% endfor %}
       </div>
@@ -35,7 +35,7 @@
       </div>
       <div class="panel-body" style="text-align:justify">
         {% for article in last_articles|slice:":5"  %}
-        <a href="{% url "article" article.id %}"><span class="badge alert-warning" style="margin:5px">{{article.title}}</span></a>
+        <a href="{% url "article" article.id %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
         <br/>
         {% endfor %}
       </div>
