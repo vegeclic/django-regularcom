@@ -29,6 +29,7 @@ class WalletAdmin(ca.MyModelAdmin):
     form = forms.WalletAdminForm
     list_display = ('id', 'customer', 'balance', 'balance_in_target_currency', 'target_currency',)
     list_filter = ('target_currency',)
+    search_fields = ('customer__account__email',)
 
 admin.site.register(models.Wallet, WalletAdmin)
 
@@ -37,7 +38,7 @@ class CreditAdmin(ca.MyModelAdmin):
     form = forms.CreditAdminForm
     list_display = ('id', 'wallet', 'payment_type', 'amount', 'currency', 'payment_date', 'date_created', 'status',)
     list_filter = ('status', 'wallet', 'payment_type', 'currency',)
-    search_fields = ['wallet__customer__account__email']
+    search_fields = ('wallet__customer__account__email',)
     actions = ['make_draft', 'make_validated', 'make_expired', 'make_withdrawn',]
 
     def change_status(self, request, queryset, status):
