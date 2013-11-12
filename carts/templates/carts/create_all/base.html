@@ -10,7 +10,11 @@
 {% block section_title %}{% trans "Create your subscription" %}{% endblock %}
 
 {% block content %}
-  <h1>Créez votre abonnement Végéclic</h1>
+  {% if not validation %}
+    <h1>Créez votre abonnement Végéclic</h1>
+  {% else %}
+    <h1>Abonnement n° <strong>{{object.id}}</strong> crée</h1>
+  {% endif %}
 
   <hr/>
 
@@ -23,41 +27,46 @@
 
     <div class="row text-center">
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'cart' %}btn-info popover_link{% elif wizard.form.step_idx >= 0 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-th"></i></button></div>
+      {% with c=wizard.steps.current i=wizard.form.step_idx attrs='data-placement="bottom" data-container="body"' %}
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'cart' %}btn-info popover_link{% elif i >= 0 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." {{attrs}}><i class="glyphicon glyphicon-th"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'subscription' %}btn-info popover_link{% elif wizard.form.step_idx >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-wrench"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'subscription' %}btn-info popover_link{% elif i >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." {{attrs}}><i class="glyphicon glyphicon-wrench"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'products' %}btn-info popover_link{% elif wizard.form.step_idx >= 2 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix des familles de produits" data-content="Choisissez les familles de produits que vous souhaitez avoir dans votre panier." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-list"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'products' %}btn-info popover_link{% elif i >= 2 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix des familles de produits" data-content="Choisissez les familles de produits que vous souhaitez avoir dans votre panier." {{attrs}}><i class="glyphicon glyphicon-list"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'extents' %}btn-info popover_link{% elif wizard.form.step_idx >= 3 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Proportions des produits" data-content="Définissez la proportion que doit avoir chacune des familles de produits." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-sort"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'extents' %}btn-info popover_link{% elif i >= 3 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Proportions des produits" data-content="Définissez la proportion que doit avoir chacune des familles de produits." {{attrs}}><i class="glyphicon glyphicon-sort"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'suppliers' %}btn-info popover_link{% elif wizard.form.step_idx >= 4 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Sélection des articles" data-content="Sélectionnez les articles de nos fournisseurs relatifs aux familles choisis précédemment." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-check"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'suppliers' %}btn-info popover_link{% elif i >= 4 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Sélection des articles" data-content="Sélectionnez les articles de nos fournisseurs relatifs aux familles choisis précédemment." {{attrs}}><i class="glyphicon glyphicon-check"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'preview' %}btn-info popover_link{% elif wizard.form.step_idx >= 5 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu du contenu du panier" data-content="Verifier le contenu de votre abonnement avant de continuer." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-eye-open"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'preview' %}btn-info popover_link{% elif i >= 5 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu du contenu du panier" data-content="Verifier le contenu de votre abonnement avant de continuer." {{attrs}}><i class="glyphicon glyphicon-eye-open"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'authentication' %}btn-info popover_link{% elif wizard.form.step_idx >= 6 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Identification" data-content="Connectez-vous ou inscrivez-vous. C'est très simple !" data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-user"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'authentication' %}btn-info popover_link{% elif i >= 6 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Identification" data-content="Connectez-vous ou inscrivez-vous. C'est très simple !" {{attrs}}><i class="glyphicon glyphicon-user"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'payment' %}btn-info popover_link{% elif wizard.form.step_idx >= 7 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Paiement" data-content="Procédez au paiement de la première échéance ou de la durée totale de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-credit-card"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'payment' %}btn-info popover_link{% elif i >= 7 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Paiement" data-content="Procédez au paiement de la première échéance ou de la durée totale de votre abonnement." {{attrs}}><i class="glyphicon glyphicon-credit-card"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'address' %}btn-info popover_link{% elif wizard.form.step_idx >= 8 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Coordonnées" data-content="Nous avons besoin de vos coordonnées pour la livraison et facturation." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-home"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'address' %}btn-info popover_link{% elif i >= 8 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Coordonnées" data-content="Nous avons besoin de vos coordonnées pour la livraison et facturation." {{attrs}}><i class="glyphicon glyphicon-home"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'comment' %}btn-info popover_link{% elif wizard.form.step_idx >= 9 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Commentaire" data-content="Si vous avez une suggestion ou une remarque quelconque n'hesitez pas à l'indiquer ici." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-comment"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'comment' %}btn-info popover_link{% elif i >= 9 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Commentaire" data-content="Si vous avez une suggestion ou une remarque quelconque n'hesitez pas à l'indiquer ici." {{attrs}}><i class="glyphicon glyphicon-comment"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'resume' %}btn-info popover_link{% elif wizard.form.step_idx >= 10 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu avant validation" data-content="Dernière verification avant la création de votre abonnement." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-asterisk"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'resume' %}btn-info popover_link{% elif i >= 10 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu avant validation" data-content="Dernière verification avant la création de votre abonnement." {{attrs}}><i class="glyphicon glyphicon-asterisk"></i></button></div>
 
-      <div class="col-md-1"><button class="btn btn-lg {% if wizard.steps.current == 'validation' %}btn-info popover_link{% elif wizard.form.step_idx >= 11 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Validation" data-content="Votre abonnement a bien été crée." data-placement="bottom" data-container="body"><i class="glyphicon glyphicon-saved"></i></button></div>
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'validation' %}btn-info popover_link{% elif i >= 11 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Validation" data-content="Votre abonnement a bien été crée." {{attrs}}><i class="glyphicon glyphicon-saved"></i></button></div>
+    {% endwith %}
 
     </div>
 
   </div>
 
-  <form role="form" method="post" action="{% url "create_all" %}">
-    {% csrf_token %}
+  {% if not validation %}
+    <form role="form" method="post" action="{% url "create_all" %}">
+      {% csrf_token %}
+  {% endif %}
 
-    <hr/>
+  <hr/>
 
-    {% block sub_content %}{% endblock %}
+  {% block sub_content %}{% endblock %}
 
+  {% if not validation %}
     <hr/>
 
     {{ wizard.management_form.as_p }}
@@ -71,6 +80,8 @@
       </div>
     </div>
   </form>
+{% endif %}
+
 {% endblock %}
 
 {% block foot %}

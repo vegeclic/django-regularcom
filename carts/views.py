@@ -38,6 +38,7 @@ import suppliers.models as sm
 import mailbox.models as mm
 import suppliers.views as sw
 import accounts.models as am
+import wallets.models as wm
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -594,6 +595,8 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
 
         if form.cleaned_data.get('sign_type') == 'up':
             wizard.storage.extra_data['user'] = user = am.Account.objects.create_user(email=email)
+            backend = auth.get_backends()[0]
+            user.backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
             messages.success(wizard.request, _("Your account has been successfully created."))
             return form
 
@@ -602,7 +605,6 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
         user = auth.authenticate(username=email, password=password)
         if user is None: raise forms.forms.ValidationError(_('bad credentials'))
         wizard.storage.extra_data['user'] = user
-        # auth.login(wizard.request, user)
         messages.success(wizard.request, _("You're logged in."))
         return form
 
@@ -665,7 +667,6 @@ CREATEALL_STEPS = {
     'address': CreateAllAddressStep(),
     'comment': CreateAllCommentStep(),
     'resume': CreateAllResumeStep(),
-    # 'validation': CreateAllValidationStep(),
 }
 
 CREATEALL_PROCESS_STEPS = {
@@ -692,7 +693,6 @@ CREATEALL_FORMS = [
     ('address', forms.CreateAllAddressForm),
     ('comment', forms.CreateAllCommentForm),
     ('resume', forms.CreateAllResumeForm),
-    # ('validation', forms.CreateAllValidationForm),
 ]
 
 def show_create_all_products_form_condition(wizard):
@@ -768,12 +768,47 @@ class CreateAll(SessionWizardView):
         for f in form_list:
             step = CREATEALL_FORMS_MIRROR[f.__class__]
             print('process %s to do' % step)
-            if not CREATEALL_DONE.get(step, CreateAllDone())(self, form_data[step], form_data, tmp_dict):
-                break
+            if not CREATEALL_DONE.get(step, CreateAllDone())(self, form_data[step], form_data, tmp_dict): break
 
-        raise ValueError('done')
-        # return HttpResponseRedirect('/carts/create/all')
+        print('done finished')
+
+        subscription = tmp_dict['subscription']
+        # raise ValueError('done')
+
+        if not self.request.user.is_authenticated():
+            user = self.storage.extra_data['user']
+            auth.login(self.request, user)
+
+        payment_data = form_data.get('payment') or {}
+        success_url = reverse_lazy('create_all_validation', args=[subscription.id, payment_data.get('payment_type', 'c')])
+        return HttpResponseRedirect(str(success_url))
 
     # @method_decorator(login_required)
+    @cache_control(private=True)
+    def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
+
+class CreateAllValidation(generic.DetailView):
+    model = models.Subscription
+    template_name = 'carts/create_all/validation.html'
+
+    def get_object(self):
+        subscription_id = self.kwargs.get('subscription_id')
+        return self.model.objects.get(id=subscription_id, customer__account=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'cart'
+        context['sub_section'] = 'create_all'
+        context['validation'] = True
+        context['wizard'] = {'form': {'step_idx': 11,
+                                      'progress_value': 100,
+                                      'current_progress_value': 0,
+                                      'inverse_progress_value': 0},
+                             'steps': {'current': 'validation'}}
+        context['payment_types'] = wm.PAYMENT_TYPES
+        context['payment_type'] = self.kwargs.get('payment_type', 'c')
+        return context
+
+    @method_decorator(login_required)
     @cache_control(private=True)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)

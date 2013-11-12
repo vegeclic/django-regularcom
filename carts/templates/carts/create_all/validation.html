@@ -3,4 +3,77 @@
 {% load static %}
 
 {% block sub_content %}
+  <div class="row">
+    <div class="col-md-1">
+      <div class="alert alert-success text-center">
+	<span class="glyphicon glyphicon-thumbs-up" style="font-size:22px"></span>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="alert alert-success">
+	<p class="lead">Votre nouvel abonnement n° <strong>{{object.id}}</strong> a été crée avec succès.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+      <div class="alert alert-info text-center">
+	<span class="glyphicon glyphicon-credit-card" style="font-size:22px"></span>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="alert alert-info">
+	<p class="lead">Si vous n'avez pas encore procéder au paiement de ce dernier afin que la prochaine échéance soit validé par nos soins, nous vous invitons, dès maintenant, à procéder au paiement en suivant les consignes données ci-dessous.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading"><h4>{% trans "Montant à payer" %}</h4></div>
+    <div class="panel-body text-center"><h1>{{object.size.default_price}}</h1></div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading"><h4>Type de paiement</h4></div>
+    <div class="panel-body">
+      <div class="btn-group" data-toggle="buttons">
+	{% for type in payment_types %}
+	  <label class="btn btn-default btn-lg {% if payment_type == type.0 %}active{% endif %}"><input {% if payment_type == type.0 %}checked="checked"{% endif %} class="radio-select" name="payment-payment_type" type="radio" value="{{type.0}}" /> {{type.1}}</label>
+	{% endfor %}
+      </div>
+      <br/>
+      <br/>
+      {% include "carts/create_all/payment_types.html" %}
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block sub_foot %}
+  <script type="text/javascript">
+    $(function() {
+	$('.payment_type_detail').hide();
+
+	$('.radio-select').each(function() {
+	    if ($(this)[0].checked) {
+		$(this).parent().addClass('active');
+		$('#payment_type_' + $(this).val()).show();
+	    }
+	    if ($(this).hasClass('disabled')) {
+		$(this).parent().addClass('disabled');
+	    }
+	});
+
+	$('.radio-select').change(function() {
+	    $('.payment_type_detail').hide();
+	    $('#payment_type_' + $(this).val()).show();
+	});
+    });
+  </script>
+
+  <style type="text/css">
+    .ui-slider .ui-slider-handle { height: 2.7em; }
+    .ui-slider { height: 2.2em; }
+  </style>
 {% endblock %}

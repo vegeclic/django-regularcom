@@ -489,7 +489,3 @@ class CreateAllCommentForm(forms.Form):
 class CreateAllResumeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-# class CreateAllValidationForm(forms.Form):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
