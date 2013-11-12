@@ -12,10 +12,6 @@
 	Une liste de sous-familles apparaîtra, il vous suffira alors d'ajouter ceux que vous souhaitez.
       </div>
 
-      <div class="alert alert-warning">
-	Le choix d'un produit spécifique au sein d'une famille de produit sera <strong>prochainement disponible</strong>.
-      </div>
-
       <ul class="media-list">
 	{% for product, products in wizard.form.products_tree %}
 	  {% with product=product products=products %}

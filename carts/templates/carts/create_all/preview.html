@@ -3,20 +3,143 @@
 {% load static %}
 
 {% block sub_content %}
-  {% with name=wizard.form.thematic.name image=wizard.form.thematic.main_image duration=wizard.form.duration start=wizard.form.start price=wizard.form.size.default_price frequency=wizard.form.frequency %}
-  <div class="row">
-    <div class="col-md-3">
-      <div class="alert alert-info text-center">
-	<img class="" src="{% get_media_prefix %}{{image}}" alt="{{name}}" title="{{name}}" style="width:200px; height:160px"/>
+  {% with duration=wizard.form.duration start=wizard.form.start price=wizard.form.size.default_price frequency=wizard.form.frequency receive_only_once=wizard.form.receive_only_once symbol=wizard.form.size.default_price.currency.symbol mean_of_prices=wizard.form.mean_of_prices %}
+
+    {% if wizard.form.thematic %}
+
+      {% with name=wizard.form.thematic.name image=wizard.form.thematic.main_image %}
+	<div class="row">
+	  <div class="col-md-3">
+	    <div class="alert alert-info text-center">
+	      <img class="" src="{% get_media_prefix %}{{image}}" alt="{{name}}" title="{{name}}" style="width:200px; height:160px"/>
+	    </div>
+	  </div>
+	  <div class="col-md-9">
+	    <div class="alert alert-info">
+	      <p class="lead">Vous avez choisit de créer un abonnement pour le panier thématique « <strong>{{name}}</strong> » pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».</p>
+	    </div>
+	  </div>
+	</div>
+      {% endwith %}
+
+    {% else %}
+
+      <div class="row">
+	<div class="col-md-3">
+	  <div class="alert alert-info text-center">
+	    <span class="glyphicon glyphicon-shopping-cart" style="font-size:100px"></span>
+	  </div>
+	</div>
+	<div class="col-md-9">
+	  <div class="alert alert-info">
+	    <p class="lead">Vous avez choisit de créer un abonnement pour un panier personnalisé pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».</p>
+	  </div>
+	</div>
       </div>
+
+    {% endif %}
+
+    {% for product, extent, choice, supplier_products in wizard.form.products %}
+      <div class="well well-sm">
+	<div class="row">
+	  <div class="col-md-6">
+	    <h3><span><img class="img-thumbnail" src="{% get_media_prefix %}{{product.main_image}}" alt="{{product.name}}" title="{{product.name}}" style="width:45px"/></span> {{product}}</h3>
+	  </div>
+	  <div class="col-md-6">
+	    <div class="pull-right center" style="margin-top: 20px">
+	      {% for k,v in wizard.form.supplier_products_choices %}
+		<button class="btn btn-lg disabled {% if choice == k %}btn-success active{% else %}btn-default{% endif %}">{{v}}</button>
+	      {% endfor %}
+	    </div>
+	  </div>
+	</div>
+
+	<div class="btn-group" data-toggle="buttons">
+	  {% for sp in supplier_products %}
+	    <div class="tooltip_link" data-title="{{sp.name}}"><label class="btn btn-default btn-lg disabled"><img class="img-thumbnail" src="{% get_media_prefix %}{{sp.main_image}}" style="width:100px"/></label></div>
+	  {% endfor %}
+	</div>
+      </div>
+    {% endfor %}
+
+    <hr/>
+
+    <h2>Les échéances de votre abonnement</h2>
+
+    <div class="alert alert-info">
+      Le prix de l'échéance est dégressif et varie en fonction du nombre d'échéances souscrit.
     </div>
 
-    <div class="col-md-9">
-      <div class="alert alert-info">
-	<p class="lead">Vous avez choisit de créer un abonnement pour le panier thématique « <strong>{{name}}</strong> » pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».</p>
+    <table class="table table-bordered table-hover">
+      <thead>
+	<tr>
+	  <th>{% trans "Date" %}</th>
+	  <th class="col-md-2">{% trans "Price" %}</th>
+	  <th class="col-md-2">{% trans "Mean price" %}</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for w, price in wizard.form.deliveries %}
+	  <tr class="{% cycle 'row1' 'row2' %}">
+	    <td>{{w}}</td>
+	    <td>{{price|floatformat}} {{symbol}}</td>
+	    <td>{{mean_of_prices|floatformat}} {{symbol}}</td>
+	  </tr>
+	{% endfor %}
+      </tbody>
+    </table>
+
+    {% if not receive_only_once %}
+      <div class="well text-center">
+	<canvas id="myChart" width="700px" height="400px"></canvas>
       </div>
+    {% endif %}
+
+    <div class="alert alert-info">
+      <p class="lead">Si vous souhaitez apporter des modifications, cliquez sur « <strong>Précedent</strong> », dans le cas contraire, vous pouvez confirmer vos choix en cliquant sur « <strong>Suivant</strong> ».</p>
     </div>
-  </div>
+
   {% endwith %}
 
+{% endblock %}
+
+{% block sub_foot %}
+  {% if not receive_only_once %}
+    {% with deliveries=wizard.form.deliveries mean_of_prices=wizard.form.mean_of_prices %}
+
+      <script type="text/javascript" src="{% static "chartjs/Chart.min.js" %}"></script>
+
+      <script type="text/javascript">
+	$(function() {
+    	    var data = {
+		labels: [{% for w, price in deliveries %}"{{w}}",{% endfor %}],
+    		datasets: [
+		    {
+			fillColor: "rgba(220,220,220,0.5)",
+			strokeColor: "rgba(220,220,220,1)",
+			pointColor: "rgba(220,220,220,1)",
+			pointStrokeColor: "#fff",
+			data: [{% for w, price in deliveries %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
+		    },
+    		    {
+			fillColor: "rgba(151,187,205,0.5)",
+			strokeColor: "rgba(151,187,205,1)",
+			pointColor: "rgba(151,187,205,1)",
+			pointStrokeColor: "#fff",
+			data: [{% for w, price in deliveries %}{{price|stringformat:"f"}}, {% endfor %}]
+    		    },
+    		]
+    	    }
+
+	    var options = {
+		bezierCurve: false,
+	    }
+
+    	    var ctx = $("#myChart").get(0).getContext("2d");
+    	    var myNewChart = new Chart(ctx).Line(data, options);
+	});
+      </script>
+
+    {% endwith %}
+  {% endif %}
 {% endblock %}

@@ -3,7 +3,26 @@
 {% load static %}
 
 {% block sub_content %}
-  <div class="alert alert-info">
-    <p class="lead">Vous pouvez valider la création de votre panier en cliquez sur le bouton « Suivant ».</p>
-  </div>
+  {% with address=wizard.form.address is_relay=wizard.form.is_relay %}
+    <table class="table">
+      <thead>
+	<th></th>
+	<th>Coordonnées</th>
+	{% if is_relay %}<th>Adresse du point relay</th>{% endif %}
+      </thead>
+      <tbody>
+	<tr><th>{% trans "First name" %}</th><td>{{address.first_name}}</td>{% if is_relay %}<td></td>{% endif %}</tr>
+	<tr><th>{% trans "Last name" %}</th><td>{{address.last_name}}</td>{% if is_relay %}<td>{{address.relay_name}}</td>{% endif %}</tr>
+	<tr><th>{% trans "Street" %}</th><td>{{address.street}}</td>{% if is_relay %}<td>{{address.relay_street}}</td>{% endif %}</tr>
+	<tr><th>{% trans "Postal code" %}</th><td>{{address.postal_code}}</td>{% if is_relay %}<td>{{address.relay_postal_code}}</td>{% endif %}</tr>
+	<tr><th>{% trans "City" %}</th><td>{{address.city}}</td>{% if is_relay %}<td>{{address.relay_city}}</td>{% endif %}</tr>
+	<tr><th>{% trans "Country" %}</th><td>{{address.country}}</td>{% if is_relay %}<td></td>{% endif %}</tr>
+	<tr><th>{% trans "Home phone" %}</th><td>{{address.home_phone}}</td>{% if is_relay %}<td></td>{% endif %}</tr>
+	<tr><th>{% trans "Mobile phone" %}</th><td>{{address.mobile_phone}}</td>{% if is_relay %}<td></td>{% endif %}</tr>
+      </tbody>
+    </table>
+    <div class="alert alert-info">
+      <p class="lead">Vous pouvez valider la création de votre abonnement en cliquez sur le bouton « <strong>Créer mon abonnement</strong> ».</p>
+    </div>
+  {% endwith %}
 {% endblock %}

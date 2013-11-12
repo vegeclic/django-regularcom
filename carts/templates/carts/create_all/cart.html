@@ -6,20 +6,9 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-
-      {% comment %}
-      {% for field in form %}
-	<div class="well">
-	  {% if field.errors %}
-	    <div class="errorlist">
-	      {% for error in field.errors %}
-		<div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
-	      {% endfor %}
-	    </div>
-	  {% endif %}
-	</div>
-      {% endfor %}
-      {% endcomment %}
+      <div class="alert alert-info">
+	Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur l'option « Personnaliser ».
+      </div>
 
       <div class="btn-group" data-toggle="buttons">
 	{% for thematic in wizard.form.thematic_list %}
@@ -33,6 +22,13 @@
 	<label class="choice btn {% if wizard.form.choice.value == "perso" %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
 	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} /> <strong>Personnaliser</strong>
 	</label>
+      </div>
+
+      <br/>
+      <br/>
+
+      <div class="alert alert-info">
+	<strong>Prêt ?</strong> Cliquez sur « Suivant » pour continuer.
       </div>
 
     </div>

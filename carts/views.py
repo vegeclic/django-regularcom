@@ -370,7 +370,6 @@ CREATEALL_TEMPLATES = {
     'address': 'carts/create_all/address.html',
     'comment': 'carts/create_all/comment.html',
     'resume': 'carts/create_all/resume.html',
-    # 'validation': 'carts/create_all/validation.html',
 }
 
 # CreateAll base classes
@@ -533,6 +532,11 @@ class CreateAllProductsDone(CreateAllDone):
 
         return True
 
+SUPPLIER_PRODUCTS_CHOICES = [
+    ('false', _('Je laisse Végéclic choisir')),
+    ('true', _('Je souhaite choisir')),
+]
+
 class CreateAllExtentsStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         products_data = wizard.get_cleaned_data_for_step('products') or {}
@@ -548,7 +552,7 @@ class CreateAllExtentsStep(CreateAllStep):
             extent = form.thematic.thematicextent_set.get(product=product) if product in thematic_products else None
             form.fields['product_%d' % product.id] = f1 = forms.forms.IntegerField(widget=forms.forms.HiddenInput, label=product.name, initial=extent.extent if extent else shared_extent, min_value=0, max_value=100)
             form.fields['choice_supplier_product_%d' % product.id] = f2 = forms.forms.ChoiceField(widget=forms.forms.RadioSelect(renderer=forms.MyRadioFieldRenderer), label='boolean')
-            f2.choices = [('false', _('Je laisse Végéclic choisir')), ('true', _('Je souhaite choisir'))]
+            f2.choices = SUPPLIER_PRODUCTS_CHOICES
             f2.initial = 'false'
             f1.widget.attrs['class'] = 'input_value'
 
@@ -580,13 +584,50 @@ class CreateAllSuppliersStep(CreateAllStep):
 
 class CreateAllPreviewStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        form.thematic = get_thematic(wizard)
         subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
+        if not subscription_data: return form
+
+        form.thematic = get_thematic(wizard)
         form.size = subscription_data.get('size')
         form.duration = dict(forms.DURATION_CHOICES).get(int(subscription_data.get('duration')))
         w = Week.fromstring(subscription_data.get('start'))
         form.start = '%s (%s %s)' % (w.day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), w.week)
         form.frequency = dict(models.FREQUENCY_CHOICES).get(int(subscription_data.get('frequency')))
+        form.receive_only_once = subscription_data.get('receive_only_once')
+
+        products_data = wizard.get_cleaned_data_for_step('products') or {}
+        extents_data = wizard.get_cleaned_data_for_step('extents') or {}
+        suppliers_data = wizard.get_cleaned_data_for_step('suppliers') or {}
+
+        products = products_data.get('products') or []
+
+        form.products = []
+
+        if products:
+            for product in products:
+                form.products.append((product,
+                                      extents_data.get('product_%d' % product.id),
+                                      extents_data.get('choice_supplier_product_%d' % product.id, 'false'),
+                                      suppliers_data.get('supplier_product_%d' % product.id)))
+        else:
+            for e in form.thematic.thematicextent_set.all():
+                form.products.append((e.product, e.extent, 'false', []))
+
+        form.supplier_products_choices = SUPPLIER_PRODUCTS_CHOICES
+
+        form.deliveries = []
+        bw = Week.fromstring(str(subscription_data.get('start')))
+        ew = Week.withdate( bw.day(1) + relativedelta(months=int(subscription_data.get('duration'))) )
+        init = form.size.default_price().price
+        k = 0
+        last_price = 0
+        for i in range(0, ew+1-bw, int(subscription_data.get('frequency'))):
+            last_price = init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k
+            k += 1
+            form.deliveries.append(('%s (%s %s)' % ((bw+i).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (bw+i).week), last_price))
+
+        form.mean_of_prices = (np.array([init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k for k in range(len(form.deliveries))]).mean())
+
         return form
 
 class CreateAllAuthenticationStep(CreateAllStep):
@@ -656,16 +697,17 @@ class CreateAllAddressDone(CreateAllDone):
         user = get_user(wizard)
 
         user.customer.main_address = ma = user.customer.main_address or cm.Address.objects.create(content_type=ContentType.objects.get(app_label='customers', model='customer'), object_id=user.customer.id)
-        ma.first_name = own_data['first_name']; ma.last_name = own_data['first_name']
+        ma.first_name = own_data['first_name']; ma.last_name = own_data['last_name']
         ma.street = own_data['street']; ma.postal_code = own_data['postal_code']
         ma.city = own_data['city']; ma.country = own_data['country']
         ma.home_phone = own_data['home_phone']; ma.mobile_phone = own_data['mobile_phone']
         ma.save()
 
-        user.customer.relay_address = ra = user.customer.relay_address or cm.Address.objects.create(content_type=ContentType.objects.get(app_label='customers', model='customer'), object_id=user.customer.id)
-        ra.last_name = own_data['relay_name']; ra.street = own_data['relay_street']
-        ra.postal_code = own_data['relay_postal_code']; ra.city = own_data['relay_city']
-        ra.save()
+        if form_data['subscription'].get('carrier').id == 3:
+            user.customer.relay_address = ra = user.customer.relay_address or cm.Address.objects.create(content_type=ContentType.objects.get(app_label='customers', model='customer'), object_id=user.customer.id)
+            ra.last_name = own_data['relay_name']; ra.street = own_data['relay_street']
+            ra.postal_code = own_data['relay_postal_code']; ra.city = own_data['relay_city']
+            ra.save()
 
         user.customer.save()
 
@@ -677,10 +719,12 @@ class CreateAllCommentStep(CreateAllStep):
 
 class CreateAllResumeStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        return form
-
-class CreateAllValidationStep(CreateAllStep):
-    def __call__(self, wizard, form, step, data, files):
+        subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
+        if not subscription_data: return form
+        address_data = wizard.get_cleaned_data_for_step('address') or {}
+        if not address_data: return form
+        form.address = address_data
+        form.is_relay = subscription_data.get('carrier').id == 3
         return form
 
 CREATEALL_STEPS = {
@@ -707,7 +751,6 @@ CREATEALL_DONE = {
     'address': CreateAllAddressDone(),
 }
 
-# CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume', 'validation',]
 CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume',]
 
 CREATEALL_FORMS = [
@@ -773,8 +816,6 @@ class CreateAll(SessionWizardView):
         form.current_progress_value = 0
         if step == 'cart':
             form.progress_value = 0
-        elif step == 'validation':
-            form.progress_value = 100
         else:
             form.progress_value = int(form.step_idx/count*100)
             form.current_progress_value = int(1/count*100)

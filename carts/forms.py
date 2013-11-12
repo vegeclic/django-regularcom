@@ -445,7 +445,7 @@ class CreateAllAddressForm(forms.Form):
     gender = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('Gender'), choices=cm.Address.GENDER_CHOICES, required=False)
     first_name = forms.CharField(label=_('First name'), max_length=30, required=False)
     last_name = forms.CharField(label=_('Last name'), max_length=30, required=False)
-    street = forms.CharField(label=_('Street'), max_length=100, required=False)
+    street = forms.CharField(widget=forms.Textarea, label=_('Street'), max_length=100, required=False)
     postal_code = forms.CharField(label=_('Postal code'), max_length=100, required=False)
     city = forms.CharField(label=_('City'), max_length=100, required=False)
     country = forms.ModelChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), queryset=cm.Country.objects.all(), label=_('Country'), required=False, empty_label=None)
@@ -453,7 +453,7 @@ class CreateAllAddressForm(forms.Form):
     mobile_phone = forms.CharField(label=_('Mobile phone'), max_length=100, required=False)
 
     relay_name = forms.CharField(label=_('Relay name'), max_length=100, required=False)
-    relay_street = forms.CharField(label=_('Relay street'), max_length=100, required=False)
+    relay_street = forms.CharField(widget=forms.Textarea, label=_('Relay street'), max_length=100, required=False)
     relay_postal_code = forms.CharField(label=_('Relay postal code'), max_length=100, required=False)
     relay_city = forms.CharField(label=_('Relay city'), max_length=100, required=False)
 
@@ -469,6 +469,9 @@ class CreateAllAddressForm(forms.Form):
             f = self.fields.get(field)
             attrs = f.widget.attrs
             attrs['placeholder'] = f.label
+
+        for field in ['street', 'relay_street']:
+            self.fields.get(field).widget.attrs['rows'] = 3
 
 class CreateAllCommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=_('Write down your comment here.'), required=False)

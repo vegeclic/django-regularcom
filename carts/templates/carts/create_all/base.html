@@ -73,7 +73,7 @@
 
     <div class="form-group row" id="buttons">
       <div class="col-md-6">
-	<button class="btn btn-lg btn-primary btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% trans "Next" %}</button>
+	<button class="btn btn-lg {% if wizard.steps.current == "resume" %}btn-success{% else %}btn-primary{% endif %} btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% if wizard.steps.current == "resume" %}{% trans "Créer mon abonnement" %}{% else %}{% trans "Next" %}{% endif %}</button>
       </div>
       <div class="col-md-6">
 	<button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>

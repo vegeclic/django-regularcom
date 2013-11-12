@@ -3,45 +3,57 @@
 {% load static %}
 
 {% block sub_content %}
-  <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-info">
-	<div class="panel-heading"><h4>{% trans "Vos coordonnées" %}</h4></div>
-	<div class="panel-body">
-	  {#<div class="form-group">{{ wizard.form.gender }}</div>#}
-	  <div class="row">
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.first_name }}</div></div>
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.last_name }}</div></div>
-	  </div>
-	  <div class="form-group">{{ wizard.form.street }}</div>
-	  <div class="row">
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.postal_code }}</div></div>
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.city }}</div></div>
-	  </div>
-	  <div class="form-group">{{ wizard.form.country }}</div>
-	  <div class="row">
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.home_phone }}</div></div>
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.mobile_phone }}</div></div>
+  {% with f=wizard.form is_relay=wizard.form.is_relay %}
+    <div class="row">
+      <div class="col-md-{% if is_relay %}6{% else %}12{% endif %}">
+	<div class="panel panel-info">
+	  <div class="panel-heading"><h4>{% trans "Vos coordonnées" %}</h4></div>
+	  <div class="panel-body">
+	    <div class="form-group">
+	      <div class="row">
+		<div class="col-md-6"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span> {{ f.first_name }}</div></div>
+		<div class="col-md-6">{{ f.last_name }} </div>
+	      </div>
+	    </div>
+	    <div class="form-group">{{ f.street }}</div>
+	    <div class="form-group">
+	      <div class="row">
+		<div class="col-md-6"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>{{ f.postal_code }}</div></div>
+		<div class="col-md-6">{{ f.city }}</div>
+	      </div>
+	    </div>
+	    <div class="form-group">{{ f.country }}</div>
+	    <div class="form-group">
+	      <div class="row">
+		<div class="col-md-6"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>{{ f.home_phone }}</div></div>
+		<div class="col-md-6"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>{{ f.mobile_phone }}</div></div>
+	      </div>
+	    </div>
 	  </div>
 	</div>
       </div>
-    </div>
-    <div class="col-md-6">
-      <div class="panel panel-info">
-	<div class="panel-heading"><h4>{% trans "Les coordonnées de votre point-relay" %} Mondial Relay <sup>®</sup></h4></div>
-	<div class="panel-body">
-	  <div class="alert alert-info">
-	    <strong><a href="http://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/">Cliquez ici</a></strong> pour trouver le point-relay le plus proche de chez vous.
-	  </div>
 
-	  <div class="form-group">{{ wizard.form.relay_name }}</div>
-	  <div class="form-group">{{ wizard.form.relay_street }}</div>
-	  <div class="row">
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.relay_postal_code }}</div></div>
-	    <div class="col-md-6"><div class="form-group">{{ wizard.form.relay_city }}</div></div>
+      {% if is_relay %}
+      <div class="col-md-6">
+	<div class="panel panel-info">
+	  <div class="panel-heading"><h4>{% trans "Les coordonnées de votre point-relay" %} Mondial Relay <sup>®</sup></h4></div>
+	  <div class="panel-body">
+	    <div class="alert alert-info">
+	      <strong><a href="http://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/">Cliquez ici</a></strong> pour trouver le point-relay le plus proche de chez vous.
+	    </div>
+
+	    <div class="form-group"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>{{ f.relay_name }}</div></div>
+	    <div class="form-group">{{ f.relay_street }}</div>
+	    <div class="form-group">
+	      <div class="row">
+		<div class="col-md-6"><div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>{{ f.relay_postal_code }}</div></div>
+		<div class="col-md-6">{{ f.relay_city }}</div>
+	      </div>
+	    </div>
 	  </div>
 	</div>
       </div>
+      {% endif %}
     </div>
-  </div>
+  {% endwith %}
 {% endblock %}
