@@ -58,7 +58,7 @@ class WithdrawAdmin(ca.MyModelAdmin):
     form = forms.WithdrawAdminForm
     list_display = ('id', 'wallet', 'payment_type', 'amount', 'currency', 'date_created', 'status',)
     list_filter = ('status', 'wallet', 'payment_type', 'currency',)
-    search_fields = ['wallet__customer__account__email']
+    search_fields = ('wallet__customer__account__email',)
     actions = ['make_draft', 'make_validated', 'make_expired', 'make_withdrawn',]
 
     def change_status(self, request, queryset, status):
