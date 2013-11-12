@@ -580,7 +580,13 @@ class CreateAllSuppliersStep(CreateAllStep):
 
 class CreateAllPreviewStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-
+        form.thematic = get_thematic(wizard)
+        subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
+        form.size = subscription_data.get('size')
+        form.duration = dict(forms.DURATION_CHOICES).get(int(subscription_data.get('duration')))
+        w = Week.fromstring(subscription_data.get('start'))
+        form.start = '%s (%s %s)' % (w.day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), w.week)
+        form.frequency = dict(models.FREQUENCY_CHOICES).get(int(subscription_data.get('frequency')))
         return form
 
 class CreateAllAuthenticationStep(CreateAllStep):

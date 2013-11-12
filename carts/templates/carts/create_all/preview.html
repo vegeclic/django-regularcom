@@ -3,4 +3,20 @@
 {% load static %}
 
 {% block sub_content %}
+  {% with name=wizard.form.thematic.name image=wizard.form.thematic.main_image duration=wizard.form.duration start=wizard.form.start price=wizard.form.size.default_price frequency=wizard.form.frequency %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="alert alert-info text-center">
+	<img class="" src="{% get_media_prefix %}{{image}}" alt="{{name}}" title="{{name}}" style="width:200px; height:160px"/>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="alert alert-info">
+	<p class="lead">Vous avez choisit de créer un abonnement pour le panier thématique « <strong>{{name}}</strong> » pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».</p>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+
 {% endblock %}
