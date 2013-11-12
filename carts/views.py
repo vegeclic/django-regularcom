@@ -30,15 +30,17 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import never_cache, cache_control
+from django.contrib.contenttypes.models import ContentType
 import django.contrib.auth as auth
-import customers.models as cm
-from . import forms, models
+import common.models as cm
+import customers.models as csm
 import products.models as pm
 import suppliers.models as sm
 import mailbox.models as mm
 import suppliers.views as sw
 import accounts.models as am
 import wallets.models as wm
+from . import forms, models
 import datetime
 from dateutil.relativedelta import relativedelta
 from isoweek import Week
@@ -636,12 +638,32 @@ class CreateAllAddressStep(CreateAllStep):
                     form.fields[k].initial = f
 
             if user.customer.relay_address:
-                relay = user.customer.main_address
-                for k, f in [('relay_name', relay.first_name), ('relay_street', relay.street),
+                relay = user.customer.relay_address
+                for k, f in [('relay_name', relay.last_name), ('relay_street', relay.street),
                              ('relay_postal_code', relay.postal_code), ('relay_city', relay.city)]:
                     form.fields[k].initial = f
 
         return form
+
+class CreateAllAddressDone(CreateAllDone):
+    def __call__(self, wizard, own_data, form_data, tmp_dict):
+        user = get_user(wizard)
+
+        user.customer.main_address = ma = user.customer.main_address or cm.Address.objects.create(content_type=ContentType.objects.get(app_label='customers', model='customer'), object_id=user.customer.id)
+        ma.first_name = own_data['first_name']; ma.last_name = own_data['first_name']
+        ma.street = own_data['street']; ma.postal_code = own_data['postal_code']
+        ma.city = own_data['city']; ma.country = own_data['country']
+        ma.home_phone = own_data['home_phone']; ma.mobile_phone = own_data['mobile_phone']
+        ma.save()
+
+        user.customer.relay_address = ra = user.customer.relay_address or cm.Address.objects.create(content_type=ContentType.objects.get(app_label='customers', model='customer'), object_id=user.customer.id)
+        ra.last_name = own_data['relay_name']; ra.street = own_data['relay_street']
+        ra.postal_code = own_data['relay_postal_code']; ra.city = own_data['relay_city']
+        ra.save()
+
+        user.customer.save()
+
+        return True
 
 class CreateAllCommentStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
@@ -676,6 +698,7 @@ CREATEALL_PROCESS_STEPS = {
 CREATEALL_DONE = {
     'subscription': CreateAllSubscriptionDone(),
     'products': CreateAllProductsDone(),
+    'address': CreateAllAddressDone(),
 }
 
 # CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume', 'validation',]
