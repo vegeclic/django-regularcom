@@ -118,7 +118,13 @@ class SettingsForm(cf.ModelFormWithCurrency):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        for field in ['rib', 'paypal', 'bitcoin']:
+            self.fields[field].widget = w = forms.Textarea()
+            w.attrs['rows'] = 3
+
         for field in self.fields:
+            print(field)
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 class MyRadioInput(forms.widgets.SubWidget):

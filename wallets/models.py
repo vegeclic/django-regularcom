@@ -30,7 +30,7 @@ class Wallet(models.Model):
     balance = models.FloatField(_('balance'), default=0)
     target_currency = models.ForeignKey('common.Currency', verbose_name=_('target currency'))
     rib = models.CharField(_('RIB'), max_length=200, null=True, blank=True)
-    payal = models.CharField(_('paypal'), max_length=200, null=True, blank=True)
+    paypal = models.CharField(_('paypal'), max_length=200, null=True, blank=True)
     bitcoin = models.CharField(_('bitcoin'), max_length=200, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
