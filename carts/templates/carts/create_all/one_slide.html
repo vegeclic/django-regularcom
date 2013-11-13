@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="panel panel-{{style}}">
+  <div class="panel-heading"><h2>{{ field.label }}</h2></div>
+  <div class="panel-body" style="padding-left: 30px">
+    {{ field }}
+    <div class="row">
+      <div class="col-md-{{slide_col_size}}" id="{{id}}-slide"></div>
+      <div class="col-md-{{value_col_size}}"><span class="badge alert-{{style}}" style="font-size: 28px" id="{{id}}-slide-text"></span></div>
+    </div>
+    {% if field.errors %}
+      <div class="errorlist">
+	{% for error in field.errors %}
+          <div class="alert alert-danger" style="margin-bottom: 0"><strong>{{ error|escape }}</strong></div>
+	{% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  {% if field.help_text %}
+    <div class="panel-footer">{{field.help_text}}</div>
+  {% endif %}
+</div>
