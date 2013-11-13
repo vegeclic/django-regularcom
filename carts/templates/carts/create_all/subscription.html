@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  {% with tname="carts/one_slide.html" %}
+  {% with tname="carts/create_all/one_slide.html" slide_col_size=7 value_col_size=5 %}
     {% with id="subscription-size" field=wizard.form.size style="success" %}{% include tname %}{% endwith %}
   {% endwith %}
 
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  {% with tname="carts/one_slide.html" %}
+  {% with tname="carts/create_all/one_slide.html" slide_col_size=7 value_col_size=5 %}
     <div id="display_duration" class="collapse {% if wizard.form.receive_only_once.value %}out{% else %}in{% endif %}">
       {% with id="subscription-frequency" field=wizard.form.frequency style="info" %}{% include tname %}{% endwith %}
       {% with id="subscription-duration" field=wizard.form.duration style="warning" %}{% include tname %}{% endwith %}
@@ -108,8 +108,8 @@
   <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
 
   <style type="text/css">
-    .ui-slider { height: 1.9em; }
-    .ui-slider .ui-slider-handle { height: 2.3em; }
+    .ui-slider .ui-slider-handle { height: 2.7em; }
+    .ui-slider { height: 2.2em; }
   </style>
 
   <script type="text/javascript">

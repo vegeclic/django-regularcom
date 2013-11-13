@@ -3,37 +3,56 @@
 {% load static %}
 
 {% block sub_content %}
+  {% with init_price=wizard.form.price.price price=wizard.form.price.price|add:wizard.form.balance_inversed balance_inversed=wizard.form.balance_inversed symbol=wizard.form.price.currency.symbol balance=wizard.form.balance target_symbol=wizard.form.currency.symbol %}
+
+  {% with tname="carts/create_all/one_slide.html" slide_col_size=9 value_col_size=3 %}
+    {% with id="payment-nb_deliveries" field=wizard.form.nb_deliveries style="info" %}{% include tname %}{% endwith %}
+  {% endwith %}
+
   <div class="row">
     <div class="col-md-6">
-      <div class="panel panel-info">
-	<div class="panel-heading"><h4>{% trans "Montant à payer" %}</h4></div>
-	<div class="panel-body text-center"><h1>{{wizard.form.price}}</h1></div>
+      <div class="panel panel-success">
+	<div class="panel-heading"><h2>{% trans "Montant à payer" %}</h2></div>
+	<div class="panel-body text-center text-success"><h1><span id="amount">{{price|stringformat:".2f"}}</span> {{symbol}}</h1></div>
+	<div class="panel-footer">Montant à payer après déduction du solde de votre compte</div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
-	<div class="panel-heading"><h4>{% trans "Solde disponible sur votre portemonnaie Végéclic" %}</h4></div>
-	<div class="panel-body text-center"><h1>{{wizard.form.balance}} {{wizard.form.currency.symbol}}</h1></div>
+	<div class="panel-heading"><h2>{% trans "Prix moyen / échéance" %}</h2></div>
+	<div class="panel-body text-center text-info"><h1><span id="mean">{{init_price|stringformat:".2f"}}</span> {{symbol}}</h1></div>
+	<div class="panel-footer">Prix moyen calculé sur le nombre d'échéances payés</div>
       </div>
     </div>
   </div>
 
-  <div class="panel panel-info">
-    <div class="panel-heading"><h4>{{ form.payment_type.label }}</h4></div>
+  <div id="payment_type_body" class="panel panel-info" {% if balance >= price %}style="display:none"{% endif %}>
+    <div class="panel-heading"><h2>{{ wizard.form.payment_type.label }}</h2></div>
     <div class="panel-body">
-      {{ form.payment_type }}
+      {{ wizard.form.payment_type }}
       <br/>
       <br/>
-      {% include "carts/create_all/payment_types.html" %}
+      {% with total_amount=price cheque_nb=1 %}
+	{% include "carts/create_all/payment_types.html" %}
+      {% endwith %}
     </div>
     {% if form.payment_type.help_text %}
-      <div class="panel-footer">{{ form.payment_type.help_text }}</div>
+      <div class="panel-footer">{{ wizard.form.payment_type.help_text }}</div>
     {% endif %}
   </div>
 
+  {% endwith %}
 {% endblock %}
 
 {% block sub_foot %}
+  {% with price=wizard.form.price.price|stringformat:".2f" rate=wizard.form.price_rate|stringformat:"f" balance=wizard.form.balance|stringformat:".2f" %}
+
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.core.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.widget.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.mouse.js" %}"></script>
+  <script type="text/javascript" src="{% static "jqueryui/ui/jquery.ui.slider.js" %}"></script>
+  <script type="text/javascript" src="{% static "carts/js/slider.js" %}"></script>
+
   <script type="text/javascript">
     $(function() {
 	$('.payment_type_detail').hide();
@@ -52,6 +71,55 @@
 	    $('.payment_type_detail').hide();
 	    $('#payment_type_' + $(this).val()).show();
 	});
+
+	var init_price = parseFloat({{price}});
+	var price_rate = parseFloat({{rate}});
+	var balance = parseFloat({{balance}});
+
+	function process_nb_deliveries(obj) {
+	    var nb_deliveries = obj.val()
+	    var k = 0, last_price = 0, sum = 0;
+	    for (i = 0; i < nb_deliveries; i++) {
+		last_price = init_price/Math.pow(price_rate,k);
+		sum += last_price;
+		k++;
+	    }
+	    var amount = (sum-balance).toFixed(2);
+	    if (amount < 0) { amount = 0; }
+	    $('#amount').text(amount);
+	    var mean = (sum/nb_deliveries).toFixed(2);
+	    $('#mean').text(mean);
+
+	    if (nb_deliveries > 1) {
+		$('#multi_cheque_option').show();
+	    } else {
+		$('#multi_cheque_option').hide();
+	    }
+
+	    if (amount > 0) {
+		$('#payment_type_body').show();
+	    } else {
+		$('#payment_type_body').hide();
+	    }
+
+	    var cheque_nb = parseInt(amount/mean);
+	    var cheque_first_amount = (amount-cheque_nb*mean).toFixed(2);
+
+	    $('#cheque_nb').text(cheque_nb);
+	    $('#cheque_first_amount').text(cheque_first_amount);
+	    $('#cheque_amount').text(mean);
+	    $('.amount').text(amount);
+	}
+
+	$('#id_payment-nb_deliveries').change(function() { process_nb_deliveries($(this)) });
+	process_nb_deliveries($('#id_payment-nb_deliveries'));
     });
   </script>
+
+  <style type="text/css">
+    .ui-slider .ui-slider-handle { height: 2.7em; }
+    .ui-slider { height: 2.2em; }
+  </style>
+
+  {% endwith %}
 {% endblock %}

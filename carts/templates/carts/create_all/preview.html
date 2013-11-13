@@ -67,20 +67,22 @@
     <h2>Les échéances de votre abonnement</h2>
 
     <div class="alert alert-info">
-      Le prix de l'échéance est dégressif et varie en fonction du nombre d'échéances souscrit.
+      <p class="lead">Le prix de l'échéance est dégressif et varie en fonction du nombre d'échéances souscrit.</p>
     </div>
 
     <table class="table table-bordered table-hover">
       <thead>
 	<tr>
+	  <th class="col-md-2"># échéance</th>
 	  <th>{% trans "Date" %}</th>
 	  <th class="col-md-2">{% trans "Price" %}</th>
 	  <th class="col-md-2">{% trans "Mean price" %}</th>
 	</tr>
       </thead>
       <tbody>
-	{% for w, price in wizard.form.deliveries %}
+	{% for i, w, price in wizard.form.deliveries %}
 	  <tr class="{% cycle 'row1' 'row2' %}">
+	    <td>{{i}}</td>
 	    <td>{{w}}</td>
 	    <td>{{price|floatformat}} {{symbol}}</td>
 	    <td>{{mean_of_prices|floatformat}} {{symbol}}</td>
@@ -112,21 +114,21 @@
       <script type="text/javascript">
 	$(function() {
     	    var data = {
-		labels: [{% for w, price in deliveries %}"{{w}}",{% endfor %}],
+		labels: [{% for i, w, price in deliveries %}"{{w}}",{% endfor %}],
     		datasets: [
 		    {
 			fillColor: "rgba(220,220,220,0.5)",
 			strokeColor: "rgba(220,220,220,1)",
 			pointColor: "rgba(220,220,220,1)",
 			pointStrokeColor: "#fff",
-			data: [{% for w, price in deliveries %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
+			data: [{% for i, w, price in deliveries %}{{mean_of_prices|stringformat:"f"}}, {% endfor %}]
 		    },
     		    {
 			fillColor: "rgba(151,187,205,0.5)",
 			strokeColor: "rgba(151,187,205,1)",
 			pointColor: "rgba(151,187,205,1)",
 			pointStrokeColor: "#fff",
-			data: [{% for w, price in deliveries %}{{price|stringformat:"f"}}, {% endfor %}]
+			data: [{% for i, w, price in deliveries %}{{price|stringformat:"f"}}, {% endfor %}]
     		    },
     		]
     	    }

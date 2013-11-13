@@ -2,17 +2,33 @@
   <div class="payment_type_detail" id="payment_type_c">
     <h3>Chèque</h3>
 
-    <ul>
-      <li><strong>Libeller</strong> le chèque au nom de « <strong>Geraldine Starke</strong> »</li>
-      <li>et l'<strong>envoyer</strong> à l'adresse suivante : « <strong>71 rue de la Meignanne, 49100 Angers</strong> »</li>
-    </ul>
+    <h4>Modalité de paiement</h4>
+    <p>
+      Pour procéder au paiement par chèque, les modalités de paiement suivantes vous sont proposées :
+      <ul>
+	<li>Envoi d'un chèque d'un montant total de <span class="badge"><span class="amount">{{total_amount}}</span> {{symbol}}</span>.</li>
+	<li id="multi_cheque_option" {% if cheque_nb <= 1 %}style="display:none"{% endif %}>
+	  Envoi de
+	  {% if balance %}<span class="badge">1 chèque</span> d'un montant de <span class="badge"><span id="cheque_first_amount">{{cheque_first_amount}}</span> {{symbol}}</span> et {% endif %}
+	  <span class="badge"><span id="cheque_nb">{{cheque_nb}}</span> chèque(s)</span> d'un montant de <span class="badge"><span id="cheque_amount">{{cheque_amount}}</span> {{symbol}}</span> chacun.
+	</li>
+      </ul>
+    </p>
 
-    <p>Vous avez la possibilité de payer toutes vos échéances en avances en indiquant sur chaque chèque le montant moyen de votre panier. Les chèques seront encaissés à J-10 de l'envoi des paniers.</p>
+    <p>Les chèques seront encaissés à J-10 de la date d'échéance des livraisons.</p>
+
+    <h4>Préparation du chèque</h4>
+    <p>
+      <ul>
+	<li><strong>Libeller</strong> le chèque au nom de « <strong>Geraldine Starke</strong> »</li>
+	<li>et l'<strong>envoyer</strong> à l'adresse suivante : « <strong>71 rue de la Meignanne, 49100 Angers</strong> »</li>
+      </ul>
+    </p>
   </div>
   <div class="payment_type_detail" id="payment_type_t">
     <h3>Virement bancaire</h3>
 
-    <p>Pour effectuer votre <strong>virement</strong> vous pouvez soit utiliser le <strong>RIB</strong> ou l'<strong>IBAN</strong> tous deux fournis ci-dessous.</p>
+    <p>Pour effectuer votre <strong>virement</strong> d'un montant de <span class="badge"><span class="amount">{{total_amount}}</span> {{symbol}}</span> vous pouvez soit utiliser le <strong>RIB</strong> ou l'<strong>IBAN</strong> tous deux fournis ci-dessous.</p>
 
     <table class="table table-condensed table-hover">
       <caption><strong>Relevé d'identité bancaire (RIB)</strong></caption>
@@ -32,8 +48,8 @@
     <ol>
       <li>Créer un compte ou connectez-vous à votre compte paypal.</li>
       <li>Cliquer sur « envoi de fonds » dans le menu du haut.</li>
-      <li>Indiquez le montant dont vous souhaitez créditer votre compte.</li>
-      <li>Indiquez le destinataire suivant : <strong>contact@vegeclic.fr</strong></li>
+      <li>Indiquez le montant de <span class="badge"><span class="amount">{{total_amount|floatformat}}</span> {{symbol}}</span>.</li>
+      <li>Indiquez le destinataire suivant : <span class="badge">contact@vegeclic.fr</span></li>
       <li>Vous devrez ensuite choisir votre moyen de paiement.</li>
       <li>Il suffit de valider et la transaction sera effectuée.</li>
     </ol>
@@ -41,6 +57,6 @@
   </div>
   <div class="payment_type_detail" id="payment_type_b">
     <h3>Bitcoin</h3>
-    <p>Vous pouvez effectuer votre paiement à l'aide de Bitcoin en adressant le montant à l'adresse Bitoin : <strong>15q1WMg7hcggv7QL4DhM3bVUNBkFYJ3rEL</strong><p>
+    <p>Vous pouvez effectuer votre paiement à l'aide de Bitcoin en adressant le montant de <span class="badge"><span class="amount">{{total_amount}}</span> {{symbol}}</span>, équivalent en Bitcoin, à l'adresse Bitcoin : <span class="badge">15q1WMg7hcggv7QL4DhM3bVUNBkFYJ3rEL</span><p>
   </div>
 </div>

@@ -105,8 +105,9 @@ class Size(TranslatableModel):
 
     def __unicode__(self):
         price = self.default_price()
-        return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
-                         (' (%s)' % (price.__unicode__())) if price else "")
+        # return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
+        #                  (' (%s)' % (price.__unicode__())) if price else "")
+        return price.__unicode__()
 
 class Price(models.Model):
     class Meta:

@@ -582,6 +582,19 @@ class CreateAllSuppliersStep(CreateAllStep):
 
         return form
 
+def get_deliveries(nb, init_price):
+    price_rate = (1+settings.DEGRESSIVE_PRICE_RATE/100)
+    return np.array([init_price/price_rate**k for k in range(nb)])
+
+def get_deliveries_from_subscription(subscription_data):
+    bw = Week.fromstring(str(subscription_data.get('start')))
+    ew = Week.withdate( bw.day(1) + relativedelta(months=int(subscription_data.get('duration'))) )
+    nb = len(range(0, ew+1-bw, int(subscription_data.get('frequency'))))
+    init_price = subscription_data.get('size').default_price().price
+    prices = get_deliveries(nb, init_price)
+    deliveries = [(i+1, '%s (%s %s)' % ((bw+i*2).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (bw+i*2).week), p) for i,p in enumerate(prices)]
+    return deliveries, prices
+
 class CreateAllPreviewStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
@@ -615,18 +628,8 @@ class CreateAllPreviewStep(CreateAllStep):
 
         form.supplier_products_choices = SUPPLIER_PRODUCTS_CHOICES
 
-        form.deliveries = []
-        bw = Week.fromstring(str(subscription_data.get('start')))
-        ew = Week.withdate( bw.day(1) + relativedelta(months=int(subscription_data.get('duration'))) )
-        init = form.size.default_price().price
-        k = 0
-        last_price = 0
-        for i in range(0, ew+1-bw, int(subscription_data.get('frequency'))):
-            last_price = init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k
-            k += 1
-            form.deliveries.append(('%s (%s %s)' % ((bw+i).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (bw+i).week), last_price))
-
-        form.mean_of_prices = (np.array([init/(1+settings.DEGRESSIVE_PRICE_RATE/100)**k for k in range(len(form.deliveries))]).mean())
+        form.deliveries, prices = get_deliveries_from_subscription(subscription_data)
+        form.sum_of_prices, form.mean_of_prices = prices.sum(), prices.mean()
 
         return form
 
@@ -660,17 +663,40 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
 class CreateAllPaymentStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
-        size = subscription_data.get('size', None)
-
-        if size:
-            form.price = size.default_price()
+        if not subscription_data: return form
 
         user = get_user(wizard)
         if user:
             form.balance = user.customer.wallet.balance_in_target_currency()
+            form.balance_inversed = form.balance*-1
             form.currency = user.customer.wallet.target_currency
 
+        form.price = subscription_data.get('size').default_price()
+        form.price_rate = 1+settings.DEGRESSIVE_PRICE_RATE/100
+
+        bw = Week.fromstring(str(subscription_data.get('start')))
+        ew = Week.withdate( bw.day(1) + relativedelta(months=int(subscription_data.get('duration'))) )
+        deliveries, prices = get_deliveries_from_subscription(subscription_data)
+
+        form.fields['nb_deliveries'].choices = [(k+1, '%d %s' % (k+1, _('échéance(s)'))) for k in range(len(prices))]
+
         return form
+
+class CreateAllPaymentDone(CreateAllDone):
+    def __call__(self, wizard, own_data, form_data, tmp_dict):
+        user = get_user(wizard)
+        subscription_data = form_data['subscription']
+        t = own_data['payment_type']
+        nb = own_data['nb_deliveries']
+
+        size_price = subscription_data.get('size').default_price()
+        init_price = size_price.price
+        currency = size_price.currency
+        prices = get_deliveries(nb, init_price)
+
+        wm.Credit.objects.create(wallet=user.customer.wallet, payment_type=t, amount=prices.sum(), currency=currency)
+
+        return True
 
 class CreateAllAddressStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
@@ -749,6 +775,7 @@ CREATEALL_DONE = {
     'subscription': CreateAllSubscriptionDone(),
     'products': CreateAllProductsDone(),
     'address': CreateAllAddressDone(),
+    'payment': CreateAllPaymentDone(),
 }
 
 CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume',]

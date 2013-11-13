@@ -435,11 +435,15 @@ class CreateAllAuthenticationForm(forms.Form):
         return super().clean()
 
 class CreateAllPaymentForm(forms.Form):
-    payment_type = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('payment type'), choices=wm.PAYMENT_TYPES, initial='c', help_text=_('Select your payment type. For cheque and bank transfer, your wallet will be credited once received.'))
+    nb_deliveries = forms.ChoiceField(help_text=_("Choisissez le nombre d'échéance que vous souhaitez payer."), label=_("Nombre d'échéances à payer"))
+    payment_type = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('payment type'), choices=wm.PAYMENT_TYPES, initial='c', help_text=_('Choisissez votre type de paiement.'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields.get('payment_type').widget.attrs['class'] = 'radio-select'
+
+        for field in ['nb_deliveries']:
+            self.fields[field].widget.attrs['class'] = 'slidebar-select'
 
 class CreateAllAddressForm(forms.Form):
     gender = forms.ChoiceField(widget=forms.RadioSelect(renderer=MyRadioFieldRenderer), label=_('Gender'), choices=cm.Address.GENDER_CHOICES, required=False)
