@@ -583,7 +583,7 @@ class CreateAllSuppliersStep(CreateAllStep):
         return form
 
 def get_deliveries(nb, init_price):
-    price_rate = (1+settings.DEGRESSIVE_PRICE_RATE/100)
+    price_rate = 1+settings.DEGRESSIVE_PRICE_RATE/100
     return np.array([init_price/price_rate**k for k in range(nb)])
 
 def get_deliveries_from_subscription(subscription_data):
@@ -687,14 +687,24 @@ class CreateAllPaymentDone(CreateAllDone):
         user = get_user(wizard)
         subscription_data = form_data['subscription']
         t = own_data['payment_type']
-        nb = own_data['nb_deliveries']
+        nb = int(own_data['nb_deliveries'])
 
         size_price = subscription_data.get('size').default_price()
         init_price = size_price.price
         currency = size_price.currency
         prices = get_deliveries(nb, init_price)
+        amount = round(prices.sum(),2)
+        balance = user.customer.wallet.balance
 
-        wm.Credit.objects.create(wallet=user.customer.wallet, payment_type=t, amount=prices.sum(), currency=currency)
+        subscription = tmp_dict['subscription']
+
+        if balance < amount:
+            wm.Credit.objects.create(wallet=user.customer.wallet, payment_type=t, amount=round(amount-balance,2), currency=currency)
+        else:
+            for i,delivery in enumerate(subscription.delivery_set.order_by('date').all()):
+                if i >= nb: break
+                delivery.status = 'p'
+                delivery.save()
 
         return True
 
@@ -870,14 +880,13 @@ class CreateAll(SessionWizardView):
         print('done finished')
 
         subscription = tmp_dict['subscription']
-        # raise ValueError('done')
 
         if not self.request.user.is_authenticated():
             user = self.storage.extra_data['user']
             auth.login(self.request, user)
 
         payment_data = form_data.get('payment') or {}
-        success_url = reverse_lazy('create_all_validation', args=[subscription.id, payment_data.get('payment_type', 'c')])
+        success_url = reverse_lazy('create_all_validation', args=[subscription.id, payment_data.get('payment_type', 'c'), payment_data.get('nb_deliveries', 1)])
         return HttpResponseRedirect(str(success_url))
 
     # @method_decorator(login_required)
@@ -904,6 +913,22 @@ class CreateAllValidation(generic.DetailView):
                              'steps': {'current': 'validation'}}
         context['payment_types'] = wm.PAYMENT_TYPES
         context['payment_type'] = self.kwargs.get('payment_type', 'c')
+        context['nb_deliveries'] = nb = int(self.kwargs.get('nb_deliveries', '1'))
+        context['wallet'] = w = self.request.user.customer.wallet
+        context['balance'] = balance = w.balance
+        context['balance_inversed'] = w.balance*-1
+        context['target_symbol'] = w.target_currency.symbol
+        context['payed_deliveries'] = self.get_object().delivery_set.filter(status='p').exists()
+        context['price'] = price = self.get_object().size.default_price()
+        prices = get_deliveries(nb, price.price)
+        __sum = prices.sum()
+        context['total_amount'] = amount = round(__sum-balance, 2)
+        if amount < 0: context['total_amount'] = amount = 0
+        context['mean'] = mean = round(prices.mean(), 2)
+
+        context['cheque_nb'] = cheque_nb = int(amount/mean)
+        context['cheque_first_amount'] = round(amount-cheque_nb*mean, 2)
+
         return context
 
     @method_decorator(login_required)

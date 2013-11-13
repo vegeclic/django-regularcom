@@ -7,7 +7,7 @@
       Pour procéder au paiement par chèque, les modalités de paiement suivantes vous sont proposées :
       <ul>
 	<li>Envoi d'un chèque d'un montant total de <span class="badge"><span class="amount">{{total_amount}}</span> {{symbol}}</span>.</li>
-	<li id="multi_cheque_option" {% if cheque_nb <= 1 %}style="display:none"{% endif %}>
+	<li id="multi_cheque_option" {% if cheque_nb <= 0 %}style="display:none"{% endif %}>
 	  Envoi de
 	  {% if balance %}<span class="badge">1 chèque</span> d'un montant de <span class="badge"><span id="cheque_first_amount">{{cheque_first_amount}}</span> {{symbol}}</span> et {% endif %}
 	  <span class="badge"><span id="cheque_nb">{{cheque_nb}}</span> chèque(s)</span> d'un montant de <span class="badge"><span id="cheque_amount">{{cheque_amount}}</span> {{symbol}}</span> chacun.
@@ -48,7 +48,7 @@
     <ol>
       <li>Créer un compte ou connectez-vous à votre compte paypal.</li>
       <li>Cliquer sur « envoi de fonds » dans le menu du haut.</li>
-      <li>Indiquez le montant de <span class="badge"><span class="amount">{{total_amount|floatformat}}</span> {{symbol}}</span>.</li>
+      <li>Indiquez le montant de <span class="badge"><span class="amount">{{total_amount}}</span> {{symbol}}</span>.</li>
       <li>Indiquez le destinataire suivant : <span class="badge">contact@vegeclic.fr</span></li>
       <li>Vous devrez ensuite choisir votre moyen de paiement.</li>
       <li>Il suffit de valider et la transaction sera effectuée.</li>

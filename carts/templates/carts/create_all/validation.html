@@ -3,51 +3,69 @@
 {% load static %}
 
 {% block sub_content %}
-  <div class="row">
-    <div class="col-md-1">
-      <div class="alert alert-success text-center">
-	<span class="glyphicon glyphicon-thumbs-up" style="font-size:22px"></span>
+  {% with symbol=price.currency.symbol %}
+    <div class="row">
+      <div class="col-md-1">
+	<div class="alert alert-success text-center">
+	  <span class="glyphicon glyphicon-thumbs-up" style="font-size:22px"></span>
+	</div>
+      </div>
+      <div class="col-md-11">
+	<div class="alert alert-success">
+	  <p class="lead">Votre nouvel abonnement n° <strong>{{object.id}}</strong> a été crée avec succès.</p>
+	</div>
       </div>
     </div>
-    <div class="col-md-11">
-      <div class="alert alert-success">
-	<p class="lead">Votre nouvel abonnement n° <strong>{{object.id}}</strong> a été crée avec succès.</p>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-1">
-      <div class="alert alert-info text-center">
-	<span class="glyphicon glyphicon-credit-card" style="font-size:22px"></span>
+    {% if not payed_deliveries %}
+      <div class="row">
+	<div class="col-md-1">
+	  <div class="alert alert-info text-center">
+	    <span class="glyphicon glyphicon-credit-card" style="font-size:22px"></span>
+	  </div>
+	</div>
+	<div class="col-md-11">
+	  <div class="alert alert-info">
+	    <p class="lead">Si vous n'avez pas encore procéder au paiement de ce dernier afin que la prochaine échéance soit validé par nos soins, nous vous invitons, dès maintenant, à procéder au paiement en suivant les consignes données ci-dessous.</p>
+	  </div>
+	</div>
       </div>
-    </div>
-    <div class="col-md-11">
-      <div class="alert alert-info">
-	<p class="lead">Si vous n'avez pas encore procéder au paiement de ce dernier afin que la prochaine échéance soit validé par nos soins, nous vous invitons, dès maintenant, à procéder au paiement en suivant les consignes données ci-dessous.</p>
+
+      <div class="row">
+	<div class="col-md-6">
+	  <div class="panel panel-success">
+	    <div class="panel-heading"><h2>{% trans "Montant à payer" %}</h2></div>
+	    <div class="panel-body text-center text-success"><h1>{{total_amount|stringformat:".2f"}} {{symbol}}</h1></div>
+	    <div class="panel-footer">Montant à payer après déduction du solde de votre compte</div>
+	  </div>
+	</div>
+	<div class="col-md-6">
+	  <div class="panel panel-info">
+	    <div class="panel-heading"><h2>{% trans "Prix moyen / échéance" %}</h2></div>
+	    <div class="panel-body text-center text-info"><h1><span id="mean">{{mean|stringformat:".2f"}}</span> {{symbol}}</h1></div>
+	    <div class="panel-footer">Prix moyen calculé sur le nombre d'échéances payés</div>
+	  </div>
+	</div>
       </div>
-    </div>
-  </div>
 
-  <div class="panel panel-info">
-    <div class="panel-heading"><h4>{% trans "Montant à payer" %}</h4></div>
-    <div class="panel-body text-center"><h1>{{object.size.default_price}}</h1></div>
-  </div>
-
-  <div class="panel panel-info">
-    <div class="panel-heading"><h4>Type de paiement</h4></div>
-    <div class="panel-body">
-      <div class="btn-group" data-toggle="buttons">
-	{% for type in payment_types %}
-	  <label class="btn btn-default btn-lg {% if payment_type == type.0 %}active{% endif %}"><input {% if payment_type == type.0 %}checked="checked"{% endif %} class="radio-select" name="payment-payment_type" type="radio" value="{{type.0}}" /> {{type.1}}</label>
-	{% endfor %}
+      <div class="panel panel-info">
+	<div class="panel-heading"><h2>Type de paiement</h2></div>
+	<div class="panel-body">
+	  <div class="btn-group" data-toggle="buttons">
+	    {% for k,v in payment_types %}
+	      <label class="btn btn-default btn-lg {% if payment_type == k %}active{% endif %}"><input {% if payment_type == k %}checked="checked"{% endif %} class="radio-select" name="payment-payment_type" type="radio" value="{{k}}" /> {{v}}</label>
+	    {% endfor %}
+	  </div>
+	  <br/>
+	  <br/>
+	  {% with cheque_amount=mean %}
+	    {% include "carts/create_all/payment_types.html" %}
+	  {% endwith %}
+	</div>
       </div>
-      <br/>
-      <br/>
-      {% include "carts/create_all/payment_types.html" %}
-    </div>
-  </div>
+    {% endif %}
 
+  {% endwith %}
 {% endblock %}
 
 {% block sub_foot %}

@@ -31,5 +31,5 @@ urlpatterns = patterns('carts.views',
                        url(r'^create/thematic/$', views.ThematicListView.as_view(), name='create_thematic'),
                        url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2], condition_dict={'1': views.show_extent_form_condition}), name='create_thematic_id'),
                        url(r'^create/all/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_all'),
-                       url(r'^create/all/(?P<subscription_id>\d+)/(?P<payment_type>\w)/$', views.CreateAllValidation.as_view(), name='create_all_validation'),
+                       url(r'^create/all/(?P<subscription_id>\d+)/(?P<payment_type>\w)/(?P<nb_deliveries>\d+)/$', views.CreateAllValidation.as_view(), name='create_all_validation'),
 )
