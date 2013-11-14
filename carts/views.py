@@ -393,18 +393,7 @@ def get_user(wizard):
         user = wizard.storage.extra_data.get('user', None)
     return user
 
-def get_thematic(wizard):
-    cart_data = wizard.get_cleaned_data_for_step('cart') or {}
-    try:
-        thematic = models.Thematic.objects.select_related().get(id=cart_data.get('choice', None))
-    except models.Thematic.DoesNotExist:
-        thematic = None
-    except ValueError:
-        thematic = None
-    return thematic
-
-def get_thematic_done(form_data):
-    cart_data = form_data.get('cart') or {}
+def get_thematic(cart_data):
     try:
         thematic = models.Thematic.objects.select_related().get(id=cart_data.get('choice', None))
     except models.Thematic.DoesNotExist:
@@ -423,7 +412,7 @@ class CreateAllSubscriptionStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         cart_data = wizard.get_cleaned_data_for_step('cart') or {}
 
-        form.thematic = get_thematic(wizard)
+        form.thematic = get_thematic(cart_data)
 
         if form.thematic:
             for k, f in [('size', form.thematic.size),
@@ -474,7 +463,7 @@ class CreateAllSubscriptionDone(CreateAllDone):
 
         user = get_user(wizard)
         customer = user.customer
-        thematic = get_thematic_done(form_data)
+        thematic = get_thematic(form_data['cart'])
         customized = own_data.get('customized', False)
 
         duration = int(own_data.get('duration'))
@@ -511,7 +500,8 @@ Végéclic.
 
 class CreateAllProductsStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        form.thematic = get_thematic(wizard)
+        cart_data = wizard.get_cleaned_data_for_step('cart') or {}
+        form.thematic = get_thematic(cart_data)
         form.thematic_products = [e.product for e in form.thematic.thematicextent_set.all()] if form.thematic else []
 
         form.modified = True if data else False
@@ -554,7 +544,8 @@ SUPPLIER_PRODUCTS_CHOICES = [
 class CreateAllExtentsStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         products_data = wizard.get_cleaned_data_for_step('products') or {}
-        form.thematic = get_thematic(wizard)
+        cart_data = wizard.get_cleaned_data_for_step('cart') or {}
+        form.thematic = get_thematic(cart_data)
 
         products = products_data.get('products', [])
         thematic_products = [e.product for e in form.thematic.thematicextent_set.all()] if form.thematic else []
@@ -616,7 +607,10 @@ class CreateAllPreviewStep(CreateAllStep):
         subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
         if not subscription_data: return form
 
-        form.thematic = get_thematic(wizard)
+        cart_data = wizard.get_cleaned_data_for_step('cart') or {}
+        if not cart_data: return form
+
+        form.thematic = get_thematic(cart_data)
         form.size = subscription_data.get('size')
         form.duration = dict(forms.DURATION_CHOICES).get(int(subscription_data.get('duration')))
         w = Week.fromstring(subscription_data.get('start'))
@@ -885,8 +879,8 @@ class CreateAll(SessionWizardView):
 
     def process_step(self, form):
         step = self.steps.current
-        print(self.storage.extra_data)
-        print(self.get_all_cleaned_data())
+        # print(self.storage.extra_data)
+        # print(self.get_all_cleaned_data())
         return super().process_step(CREATEALL_PROCESS_STEPS.get(step, CreateAllProcessStep())(self, form))
 
     def done(self, form_list, **kwargs):
