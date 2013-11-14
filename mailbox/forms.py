@@ -42,7 +42,7 @@ class MessageAdmin(forms.ModelForm):
         message.participants_notified.add(message.owner)
         models.create_mail(subject=message.subject,
                            body=message.body,
-                           participants=message.participants.exclude(id=message.owner.id),
+                           participants=message.participants.exclude(message.owner),
                            message=message)
         return message
 
