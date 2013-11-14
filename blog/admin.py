@@ -19,9 +19,10 @@
 
 from django.contrib.contenttypes import generic
 from hvad.admin import TranslatableAdmin
+from modeltranslation.admin import TranslationAdmin
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from . import models
+from . import models, forms
 import common.admin as ca
 
 class TaggedItemInline(generic.GenericTabularInline):
@@ -32,19 +33,17 @@ class CommentInline(admin.StackedInline):
     model = models.Comment
     extra = 1
 
-class CategoryAdmin(TranslatableAdmin):
-    list_display = ('id', 'all_translations', 'name_')
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
+class CategoryAdmin(TranslationAdmin):
+    list_display = ('id', 'name')
 
 admin.site.register(models.Category, CategoryAdmin)
 
-class ArticleAdmin(TranslatableAdmin):
-    list_display = ('id', 'all_translations', 'title_', 'date_created', 'date_last_modified')
+class ArticleAdmin(TranslationAdmin):
+    # add_form = forms.NewArticleAdmin
+    # form = forms.ArticleAdmin
+    list_display = ('id', 'title', 'date_created', 'date_last_modified')
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
     inlines = [CommentInline, ca.ImageInline, TaggedItemInline,]
-
-    def title_(self, obj): return obj.lazy_translation_getter('title')
 
 admin.site.register(models.Article, ArticleAdmin)

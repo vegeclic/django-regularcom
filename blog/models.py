@@ -22,7 +22,6 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from hvad.models import TranslatableModel, TranslatedFields
 
 class TaggedItem(models.Model):
     tag = models.SlugField(_('tag'))
@@ -32,23 +31,19 @@ class TaggedItem(models.Model):
 
     def __unicode__(self): return self.tag
 
-class Category(TranslatableModel):
+class Category(models.Model):
     class Meta:
         verbose_name_plural = _('categories')
 
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=200)
-    )
+    name = models.CharField(_('name'), max_length=200)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Category: %s' % self.pk)
+    def __unicode__(self): return self.name
 
-class Article(TranslatableModel):
-    translations = TranslatedFields(
-        title = models.CharField(_('title'), max_length=200),
-        body = models.TextField(_('body')),
-    )
+class Article(models.Model):
+    title = models.CharField(_('title'), max_length=200)
+    body = models.TextField(_('body'))
     authors = models.ManyToManyField('accounts.Author', related_name='blog_article_authors', verbose_name=_('authors'))
     slug = models.SlugField(max_length=200)
     enabled = models.BooleanField(default=True)
@@ -59,6 +54,8 @@ class Article(TranslatableModel):
     thumb_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='blog_article_thumb_image', verbose_name=_('thumb image'))
     tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'), related_name='blog_article_tags')
     categories = models.ManyToManyField(Category, null=True, blank=True, related_name='blog_article_categories', verbose_name=_('categories'))
+
+    def __unicode__(self): return self.title
 
 class Comment(models.Model):
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('participant'), null=True, blank=True)
