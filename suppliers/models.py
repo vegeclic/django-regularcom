@@ -22,7 +22,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from hvad.models import TranslatableModel, TranslatedFields
 import common.models as cm
 import numpy as np
 
@@ -52,13 +51,11 @@ class SupplierFee(models.Model):
 
     def __unicode__(self): return '%s %s / 1 kg' % (self.fee_per_weight, self.currency.symbol)
 
-class Product(TranslatableModel):
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100),
-        slug = models.SlugField(max_length=100, null=True, blank=True),
-        body = models.TextField(_('body'), blank=True),
-        ingredients = models.TextField(_('ingredients'), blank=True),
-    )
+class Product(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    slug = models.SlugField(max_length=100, null=True, blank=True)
+    body = models.TextField(_('body'), blank=True)
+    ingredients = models.TextField(_('ingredients'), blank=True)
     product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),
@@ -76,7 +73,7 @@ class Product(TranslatableModel):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Product: %s' % self.pk)
+    def __unicode__(self): return self.name
 
     def price(self):
         try:

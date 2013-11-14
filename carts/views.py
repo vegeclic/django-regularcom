@@ -265,7 +265,7 @@ class CreateWizard(SessionWizardView):
 
         elif step == '1':
             products = []
-            for product in pm.Product.objects.language('fr').order_by('name').all():
+            for product in pm.Product.objects.order_by('name').all():
                 if int( self.request.POST.get('product_%d' % product.id, 0) ):
                     products.append(product)
 
@@ -580,7 +580,7 @@ class CreateAllSuppliersStep(CreateAllStep):
             price = size.default_price().price*extents_data.get('product_%d' % product.id, 1)/100
             print(price)
             root = sw.find_product(products_tree, product.id)
-            qs = sm.Product.objects.language('fr').filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
+            qs = sm.Product.objects.filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
             form.fields['supplier_product_%d' % product.id] = f = forms.forms.ModelMultipleChoiceField(widget=forms.MyImageCheckboxSelectMultiple, queryset=qs, label=product.name)
             supplier_products_list = qs.all()
             f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image if p.main_image else '', p.price().get_after_tax_price()/price*100)) for p in supplier_products_list]

@@ -17,32 +17,10 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-from modeltranslation.forms import TranslationModelForm
+from modeltranslation.translator import translator, TranslationOptions
 from . import models
-import common.forms as cf
-import common.models as cm
-import products.models as pm
 
-class SupplierForm(cf.ModelFormWithImage):
-    class Meta:
-        model = models.Supplier
+class ProductTranslationOptions(TranslationOptions):
+    fields = ('name', 'slug', 'body', 'ingredients',)
 
-class SupplierCreationForm(forms.ModelForm):
-    class Meta:
-        model = models.Supplier
-        exclude = ('main_image',)
-
-class PriceForm(cf.ModelFormWithCurrency):
-    class Meta:
-        model = models.Price
-
-class ProductForm(TranslationModelForm):
-    class Meta:
-        model = models.Product
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.fields['product'].queryset = pm.Product.objects.order_by('name')
+translator.register(models.Product, ProductTranslationOptions)
