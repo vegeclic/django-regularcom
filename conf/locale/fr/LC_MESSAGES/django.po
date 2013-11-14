@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 04:55+0100\n"
+"POT-Creation-Date: 2013-11-13 23:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,7 +91,7 @@ msgid "account"
 msgstr "compte"
 
 #: accounts/models.py:126 blog/models.py:40 carts/models.py:54
-#: carts/models.py:93 carts/models.py:123 common/models.py:78
+#: carts/models.py:93 carts/models.py:124 common/models.py:78
 #: common/models.py:86 common/models.py:98 products/models.py:39
 #: products/models.py:51 suppliers/models.py:30 suppliers/models.py:57
 #: suppliers/models.py:91 suppliers/models.py:151
@@ -104,13 +104,13 @@ msgstr "nom"
 msgid "main image"
 msgstr "image principale"
 
-#: accounts/views.py:62 carts/views.py:608
+#: accounts/views.py:62 carts/views.py:652
 msgid "Your account has been successfully created."
 msgstr ""
 "Votre compte a été crée avec succès. Vous allez recevoir d'ici peu un mail "
 "contenant votre mot de passe."
 
-#: accounts/views.py:79 accounts/views.py:103 carts/views.py:616
+#: accounts/views.py:79 accounts/views.py:103 carts/views.py:660
 msgid "You're logged in."
 msgstr "Vous êtes connecté."
 
@@ -246,7 +246,7 @@ msgid "title"
 msgstr "titre"
 
 #: blog/models.py:50 blog/models.py:66 carts/models.py:55 carts/models.py:94
-#: carts/models.py:124 mailbox/models.py:63 mailbox/models.py:85
+#: carts/models.py:125 mailbox/models.py:63 mailbox/models.py:85
 #: products/models.py:53 suppliers/models.py:59
 msgid "body"
 msgstr "corps"
@@ -401,7 +401,8 @@ msgstr "Personnaliser"
 msgid "Receive only once"
 msgstr "Recevoir une seule fois"
 
-#: carts/forms.py:261 carts/forms.py:322 carts/models.py:50 carts/views.py:588
+#: carts/forms.py:261 carts/forms.py:322 carts/models.py:50 carts/views.py:595
+#: carts/views.py:607
 msgid "Week"
 msgstr "Semaine"
 
@@ -417,73 +418,77 @@ msgstr "Connexion"
 msgid "Users must have an email address"
 msgstr "Vous devez définir une adresse email"
 
-#: carts/forms.py:438 wallets/models.py:74 wallets/models.py:127
+#: carts/forms.py:438
+msgid "Choisissez le nombre d'échéance que vous souhaitez payer."
+msgstr ""
+
+#: carts/forms.py:438
+msgid "Nombre d'échéances à payer"
+msgstr ""
+
+#: carts/forms.py:439 wallets/models.py:74 wallets/models.py:127
 msgid "payment type"
 msgstr "Type de paiement"
 
-#: carts/forms.py:438 wallets/models.py:74
-msgid ""
-"Select your payment type. For cheque and bank transfer, your wallet will be "
-"credited once received."
+#: carts/forms.py:439
+msgid "Choisissez votre type de paiement."
 msgstr ""
-"Choisissez votre type de paiement. Pour les paiements par chèque et virement "
-"bancaire, votre portemonnaie sera crédité dès réception."
 
-#: carts/forms.py:445
+#: carts/forms.py:449
 msgid "Gender"
-msgstr "genre"
+msgstr "Genre"
 
-#: carts/forms.py:446
+#: carts/forms.py:450 carts/templates/carts/create_all/resume.html:14
 msgid "First name"
 msgstr "Prénom"
 
-#: carts/forms.py:447
+#: carts/forms.py:451 carts/templates/carts/create_all/resume.html:15
 msgid "Last name"
 msgstr "Nom"
 
-#: carts/forms.py:448
+#: carts/forms.py:452 carts/templates/carts/create_all/resume.html:16
 msgid "Street"
 msgstr "Rue"
 
-#: carts/forms.py:449
+#: carts/forms.py:453 carts/templates/carts/create_all/resume.html:17
 msgid "Postal code"
 msgstr "Code postal"
 
-#: carts/forms.py:450
+#: carts/forms.py:454 carts/templates/carts/create_all/resume.html:18
 msgid "City"
 msgstr "Ville"
 
-#: carts/forms.py:451
+#: carts/forms.py:455 carts/templates/carts/create_all/resume.html:19
 msgid "Country"
 msgstr "Pays"
 
-#: carts/forms.py:452
+#: carts/forms.py:456 carts/templates/carts/create_all/resume.html:20
 msgid "Home phone"
 msgstr "Téléphone fixe"
 
-#: carts/forms.py:453
+#: carts/forms.py:457 carts/templates/carts/create_all/resume.html:21
 msgid "Mobile phone"
 msgstr "Téléphone mobile"
 
-#: carts/forms.py:455
+#: carts/forms.py:459
 msgid "Relay name"
 msgstr "Nom du point-relay"
 
-#: carts/forms.py:456
+#: carts/forms.py:460
 msgid "Relay street"
 msgstr "Adresse du point-relay"
 
-#: carts/forms.py:457
+#: carts/forms.py:461
 msgid "Relay postal code"
 msgstr "Code postal du point-relay"
 
-#: carts/forms.py:458
+#: carts/forms.py:462
 msgid "Relay city"
-msgstr ""
+msgstr "Ville du point-relay"
 
-#: carts/forms.py:474
+#: carts/forms.py:481
 msgid "Write down your comment here."
-msgstr ""
+msgstr "Écrivez votre commentaire ici."
 
 #: carts/models.py:37
 msgid "Once a week"
@@ -498,22 +503,22 @@ msgid "Every three weeks"
 msgstr "Toutes les trois semaines"
 
 #: carts/models.py:40
-msgid "Once a month"
-msgstr "Une fois par mois"
+msgid "Once a month (4 weeks)"
+msgstr "Une fois par mois (4 semaines)"
 
 #: carts/models.py:41
-msgid "Every two months"
-msgstr "Tous les deux mois"
+msgid "Every two months (8 weeks)"
+msgstr "Tous les deux mois (8 semaines)"
 
 #: carts/models.py:42
-msgid "Once a quarter"
-msgstr "Une fois par trimestre"
+msgid "Once a quarter (13 weeks)"
+msgstr "Une fois par trimestre (13 semaines)"
 
 #: carts/models.py:43
-msgid "Every 6 months"
-msgstr "Une fois par semestre"
+msgid "Every 6 months (26 weeks)"
+msgstr "Une fois par semestre (26 semaines)"
 
-#: carts/models.py:57 carts/models.py:115 carts/models.py:232
+#: carts/models.py:57 carts/models.py:116 carts/models.py:233
 msgid "size"
 msgstr "taille"
 
@@ -521,7 +526,7 @@ msgstr "taille"
 msgid "locked size"
 msgstr "taille verrouillée"
 
-#: carts/models.py:59 carts/models.py:136 carts/models.py:233
+#: carts/models.py:59 carts/models.py:137 carts/models.py:234
 msgid "carrier"
 msgstr "livreur"
 
@@ -529,7 +534,7 @@ msgstr "livreur"
 msgid "locked carrier"
 msgstr "livreur verrouillé"
 
-#: carts/models.py:61 carts/models.py:234
+#: carts/models.py:61 carts/models.py:235
 msgid "receive only once"
 msgstr "recevoir une seule fois"
 
@@ -537,11 +542,11 @@ msgstr "recevoir une seule fois"
 msgid "locked receive only once"
 msgstr "recevoir une seule fois verrouillée"
 
-#: carts/models.py:63 carts/models.py:235
+#: carts/models.py:63 carts/models.py:236
 msgid "frequency"
 msgstr "fréquence"
 
-#: carts/models.py:63 carts/models.py:235
+#: carts/models.py:63 carts/models.py:236
 msgid "Delivery made sure Tuesday"
 msgstr "Les livraisons sont envoyées le mardi"
 
@@ -573,7 +578,7 @@ msgstr "Il s'agit de la semaine de fin de l'abonnement."
 msgid "locked duration"
 msgstr "durée verrouillée"
 
-#: carts/models.py:73 carts/models.py:240 suppliers/models.py:72
+#: carts/models.py:73 carts/models.py:241 suppliers/models.py:72
 msgid "criterias"
 msgstr "critères"
 
@@ -585,8 +590,8 @@ msgstr "critères verrouillés"
 msgid "locked products"
 msgstr "produits verrouillés"
 
-#: carts/models.py:76 carts/models.py:215 carts/models.py:241
-#: carts/models.py:299 suppliers/models.py:144 suppliers/models.py:163
+#: carts/models.py:76 carts/models.py:216 carts/models.py:242
+#: carts/models.py:300 suppliers/models.py:144 suppliers/models.py:163
 msgid "quantity"
 msgstr "quantité"
 
@@ -610,88 +615,88 @@ msgstr "fin de la période"
 msgid "Here is the ending week of the period."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:87 carts/models.py:98 carts/models.py:128
-#: carts/models.py:243 common/models.py:89
+#: carts/models.py:87 carts/models.py:98 carts/models.py:129
+#: carts/models.py:244 common/models.py:89
 msgid "enabled"
 msgstr "activé"
 
-#: carts/models.py:96 carts/models.py:137 suppliers/models.py:73
+#: carts/models.py:96 carts/models.py:138 suppliers/models.py:73
 msgid "weight"
 msgstr "poids"
 
-#: carts/models.py:116 carts/models.py:138 suppliers/models.py:50
+#: carts/models.py:117 carts/models.py:139 suppliers/models.py:50
 #: suppliers/models.py:105 wallets/models.py:76 wallets/models.py:129
 msgid "currency"
 msgstr "devise"
 
-#: carts/models.py:117 carts/models.py:139
+#: carts/models.py:118 carts/models.py:140
 msgid "price"
 msgstr "prix"
 
-#: carts/models.py:126
+#: carts/models.py:127
 msgid "apply suppliers fee"
 msgstr "appliquer les frais des fournisseurs"
 
-#: carts/models.py:127
+#: carts/models.py:128
 msgid "weight min"
 msgstr "poids min"
 
-#: carts/models.py:145
+#: carts/models.py:146
 msgid "deliveries"
 msgstr "livraisons"
 
-#: carts/models.py:147 carts/models.py:283
+#: carts/models.py:148 carts/models.py:284
 msgid "subscription"
 msgstr "abonnement"
 
-#: carts/models.py:148
+#: carts/models.py:149
 msgid "date"
 msgstr "date"
 
-#: carts/models.py:150 wallets/models.py:66
+#: carts/models.py:151 wallets/models.py:66
 msgid "Pending"
 msgstr "En attente"
 
-#: carts/models.py:151
+#: carts/models.py:152
 msgid "Payed"
 msgstr "Payé"
 
-#: carts/models.py:152
+#: carts/models.py:153
 msgid "In progress"
 msgstr "En cours"
 
-#: carts/models.py:153
+#: carts/models.py:154
 msgid "Sent"
 msgstr "Envoyé"
 
-#: carts/models.py:154
+#: carts/models.py:155
 msgid "Delivered"
 msgstr "Livré"
 
-#: carts/models.py:155 wallets/models.py:68
+#: carts/models.py:156 wallets/models.py:68
 msgid "Canceled"
 msgstr "Annulé"
 
-#: carts/models.py:156 products/models.py:58 suppliers/models.py:67
+#: carts/models.py:157 products/models.py:58 suppliers/models.py:67
 #: suppliers/models.py:171
 msgid "Expired"
 msgstr "Expiré"
 
-#: carts/models.py:160 products/models.py:61 suppliers/models.py:70
+#: carts/models.py:161 products/models.py:61 suppliers/models.py:70
 #: suppliers/models.py:174
 msgid "status"
 msgstr "statut"
 
-#: carts/models.py:161
+#: carts/models.py:162
 msgid "payed price"
 msgstr "prix d'achat"
 
-#: carts/models.py:174
+#: carts/models.py:175
 #, python-format
 msgid "Delivery %(date)s cannot be validated"
 msgstr "La livraison %(date)s ne peut pas être validée"
 
-#: carts/models.py:175
+#: carts/models.py:176
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -719,17 +724,17 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: carts/models.py:186
+#: carts/models.py:187
 msgid "You dont have enough money in your wallet to buy it."
 msgstr ""
 "Vous ne possédez pas assez d'argent dans votre portemonnaie pour l'acheter."
 
-#: carts/models.py:194
+#: carts/models.py:195
 #, python-format
 msgid "Delivery %(date)s has been validated"
 msgstr "La livraison %(date)s a été validé"
 
-#: carts/models.py:195
+#: carts/models.py:196
 #, python-format
 msgid ""
 "Hi %(name)s,\n"
@@ -754,69 +759,69 @@ msgstr ""
 "Bien cordialement,\n"
 "Végéclic.\n"
 
-#: carts/models.py:213 carts/models.py:297
+#: carts/models.py:214 carts/models.py:298
 msgid "content"
 msgstr "contenu"
 
-#: carts/models.py:214 carts/models.py:224 carts/models.py:284
-#: carts/models.py:298 carts/models.py:308 suppliers/models.py:62
+#: carts/models.py:215 carts/models.py:225 carts/models.py:285
+#: carts/models.py:299 carts/models.py:309 suppliers/models.py:62
 #: suppliers/models.py:100 suppliers/models.py:143 suppliers/models.py:162
 msgid "product"
 msgstr "produit"
 
-#: carts/models.py:223
+#: carts/models.py:224
 msgid "delivery"
 msgstr "livraison"
 
-#: carts/models.py:225 carts/models.py:285 carts/models.py:291
-#: carts/models.py:309
+#: carts/models.py:226 carts/models.py:286 carts/models.py:292
+#: carts/models.py:310
 msgid "extent"
 msgstr "proportion"
 
-#: carts/models.py:226 carts/models.py:286
+#: carts/models.py:227 carts/models.py:287
 msgid "customized"
 msgstr "personnalisé"
 
-#: carts/models.py:231 wallets/models.py:29
+#: carts/models.py:232 wallets/models.py:29
 msgid "customer"
 msgstr "client"
 
-#: carts/models.py:236
+#: carts/models.py:237
 msgid "start"
 msgstr "début"
 
-#: carts/models.py:237
+#: carts/models.py:238
 msgid "Here is the beginnig week of the subscription."
 msgstr "Il s'agit de la semaine de début de l'abonnement."
 
-#: carts/models.py:238
+#: carts/models.py:239
 msgid "end"
 msgstr "fin"
 
-#: carts/models.py:239
+#: carts/models.py:240
 msgid "Here is the ending week of the subscription."
 msgstr "Il s'agit de la semaine de fin de l'abonnement."
 
-#: carts/models.py:242
+#: carts/models.py:243
 msgid "direct debit"
 msgstr "prélévement automatique"
 
-#: carts/models.py:266
+#: carts/models.py:267
 #, python-format
 msgid "%d years, "
 msgstr "%d ans, "
 
-#: carts/models.py:267
+#: carts/models.py:268
 #, python-format
 msgid "%d months, "
 msgstr "%d mois, "
 
-#: carts/models.py:268
+#: carts/models.py:269
 #, python-format
 msgid "%d days"
 msgstr "%d jours"
 
-#: carts/models.py:307
+#: carts/models.py:308
 msgid "thematic"
 msgstr "thème"
 
@@ -879,16 +884,20 @@ msgid ""
 "Végéclic.\n"
 msgstr ""
 
-#: carts/views.py:551
+#: carts/views.py:536
 msgid "Je laisse Végéclic choisir"
 msgstr ""
 
-#: carts/views.py:551
+#: carts/views.py:537
 msgid "Je souhaite choisir"
 msgstr ""
 
-#: carts/views.py:614
+#: carts/views.py:658
 msgid "bad credentials"
+msgstr ""
+
+#: carts/views.py:681
+msgid "échéance(s)"
 msgstr ""
 
 #: carts/management/commands/fullfillcarts.py:235
@@ -1047,6 +1056,7 @@ msgstr ""
 
 #: carts/templates/carts/delivery_list.html:38
 #: carts/templates/carts/subscription_list.html:31
+#: carts/templates/carts/create_all/preview.html:77
 #: mailbox/templates/mailbox/message_detail.html:22
 #: mailbox/templates/mailbox/message_detail.html:35
 #: mailbox/templates/mailbox/message_list.html:20
@@ -1058,6 +1068,7 @@ msgstr ""
 
 #: carts/templates/carts/delivery_list.html:40
 #: carts/templates/carts/subscription_list.html:26
+#: carts/templates/carts/create_all/preview.html:78
 #: suppliers/templates/suppliers/catalog.html:157
 msgid "Price"
 msgstr "Prix"
@@ -1165,17 +1176,21 @@ msgstr "Nos paniers thématiques"
 msgid "Create"
 msgstr "Créer"
 
-#: carts/templates/carts/create_all/address.html:9
+#: carts/templates/carts/create_all/address.html:10
 msgid "Vos coordonnées"
 msgstr ""
 
-#: carts/templates/carts/create_all/address.html:31
+#: carts/templates/carts/create_all/address.html:39
 msgid "Les coordonnées de votre point-relay"
 msgstr ""
 
 #: carts/templates/carts/create_all/base.html:10
 msgid "Create your subscription"
 msgstr "Crée votre abonnement"
+
+#: carts/templates/carts/create_all/base.html:76
+msgid "Créer mon abonnement"
+msgstr ""
 
 #: carts/templates/carts/create_all/base.html:76
 msgid "Next"
@@ -1234,14 +1249,19 @@ msgstr ""
 msgid "Choix des produits"
 msgstr ""
 
-#: carts/templates/carts/create_all/payment.html:9
-#: carts/templates/carts/create_all/validation.html:33
+#: carts/templates/carts/create_all/payment.html:15
+#: carts/templates/carts/create_all/validation.html:37
 msgid "Montant à payer"
 msgstr ""
 
-#: carts/templates/carts/create_all/payment.html:15
-msgid "Solde disponible sur votre portemonnaie Végéclic"
+#: carts/templates/carts/create_all/payment.html:22
+#: carts/templates/carts/create_all/validation.html:44
+msgid "Prix moyen / échéance"
 msgstr ""
+
+#: carts/templates/carts/create_all/preview.html:79
+msgid "Mean price"
+msgstr "Prix moyen"
 
 #: carts/templates/carts/create_all/subscription.html:24
 msgid ""
@@ -1870,6 +1890,14 @@ msgstr "Bitcoin"
 #: wallets/models.py:69
 msgid "Rejected"
 msgstr "Rejeté"
+
+#: wallets/models.py:74
+msgid ""
+"Select your payment type. For cheque and bank transfer, your wallet will be "
+"credited once received."
+msgstr ""
+"Choisissez votre type de paiement. Pour les paiements par chèque et virement "
+"bancaire, votre portemonnaie sera crédité dès réception."
 
 #: wallets/models.py:77
 msgid "payment date"

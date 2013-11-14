@@ -66,7 +66,7 @@ class SubscriptionBaseAdminForm(forms.ModelForm):
 class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('enabled', 'customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'start', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'carrier', 'receive_only_once', 'frequency', 'duration', 'start', 'criterias', 'quantity', 'comment',)
 
     duration = forms.ChoiceField(choices=DURATION_CHOICES, initial=3)
 
@@ -91,7 +91,7 @@ class SubscriptionCreationAdminForm(SubscriptionBaseAdminForm):
 class SubscriptionAdminForm(SubscriptionBaseAdminForm):
     class Meta:
         model = models.Subscription
-        fields = ('enabled', 'customer', 'size', 'carrier', 'criterias', 'quantity',)
+        fields = ('enabled', 'customer', 'size', 'carrier', 'criterias', 'quantity', 'comment',)
 
 class ExtentAdminForm(forms.ModelForm):
     class Meta:
@@ -364,7 +364,7 @@ class MyImageCheckboxSelectMultiple(forms.SelectMultiple):
             option_value = forms.widgets.force_text(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = forms.widgets.force_text(option_label)
-            option_labels = option_label.split('|')
+            option_labels = option_label.split('|#~|')
             output.append(forms.widgets.format_html('<label class="choice btn btn-default btn-lg {0} {1}"{2}>{3} <img class="img-thumbnail tooltip_link" src="{4}{5}" style="width:100px" title="{6}" alt="{6}"/><span class="price">{7}</span></label>',
                                                     'active' if cb.check_test(option_value) else '',
                                                     'disabled' if 'disabled' in attrs else '',

@@ -3,21 +3,21 @@
 {% load static %}
 
 {% block sub_content %}
-  {% with init_price=wizard.form.price.price price=wizard.form.price.price|add:wizard.form.balance_inversed balance_inversed=wizard.form.balance_inversed symbol=wizard.form.price.currency.symbol balance=wizard.form.balance target_symbol=wizard.form.currency.symbol %}
+  {% with init_price=wizard.form.price.price price=wizard.form.price.price|add:wizard.form.balance_inversed balance_inversed=wizard.form.balance_inversed symbol=wizard.form.price.currency.symbol balance=wizard.form.balance target_symbol=wizard.form.currency.symbol receive_only_once=wizard.form.receive_only_once %}
 
   {% with tname="carts/create_all/one_slide.html" slide_col_size=9 value_col_size=3 %}
     {% with id="payment-nb_deliveries" field=wizard.form.nb_deliveries style="info" %}{% include tname %}{% endwith %}
   {% endwith %}
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-{% if not receive_only_once %}6{% else %}12{% endif %}">
       <div class="panel panel-success">
 	<div class="panel-heading"><h2>{% trans "Montant à payer" %}</h2></div>
 	<div class="panel-body text-center text-success"><h1><span id="amount">{{price|stringformat:".2f"}}</span> {{symbol}}</h1></div>
 	<div class="panel-footer">Montant à payer après déduction du solde de votre compte</div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div {% if not receive_only_once %}class="col-md-6"{% else %}style="display:none"{% endif %}>
       <div class="panel panel-info">
 	<div class="panel-heading"><h2>{% trans "Prix moyen / échéance" %}</h2></div>
 	<div class="panel-body text-center text-info"><h1><span id="mean">{{init_price|stringformat:".2f"}}</span> {{symbol}}</h1></div>

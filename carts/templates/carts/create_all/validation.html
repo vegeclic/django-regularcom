@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block sub_content %}
-  {% with symbol=price.currency.symbol %}
+  {% with symbol=price.currency.symbol receive_only_once=object.receive_only_once %}
     <div class="row">
       <div class="col-md-1">
 	<div class="alert alert-success text-center">
@@ -32,20 +32,22 @@
       </div>
 
       <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-{% if not receive_only_once %}6{% else %}12{% endif %}">
 	  <div class="panel panel-success">
 	    <div class="panel-heading"><h2>{% trans "Montant à payer" %}</h2></div>
 	    <div class="panel-body text-center text-success"><h1>{{total_amount|stringformat:".2f"}} {{symbol}}</h1></div>
 	    <div class="panel-footer">Montant à payer après déduction du solde de votre compte</div>
 	  </div>
 	</div>
+	{% if not receive_only_once %}
 	<div class="col-md-6">
 	  <div class="panel panel-info">
 	    <div class="panel-heading"><h2>{% trans "Prix moyen / échéance" %}</h2></div>
-	    <div class="panel-body text-center text-info"><h1><span id="mean">{{mean|stringformat:".2f"}}</span> {{symbol}}</h1></div>
+	    <div class="panel-body text-center text-info"><h1>{{mean|stringformat:".2f"}} {{symbol}}</h1></div>
 	    <div class="panel-footer">Prix moyen calculé sur le nombre d'échéances payés</div>
 	  </div>
 	</div>
+	{% endif %}
       </div>
 
       <div class="panel panel-info">

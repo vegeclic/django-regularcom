@@ -10,11 +10,9 @@
 {% block section_title %}{% trans "Create your subscription" %}{% endblock %}
 
 {% block content %}
-  {% if not validation %}
-    <h1>Créez votre abonnement Végéclic</h1>
-  {% else %}
-    <h1>Abonnement n° <strong>{{object.id}}</strong> crée</h1>
-  {% endif %}
+  {% with c=wizard.steps.current i=wizard.form.step_idx %}
+
+    <h1>{% if c == "cart" %}Créez votre abonnement Végéclic{% elif c == "subscription" %}Configuration de l'abonnement{% elif c == "products" %}Choix des familles de produits{% elif c == "extents" %}Proportions des produits{% elif c == "suppliers" %}Sélection des articles{% elif c == "preview" %}Aperçu du contenu du panier{% elif c == "authentication" %}Identification{% elif c == "payment" %}Paiement{% elif c == "address" %}Coordonnées{% elif c == "comment" %}Commentaire{% elif c == "resume" %}Aperçu avant validation{% elif c == "validation" %}Abonnement n° <strong>{{object.id}}</strong> crée{% endif %}</h1>
 
   <hr/>
 
@@ -27,7 +25,7 @@
 
     <div class="row text-center">
 
-      {% with c=wizard.steps.current i=wizard.form.step_idx attrs='data-placement="bottom" data-container="body"' %}
+      {% with attrs='data-placement="bottom" data-container="body"' %}
 	<div class="col-md-1"><button class="btn btn-lg {% if c == 'cart' %}btn-info popover_link{% elif i >= 0 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." {{attrs}}><i class="glyphicon glyphicon-th"></i></button></div>
 
 	<div class="col-md-1"><button class="btn btn-lg {% if c == 'subscription' %}btn-info popover_link{% elif i >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." {{attrs}}><i class="glyphicon glyphicon-wrench"></i></button></div>
@@ -56,6 +54,8 @@
     </div>
 
   </div>
+
+{% endwith %}
 
   {% if not validation %}
     <form role="form" method="post" action="{% url "create_all" %}">
@@ -88,6 +88,7 @@
   <script type="text/javascript">
     $(function() {
 	$('.popover_link').popover('show');
+	setTimeout(function() { $('.popover_link').popover('hide') }, 2000);
     });
   </script>
 

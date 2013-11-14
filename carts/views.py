@@ -475,13 +475,12 @@ class CreateAllSubscriptionDone(CreateAllDone):
         user = get_user(wizard)
         thematic = get_thematic_done(form_data)
         customized = own_data.get('customized', False)
-        __customized = form_data['cart'].get('choice', 'perso') == 'perso' or own_data.get('customized', False)
 
         duration = int(own_data.get('duration'))
         bw = Week.fromstring(own_data.get('start'))
         ew = Week.withdate( bw.day(1) + relativedelta(months=duration) )
 
-        subscription = models.Subscription.objects.create(customer=user.customer, size=own_data['size'], carrier=own_data['carrier'], receive_only_once=own_data['receive_only_once'], frequency=int(own_data['frequency']), start=bw, end=ew)
+        subscription = models.Subscription.objects.create(customer=user.customer, size=own_data['size'], carrier=own_data['carrier'], receive_only_once=own_data['receive_only_once'], frequency=int(own_data['frequency']), start=bw, end=ew, comment=form_data['comment'].get('comment', ''))
 
         subscription.criterias = own_data['criterias']
 
@@ -578,7 +577,7 @@ class CreateAllSuppliersStep(CreateAllStep):
             qs = sm.Product.objects.language('fr').filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
             form.fields['supplier_product_%d' % product.id] = f = forms.forms.ModelMultipleChoiceField(widget=forms.MyImageCheckboxSelectMultiple, queryset=qs, label=product.name)
             supplier_products_list = qs.all()
-            f.choices = [(p.id, '%s|%s|%s' % (p.name, p.main_image.image, p.price().get_after_tax_price()/price*100)) for p in supplier_products_list]
+            f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image, p.price().get_after_tax_price()/price*100)) for p in supplier_products_list]
 
         return form
 
@@ -587,11 +586,13 @@ def get_deliveries(nb, init_price):
     return np.array([init_price/price_rate**k for k in range(nb)])
 
 def get_deliveries_from_subscription(subscription_data):
+    receive_only_once = subscription_data.get('receive_only_once')
     bw = Week.fromstring(str(subscription_data.get('start')))
     ew = Week.withdate( bw.day(1) + relativedelta(months=int(subscription_data.get('duration'))) )
     nb = len(range(0, ew+1-bw, int(subscription_data.get('frequency'))))
     init_price = subscription_data.get('size').default_price().price
     prices = get_deliveries(nb, init_price)
+    if receive_only_once: prices = np.array([prices[0]])
     deliveries = [(i+1, '%s (%s %s)' % ((bw+i*2).day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), (bw+i*2).week), p) for i,p in enumerate(prices)]
     return deliveries, prices
 
@@ -671,6 +672,7 @@ class CreateAllPaymentStep(CreateAllStep):
             form.balance_inversed = form.balance*-1
             form.currency = user.customer.wallet.target_currency
 
+        form.receive_only_once = subscription_data.get('receive_only_once')
         form.price = subscription_data.get('size').default_price()
         form.price_rate = 1+settings.DEGRESSIVE_PRICE_RATE/100
 
@@ -710,21 +712,27 @@ class CreateAllPaymentDone(CreateAllDone):
 
 class CreateAllAddressStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        user = get_user(wizard)
-        if user:
-            if user.customer.main_address:
-                address = user.customer.main_address
-                for k, f in [('first_name', address.first_name), ('last_name', address.last_name),
-                             ('street', address.street), ('postal_code', address.postal_code),
-                             ('city', address.city), ('country', address.country),
-                             ('home_phone', address.home_phone), ('mobile_phone', address.mobile_phone)]:
-                    form.fields[k].initial = f
+        subscription_data = wizard.get_cleaned_data_for_step('subscription') or {}
+        if not subscription_data: return form
 
-            if user.customer.relay_address:
-                relay = user.customer.relay_address
-                for k, f in [('relay_name', relay.last_name), ('relay_street', relay.street),
-                             ('relay_postal_code', relay.postal_code), ('relay_city', relay.city)]:
-                    form.fields[k].initial = f
+        user = get_user(wizard)
+        if not user: return form
+
+        if user.customer.main_address:
+            address = user.customer.main_address
+            for k, f in [('first_name', address.first_name), ('last_name', address.last_name),
+                         ('street', address.street), ('postal_code', address.postal_code),
+                         ('city', address.city), ('country', address.country),
+                         ('home_phone', address.home_phone), ('mobile_phone', address.mobile_phone)]:
+                form.fields[k].initial = f
+
+        if user.customer.relay_address:
+            relay = user.customer.relay_address
+            for k, f in [('relay_name', relay.last_name), ('relay_street', relay.street),
+                         ('relay_postal_code', relay.postal_code), ('relay_city', relay.city)]:
+                form.fields[k].initial = f
+
+        form.is_relay = subscription_data.get('carrier').id == 3
 
         return form
 

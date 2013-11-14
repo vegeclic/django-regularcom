@@ -13,6 +13,8 @@
 	<div class="progress-bar progress-bar-warning" style="width: 100%"></div>
       </div>
 
+      <div class="alert alert-danger" style="display:none"></div>
+
       {{field}}
     </div>
   {% endfor %}
@@ -35,7 +37,10 @@
 
 	    if ($(this).hasClass('btn-default')) {
 		if ((size+price_percent) > 100) {
-		    alert("{% trans "Vous ne pouvez pas sélectionner plus de familles de produits." %}");
+		    var alert_div = $(this).parent().parent().find('.alert-danger')
+		    alert_div.text("{% trans "Le prix du produit dépasse le montant disponible pour cette famille de produit. Choisissez un autre produit ou retournez à l'étape précedente pour augmenter la proportion de cette famille de produits." %}");
+		    alert_div.show();
+		    setTimeout(function() { alert_div.hide() }, 10000);
 		    $(this).removeClass('active');
 		    $(this).find('input')[0].checked = false;
 		    return;

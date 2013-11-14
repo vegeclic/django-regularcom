@@ -37,10 +37,10 @@ FREQUENCY_CHOICES = (
     (1, _('Once a week')),
     (2, _('Every two weeks')),
     (3, _('Every three weeks')),
-    (4, _('Once a month')),
-    (8, _('Every two months')),
-    (13, _('Once a quarter')),
-    (26, _('Every 6 months')),
+    (4, _('Once a month (4 weeks)')),
+    (8, _('Every two months (8 weeks)')),
+    (13, _('Once a quarter (13 weeks)')),
+    (26, _('Every 6 months (26 weeks)')),
 )
 
 FREQUENCY_DEFAULT = 2
@@ -242,6 +242,7 @@ class Subscription(models.Model):
     quantity = models.PositiveIntegerField(_('quantity'), default=1)
     direct_debit = models.BooleanField(_('direct debit'), default=True)
     enabled = models.BooleanField(_('enabled'), default=True)
+    comment = models.TextField(_('comment'), null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 

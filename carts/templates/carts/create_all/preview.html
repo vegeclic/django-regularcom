@@ -54,9 +54,9 @@
 	  </div>
 	</div>
 
-	<div class="btn-group" data-toggle="buttons">
+	<div>
 	  {% for sp in supplier_products %}
-	    <div class="tooltip_link" data-title="{{sp.name}}"><label class="btn btn-default btn-lg disabled"><img class="img-thumbnail" src="{% get_media_prefix %}{{sp.main_image}}" style="width:100px"/></label></div>
+	    <img class="img-thumbnail tooltip_link" src="{% get_media_prefix %}{{sp.main_image}}" style="width:100px" title="{{sp.name}}" alt="{{sp.name}}"/>
 	  {% endfor %}
 	</div>
       </div>
@@ -67,7 +67,7 @@
     <h2>Les échéances de votre abonnement</h2>
 
     <div class="alert alert-info">
-      <p class="lead">Le prix de l'échéance est dégressif et varie en fonction du nombre d'échéances souscrit.</p>
+      <p class="lead">Le prix de l'échéance est dégressif et varie en fonction du nombre d'échéances souscrit. Nos échéances fonctionnent par semaines calendaires.</p>
     </div>
 
     <table class="table table-bordered table-hover">
