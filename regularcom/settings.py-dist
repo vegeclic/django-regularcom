@@ -44,7 +44,17 @@ TIME_ZONE = 'America/Chicago'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 #LANGUAGE_CODE = 'fr'
+#MODELTRANSLATION_DEFAULT_LANGUAGE = 'fr'
+
+gettext = lambda s: s
+
+LANGUAGES = (
+    ('en', gettext('English')),
+    # ('de', gettext('German')),
+    # ('fr', gettext('French')),
+)
 
 LOCALE_PATHS = (
     # '',
@@ -155,6 +165,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     # 'djcelery',
+    'modeltranslation',
     'hvad',
     'django.contrib.auth',
     'django.contrib.contenttypes',
