@@ -473,6 +473,7 @@ class CreateAllSubscriptionDone(CreateAllDone):
         print(tmp_dict)
 
         user = get_user(wizard)
+        customer = user.customer
         thematic = get_thematic_done(form_data)
         customized = own_data.get('customized', False)
 
@@ -480,7 +481,7 @@ class CreateAllSubscriptionDone(CreateAllDone):
         bw = Week.fromstring(own_data.get('start'))
         ew = Week.withdate( bw.day(1) + relativedelta(months=duration) )
 
-        subscription = models.Subscription.objects.create(customer=user.customer, size=own_data['size'], carrier=own_data['carrier'], receive_only_once=own_data['receive_only_once'], frequency=int(own_data['frequency']), start=bw, end=ew, comment=form_data['comment'].get('comment', ''))
+        subscription = models.Subscription.objects.create(customer=customer, size=own_data['size'], carrier=own_data['carrier'], receive_only_once=own_data['receive_only_once'], frequency=int(own_data['frequency']), start=bw, end=ew, comment=form_data['comment'].get('comment', ''))
 
         subscription.criterias = own_data['criterias']
 
@@ -491,6 +492,20 @@ class CreateAllSubscriptionDone(CreateAllDone):
         subscription.create_deliveries()
 
         tmp_dict['subscription'] = subscription
+
+        deliveries = subscription.delivery_set.order_by('date')
+
+        mm.Message.objects.create_message(participants=[customer], subject=_('Votre abonnement %(subscription_id)d a été crée') % {'subscription_id': subscription.id}, body=_(
+"""Bonjour %(name)s,
+
+Nous sommes heureux de vous annoncer que votre abonnement %(subscription_id)d a été crée, il est accessible à l'adresse suivante :
+
+http://www.vegeclic.fr/carts/subscriptions/%(subscription_id)d/deliveries/
+
+Bien cordialement,
+Végéclic.
+"""
+        ) % {'name': customer.main_address.__unicode__() if customer.main_address else '', 'date': deliveries[0].get_date_display(), 'subscription_id': subscription.id})
 
         return True
 

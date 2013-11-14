@@ -14,18 +14,8 @@
     <div class="col-md-3">
       <div class="well sidebar-nav">
 	<ul class="nav nav-pills nav-stacked">
-	  {% comment %}
 	  <li {% if sub_section == "create_all" %}class="active"{% endif %}>
-	    <a href="{% url "create_all" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Create all" %}</a>
-	  </li>
-	  {% endcomment %}
-
-	  <li {% if sub_section == "create_thematic" %}class="active"{% endif %}>
-	    <a href="{% url "create_thematic" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Create a thematic cart" %}</a>
-	  </li>
-
-	  <li {% if sub_section == "create_custom" %}class="active"{% endif %}>
-	    <a href="{% url "create_custom" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Create a custom cart" %}</a>
+	    <a href="{% url "create_all" %}"><i class="glyphicon glyphicon-plus"></i> {% trans "Créer un panier" %}</a>
 	  </li>
 
 	  <li {% if not sub_section or sub_section == "subscriptions" %}class="active"{% endif %}>
