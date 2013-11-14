@@ -1,0 +1,42 @@
+    <h1>{% if c == "cart" %}Créez votre abonnement Végéclic{% elif c == "subscription" %}Configuration de l'abonnement{% elif c == "products" %}Choix des familles de produits{% elif c == "extents" %}Proportions des produits{% elif c == "suppliers" %}Sélection des articles{% elif c == "preview" %}Aperçu du contenu du panier{% elif c == "authentication" %}Identification{% elif c == "payment" %}Paiement{% elif c == "address" %}Coordonnées{% elif c == "comment" %}Commentaire{% elif c == "resume" %}Aperçu avant validation{% elif c == "validation" %}Abonnement n° <strong>{{object.id}}</strong> crée{% endif %}</h1>
+
+  <hr/>
+
+  <div class="well">
+    <div class="progress progress-striped">
+      <div class="progress-bar progress-bar-success" style="width: {{progress_value|stringformat:"d"}}%"></div>
+      <div class="progress-bar progress-bar-info" style="width: {{current_progress_value|stringformat:"d"}}%"></div>
+      <div class="progress-bar progress-bar-warning" style="width: {{inverse_progress_value|stringformat:"d"}}%"></div>
+    </div>
+
+    <div class="row text-center">
+
+      {% with attrs='data-placement="bottom" data-container="body"' %}
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'cart' %}btn-info popover_link{% elif i >= 0 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix du panier" data-content="Choisissez parmis les paniers thématiques prédéfinis ou créer votre panier personnalisé." {{attrs}}><i class="glyphicon glyphicon-th"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'subscription' %}btn-info popover_link{% elif i >= 1 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Configuration de l'abonnement" data-content="Définissez la durée et fréquence de votre abonnement ainsi que le moyen de livraison." {{attrs}}><i class="glyphicon glyphicon-wrench"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'products' %}btn-info popover_link{% elif i >= 2 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Choix des familles de produits" data-content="Choisissez les familles de produits que vous souhaitez avoir dans votre panier." {{attrs}}><i class="glyphicon glyphicon-list"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'extents' %}btn-info popover_link{% elif i >= 3 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Proportions des produits" data-content="Définissez la proportion que doit avoir chacune des familles de produits." {{attrs}}><i class="glyphicon glyphicon-sort"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'suppliers' %}btn-info popover_link{% elif i >= 4 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Sélection des articles" data-content="Sélectionnez les articles de nos fournisseurs relatifs aux familles choisis précédemment." {{attrs}}><i class="glyphicon glyphicon-check"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'preview' %}btn-info popover_link{% elif i >= 5 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu du contenu du panier" data-content="Verifier le contenu de votre abonnement avant de continuer." {{attrs}}><i class="glyphicon glyphicon-eye-open"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'authentication' %}btn-info popover_link{% elif i >= 6 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Identification" data-content="Connectez-vous ou inscrivez-vous. C'est très simple !" {{attrs}}><i class="glyphicon glyphicon-user"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'payment' %}btn-info popover_link{% elif i >= 7 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Paiement" data-content="Procédez au paiement de la première échéance ou de la durée totale de votre abonnement." {{attrs}}><i class="glyphicon glyphicon-credit-card"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'address' %}btn-info popover_link{% elif i >= 8 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Coordonnées" data-content="Nous avons besoin de vos coordonnées pour la livraison et facturation." {{attrs}}><i class="glyphicon glyphicon-home"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'comment' %}btn-info popover_link{% elif i >= 9 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Commentaire" data-content="Si vous avez une suggestion ou une remarque quelconque n'hesitez pas à l'indiquer ici." {{attrs}}><i class="glyphicon glyphicon-comment"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'resume' %}btn-info popover_link{% elif i >= 10 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Aperçu avant validation" data-content="Dernière verification avant la création de votre abonnement." {{attrs}}><i class="glyphicon glyphicon-asterisk"></i></button></div>
+
+	<div class="col-md-1"><button class="btn btn-lg {% if c == 'validation' %}btn-info popover_link{% elif i >= 11 %}btn-success{% else %}btn-warning{% endif %} tooltip_link" title="Validation" data-content="Votre abonnement a bien été crée." {{attrs}}><i class="glyphicon glyphicon-saved"></i></button></div>
+    {% endwith %}
+
+    </div>
+
+  </div>

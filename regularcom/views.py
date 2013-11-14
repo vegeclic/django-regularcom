@@ -20,6 +20,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
+from django.core.cache import cache
 import carts.models as cm
 
 class HomeView(generic.TemplateView):
@@ -28,7 +29,8 @@ class HomeView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'home'
-        context['thematics'] = cm.Thematic.objects.all()
+        context['thematic_list'] = cache.get('thematic_list') or cm.Thematic.objects.language('fr').select_related('main_image').order_by('name').all()
+        if not cache.get('thematic_list'): cache.set('thematic_list', context['thematic_list'])
         return context
 
 class HowView(generic.TemplateView):
