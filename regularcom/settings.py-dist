@@ -56,6 +56,10 @@ LANGUAGES = (
     # ('fr', gettext('French')),
 )
 
+MODELTRANSLATION_FALLBACK_LANGUAGES = {
+    # 'default': ('fr', 'de',),
+}
+
 LOCALE_PATHS = (
     # '',
 )

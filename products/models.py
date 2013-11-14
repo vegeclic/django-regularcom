@@ -31,27 +31,23 @@ class TaggedItem(models.Model):
 
     def __unicode__(self): return self.tag
 
-class Category(TranslatableModel):
+class Category(models.Model):
     class Meta:
         verbose_name_plural = _('categories')
 
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
-        slug = models.SlugField(_('slug'), null=True, blank=True),
-    )
+    name = models.CharField(_('name'), max_length=100)
+    slug = models.SlugField(_('slug'), null=True, blank=True)
     categories = models.ManyToManyField('self', null=True, blank=True, related_name='+', verbose_name=_('categories'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'))
     authors = models.ManyToManyField('accounts.Author', null=True, blank=True, verbose_name=_('authors'))
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Category: %s' % self.pk)
+    def __unicode__(self): return self.name
 
-class Product(TranslatableModel):
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
-        slug = models.SlugField(_('slug'), null=True, blank=True),
-        body = models.TextField(_('body'), blank=True),
-    )
+class Product(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    slug = models.SlugField(_('slug'), null=True, blank=True)
+    body = models.TextField(_('body'), blank=True)
     STATUS_CHOICES = (
         ('d', _('Draft')),
         ('p', _('Published')),
@@ -66,4 +62,4 @@ class Product(TranslatableModel):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Category: %s' % self.pk)
+    def __unicode__(self): return self.name

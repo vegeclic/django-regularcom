@@ -19,7 +19,7 @@
 
 from django.contrib import admin
 from django.contrib.contenttypes import generic
-from hvad.admin import TranslatableAdmin
+from modeltranslation.admin import TranslationAdmin
 from . import models, forms
 import common.admin as ca
 
@@ -27,31 +27,26 @@ class TaggedItemInline(generic.GenericTabularInline):
     model = models.TaggedItem
     extra = 1
 
-class CategoryAdmin(TranslatableAdmin):
+class CategoryAdmin(TranslationAdmin):
     # form = forms.CategoryForm
     # add_form = forms.CategoryCreationForm
-    list_display = ('id', 'all_translations', 'name_',)
+    list_display = ('id', 'name',)
     fields = ('name', 'slug', 'categories', 'main_image', 'authors',)
-    # search_fields = ('slug',)
-    # prepopulated_fields = {"slug": ("name",)}
+    search_fields = ('name', 'slug',)
+    prepopulated_fields = {"slug": ("name",)}
     inlines = [ca.ImageInline, TaggedItemInline,]
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
 
 admin.site.register(models.Category, CategoryAdmin)
 
-class ProductAdmin(TranslatableAdmin):
+class ProductAdmin(TranslationAdmin):
     # form = forms.ProductForm
     # add_form = forms.ProductCreationForm
-    list_display = ('id', 'all_translations', 'name_', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
+    list_display = ('id', 'name', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
-    # search_fields = ('slug',)
-    # prepopulated_fields = {"slug": ("name",)}
+    search_fields = ('name', 'slug',)
+    prepopulated_fields = {"slug": ("name",)}
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
-    # search_fields = ('name_',)
     inlines = [ca.ImageInline, TaggedItemInline,]
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
 
     def number_of_products(self, obj): return len(obj.product_product.all())
 
