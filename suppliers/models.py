@@ -70,6 +70,7 @@ class Product(models.Model):
     weight = models.FloatField(_('weight'), null=True, blank=True)
     sku = models.CharField(max_length=100, blank=True)
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
+    main_price = models.OneToOneField('Price', null=True, blank=True, related_name='+', verbose_name=_('main price'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 

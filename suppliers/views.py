@@ -61,7 +61,7 @@ def products_tree_to_list(products_tree):
     return __list
 
 def compute_degressive_price(product_list):
-    for p in product_list: p.degressive_price = p.price().degressive_price(26)
+    for p in product_list: p.degressive_price = p.main_price.degressive_price(26)
 
 class CatalogView(generic.ListView):
     model = models.Product
@@ -76,7 +76,7 @@ class CatalogView(generic.ListView):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
 
-        products_query = products_query.select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
+        products_query = products_query.select_related('main_image', 'main_price', 'main_price__currency', 'main_price__tax', 'main_price__supplier').prefetch_related('criterias', 'suppliers').order_by('-date_created')
 
         paginator = Paginator(products_query, 24)
 

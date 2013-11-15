@@ -79,7 +79,7 @@
 
       <div class="{% if view == "grid" %}row{% endif %}">
 	{% for product in object_list %}
-	  {% with price=product.price %}
+	  {% with price=product.main_price %}
 	    {% if view == "list" %}
 	      <div style="margin-bottom:40px;">
 		<div class="panel panel-default">

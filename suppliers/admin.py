@@ -51,14 +51,13 @@ class SupplierAdmin(ca.MyModelAdmin):
 admin.site.register(models.Supplier, SupplierAdmin)
 
 class ProductAdmin(TranslationAdmin):
-    form = forms.ProductForm
+    # form = forms.ProductForm
+    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image', 'main_price')
     list_display = ('id', 'name', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
     search_fields = ('name', 'slug', 'weight', 'product__slug',)
-    search_fields = ('weight',)
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
-    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image',)
 
     def make_draft(self, request, queryset): queryset.update(status='d')
     def make_published(self, request, queryset): queryset.update(status='p')

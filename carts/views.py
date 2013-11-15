@@ -394,11 +394,17 @@ def get_user(wizard):
     return user
 
 def get_thematic(cart_data):
+    thematic = None
     try:
-        thematic = models.Thematic.objects.select_related().get(id=cart_data.get('choice', None))
+        choice = int(cart_data.get('choice', None))
+        __key = 'thematic_%d' % choice
+        thematic = cache.get(__key) or models.Thematic.objects.select_related().get(id=choice)
+        if not cache.get(__key): cache.set(__key, thematic)
     except models.Thematic.DoesNotExist:
         thematic = None
     except ValueError:
+        thematic = None
+    except TypeError:
         thematic = None
     return thematic
 
@@ -438,7 +444,9 @@ class CreateAllSubscriptionStep(CreateAllStep):
                     attrs['class'] = attrs.get('class', '') + ' disabled'
 
             if form.thematic.criterias:
-                form.fields['criterias'].initial = [v.id for v in form.thematic.criterias.all()]
+                __key = 'thematic_criterias_%d' % form.thematic.id
+                form.fields['criterias'].initial = cache.get(__key) or [v.id for v in form.thematic.criterias.all()]
+                if not cache.get(__key): cache.set(__key, form.fields['criterias'].initial)
 
             form.fields['receive_only_once'].initial = form.thematic.receive_only_once
             form.fields['customized'].initial = False
@@ -502,7 +510,12 @@ class CreateAllProductsStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
         cart_data = wizard.get_cleaned_data_for_step('cart') or {}
         form.thematic = get_thematic(cart_data)
-        form.thematic_products = [e.product for e in form.thematic.thematicextent_set.all()] if form.thematic else []
+        if form.thematic:
+            __key = 'thematic_extents_%d' % form.thematic.id
+            thematic_extents = cache.get(__key) or form.thematic.thematicextent_set.select_related('product').all() if form.thematic else []
+            if not cache.get(__key): cache.set(__key, thematic_extents)
+
+            form.thematic_products = [e.product for e in thematic_extents]
 
         form.modified = True if data else False
 
@@ -548,9 +561,15 @@ class CreateAllExtentsStep(CreateAllStep):
         form.thematic = get_thematic(cart_data)
 
         products = products_data.get('products', [])
-        thematic_products = [e.product for e in form.thematic.thematicextent_set.all()] if form.thematic else []
 
-        extents = [e.extent for e in form.thematic.thematicextent_set.all()] if form.thematic else []
+        thematic_extents = []
+        if form.thematic:
+            __key = 'thematic_extents_%d' % form.thematic.id
+            thematic_extents = cache.get(__key) or form.thematic.thematicextent_set.select_related('product').all() if form.thematic else []
+            if not cache.get(__key): cache.set(__key, thematic_extents)
+
+        thematic_products = [e.product for e in thematic_extents] if form.thematic else []
+        extents = [e.extent for e in thematic_extents] if form.thematic else []
         shared_extent = int((100 - sum(extents))/(len(products) - len(extents))) if (len(products) - len(extents)) else 0
 
         for product in products:
@@ -578,12 +597,11 @@ class CreateAllSuppliersStep(CreateAllStep):
         for product in products:
             if extents_data.get('choice_supplier_product_%d' % product.id, 'false') == 'false': continue
             price = size.default_price().price*extents_data.get('product_%d' % product.id, 1)/100
-            print(price)
             root = sw.find_product(products_tree, product.id)
-            qs = sm.Product.objects.filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('price', 'main_image', 'price__currency', 'price__tax').prefetch_related('criterias', 'suppliers').order_by('-date_created')
+            qs = sm.Product.objects.filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('main_image', 'main_price', 'main_price__currency', 'main_price__tax', 'main_price__supplier').prefetch_related('criterias', 'suppliers').order_by('-date_created')
             form.fields['supplier_product_%d' % product.id] = f = forms.forms.ModelMultipleChoiceField(widget=forms.MyImageCheckboxSelectMultiple, queryset=qs, label=product.name)
             supplier_products_list = qs.all()
-            f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image if p.main_image else '', p.price().get_after_tax_price()/price*100)) for p in supplier_products_list]
+            f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image if p.main_image else '', p.main_price.get_after_tax_price()/price*100)) for p in supplier_products_list]
 
         return form
 
@@ -633,8 +651,13 @@ class CreateAllPreviewStep(CreateAllStep):
                                       extents_data.get('choice_supplier_product_%d' % product.id, 'false'),
                                       suppliers_data.get('supplier_product_%d' % product.id)))
         else:
-            for e in form.thematic.thematicextent_set.all():
-                form.products.append((e.product, e.extent, 'false', []))
+            if form.thematic:
+                __key = 'thematic_extents_%d' % form.thematic.id
+                thematic_extents = cache.get(__key) or form.thematic.thematicextent_set.select_related('product').all() if form.thematic else []
+                if not cache.get(__key): cache.set(__key, thematic_extents)
+
+                for e in thematic_extents:
+                    form.products.append((e.product, e.extent, 'false', []))
 
         form.supplier_products_choices = SUPPLIER_PRODUCTS_CHOICES
 
