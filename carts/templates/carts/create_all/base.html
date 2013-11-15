@@ -7,7 +7,11 @@
   <link rel="stylesheet" href="{% static "jqueryui/themes/base/jquery.ui.all.css" %}" />
 {% endblock %}
 
-{% block section_title %}{% trans "Create your subscription" %}{% endblock %}
+{% block section_title %}
+  {% with c=wizard.steps.current %}
+  {% if c == "cart" %}Créez votre panier Végéclic{% elif c == "subscription" %}Configuration de l'abonnement{% elif c == "products" %}Choix des familles de produits{% elif c == "extents" %}Proportions des produits{% elif c == "suppliers" %}Sélection des articles{% elif c == "preview" %}Aperçu du contenu du panier{% elif c == "authentication" %}Identification{% elif c == "payment" %}Paiement{% elif c == "address" %}Coordonnées{% elif c == "comment" %}Commentaire{% elif c == "resume" %}Aperçu avant validation{% elif c == "validation" %}Abonnement n° <strong>{{object.id}}</strong> crée{% endif %}
+  {% endwith %}
+{% endblock %}
 
 {% block content %}
 
