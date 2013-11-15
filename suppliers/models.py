@@ -125,7 +125,13 @@ class Price(models.Model):
 
     def get_pro_pre_tax_price(self): return self.pro_margin_price()
 
-    def get_pro_after_tax_price(self): return round(self.get_pro_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1), 2)
+    def get_pro_after_tax_price(self):
+        tax = 1
+        if self.tax:
+            tax = 1+self.tax.rate/100
+        elif self.product.product.tax:
+            tax = 1+self.product.product.tax.rate/100
+        return round(self.get_pro_pre_tax_price()*tax,2)
 
     def degressive_price(self, nb_deliveries=52):
         values = []
