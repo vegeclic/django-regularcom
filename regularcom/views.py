@@ -29,7 +29,7 @@ class HomeView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['section'] = 'home'
-        context['thematic_list'] = cache.get('thematic_list') or cm.Thematic.objects.language('fr').select_related('main_image').order_by('name').all()
+        context['thematic_list'] = cache.get('thematic_list') or cm.Thematic.objects.select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', context['thematic_list'])
         return context
 

@@ -20,7 +20,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
-from hvad.admin import TranslatableAdmin
+from modeltranslation.admin import TranslationAdmin
 from isoweek import Week
 from dateutil.relativedelta import relativedelta
 from . import forms, models
@@ -32,13 +32,12 @@ class ThematicExtentInline(admin.TabularInline):
     model = models.ThematicExtent
     extra = 1
 
-class ThematicAdmin(TranslatableAdmin):
-    list_display = ('id', 'all_translations', 'name_', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
+class ThematicAdmin(TranslationAdmin):
+    list_display = ('id', 'name', 'start_period', 'end_period', 'date_last_modified', 'enabled',)
     fields = ('name', 'body', 'size', 'locked_size', 'carrier', 'locked_carrier', 'receive_only_once', 'locked_receive_only_once', 'frequency', 'locked_frequency', 'start_duration', 'locked_start', 'end_duration', 'locked_duration', 'criterias', 'locked_criterias', 'locked_products', 'quantity', 'locked_quantity', 'start_period', 'end_period', 'main_image', 'enabled',)
     list_filter = ('enabled',)
+    search_fields = ('name',)
     inlines = [ca.ImageInline, ThematicExtentInline,]
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
 
 admin.site.register(models.Thematic, ThematicAdmin)
 
@@ -51,23 +50,19 @@ class CarrierLevelInline(admin.TabularInline):
     extra = 1
     model = models.CarrierLevel
 
-class CarrierAdmin(TranslatableAdmin):
+class CarrierAdmin(TranslationAdmin):
     extra = 1
-    list_display = ('id', 'all_translations', 'name_', 'body_', 'apply_suppliers_fee', 'weight_min', 'enabled',)
+    list_display = ('id', 'name', 'body', 'apply_suppliers_fee', 'weight_min', 'enabled',)
     fields = ('name', 'body', 'apply_suppliers_fee', 'weight_min', 'enabled',)
     inlines = [CarrierLevelInline,]
 
-    def name_(self, obj): return obj.lazy_translation_getter('name')
-    def body_(self, obj): return obj.lazy_translation_getter('body')
-
 admin.site.register(models.Carrier, CarrierAdmin)
 
-class SizeAdmin(TranslatableAdmin):
-    list_display = ('id', 'all_translations', 'name_', 'price', 'weight', 'enabled',)
+class SizeAdmin(TranslationAdmin):
+    list_display = ('id', 'name', 'price', 'weight', 'enabled',)
     fields = ('name', 'body', 'weight', 'main_image', 'enabled',)
+    search_fields = ('name',)
     inlines = [PriceInline, ca.ImageInline,]
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
 
     def price(self, obj): return obj.price_set.get(currency=cm.Parameter.objects.get(name='default currency').content_object)
 

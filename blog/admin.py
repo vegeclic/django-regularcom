@@ -18,7 +18,6 @@
 #
 
 from django.contrib.contenttypes import generic
-from hvad.admin import TranslatableAdmin
 from modeltranslation.admin import TranslationAdmin
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _

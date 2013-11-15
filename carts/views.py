@@ -51,7 +51,7 @@ class ThematicListView(generic.ListView):
     template_name = 'carts/thematic_list.html'
 
     def get_queryset(self):
-        object_list = cache.get('thematic_list') or self.model.objects.language('fr').select_related('main_image').order_by('name').all()
+        object_list = cache.get('thematic_list') or self.model.objects.select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', object_list)
         return object_list
 
@@ -404,7 +404,7 @@ def get_thematic(cart_data):
 
 class CreateAllCartStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        form.thematic_list = cache.get('thematic_list') or models.Thematic.objects.language('fr').select_related('main_image').order_by('name').all()
+        form.thematic_list = cache.get('thematic_list') or models.Thematic.objects.select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', form.thematic_list)
         return form
 

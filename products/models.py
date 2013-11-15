@@ -21,7 +21,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from hvad.models import TranslatableModel, TranslatedFields
 
 class TaggedItem(models.Model):
     tag = models.SlugField(_('tag'))

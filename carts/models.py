@@ -22,7 +22,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from hvad.models import TranslatableModel, TranslatedFields
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms.models import inlineformset_factory
 from django.contrib import messages
@@ -49,11 +48,9 @@ __weeks = []
 for y in range(settings.START_YEAR, Week.thisweek().year+2): __weeks += Week.weeks_of_year(y)
 WEEKS_CHOICES = [(str(w), '%s (%s %s)' % (w.day(settings.DELIVERY_DAY_OF_WEEK).strftime('%d-%m-%Y'), _('Week'), w.week)) for w in __weeks]
 
-class Thematic(TranslatableModel):
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
-        body = models.TextField(_('body'), blank=True),
-    )
+class Thematic(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    body = models.TextField(_('body'), blank=True)
     size = models.ForeignKey('Size', verbose_name=_('size'), null=True, blank=True)
     locked_size = models.BooleanField(_('locked size'), default=False)
     carrier = models.ForeignKey('Carrier', verbose_name=_('carrier'), null=True, blank=True)
@@ -86,13 +83,11 @@ class Thematic(TranslatableModel):
     date_last_modified = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(_('enabled'), default=False)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Thematic: %s' % self.pk)
+    def __unicode__(self): return self.name
 
-class Size(TranslatableModel):
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
-        body = models.TextField(_('body'), blank=True),
-    )
+class Size(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    body = models.TextField(_('body'), blank=True)
     weight = models.FloatField(_('weight'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     enabled = models.BooleanField(_('enabled'), default=False)
@@ -105,8 +100,7 @@ class Size(TranslatableModel):
 
     def __unicode__(self):
         price = self.default_price()
-        # return '%s%s' % (self.lazy_translation_getter('name', 'Size: %s' % self.pk),
-        #                  (' (%s)' % (price.__unicode__())) if price else "")
+        # return '%s%s' % (name, (' (%s)' % (price.__unicode__())) if price else "")
         return price.__unicode__()
 
 class Price(models.Model):
@@ -119,16 +113,14 @@ class Price(models.Model):
 
     def __unicode__(self): return ('%s %s' % (self.price, self.currency.symbol)).strip()
 
-class Carrier(TranslatableModel):
-    translations = TranslatedFields(
-        name = models.CharField(_('name'), max_length=100, unique=True),
-        body = models.TextField(_('body'), blank=True),
-    )
+class Carrier(models.Model):
+    name = models.CharField(_('name'), max_length=100)
+    body = models.TextField(_('body'), blank=True)
     apply_suppliers_fee = models.BooleanField(_('apply suppliers fee'), default=True)
     weight_min = models.FloatField(_('weight min'), default=0)
     enabled = models.BooleanField(_('enabled'), default=True)
 
-    def __unicode__(self): return self.lazy_translation_getter('name', 'Carrier: %s' % self.pk)
+    def __unicode__(self): return self.name
 
 class CarrierLevel(models.Model):
     class Meta:

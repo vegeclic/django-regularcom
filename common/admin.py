@@ -20,7 +20,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from hvad.admin import TranslatableAdmin
+from modeltranslation.admin import TranslationAdmin
 from . import models, forms
 
 class MyModelAdmin(admin.ModelAdmin):
@@ -118,10 +118,8 @@ class ImageInline(generic.GenericTabularInline):
     model = models.Image
     extra = 1
 
-class CriteriaAdmin(TranslatableAdmin):
-    list_display = ('id', 'name_', 'enabled',)
-
-    def name_(self, obj): return obj.lazy_translation_getter('name')
+class CriteriaAdmin(TranslationAdmin):
+    list_display = ('id', 'name', 'enabled',)
 
 admin.site.register(models.Criteria, CriteriaAdmin)
 
