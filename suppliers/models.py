@@ -111,7 +111,13 @@ class Price(models.Model):
 
     def get_pre_tax_price(self): return self.margin_price()
 
-    def get_after_tax_price(self): return round(self.get_pre_tax_price() * ((1+self.tax.rate/100) if self.tax else 1), 2)
+    def get_after_tax_price(self):
+        tax = 1
+        if self.tax:
+            tax = 1+self.tax.rate/100
+        elif self.product.product.tax:
+            tax = 1+self.product.product.tax.rate/100
+        return round(self.get_pre_tax_price()*tax,2)
 
     def get_after_tax_price_with_fee(self): return round(self.get_after_tax_price() + (self.product.weight/1000) * self.supplier.fee_per_weight().fee_per_weight, 2)
 
