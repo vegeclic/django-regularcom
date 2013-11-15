@@ -41,7 +41,7 @@ admin.site.register(models.Category, CategoryAdmin)
 class ProductAdmin(TranslationAdmin):
     # form = forms.ProductForm
     # add_form = forms.ProductCreationForm
-    list_display = ('id', 'name', 'number_of_products', 'date_created', 'date_last_modified', 'status',)
+    list_display = ('id', 'name', 'number_of_products', 'tax', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
     search_fields = ('name', 'slug',)
     prepopulated_fields = {"slug": ("name",)}
