@@ -61,7 +61,7 @@ def retrieve(url, data=None, chunk_size=settings.AVE_CHUNK, limit_size=settings.
         return None
 
 class Command(NoArgsCommand):
-    help = 'Get the AVE supplier products and save it into database'
+    help = 'Withdraw no more available suppliers products'
 
     debug = True
 
@@ -81,7 +81,7 @@ class Command(NoArgsCommand):
 
         withdrawn_products = []
 
-        for product in models.Product.objects.language('de').filter(price__supplier=supplier_object).exclude(status__in=['d','w']).all():
+        for product in models.Product.objects.filter(price__supplier=supplier_object).exclude(status__in=['d','w']).all():
             price = product.price()
             ref = price.reference
             url = price.supplier_product_url

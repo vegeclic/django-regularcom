@@ -157,19 +157,19 @@ class Command(NoArgsCommand):
             category_area = article_soup.find(class_='active')
             if category_area:
                 category = category_area.text.title()
-                category_object, category_created = pm.Category.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
+                category_object, category_created = pm.Category.objects.get_or_create(name_de=category, defaults={'slug_de': slugify(category)})
 
                 if category_created:
                     info = 'new category "%s" created' % category
                     logger_db.debug(info); updated_data.append(info)
 
-            base_product_object, base_product_created = pm.Product.objects.language('de').get_or_create(name=category, defaults={'slug': slugify(category)})
+            base_product_object, base_product_created = pm.Product.objects.get_or_create(name_de=category, defaults={'slug_de': slugify(category)})
 
             if base_product_created:
                 info = 'new base product object "%s" created' % base_product_object
                 logger_article.debug(info); updated_data.append(info)
 
-            product_object, product_created = sm.Product.objects.language('de').get_or_create(price__reference=ref, price__supplier=supplier_object, defaults={'name': title2, 'slug': slug, 'product': base_product_object})
+            product_object, product_created = sm.Product.objects.get_or_create(price__reference=ref, price__supplier=supplier_object, defaults={'name_de': title2, 'slug_de': slug, 'product': base_product_object})
 
             if product_created:
                 product_object.suppliers.add(supplier_object)
