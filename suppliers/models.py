@@ -51,11 +51,15 @@ class SupplierFee(models.Model):
 
     def __unicode__(self): return '%s %s / 1 kg' % (self.fee_per_weight, self.currency.symbol)
 
+class Ingredient(models.Model):
+    name = models.CharField(_('name'), max_length=100, unique=True)
+
 class Product(models.Model):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(max_length=100, null=True, blank=True)
     body = models.TextField(_('body'), blank=True)
-    ingredients = models.TextField(_('ingredients'), blank=True)
+    old_ingredients = models.TextField(_('old ingredients'), blank=True)
+    ingredients = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_ingredients', verbose_name=_('ingredients'))
     product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),

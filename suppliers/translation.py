@@ -21,6 +21,11 @@ from modeltranslation.translator import translator, TranslationOptions
 from . import models
 
 class ProductTranslationOptions(TranslationOptions):
-    fields = ('name', 'slug', 'body', 'ingredients',)
+    fields = ('name', 'slug', 'body', 'old_ingredients',)
 
 translator.register(models.Product, ProductTranslationOptions)
+
+class IngredientTranslationOptions(TranslationOptions):
+    fields = ('name',)
+
+translator.register(models.Ingredient, IngredientTranslationOptions)

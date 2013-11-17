@@ -50,12 +50,18 @@ class SupplierAdmin(ca.MyModelAdmin):
 
 admin.site.register(models.Supplier, SupplierAdmin)
 
+class IngredientAdmin(TranslationAdmin):
+    list_display = ('id', 'name',)
+
+admin.site.register(models.Ingredient, IngredientAdmin)
+
 class ProductAdmin(TranslationAdmin):
     # form = forms.ProductForm
-    fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image', 'main_price')
+    # fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image', 'main_price')
     list_display = ('id', 'name', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
     search_fields = ('name', 'slug', 'weight', 'product__slug',)
+    filter_horizontal = ('ingredients', 'suppliers', 'criterias',)
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
 
