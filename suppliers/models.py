@@ -54,12 +54,26 @@ class SupplierFee(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(_('name'), max_length=100, unique=True)
 
+class IngredientExtent(models.Model):
+    ingredient = models.ForeignKey(Ingredient, verbose_name=_('ingredient'))
+    ingredient_parent = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, related_name='ingredient_children', verbose_name=_('ingredient parent'))
+    extent = models.FloatField(_('extent'), default=0.)
+    bio = models.BooleanField(_('bio'), default=False)
+
+class Energy(models.Model):
+    name = models.CharField(_('name'), max_length=100, unique=True)
+
+class EnergyExtent(models.Model):
+    energy = models.ForeignKey(Energy, verbose_name=_('energy'), unique=True)
+    value = models.CharField(_('value'), max_length=200, null=True, blank=True)
+
 class Product(models.Model):
     name = models.CharField(_('name'), max_length=100)
     slug = models.SlugField(max_length=100, null=True, blank=True)
     body = models.TextField(_('body'), blank=True)
-    old_ingredients = models.TextField(_('old ingredients'), blank=True)
-    ingredients = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_ingredients', verbose_name=_('ingredients'))
+    brut_ingredients = models.TextField(_('brut ingredients'), blank=True)
+    allergies = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_allergies', verbose_name=_('allergies'))
+    traces = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_traces', verbose_name=_('traces'))
     product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),

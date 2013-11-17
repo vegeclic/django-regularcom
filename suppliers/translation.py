@@ -20,12 +20,17 @@
 from modeltranslation.translator import translator, TranslationOptions
 from . import models
 
-class ProductTranslationOptions(TranslationOptions):
-    fields = ('name', 'slug', 'body', 'old_ingredients',)
-
-translator.register(models.Product, ProductTranslationOptions)
-
 class IngredientTranslationOptions(TranslationOptions):
     fields = ('name',)
 
 translator.register(models.Ingredient, IngredientTranslationOptions)
+
+class EnergyTranslationOptions(TranslationOptions):
+    fields = ('name',)
+
+translator.register(models.Energy, EnergyTranslationOptions)
+
+class ProductTranslationOptions(TranslationOptions):
+    fields = ('name', 'slug', 'body', 'brut_ingredients',)
+
+translator.register(models.Product, ProductTranslationOptions)
