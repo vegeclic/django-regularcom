@@ -63,8 +63,6 @@ def retrieve(url, data=None, chunk_size=settings.AVE_CHUNK, limit_size=settings.
 class Command(NoArgsCommand):
     help = 'Withdraw no more available suppliers products'
 
-    debug = True
-
     def handle_noargs(self, **options):
         translation.activate('fr')
 
