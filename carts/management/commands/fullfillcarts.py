@@ -84,8 +84,6 @@ class Command(NoArgsCommand):
                     content = delivery.content_set.create(product=extent.product, extent=extent.extent, customized=extent.customized) if not debug else None
                     extent_content = extent.extentcontent_set.get()
 
-                    logging.debug('after')
-
                     for ecp in extent_content.extentcontentproduct_set.all():
                         logging.debug("add product %s (%d) with a quantity %d (price: %s, weight: %s)" % (ecp.product.name, ecp.product.id, ecp.quantity, ecp.product.price().__unicode__(), ecp.product.weight))
                         if not debug:
