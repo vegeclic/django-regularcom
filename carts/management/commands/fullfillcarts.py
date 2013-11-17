@@ -97,13 +97,13 @@ class Command(NoArgsCommand):
                     __products = []
                     for child in product.products_children.all():
                         __products += get_product_products(child)
-                    __products += product.product_product.language('fr').filter(status='p').all()
+                    __products += product.product_product.filter(status='p').all()
                     return __products
 
                 products = get_product_products(extent.product)
                 nbr_items = len(products)
 
-                prices = [p.price().get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.price().get_after_tax_price() for p in products]
+                prices = [p.main_price.get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.main_price.get_after_tax_price() for p in products]
                 weights = [int(p.weight) for p in products]
 
                 criterias = []
