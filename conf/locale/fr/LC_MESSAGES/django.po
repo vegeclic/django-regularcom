@@ -903,7 +903,7 @@ msgstr ""
 #: carts/management/commands/fullfillcarts.py:235
 #, python-format
 msgid "Delivery %(date)s is in progress"
-msgstr "La livraison %(date)s a été validé"
+msgstr "Le contenu de votre panier pour la livraison %(date)s a été défini"
 
 #: carts/management/commands/fullfillcarts.py:236
 #, python-format
