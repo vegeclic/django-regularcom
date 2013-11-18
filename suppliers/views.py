@@ -28,7 +28,6 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
-import hvad
 from customers import models as cm
 from . import forms, models
 import products.models as pm
