@@ -28,6 +28,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
+from django.db.models import Q
 from customers import models as cm
 from . import forms, models
 import products.models as pm
@@ -71,6 +72,20 @@ class CatalogView(generic.ListView):
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         products_query = self.model.objects.filter(status='p')
+
+        search = self.request.GET.get('search')
+        if search:
+            if search[0] == '#':
+                search_id = None
+                try: search_id = int(search[1:])
+                except: pass
+                products_query = products_query.filter(id=search_id)
+            else:
+                search_id = None
+                try: search_id = int(search)
+                except: pass
+                products_query = products_query.filter(Q(id=search_id) | Q(name__icontains=search) | Q(slug__icontains=search) | Q(body__icontains=search))
+
         if self.kwargs.get('product_id'):
             root_product = find_product(products_tree, self.kwargs.get('product_id'))
             products_query = products_query.filter(product__in=products_tree_to_list(root_product))
@@ -109,6 +124,9 @@ class CatalogView(generic.ListView):
                 return None
 
             context['product_path'] = get_product_path(context['products_tree'], context['selected_product'])
+
+        if self.request.GET.get('search'):
+            context['search'] = self.request.GET.get('search')
 
         return context
 

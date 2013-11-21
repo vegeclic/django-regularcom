@@ -45,9 +45,9 @@
 	  <li class="active"><a title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
+	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% else %}
-	    <li><a href="{% url "catalog_grid_page" object_list.number %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
+	    <li><a href="{% url "catalog_grid_page" object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% endif %}
 	{% endif %}
 
@@ -55,9 +55,9 @@
 	  <li class="active"><a title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
+	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% else %}
-	    <li><a href="{% url "catalog_list_page" object_list.number %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
+	    <li><a href="{% url "catalog_list_page" object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% endif %}
 	{% endif %}
       </ul>
@@ -68,6 +68,17 @@
 	<p>Veuillez trouver ci-dessous tous les produits de nos fournisseurs.</p>
 	<p>Les produits sont mis à jour constamment.<p/>
       </div>
+
+      <form role="form" method="get" action="{% if selected_product %}{% if view == "list" %}{% url "catalog_list_product_id_page" selected_product.id object_list.number %}{% else %}{% url "catalog_grid_product_id_page" selected_product.id object_list.number %}{% endif %}{% else %}{% if view == "list" %}{% url "catalog_list_page" object_list.number %}{% else %}{% url "catalog_grid_page" object_list.number %}{% endif %}{% endif %}">
+	<div class="input-group">
+	  <input type="text" class="form-control input-lg" name="search" placeholder="Tapez votre recherche…" value="{{search}}">
+	  <span class="input-group-btn">
+            <button class="btn btn-default btn-lg" type="submit" style="padding-top: 9px; padding-bottom: 9px"><span class="glyphicon glyphicon-search"></span></button>
+	  </span>
+	</div>
+      </form>
+
+      <br/>
 
       {% with product_path=product_path selected_product=selected_product view=view %}
 	{% include "suppliers/product_path.html" %}
@@ -137,9 +148,9 @@
 		    </a>
 
 		    <h3>{% trans "Description" %}</h3>
-		    <p style="text-align:justify">{{product.body}}</p>
+		    <p style="text-align:justify">{{product.body|safe|linebreaksbr}}</p>
 
-		    {% if product.ingredients %}
+		    {% if product.brut_ingredients %}
 		      <h3>{% trans "Ingredients" %}</h3>
 		      <div class= "alert alert-warning">
 			<p>Les ingrédients seront traduits prochainement. N'hésitez pas à nous contacter pour tout renseignement.</p>

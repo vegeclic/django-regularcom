@@ -3,17 +3,17 @@
     <ul class="pagination">
       {% if object_list.has_previous %}
 	{% if selected_product and view == "grid" %}
-	  <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_grid_product_id_page" selected_product.id object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% elif selected_product and view == "list" %}
-	  <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_list_product_id_page" selected_product.id object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% elif view == "grid" %}
-	  <li><a href="{% url "catalog_grid_page" object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_grid_page" object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% elif view == "list" %}
-	  <li><a href="{% url "catalog_list_page" object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_list_page" object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% elif selected_product %}
-	  <li><a href="{% url "catalog_product_id_page" selected_product.id object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_product_id_page" selected_product.id object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% else %}
-	  <li><a href="{% url "catalog_page" object_list.previous_page_number %}">«</a></li>
+	  <li><a href="{% url "catalog_page" object_list.previous_page_number %}{% if search %}?search={{search}}{% endif %}">«</a></li>
 	{% endif %}
       {% else %}
 	<li class="disabled"><a>«</a></li>
@@ -24,17 +24,17 @@
 	  <li class="active"><a>{{i}}</a></li>
 	{% else %}
 	  {% if selected_product and view == "grid" %}
-	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_grid_product_id_page" selected_product.id i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% elif selected_product and view == "list" %}
-	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_list_product_id_page" selected_product.id i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% elif view == "grid" %}
-	    <li><a href="{% url "catalog_grid_page" i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_grid_page" i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% elif view == "list" %}
-	    <li><a href="{% url "catalog_list_page" i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_list_page" i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% elif selected_product %}
-	    <li><a href="{% url "catalog_product_id_page" selected_product.id i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_product_id_page" selected_product.id i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% else %}
-	    <li><a href="{% url "catalog_page" i %}">{{i}}</a></li>
+	    <li><a href="{% url "catalog_page" i %}{% if search %}?search={{search}}{% endif %}">{{i}}</a></li>
 	  {% endif %}
 	{% endif %}
       {% endfor %}
