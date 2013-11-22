@@ -24,35 +24,53 @@ from django.core.management.base import BaseCommand, CommandError, NoArgsCommand
 import logging, logging.config
 from isoweek import Week
 from dateutil.relativedelta import relativedelta
+import webbrowser
+from optparse import make_option
 from ... import models
+import sys
 
 logging.config.fileConfig('carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Generate a list of order of suppliers products'
+    
+    option_list = BaseCommand.option_list + (
+        make_option('-b', '--browse', action='store_true', dest='browse', default=False, help='Open product url in browser [default: %default]'),
+        make_option('-p', '--pages', action='store', type='int', dest='pages', default=5, help='Choose number of pages to browse step by step [default: %default]'),
+    )
 
     def handle_noargs(self, **options):
         translation.activate('fr')
 
         week_limit = Week.withdate(Week.thisweek().day(settings.VALIDATING_DAY_OF_WEEK) + relativedelta(days=settings.DELAY_BETWEEN_DEFINITON_N_DELIVERY))
         deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='P', subscription__enabled=True).order_by('subscription__customer__account__email')
+        count=0
 
         for delivery in deliveries:
-            logger_delivery = logging.getLogger('[delivery %d]' % delivery.id)
+            logger_delivery = logging.getLogger('[%d]' % delivery.id)
 
             subscription = delivery.subscription
             customer = subscription.customer
 
             logger_delivery.info(delivery.__unicode__())
 
-            for extent in subscription.extent_set.all():
-                __extent = extent.extent
+            for content in delivery.content_set.all():
+                __extent = content.extent
 
-                logger_extent = logging.getLogger('[delivery %d] [%s] [%s%%]' % (delivery.id, extent.product.name, __extent))
-
-
-                logger_extent.debug('meta-product: %s, extent: %s' % (extent.product.name, __extent))
-                logger_extent = logging.getLogger('[delivery %d] [%s] [%s%%] [custom]' % (delivery.id, extent.product.name, __extent))
+                logger_content = logging.getLogger('[%d] [%20s] [%3s%%]' % (delivery.id, content.product.name[:20], __extent))
+                
+                for contentproduct in content.contentproduct_set.all():
+                        logger_content.info('%d x %20s (%4d) %s' % (contentproduct.quantity, contentproduct.product.name[:20], contentproduct.product.id, contentproduct.product.main_price.supplier_product_url))
+                        if options['browse']:
+                                webbrowser.open(contentproduct.product.main_price.supplier_product_url)
+                                count += 1
+                                if count >= options['pages']: 
+                                        count = 0
+                                        try: input()
+                                        except KeyboardInterrupt: print('Interrupted'); sys.exit()
+                        
+            logger_delivery.info('')
+                        
 
 
         translation.deactivate()
