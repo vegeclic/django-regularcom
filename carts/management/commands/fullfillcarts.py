@@ -54,7 +54,7 @@ class Command(NoArgsCommand):
 
         if debug: logging.debug('DEBUG MODE')
 
-        week_limit = Week.withdate(Week.thisweek().sunday() + relativedelta(days=9))
+        week_limit = Week.withdate(Week.thisweek().day(setting.VALIDATING_DAY_OF_WEEK) + relativedelta(days=9))
         deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p', subscription__enabled=True)
         for delivery in deliveries:
             logging.debug(delivery.__unicode__())
