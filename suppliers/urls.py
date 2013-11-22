@@ -34,11 +34,15 @@ urlpatterns = patterns('suppliers.views',
                        url(r'^catalog/grid/(?P<product_id>\d+)/$', views.CatalogGridView.as_view(), name='catalog_grid_product_id'),
                        url(r'^catalog/list/(?P<product_id>\d+)/$', views.CatalogListView.as_view(), name='catalog_list_product_id'),
 
+                       url(r'^catalog/(?P<product_id>\d+)/(?P<slug>[\w-]+)/$', views.CatalogGridView.as_view(), name='catalog_product_id_slug'),
+                       url(r'^catalog/grid/(?P<product_id>\d+)/(?P<slug>[\w-]+)/$', views.CatalogGridView.as_view(), name='catalog_grid_product_id_slug'),
+                       url(r'^catalog/list/(?P<product_id>\d+)/(?P<slug>[\w-]+)/$', views.CatalogListView.as_view(), name='catalog_list_product_id_slug'),
+
                        url(r'^catalog/(?P<product_id>\d+)/page/(?P<page>\d+)/$', views.CatalogGridView.as_view(), name='catalog_product_id_page'),
                        url(r'^catalog/grid/(?P<product_id>\d+)/page/(?P<page>\d+)/$', views.CatalogGridView.as_view(), name='catalog_grid_product_id_page'),
                        url(r'^catalog/list/(?P<product_id>\d+)/page/(?P<page>\d+)/$', views.CatalogListView.as_view(), name='catalog_list_product_id_page'),
 
-                       url(r'^catalog/$', views.CatalogGridView.as_view(), name='catalog'),
-                       url(r'^catalog/grid/$', views.CatalogGridView.as_view(), name='catalog_grid'),
-                       url(r'^catalog/list/$', views.CatalogListView.as_view(), name='catalog_list'),
+                       url(r'^catalog/(?P<product_id>\d+)/(?P<slug>[\w-]+)/page/(?P<page>\d+)/$', views.CatalogGridView.as_view(), name='catalog_product_id_slug_page'),
+                       url(r'^catalog/grid/(?P<product_id>\d+)/(?P<slug>[\w-]+)/page/(?P<page>\d+)/$', views.CatalogGridView.as_view(), name='catalog_grid_product_id_slug_page'),
+                       url(r'^catalog/list/(?P<product_id>\d+)/(?P<slug>[\w-]+)/page/(?P<page>\d+)/$', views.CatalogListView.as_view(), name='catalog_list_product_id_slug_page'),
 )

@@ -12,9 +12,9 @@
       <li class="active">{{product}}</li>
     {% else %}
       {% if view == "list" %}
-	<li class="active"><a href="{% url "catalog_list_product_id_page" product.id 1 %}{% if search %}?search={{search}}{% endif %}">{{product}}</a></li>
+	<li class="active"><a href="{% url "catalog_list_product_id_slug_page" product.id product.slug 1 %}{% if search %}?search={{search}}{% endif %}">{{product}}</a></li>
       {% else %}
-	<li class="active"><a href="{% url "catalog_grid_product_id_page" product.id 1 %}{% if search %}?search={{search}}{% endif %}">{{product}}</a></li>
+	<li class="active"><a href="{% url "catalog_grid_product_id_slug_page" product.id product.slug 1 %}{% if search %}?search={{search}}{% endif %}">{{product}}</a></li>
       {% endif %}
     {% endif %}
   {% endfor %}

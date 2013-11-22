@@ -46,7 +46,7 @@
 	  <li class="active"><a title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "pro_catalog_grid_product_id_page" selected_product.id object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
+	    <li><a href="{% url "pro_catalog_grid_product_id_slug_page" selected_product.id selected_product.slug object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% else %}
 	    <li><a href="{% url "pro_catalog_grid_page" object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "Grid" %}"><i class="glyphicon glyphicon-th"></i></a></li>
 	  {% endif %}
@@ -56,7 +56,7 @@
 	  <li class="active"><a title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	{% else %}
 	  {% if selected_product %}
-	    <li><a href="{% url "pro_catalog_list_product_id_page" selected_product.id object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
+	    <li><a href="{% url "pro_catalog_list_product_id_slug_page" selected_product.id selected_product.slug object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% else %}
 	    <li><a href="{% url "pro_catalog_list_page" object_list.number %}{% if search %}?search={{search}}{% endif %}" title="{% trans "List" %}"><i class="glyphicon glyphicon-th-list"></i></a></li>
 	  {% endif %}
@@ -70,7 +70,7 @@
 	<p>Les produits sont mis à jour constamment.<p/>
       </div>
 
-      <form role="form" method="get" action="{% if selected_product %}{% if view == "list" %}{% url "pro_catalog_list_product_id_page" selected_product.id object_list.number %}{% else %}{% url "pro_catalog_grid_product_id_page" selected_product.id object_list.number %}{% endif %}{% else %}{% if view == "list" %}{% url "pro_catalog_list_page" object_list.number %}{% else %}{% url "pro_catalog_grid_page" object_list.number %}{% endif %}{% endif %}">
+      <form role="form" method="get" action="{% if selected_product %}{% if view == "list" %}{% url "pro_catalog_list_product_id_slug_page" selected_product.id selected_product.slug object_list.number %}{% else %}{% url "pro_catalog_grid_product_id_slug_page" selected_product.id selected_product.slug object_list.number %}{% endif %}{% else %}{% if view == "list" %}{% url "pro_catalog_list_page" object_list.number %}{% else %}{% url "pro_catalog_grid_page" object_list.number %}{% endif %}{% endif %}">
 	<div class="input-group">
 	  <input type="text" class="form-control input-lg" name="search" placeholder="Tapez votre recherche…" value="{{search}}">
 	  <span class="input-group-btn">
