@@ -57,7 +57,7 @@ class Command(NoArgsCommand):
             for content in delivery.content_set.all():
                 __extent = content.extent
 
-                logger_content = logging.getLogger('[%d] [%20s] [%3s%%]' % (delivery.id, content.product.name[:20], __extent))
+                logger_content = logging.getLogger('[%d] [%20s%c] [%3s%%]' % (delivery.id, content.product.name[:20], '*' if content.customized else ' ', __extent))
                 
                 for contentproduct in content.contentproduct_set.all():
                         logger_content.info('%d x %20s (%4d) %s' % (contentproduct.quantity, contentproduct.product.name[:20], contentproduct.product.id, contentproduct.product.main_price.supplier_product_url))
