@@ -77,7 +77,7 @@ class Command(NoArgsCommand):
             logging.info('[TEST MODE enabled]')
             logging.info('')
 
-        week_limit = Week.withdate(Week.thisweek().day(settings.VALIDATING_DAY_OF_WEEK) + relativedelta(days=9))
+        week_limit = Week.withdate(Week.thisweek().day(settings.VALIDATING_DAY_OF_WEEK) + relativedelta(days=settings.DELAY_BETWEEN_DEFINITON_N_DELIVERY))
         deliveries = models.Delivery.objects.filter(date__lte=week_limit, status='p', subscription__enabled=True)
 
         logging.info('Number of deliveries to fullfill: %d' % deliveries.count())
