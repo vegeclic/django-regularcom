@@ -7,7 +7,7 @@
 {% for article in object_list %}
 <div class="well">
   <div class="panel-warning">
-    <h4 class="panel panel-heading"><a href="{% url "article_slug" article.id article.slug %}" style="text-decoration:none;color:black"><strong>{{ article.title }}</strong></a></h4>
+    <h4 class="panel panel-heading"><a href="{% url "article_slug" article.id article.slug %}" style="text-decoration:none;color:black"><strong>{{ article.title|title }}</strong></a></h4>
   </div>
   {% if article.title_image %}
   <div>
