@@ -21,11 +21,11 @@ from modeltranslation.translator import translator, TranslationOptions
 from . import models
 
 class ArticleTranslationOptions(TranslationOptions):
-    fields = ('title', 'body',)
+    fields = ('title', 'body', 'slug',)
 
 translator.register(models.Article, ArticleTranslationOptions)
 
 class CategoryTranslationOptions(TranslationOptions):
-    fields = ('name',)
+    fields = ('name', 'slug',)
 
 translator.register(models.Category, CategoryTranslationOptions)

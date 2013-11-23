@@ -36,6 +36,7 @@ class Category(models.Model):
         verbose_name_plural = _('categories')
 
     name = models.CharField(_('name'), max_length=200)
+    slug = models.SlugField(max_length=200)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 

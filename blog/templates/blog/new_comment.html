@@ -5,7 +5,7 @@
 {% block sub_content %}
 <h2>{% trans "New comment" %}</h2>
 
-<form role="form" method="post" action="{% url "new_comment" object.id %}">
+<form role="form" method="post" action="{% url "new_comment_slug" object.id object.slug %}">
   {% csrf_token %}
   {% for field in form %}
   <div class="well">

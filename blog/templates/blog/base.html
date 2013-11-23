@@ -24,7 +24,7 @@
       </div>
       <div class="panel-body" style="height:200px; text-align:justify">
         {% for category in categories %}
-        <a href="{% url "category" category.id %}"><span class="badge alert-warning" style="margin:5px">{{ category.name|truncatechars:35 }}</span></a>
+        <a href="{% url "category_slug" category.id category.slug %}"><span class="badge alert-warning" style="margin:5px">{{ category.name|truncatechars:35 }}</span></a>
         <br/>
         {% endfor %}
       </div>
@@ -35,7 +35,7 @@
       </div>
       <div class="panel-body" style="text-align:justify">
         {% for article in last_articles|slice:":5"  %}
-        <a href="{% url "article" article.id %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
+        <a href="{% url "article_slug" article.id article.slug %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
         <br/>
         {% endfor %}
       </div>
@@ -56,7 +56,7 @@
       </div>
       <div class="panel-body" style="text-align:justify">
         {% for comment in comments|slice:":5" %}
-        <a href="{% url "article" comment.article.id %}#comment_{{comment.id}}"><span class="badge alert-warning" style="margin:5px; width:219px">{{comment.article.title|truncatechars:30}}<br/><span class="badge" style="margin:5px"> {{comment.body|truncatechars:30}}</span></a>
+        <a href="{% url "article_slug" comment.article.id comment.article.slug %}#comment_{{comment.id}}"><span class="badge alert-warning" style="margin:5px; width:219px">{{comment.article.title|truncatechars:30}}<br/><span class="badge" style="margin:5px"> {{comment.body|truncatechars:30}}</span></a>
         {% endfor %}
       </div>
     </div>

@@ -146,7 +146,7 @@ class NewCommentView(generic.CreateView):
         if self.request.user.is_authenticated():
             fi.participant = self.request.user
         fi.article = models.Article.objects.get(id=pk)
-        self.success_url = reverse_lazy('article', args=[pk])
+        self.success_url = reverse_lazy('article_slug', args=[pk, fi.article.slug])
         ret = super().form_valid(form)
         messages.success(self.request, _('Your comment has been sent successfuly.'))
         return ret

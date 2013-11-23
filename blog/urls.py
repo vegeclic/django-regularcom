@@ -24,7 +24,10 @@ from . import views
 urlpatterns = patterns('pro.views',
                        url(r'^$', views.BlogView.as_view(), name='blog'),
                        url(r'^article/(?P<pk>\d+)/$', views.ArticleView.as_view(), name='article'),
+                       url(r'^article/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', views.ArticleView.as_view(), name='article_slug'),
                        url(r'^category/(?P<pk>\d+)/$', views.CategoryView.as_view(), name='category'),
+                       url(r'^category/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', views.CategoryView.as_view(), name='category_slug'),
                        url(r'^tag/(?P<tag>\w+)/$', views.TagView.as_view(), name='tag'),
                        url(r'^new_comment/(?P<pk>\d+)/$', views.NewCommentView.as_view(), name='new_comment'),
+                       url(r'^new_comment/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', views.NewCommentView.as_view(), name='new_comment_slug'),
 )

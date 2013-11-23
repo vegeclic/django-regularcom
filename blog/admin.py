@@ -34,6 +34,7 @@ class CommentInline(admin.StackedInline):
 
 class CategoryAdmin(TranslationAdmin):
     list_display = ('id', 'name')
+    prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(models.Category, CategoryAdmin)
 
