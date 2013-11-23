@@ -39,7 +39,7 @@ class Command(NoArgsCommand):
 
         logging.debug('Command in progress')
 
-        week_limit = Week.withdate(Week.thisweek().day(settings.VALIDATING_DAY_OF_WEEK + relativedelta(days=settings.DELAY_BETWEEN_DEFINITON_N_DELIVERY))
+        week_limit = Week.withdate(Week.thisweek().day(settings.VALIDATING_DAY_OF_WEEK) + relativedelta(days=settings.DELAY_BETWEEN_DEFINITON_N_DELIVERY))
 
         # first changed the status of expired deliveries
         deliveries_canceled = models.Delivery.objects.filter(date__lt=week_limit, status='w', subscription__enabled=True)
