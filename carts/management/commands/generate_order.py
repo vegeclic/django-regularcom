@@ -33,7 +33,7 @@ logging.config.fileConfig('carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Generate a list of order of suppliers products'
-    
+
     option_list = BaseCommand.option_list + (
         make_option('-b', '--browse', action='store_true', dest='browse', default=False, help='Open product url in browser [default: %default]'),
         make_option('-p', '--pages', action='store', type='int', dest='pages', default=5, help='Choose number of pages to browse step by step [default: %default]'),
@@ -58,19 +58,19 @@ class Command(NoArgsCommand):
                 __extent = content.extent
 
                 logger_content = logging.getLogger('[%d] [%20s] [%c] [%3s%%]' % (delivery.id, content.product.name[:20], '*' if content.customized else ' ', __extent))
-                
-                for contentproduct in content.contentproduct_set.all():
-                        logger_content.info('%d x %20s (%4d) %s' % (contentproduct.quantity, contentproduct.product.name[:20], contentproduct.product.id, contentproduct.product.main_price.supplier_product_url))
-                        if options['browse']:
-                                webbrowser.open(contentproduct.product.main_price.supplier_product_url)
-                                count += 1
-                                if count >= options['pages']: 
-                                        count = 0
-                                        try: input()
-                                        except KeyboardInterrupt: print('Interrupted'); sys.exit()
-                        
-            logger_delivery.info('')
-                        
 
+                for contentproduct in content.contentproduct_set.all():
+                    logger_content.info('%d x %20s (%4d) %s' % (contentproduct.quantity, contentproduct.product.name[:20], contentproduct.product.id, contentproduct.product.main_price.supplier_product_url))
+                    if options['browse']:
+                        webbrowser.open(contentproduct.product.main_price.supplier_product_url)
+                        count += 1
+                        if count >= options['pages']:
+                            count = 0
+                            try:
+                                input()
+                            except KeyboardInterrupt:
+                                print('Interrupted'); sys.exit()
+
+            logger_delivery.info('')
 
         translation.deactivate()
