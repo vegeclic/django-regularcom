@@ -18,6 +18,7 @@
 #
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from . import models, forms
@@ -26,17 +27,18 @@ import common.admin as ca
 class AccountAdmin(UserAdmin):
     form = forms.AccountChangeAdminForm
     add_form = forms.AccountCreationAdminForm
-    list_display = ('id', 'email', 'is_admin', 'date_created', 'last_login',)
-    list_filter = ('is_admin',)
+    list_display = ('id', 'email', 'is_admin', 'newsletter', 'date_created', 'last_login',)
+    list_filter = ('is_admin', 'newsletter',)
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
-        ('Permissions', {'fields': ('is_admin',)}),
-        ('Important dates', {'fields': ('last_login',)}),
+        (_('Permissions'), {'fields': ('is_admin',)}),
+        (_('Newsletter'), {'fields': ('newsletter',)}),
+        (_('Important dates'), {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email',)}
+            'fields': ('email', 'newsletter',)}
         ),
     )
     search_fields = ('email',)

@@ -73,10 +73,19 @@ Végéclic.
         account.save(using=self._db)
         return account
 
+NEWSLETTER_FREQUENCIES = (
+    ('n', _('No email')),
+    ('i', _('Individual email')),
+    ('d', _('Daily digest email')),
+    ('w', _('Weekly digest email')),
+    ('w', _('Monthly digest email')),
+)
+
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name=_('email address'), max_length=255, unique=True, db_index=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    newsletter = models.CharField(max_length=1, choices=NEWSLETTER_FREQUENCIES, default='i')
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
