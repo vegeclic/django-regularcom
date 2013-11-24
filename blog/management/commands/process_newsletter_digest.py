@@ -39,6 +39,7 @@ class Command(NoArgsCommand):
 
     option_list = BaseCommand.option_list + (
         make_option('-t', '--test', action='store_true', dest='test', default=False, help='Test mode (no changes applied) [default: %default]'),
+        make_option('-f', '--frequency', action='store', type='choice', choices=('d', 'w', 'm'), dest='frequency', default='d', help='Email digest frequency (d: daily, w: weekly, m: monthly) [default: %default]'),
     )
 
     def handle_noargs(self, **options):
@@ -49,12 +50,12 @@ class Command(NoArgsCommand):
         connection.open()
         emails = []
 
-        for account in am.Account.objects.exclude(newsletter__in=['n', 'i']).all():
+        for account in am.Account.objects.filter(newsletter=options['frequency']).all():
             reader, created = models.Reader.objects.get_or_create(account=account)
             logger_account = logging.getLogger('[%25s]' % account.email[:25])
 
-            qs = models.Article.objects.filter(period_start__gte=today, period_end__lte=today).order_by('date_created')
-            if reader.articles_read.exists(): qs = qs.exclude(id__in=reader.articles_read.only('id'))
+            qs = models.Article.objects.filter(period_start__lte=today, period_end__gte=today).order_by('date_created')
+            if reader.articles_read.exists(): qs = qs.exclude(id__in=[a.id for a in reader.articles_read.all()])
 
             if not qs.exists():
                 logger_account.debug('No more articles available for sending')
