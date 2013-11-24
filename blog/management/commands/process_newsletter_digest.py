@@ -45,10 +45,8 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         translation.activate('fr')
         today = datetime.date.today()
-
         connection = mail.get_connection()
         connection.open()
-        emails = []
 
         for account in am.Account.objects.filter(newsletter=options['frequency']).all():
             reader, created = models.Reader.objects.get_or_create(account=account)
@@ -78,21 +76,23 @@ Végéclic
 """
             ) % {'threads': '\n'.join([' * %s: http://www.vegeclic.fr%s' % (a.title.title(), reverse_lazy('article_slug', args=[a.id, a.slug])) for a in articles])}
 
-            email = mail.EmailMessage(subject, body, settings.EMAIL_ADMIN, [account.email])
-            emails.append(email)
+            if not options['test']:
+                email = mail.EmailMessage(subject, body, settings.EMAIL_ADMIN, [account.email], connection=connection)
 
-            for a in articles:
-                if a.main_image:
-                    email.attach_file(a.main_image.image.path)
+                for a in articles:
+                    if a.main_image:
+                        email.attach_file(a.main_image.image.path)
 
-                if not options['test']:
-                    reader.articles_read.add(a)
+                try:
+                    email.send()
+                except SMTPSenderRefused:
+                    logger_account.error('SMTPSenderRefused')
+                    break
+                else:
+                    for a in articles:
+                        reader.articles_read.add(a)
 
             logger_account.info('Sending digest')
 
-        if not options['test']:
-            connection.send_messages(emails)
-
         connection.close()
-
         translation.deactivate()

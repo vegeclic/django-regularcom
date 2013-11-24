@@ -44,10 +44,8 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         translation.activate('fr')
         today = datetime.date.today()
-
         connection = mail.get_connection()
         connection.open()
-        emails = []
 
         for account in am.Account.objects.filter(newsletter='i').all():
             reader, created = models.Reader.objects.get_or_create(account=account)
@@ -65,21 +63,19 @@ class Command(NoArgsCommand):
             subject = '%s%s' % (settings.EMAIL_SUBJECT_PREFIX, article.title.title())
             body = "%s\n\nPlus de détails à l'adresse : http://www.vegeclic.fr%s\n" % (strip_tags(article.body), reverse_lazy('article_slug', args=[article.id, article.slug]))
 
-            email = mail.EmailMessage(subject, body, settings.EMAIL_ADMIN, [account.email])
-            if article.main_image:
-                email.attach_file(article.main_image.image.path)
-            emails.append(email)
-
             if not options['test']:
-                reader.articles_read.add(article)
+                email = mail.EmailMessage(subject, body, settings.EMAIL_ADMIN, [account.email], connection=connection)
+                if article.main_image:
+                    email.attach_file(article.main_image.image.path)
+                try:
+                    email.send()
+                except SMTPSenderRefused:
+                    logger_account.error('SMTPSenderRefused')
+                    break
+                else:
+                    reader.articles_read.add(article)
 
             logger_account.info('Sending article "%25s" (%s)' % (article.title[:25].title(), article.date_created.strftime('%y-%m-%d')))
 
-            logger_account.debug(article.body)
-
-        if not options['test']:
-            connection.send_messages(emails)
-
         connection.close()
-
         translation.deactivate()
