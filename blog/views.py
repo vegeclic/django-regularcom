@@ -27,7 +27,7 @@ from . import models, forms
 def set_common_context_data(context):
     context['categories'] = models.Category.objects.all()
     context['tags'] = models.TaggedItem.objects.distinct('tag').order_by('tag').all()
-    context['last_articles'] = models.Article.objects.order_by('-date_last_modified').all()
+    context['last_articles'] = models.Article.objects.order_by('-period_start', '-date_created').all()
     context['comments'] = models.Comment.objects.order_by('-date_created').all()
 
 class BlogView(generic.ListView):
