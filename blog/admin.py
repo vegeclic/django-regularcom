@@ -52,6 +52,7 @@ class ArticleAdmin(TranslationAdmin):
     list_display = ('id', 'title', 'period_start', 'period_end', 'date_last_blogging_sent', 'date_created', 'date_last_modified', 'enabled',)
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
+    search_fields = ('slug', 'title', 'body',)
     inlines = [MicroblogInline, ca.ImageInline, TaggedItemInline, CommentInline,]
 
 admin.site.register(models.Article, ArticleAdmin)
@@ -59,6 +60,7 @@ admin.site.register(models.Article, ArticleAdmin)
 class ReaderAdmin(admin.ModelAdmin):
     list_display = ('account', 'number_of_articles_read',)
     filter_horizontal = ('articles_read',)
+    search_fields = ('account__email',)
 
     def number_of_articles_read(self, obj): return obj.articles_read.count()
 
