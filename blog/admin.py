@@ -33,7 +33,6 @@ class CommentInline(admin.StackedInline):
     extra = 1
 
 class MicroblogInline(TranslationStackedInline):
-    # form = forms.MicroblogAdmin
     model = models.Microblog
     extra = 1
 

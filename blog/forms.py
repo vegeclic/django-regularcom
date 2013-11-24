@@ -20,12 +20,7 @@
 from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from modeltranslation.forms import TranslationModelForm
 from . import models
-
-class MicroblogAdmin(TranslationModelForm):
-    class Meta:
-        model = models.Microblog
 
 class NewComment(forms.ModelForm):
     class Meta:
