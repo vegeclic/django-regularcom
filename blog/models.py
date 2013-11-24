@@ -77,4 +77,4 @@ class Reader(models.Model):
     account = models.OneToOneField(settings.AUTH_USER_MODEL)
     articles_read = models.ManyToManyField(Article, null=True, blank=True, related_name='blog_reader_articles_read', verbose_name=_('articles_read'))
 
-    def __unicode__(self): return self.account
+    def __unicode__(self): return self.account.__unicode__()

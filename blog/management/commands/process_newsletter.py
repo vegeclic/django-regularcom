@@ -26,6 +26,7 @@ from isoweek import Week
 from dateutil.relativedelta import relativedelta
 import datetime
 from django.core.mail import send_mass_mail
+from django.utils.html import strip_tags
 from optparse import make_option
 from ... import models
 import accounts.models as am
@@ -36,28 +37,41 @@ class Command(NoArgsCommand):
     help = 'Generate a list of order of suppliers products'
 
     option_list = BaseCommand.option_list + (
-        make_option('-b', '--browse', action='store_true', dest='browse', default=False, help='Open product url in browser [default: %default]'),
-        make_option('-p', '--pages', action='store', type='int', dest='pages', default=5, help='Choose number of pages to browse step by step [default: %default]'),
+        make_option('-t', '--test', action='store_true', dest='test', default=False, help='Test mode (no changes applied) [default: %default]'),
     )
 
     def handle_noargs(self, **options):
         translation.activate('fr')
         today = datetime.date.today()
 
-        for account in am.Account.objects.exclude(newsletter='n').all():
+        mails = ()
+
+        for account in am.Account.objects.filter(newsletter='i').all():
             reader, created = models.Reader.objects.get_or_create(account=account)
             logger_account = logging.getLogger('[%25s]' % account.email[:25])
 
             qs = models.Article.objects.filter(period_start__gte=today, period_end__lte=today).order_by('date_created')
-            if reader.articles_read.exists(): qs = qs.exclude(reader.articles_read.all())
+            if reader.articles_read.exists(): qs = qs.exclude(id__in=reader.articles_read.only('id'))
             # logger_article = logging.getLogger('[%25s] [%25s] [%s]' % (account.email[:25], article.title[:25].title(), article.date_created.strftime('%y-%m-%d')))
 
             if not qs.exists():
-                logger_account.info('No more articles available for sending')
+                logger_account.debug('No more articles available for sending')
                 continue
 
             article = qs.all()[0]
+            mails += (('%s%s' % (settings.EMAIL_SUBJECT_PREFIX, article.title.title()), '%s…' % strip_tags(article.body)[:900].replace('\r\n', ' ').replace('\n', ' '), settings.EMAIL_ADMIN, [account.email]),)
+
+            if not options['test']:
+                reader.articles_read.add(article)
 
             logger_account.info('Sending article "%25s" (%s)' % (article.title[:25].title(), article.date_created.strftime('%y-%m-%d')))
+
+            logger_account.debug(article.body)
+
+        from pprint import pprint
+        pprint(mails)
+
+        # if not options['test']:
+        #     send_mass_mail(mails)
 
         translation.deactivate()

@@ -49,7 +49,7 @@ class CategoryAdmin(TranslationAdmin):
 admin.site.register(models.Category, CategoryAdmin)
 
 class ArticleAdmin(TranslationAdmin):
-    list_display = ('id', 'title', 'date_created', 'date_last_modified')
+    list_display = ('id', 'title', 'period_start', 'period_end', 'date_last_blogging_sent', 'date_created', 'date_last_modified', 'enabled',)
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
     inlines = [MicroblogInline, ca.ImageInline, TaggedItemInline, CommentInline,]
