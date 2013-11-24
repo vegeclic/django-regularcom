@@ -49,7 +49,7 @@ class Command(NoArgsCommand):
         connection.open()
         emails = []
 
-        for account in am.Account.objects.filter(newsletter='i').all():
+        for account in am.Account.objects.exclude(newsletter__in=['n', 'i']).all():
             reader, created = models.Reader.objects.get_or_create(account=account)
             logger_account = logging.getLogger('[%25s]' % account.email[:25])
 
@@ -60,22 +60,34 @@ class Command(NoArgsCommand):
                 logger_account.debug('No more articles available for sending')
                 continue
 
-            article = qs.all()[0]
+            articles = qs.all()
 
-            subject = '%s%s' % (settings.EMAIL_SUBJECT_PREFIX, article.title.title())
-            body = "%s\n\nPlus de détails à l'adresse : http://www.vegeclic.fr%s\n" % (strip_tags(article.body), reverse_lazy('article_slug', args=[article.id, article.slug]))
+            subject = _('%sNouveaux billets' % settings.EMAIL_SUBJECT_PREFIX)
+            body = _(
+"""Bonjour,
+
+Vous trouvez ci-dessous la liste des nouveaux billets publiés sur Végéclic :
+
+%(threads)s
+
+Nous vous souhaitons une bonne lecture.
+
+À très bientôt,
+Végéclic
+"""
+            ) % {'threads': '\n'.join([' * %s: http://www.vegeclic.fr%s' % (a.title.title(), reverse_lazy('article_slug', args=[a.id, a.slug])) for a in articles])}
 
             email = mail.EmailMessage(subject, body, settings.EMAIL_ADMIN, [account.email])
-            if article.main_image:
-                email.attach_file(article.main_image.image.path)
             emails.append(email)
 
-            if not options['test']:
-                reader.articles_read.add(article)
+            for a in articles:
+                if a.main_image:
+                    email.attach_file(a.main_image.image.path)
 
-            logger_account.info('Sending article "%25s" (%s)' % (article.title[:25].title(), article.date_created.strftime('%y-%m-%d')))
+                if not options['test']:
+                    reader.articles_read.add(a)
 
-            logger_account.debug(article.body)
+            logger_account.info('Sending digest')
 
         if not options['test']:
             connection.send_messages(emails)
