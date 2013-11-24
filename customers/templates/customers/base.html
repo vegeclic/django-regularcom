@@ -21,11 +21,9 @@
 	    <a href="{% url "address_create" %}"><i class="glyphicon glyphicon-plus-sign"></i> {% trans "New address" %}</a>
 	  </li>
 
-	  {% comment %}
 	  <li {% if sub_section == "settings" %}class="active"{% endif %}>
-	    <a href="{% url "settings" %}"><i class="glyphicon glyphicon-cog"></i> {% trans "Settings" %}</a>
+	    <a href="{% url "customer_settings" %}"><i class="glyphicon glyphicon-cog"></i> {% trans "Settings" %}</a>
 	  </li>
-	  {% endcomment %}
 	</ul>
       </div>
     </div>

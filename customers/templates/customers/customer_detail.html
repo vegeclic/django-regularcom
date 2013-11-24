@@ -11,6 +11,10 @@
     <tr><th class="col-md-2">{% trans "Relay" %}</th><td>{{object.relay_address}}</td></tr>
   </table>
 
+  <table class="table table-bordered table-hover">
+    <tr><th class="col-md-2">{% trans "Newsletter" %}</th><td>{{object.account.get_newsletter_display}}</td></tr>
+  </table>
+
   <h3>{% trans "Settings" %}</h3>
   <div class="form-group">
     <a class="btn btn-lg btn-default btn-block" href="{% url "password_reset" %}">{% trans "Reset my password" %}</a>

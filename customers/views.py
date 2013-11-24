@@ -228,3 +228,26 @@ Végéclic.
     @cache_control(private=True)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+class SettingsView(generic.UpdateView):
+    form_class = forms.SettingsForm
+    model = am.Account
+    template_name = 'customers/settings.html'
+    success_url = '/customers'
+
+    def get_object(self): return self.request.user
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Your settings has been changed successfuly.'))
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'customers'
+        context['sub_section'] = 'settings'
+        return context
+
+    @method_decorator(login_required)
+    @cache_control(private=True)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

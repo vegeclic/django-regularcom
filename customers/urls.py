@@ -23,6 +23,7 @@ from . import views, models
 
 urlpatterns = patterns('customers.views',
                        url(r'^$', views.CustomerView.as_view(), name='profile'),
+                       url(r'^settings/$', views.SettingsView.as_view(), name='customer_settings'),
                        url(r'^password_reset/$', views.PasswordResetView.as_view(), name='password_reset'),
                        url(r'^addresses/$', views.AddressListView.as_view(), name='addresses'),
                        url(r'^addresses/create/$', views.AddressCreateView.as_view(), name='address_create'),
