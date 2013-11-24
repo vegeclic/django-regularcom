@@ -49,11 +49,17 @@ class CategoryAdmin(TranslationAdmin):
 admin.site.register(models.Category, CategoryAdmin)
 
 class ArticleAdmin(TranslationAdmin):
-    # add_form = forms.NewArticleAdmin
-    # form = forms.ArticleAdmin
     list_display = ('id', 'title', 'date_created', 'date_last_modified')
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
-    inlines = [CommentInline, MicroblogInline, ca.ImageInline, TaggedItemInline,]
+    inlines = [MicroblogInline, ca.ImageInline, TaggedItemInline, CommentInline,]
 
 admin.site.register(models.Article, ArticleAdmin)
+
+class ReaderAdmin(admin.ModelAdmin):
+    list_display = ('account', 'number_of_articles_read',)
+    filter_horizontal = ('articles_read',)
+
+    def number_of_articles_read(self, obj): return obj.articles_read.count()
+
+admin.site.register(models.Reader, ReaderAdmin)

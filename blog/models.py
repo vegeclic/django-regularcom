@@ -54,11 +54,12 @@ class Article(models.Model):
     thumb_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='blog_article_thumb_image', verbose_name=_('thumb image'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
-    newsletter_sent = models.BooleanField(default=False)
-    date_last_blogging_sent = models.DateTimeField(null=True, blank=True)
-    enabled = models.BooleanField(default=True)
+    period_start = models.DateField(_('period start'), null=True, blank=True)
+    period_end = models.DateField(_('period end'), null=True, blank=True)
+    date_last_blogging_sent = models.DateTimeField(_('date last blogging sent'), null=True, blank=True)
+    enabled = models.BooleanField(_('enabled'), default=True)
 
-    def __unicode__(self): return self.title
+    def __unicode__(self): return self.title.title()
 
 class Comment(models.Model):
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('participant'), null=True, blank=True)
@@ -70,4 +71,10 @@ class Comment(models.Model):
 class Microblog(models.Model):
     article = models.ForeignKey(Article, verbose_name=_('article'))
     message = models.CharField(_('message'), max_length=140)
-    date_last_sent = models.DateTimeField(null=True, blank=True)
+    date_last_sent = models.DateTimeField(_('date last sent'), null=True, blank=True)
+
+class Reader(models.Model):
+    account = models.OneToOneField(settings.AUTH_USER_MODEL)
+    articles_read = models.ManyToManyField(Article, null=True, blank=True, related_name='blog_reader_articles_read', verbose_name=_('articles_read'))
+
+    def __unicode__(self): return self.account
