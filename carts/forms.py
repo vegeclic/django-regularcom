@@ -20,6 +20,11 @@
 from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from itertools import chain
+from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
+from django.utils.encoding import force_text
+from django.forms.util import flatatt
 import django.contrib.auth as auth
 from . import models
 import common.forms as cf
@@ -136,26 +141,26 @@ class MyCheckboxSelectMultiple(forms.SelectMultiple):
         final_attrs = self.build_attrs(attrs, name=name)
         output = ['<div class="btn-group" data-toggle="buttons">']
         # Normalize to strings
-        str_values = set([forms.widgets.force_text(v) for v in value])
-        for i, (option_value, option_label) in enumerate(forms.widgets.chain(self.choices, choices)):
+        str_values = set([force_text(v) for v in value])
+        for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
                 final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
-                label_for = forms.widgets.format_html(' for="{0}"', final_attrs['id'])
+                label_for = format_html(' for="{0}"', final_attrs['id'])
             else:
                 label_for = ''
 
             cb = forms.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
-            option_value = forms.widgets.force_text(option_value)
+            option_value = force_text(option_value)
             rendered_cb = cb.render(name, option_value)
-            option_label = forms.widgets.force_text(option_label)
-            output.append(forms.widgets.format_html('<label class="btn btn-default btn-lg {0} {1}"{2}>{3} {4}</label>',
+            option_label = force_text(option_label)
+            output.append(format_html('<label class="btn btn-default btn-lg {0} {1}"{2}>{3} {4}</label>',
                                                     'active' if cb.check_test(option_value) else '',
                                                     'disabled' if 'disabled' in attrs else '',
                                                     label_for, rendered_cb, option_label))
         output.append('</div>')
-        return forms.widgets.mark_safe('\n'.join(output))
+        return mark_safe('\n'.join(output))
 
     def id_for_label(self, id_):
         # See the comment for RadioSelect.id_for_label()
@@ -172,8 +177,8 @@ class MyRadioInput(forms.widgets.SubWidget):
     def __init__(self, name, value, attrs, choice, index):
         self.name, self.value = name, value
         self.attrs = attrs
-        self.choice_value = forms.widgets.force_text(choice[0])
-        self.choice_label = forms.widgets.force_text(choice[1])
+        self.choice_value = force_text(choice[0])
+        self.choice_label = force_text(choice[1])
         self.index = index
 
     def __str__(self):
@@ -184,14 +189,14 @@ class MyRadioInput(forms.widgets.SubWidget):
         value = value or self.value
         attrs = attrs or self.attrs
         if 'id' in self.attrs:
-            label_for = forms.widgets.format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
+            label_for = format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
         else:
             label_for = ''
-        choice_label = forms.widgets.force_text(self.choice_label)
-        return forms.widgets.format_html('<label class="btn btn-default btn-lg {0} {1}" {2}>{3} {4}</label>',
-                                         'active' if self.is_checked() else '',
-                                         'disabled' if 'disabled' in attrs else '',
-                                         label_for, self.tag(), choice_label)
+        choice_label = force_text(self.choice_label)
+        return format_html('<label class="btn btn-default btn-lg {0} {1}" {2}>{3} {4}</label>',
+                           'active' if self.is_checked() else '',
+                           'disabled' if 'disabled' in attrs else '',
+                           label_for, self.tag(), choice_label)
 
     def is_checked(self):
         return self.value == self.choice_value
@@ -202,7 +207,7 @@ class MyRadioInput(forms.widgets.SubWidget):
         final_attrs = dict(self.attrs, type='radio', name=self.name, value=self.choice_value)
         if self.is_checked():
             final_attrs['checked'] = 'checked'
-        return forms.widgets.format_html('<input{0} />', forms.widgets.flatatt(final_attrs))
+        return format_html('<input{0} />', flatatt(final_attrs))
 
 class MyRadioFieldRenderer(object):
     """
@@ -226,7 +231,7 @@ class MyRadioFieldRenderer(object):
 
     def render(self):
         """Outputs a <div> for this set of radio fields."""
-        return forms.widgets.format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', forms.widgets.format_html_join('\n', '{0}', [(forms.widgets.force_text(w),) for w in self]))
+        return format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', format_html_join('\n', '{0}', [(force_text(w),) for w in self]))
 
 class CreateForm1(forms.Form):
     size = forms.ModelChoiceField(queryset=models.Size.objects.select_related().order_by('weight'), initial=2,
@@ -350,27 +355,27 @@ class MyImageCheckboxSelectMultiple(forms.SelectMultiple):
         final_attrs = self.build_attrs(attrs, name=name)
         output = ['<div class="btn-group" data-toggle="buttons">']
         # Normalize to strings
-        str_values = set([forms.widgets.force_text(v) for v in value])
-        for i, (option_value, option_label) in enumerate(forms.widgets.chain(self.choices, choices)):
+        str_values = set([force_text(v) for v in value])
+        for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
                 final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
-                label_for = forms.widgets.format_html(' for="{0}"', final_attrs['id'])
+                label_for = format_html(' for="{0}"', final_attrs['id'])
             else:
                 label_for = ''
 
             cb = forms.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
-            option_value = forms.widgets.force_text(option_value)
+            option_value = force_text(option_value)
             rendered_cb = cb.render(name, option_value)
-            option_label = forms.widgets.force_text(option_label)
+            option_label = force_text(option_label)
             option_labels = option_label.split('|#~|')
-            output.append(forms.widgets.format_html('<label class="choice btn btn-default btn-lg {0} {1}"{2}>{3} <img class="img-thumbnail tooltip_link" src="{4}{5}" style="width:100px" title="{6}" alt="{6}"/><span class="price">{7}</span></label>',
+            output.append(format_html('<label class="choice btn btn-default btn-lg {0} {1}"{2}>{3} <img class="img-thumbnail tooltip_link" src="{4}{5}" style="width:100px" title="{6}" alt="{6}"/><span class="price">{7}</span></label>',
                                                     'active' if cb.check_test(option_value) else '',
                                                     'disabled' if 'disabled' in attrs else '',
                                                     label_for, rendered_cb, settings.MEDIA_URL, option_labels[1], option_labels[0], option_labels[2]))
         output.append('</div>')
-        return forms.widgets.mark_safe('\n'.join(output))
+        return mark_safe('\n'.join(output))
 
     def id_for_label(self, id_):
         # See the comment for RadioSelect.id_for_label()
