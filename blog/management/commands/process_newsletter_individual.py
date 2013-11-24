@@ -54,7 +54,7 @@ class Command(NoArgsCommand):
             logger_account = logging.getLogger('[%25s]' % account.email[:25])
 
             qs = models.Article.objects.filter(period_start__gte=today, period_end__lte=today).order_by('date_created')
-            if reader.articles_read.exists(): qs = qs.exclude(id__in=reader.articles_read.only('id'))
+            if reader.articles_read.exists(): qs = qs.exclude(id__in=[a.id for a in reader.articles_read.all()])
 
             if not qs.exists():
                 logger_account.debug('No more articles available for sending')
