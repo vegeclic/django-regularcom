@@ -17,7 +17,7 @@
 # Geraldine Starke <geraldine@starke.fr>, http://www.vegeclic.fr
 #
 
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from . import views, models
 
