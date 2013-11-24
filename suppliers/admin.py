@@ -60,7 +60,7 @@ class ProductAdmin(TranslationAdmin):
     # fields = ('name', 'slug', 'product', 'status', 'suppliers', 'criterias', 'body', 'ingredients', 'weight', 'sku', 'main_image', 'main_price')
     list_display = ('id', 'name', 'weight', 'date_created', 'date_last_modified', 'status',)
     list_filter = ('status',)
-    search_fields = ('name', 'slug', 'weight', 'product__slug',)
+    search_fields = ('id', 'name', 'slug', 'weight', 'product__slug', 'main_price__reference',)
     filter_horizontal = ('suppliers', 'criterias',)
     actions = ['make_draft', 'make_published', 'make_expired', 'make_withdrawn',]
     inlines = [ca.ImageInline, PriceInline,]
