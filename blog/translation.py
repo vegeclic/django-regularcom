@@ -21,7 +21,7 @@ from modeltranslation.translator import translator, TranslationOptions
 from . import models
 
 class ArticleTranslationOptions(TranslationOptions):
-    fields = ('title', 'body', 'slug',)
+    fields = ('title', 'slug', 'body',)
 
 translator.register(models.Article, ArticleTranslationOptions)
 
@@ -29,3 +29,8 @@ class CategoryTranslationOptions(TranslationOptions):
     fields = ('name', 'slug',)
 
 translator.register(models.Category, CategoryTranslationOptions)
+
+class MicroblogTranslationOptions(TranslationOptions):
+    fields = ('message',)
+
+translator.register(models.Microblog, MicroblogTranslationOptions)

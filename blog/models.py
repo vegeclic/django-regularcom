@@ -44,17 +44,19 @@ class Category(models.Model):
 
 class Article(models.Model):
     title = models.CharField(_('title'), max_length=200)
+    slug = models.SlugField(max_length=200)
     body = models.TextField(_('body'))
     authors = models.ManyToManyField('accounts.Author', related_name='blog_article_authors', verbose_name=_('authors'))
-    slug = models.SlugField(max_length=200)
-    enabled = models.BooleanField(default=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+    tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'), related_name='blog_article_tags')
+    categories = models.ManyToManyField(Category, null=True, blank=True, related_name='blog_article_categories', verbose_name=_('categories'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='blog_article_main_image', verbose_name=_('main image'))
     title_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='blog_article_title_image', verbose_name=_('title image'))
     thumb_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='blog_article_thumb_image', verbose_name=_('thumb image'))
-    tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'), related_name='blog_article_tags')
-    categories = models.ManyToManyField(Category, null=True, blank=True, related_name='blog_article_categories', verbose_name=_('categories'))
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+    newsletter_sent = models.BooleanField(default=False)
+    date_last_blogging_sent = models.DateTimeField(null=True, blank=True)
+    enabled = models.BooleanField(default=True)
 
     def __unicode__(self): return self.title
 
@@ -64,3 +66,8 @@ class Comment(models.Model):
     body = models.TextField(_('body'))
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
+
+class Microblog(models.Model):
+    article = models.ForeignKey(Article, verbose_name=_('article'))
+    message = models.CharField(_('message'), max_length=140)
+    date_last_sent = models.DateTimeField(null=True, blank=True)

@@ -20,24 +20,12 @@
 from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from modeltranslation.forms import TranslationModelForm
 from . import models
 
-# class NewArticleAdmin(forms.ModelForm):
-#     class Meta:
-#         model = models.Article
-
-#     def save(self, commit=True):
-#         article = super().save(commit=False)
-#         message.save()
-#         models.create_mail(subject=message.subject,
-#                            body=message.body,
-#                            participants=message.participants.exclude(message.owner),
-#                            message=message)
-#         return message
-
-# class ArticleAdmin(forms.ModelForm):
-#     class Meta:
-#         model = models.Article
+class MicroblogAdmin(TranslationModelForm):
+    class Meta:
+        model = models.Microblog
 
 class NewComment(forms.ModelForm):
     class Meta:

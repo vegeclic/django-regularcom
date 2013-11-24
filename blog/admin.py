@@ -18,7 +18,7 @@
 #
 
 from django.contrib.contenttypes import generic
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationStackedInline
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from . import models, forms
@@ -32,6 +32,17 @@ class CommentInline(admin.StackedInline):
     model = models.Comment
     extra = 1
 
+class MicroblogInline(TranslationStackedInline):
+    # form = forms.MicroblogAdmin
+    model = models.Microblog
+    extra = 1
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        field = super().formfield_for_dbfield(db_field, **kwargs)
+        if not field: return field
+        if 'Message' in field.label: field.widget = forms.forms.Textarea()
+        return field
+
 class CategoryAdmin(TranslationAdmin):
     list_display = ('id', 'name')
     prepopulated_fields = {'slug': ('name',)}
@@ -44,6 +55,6 @@ class ArticleAdmin(TranslationAdmin):
     list_display = ('id', 'title', 'date_created', 'date_last_modified')
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
-    inlines = [CommentInline, ca.ImageInline, TaggedItemInline,]
+    inlines = [CommentInline, MicroblogInline, ca.ImageInline, TaggedItemInline,]
 
 admin.site.register(models.Article, ArticleAdmin)
