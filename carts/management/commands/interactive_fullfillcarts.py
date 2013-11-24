@@ -261,7 +261,7 @@ class Command(NoArgsCommand):
                     except ValueError:
                         logger_extent.error('Bad value passed (a value between 0 and %d)' % higherbound)
                     else:
-                        if 0 < idx < higherbound+1: break
+                        if 0 <= idx < higherbound+1: break
 
                 logger_extent.info('Start fullfilling the delivery cart content with the solution %d' % idx)
 
