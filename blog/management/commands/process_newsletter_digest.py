@@ -29,6 +29,7 @@ import datetime
 from django.core import mail
 from django.utils.html import strip_tags
 from optparse import make_option
+import smtplib
 from ... import models
 import accounts.models as am
 
@@ -85,7 +86,7 @@ Végéclic
 
                 try:
                     email.send()
-                except SMTPSenderRefused:
+                except smtplib.SMTPSenderRefused:
                     logger_account.error('SMTPSenderRefused')
                     break
                 else:
