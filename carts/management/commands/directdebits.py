@@ -29,7 +29,7 @@ import mailbox.models as mm
 import customers.models as cm
 import logging, logging.config
 
-logging.config.fileConfig('carts/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'apply direct debits'

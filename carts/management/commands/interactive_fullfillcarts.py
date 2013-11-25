@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
 import readline
 from deap import algorithms, base, creator, tools
 
-logging.config.fileConfig('carts/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Interactive version of fullfilling algorithm to validate subscription deliveries content'

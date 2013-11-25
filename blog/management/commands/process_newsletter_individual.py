@@ -33,7 +33,7 @@ import smtplib
 from ... import models
 import accounts.models as am
 
-logging.config.fileConfig('carts/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/blog/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Generate a list of order of suppliers products'

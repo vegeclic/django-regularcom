@@ -36,7 +36,7 @@ from bs4 import BeautifulSoup
 from urllib import request, parse
 import sys, os, shutil, re
 
-logging.config.fileConfig('suppliers/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/suppliers/management/commands/logging.conf')
 
 def retrieve(url, data=None, chunk_size=settings.AVE_CHUNK, limit_size=settings.AVE_LIMIT_SIZE, logger=logging):
     try:

@@ -31,7 +31,7 @@ import logging, logging.config
 import numpy as np, random
 import matplotlib.pyplot as plt
 
-logging.config.fileConfig('carts/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Fullfill the validated subscription deliveries content'

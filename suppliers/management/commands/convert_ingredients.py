@@ -32,7 +32,7 @@ import readline
 import re, sys
 from pyparsing import *
 
-logging.config.fileConfig('suppliers/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/suppliers/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Converter of the ingredients list'

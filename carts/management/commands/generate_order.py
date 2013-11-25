@@ -29,7 +29,7 @@ from optparse import make_option
 from ... import models
 import sys
 
-logging.config.fileConfig('carts/management/commands/logging.conf')
+logging.config.fileConfig(settings.BASE_DIR + '/carts/management/commands/logging.conf')
 
 class Command(NoArgsCommand):
     help = 'Generate a list of order of suppliers products'
