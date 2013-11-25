@@ -21,6 +21,10 @@ from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
+from django.utils.encoding import force_text
+from django.forms.util import flatatt
 import datetime
 from . import models
 import common.forms as cf
@@ -136,8 +140,8 @@ class MyRadioInput(forms.widgets.SubWidget):
     def __init__(self, name, value, attrs, choice, index):
         self.name, self.value = name, value
         self.attrs = attrs
-        self.choice_value = forms.widgets.force_text(choice[0])
-        self.choice_label = forms.widgets.force_text(choice[1])
+        self.choice_value = force_text(choice[0])
+        self.choice_label = force_text(choice[1])
         self.index = index
 
     def __str__(self):
@@ -148,11 +152,11 @@ class MyRadioInput(forms.widgets.SubWidget):
         value = value or self.value
         attrs = attrs or self.attrs
         if 'id' in self.attrs:
-            label_for = forms.widgets.format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
+            label_for = format_html(' for="{0}_{1}"', self.attrs['id'], self.index)
         else:
             label_for = ''
-        choice_label = forms.widgets.force_text(self.choice_label)
-        return forms.widgets.format_html('<label class="btn btn-default btn-lg" {0}>{1} {2}</label>', label_for, self.tag(), choice_label)
+        choice_label = force_text(self.choice_label)
+        return format_html('<label class="btn btn-default btn-lg" {0}>{1} {2}</label>', label_for, self.tag(), choice_label)
 
     def is_checked(self):
         return self.value == self.choice_value
@@ -163,7 +167,7 @@ class MyRadioInput(forms.widgets.SubWidget):
         final_attrs = dict(self.attrs, type='radio', name=self.name, value=self.choice_value)
         if self.is_checked():
             final_attrs['checked'] = 'checked'
-        return forms.widgets.format_html('<input{0} />', forms.widgets.flatatt(final_attrs))
+        return format_html('<input{0} />', flatatt(final_attrs))
 
 class MyRadioFieldRenderer(object):
     """
@@ -187,7 +191,7 @@ class MyRadioFieldRenderer(object):
 
     def render(self):
         """Outputs a <div> for this set of radio fields."""
-        return forms.widgets.format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', forms.widgets.format_html_join('\n', '{0}', [(forms.widgets.force_text(w),) for w in self]))
+        return format_html('<div class="btn-group" data-toggle="buttons">\n{0}\n</div>', format_html_join('\n', '{0}', [(force_text(w),) for w in self]))
 
 class CreditForm(cf.ModelFormWithCurrency):
     class Meta:
