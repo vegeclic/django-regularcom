@@ -33,6 +33,7 @@ import smtplib
 from ... import models
 import accounts.models as am
 from twython import Twython
+import random
 
 logging.config.fileConfig(settings.BASE_DIR + '/blog/management/commands/logging.conf')
 
@@ -60,9 +61,9 @@ class Command(NoArgsCommand):
         message = qs.all()[0]
 
         link = 'http://www.vegeclic.fr%s' % reverse_lazy('article_slug', args=[message.article.id, message.article.slug])
-        status = '%s #Vegeclic #Vegan %s' % (message.message[:90], link)
 
-        logging.info('Sending message "%s"' % status)
+        def get_status(msg_len=110): return '%s #Vegeclic #Vegan %s' % (message.message[:msg_len], link)
+        logging.info('Sending message "%s"' % get_status())
 
         for tk in settings.TWITTER_ACCOUNTS:
             t = Twython(tk['consumer_key'], tk['consumer_secret'], tk['oauth_token'], tk['oauth_secret'])
@@ -70,10 +71,10 @@ class Command(NoArgsCommand):
             logging.info('… to %s' % tk['oauth_token'])
 
             if not options['test']:
-                if message.article.main_image:
-                    t.update_status_with_media(status=status, media=open(message.article.main_image.image.path, 'rb'))
+                if random.choice([True, False]) and message.article.main_image:
+                    t.update_status_with_media(status=get_status(70), media=open(message.article.main_image.image.path, 'rb'))
                 else:
-                    t.update_status(status=status)
+                    t.update_status(status=get_status(110))
 
         if not options['test']:
             message.date_last_sent = now
