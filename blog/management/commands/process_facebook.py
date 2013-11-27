@@ -86,13 +86,14 @@ class Command(NoArgsCommand):
 
         subject = article.title.title()
         body = "%s\n\nPlus de détails à l'adresse : http://www.vegeclic.fr%s\n" % (strip_tags(article.body), reverse_lazy('article_slug', args=[article.id, article.slug]))
+        message = '%s\n\n%s' % (subject, body)
 
         if not options['test']:
             for g in gs:
                 if article.main_image:
-                    g.post(message=body, path='me/photos', source=open(article.main_image.image.path, 'rb'))
+                    g.post(message=message, path='me/photos', source=open(article.main_image.image.path, 'rb'))
                 else:
-                    g.post(message=body, path='me/feed')
+                    g.post(message=message, path='me/feed')
             article.date_last_blogging_sent = now
             article.save()
 
