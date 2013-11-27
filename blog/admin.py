@@ -39,7 +39,9 @@ class MicroblogInline(TranslationStackedInline):
     def formfield_for_dbfield(self, db_field, **kwargs):
         field = super().formfield_for_dbfield(db_field, **kwargs)
         if not field: return field
-        if 'Message' in field.label: field.widget = forms.forms.Textarea()
+        if 'Message' in field.label:
+            # field.widget = forms.forms.Textarea()
+            field.widget.attrs['style'] = 'width:70em'
         return field
 
 class CategoryAdmin(TranslationAdmin):
