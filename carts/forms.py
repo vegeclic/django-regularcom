@@ -199,7 +199,7 @@ class MyRadioInput(forms.widgets.SubWidget):
                            label_for, self.tag(), choice_label)
 
     def is_checked(self):
-        return int(self.value) == int(self.choice_value)
+        return str(self.value) == str(self.choice_value)
 
     def tag(self):
         if 'id' in self.attrs:
