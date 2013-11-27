@@ -130,6 +130,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'fandjango.middleware.FacebookMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -196,7 +197,8 @@ INSTALLED_APPS = (
     'wallets',
     # 'celerytest',
     'south',
-    'debug_toolbar',
+    # 'debug_toolbar',
+    'fandjango',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -262,3 +264,11 @@ BALANCE_INIT = 0
 
 DEFAULT_CURRENCY = 'Euro'
 DEFAULT_WEIGHT = 150
+
+FACEBOOK_APPLICATION_ID = ''
+FACEBOOK_APPLICATION_SECRET_KEY = ''
+FACEBOOK_APPLICATION_NAMESPACE = ''
+FACEBOOK_APPLICATION_CANVAS_URL = ''
+FANDJANGO_SITE_URL = FACEBOOK_APPLICATION_CANVAS_URL
+FACEBOOK_ADMIN_ID = ''
+FACEBOOK_PAGE_ID = ''
