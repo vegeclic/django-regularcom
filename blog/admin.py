@@ -50,6 +50,7 @@ admin.site.register(models.Category, CategoryAdmin)
 
 class ArticleAdmin(TranslationAdmin):
     list_display = ('id', 'title', 'period_start', 'period_end', 'date_last_blogging_sent', 'date_created', 'date_last_modified', 'enabled',)
+    prepopulated_fields = {'slug': ('title',)}
     ordering = ('-date_created',)
     filter_horizontal = ('authors', 'categories')
     search_fields = ('slug', 'title', 'body',)
