@@ -60,9 +60,9 @@ class Command(NoArgsCommand):
         message = qs.all()[0]
 
         link = 'http://www.vegeclic.fr%s' % reverse_lazy('article_slug', args=[message.article.id, message.article.slug])
-        body = '%s #Vegeclic #Vegan %s' % (message.message, link)
+        body = '%s #Vegeclic #Vegan %s' % (message.message[:110], link)
 
-        logging.info('Sending message "%s"' % message.message)
+        logging.info('Sending message "%s"' % body)
 
         for tk in settings.TWITTER_ACCOUNTS:
             t = twitter.Twitter(auth=twitter.OAuth(tk['oauth_token'], tk['oauth_secret'],
