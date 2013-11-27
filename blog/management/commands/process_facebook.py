@@ -66,9 +66,15 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         translation.activate('fr')
         today = datetime.date.today()
+        now = datetime.datetime.now()
 
         g = self.get_page_graph_api(**options)
         logging.debug('me: %s' % g.get('me'))
+
+        qs = models.Article.objects.filter(date_last_blogging_sent=None)
+        for article in qs.all():
+            article.date_last_blogging_sent = now
+            article.save()
 
         qs = models.Article.objects.filter(period_start__lte=today, period_end__gte=today).order_by('date_last_blogging_sent', 'date_created')
 
@@ -84,6 +90,10 @@ class Command(NoArgsCommand):
         if not options['test']:
             if article.main_image:
                 g.post(message=body, path='me/photos', source=open(article.main_image.image.path, 'rb'))
+            else:
+                g.post(message=body, path='me/feed')
+        article.date_last_blogging_sent = now
+        article.save()
 
         logging.info('Sending article "%25s" (%s)' % (subject[:25], article.date_created.strftime('%y-%m-%d')))
 
