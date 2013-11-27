@@ -32,7 +32,7 @@ from optparse import make_option
 import smtplib
 from ... import models
 import accounts.models as am
-import twitter
+from twython import Twython
 
 logging.config.fileConfig(settings.BASE_DIR + '/blog/management/commands/logging.conf')
 
@@ -60,17 +60,20 @@ class Command(NoArgsCommand):
         message = qs.all()[0]
 
         link = 'http://www.vegeclic.fr%s' % reverse_lazy('article_slug', args=[message.article.id, message.article.slug])
-        body = '%s #Vegeclic #Vegan %s' % (message.message[:110], link)
+        status = '%s #Vegeclic #Vegan %s' % (message.message[:100], link)
 
-        logging.info('Sending message "%s"' % body)
+        logging.info('Sending message "%s"' % status)
 
         for tk in settings.TWITTER_ACCOUNTS:
-            t = twitter.Twitter(auth=twitter.OAuth(tk['oauth_token'], tk['oauth_secret'],
-                                                   tk['consumer_key'], tk['consumer_secret']))
+            t = Twython(tk['consumer_key'], tk['consumer_secret'], tk['oauth_token'], tk['oauth_secret'])
 
             logging.info('… to %s' % tk['oauth_token'])
 
-            if not options['test']: t.statuses.update(status=body)
+            if not options['test']:
+                if article.main_image:
+                    t.update_status_with_media(status=status, media=open(article.main_image.image.path, 'rb'))
+                else:
+                    t.update_status(status=status)
 
         if not options['test']:
             message.date_last_sent = now

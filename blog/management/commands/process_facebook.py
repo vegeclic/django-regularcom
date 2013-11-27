@@ -71,12 +71,12 @@ class Command(NoArgsCommand):
         gs = self.get_graph_api(**options)
         logging.debug('me: %s' % gs[0].get('me'))
 
-        qs = models.Article.objects.filter(article__enabled=True, date_last_blogging_sent=None)
+        qs = models.Article.objects.filter(enabled=True, date_last_blogging_sent=None)
         for article in qs.all():
             article.date_last_blogging_sent = now
             article.save()
 
-        qs = models.Article.objects.filter(article__enabled=True, period_start__lte=today, period_end__gte=today).order_by('date_last_blogging_sent', 'date_created')
+        qs = models.Article.objects.filter(enabled=True, period_start__lte=today, period_end__gte=today).order_by('date_last_blogging_sent', 'date_created')
 
         if not qs.exists():
             logging.debug('No more articles available for sending')
