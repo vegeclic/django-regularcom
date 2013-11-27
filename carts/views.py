@@ -390,7 +390,8 @@ def get_user(wizard):
     if wizard.request.user.is_authenticated():
         user = wizard.request.user
     else:
-        user = wizard.storage.extra_data.get('user', None)
+        user_id = wizard.storage.extra_data.get('user_id', None)
+        user = am.Account.objects.get(id=user_id) if user_id else None
     return user
 
 def get_thematic(cart_data):
@@ -679,18 +680,25 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
         email = form.cleaned_data.get('email').lower()
 
         if form.cleaned_data.get('sign_type') == 'up':
-            wizard.storage.extra_data['user'] = user = am.Account.objects.create_user(email=email)
+            user = am.Account.objects.create_user(email=email)
             backend = auth.get_backends()[0]
             user.backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
+            wizard.storage.extra_data['user_id'] = user.id
             messages.success(wizard.request, _("Your account has been successfully created."))
+
+            print('authentication sign up')
+
             return form
 
         # sign in
         password = form.cleaned_data.get('password')
         user = auth.authenticate(username=email, password=password)
         if user is None: raise forms.forms.ValidationError(_('bad credentials'))
-        wizard.storage.extra_data['user'] = user
+        wizard.storage.extra_data['user_id'] = user.id
         messages.success(wizard.request, _("You're logged in."))
+
+        print('authentication sign in')
+
         return form
 
 class CreateAllPaymentStep(CreateAllStep):
