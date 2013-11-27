@@ -74,7 +74,7 @@ class Command(NoArgsCommand):
                 if random.choice([True, False]) and message.article.main_image:
                     t.update_status_with_media(status=get_status(70), media=open(message.article.main_image.image.path, 'rb'))
                 else:
-                    t.update_status(status=get_status(110))
+                    t.update_status(status=get_status(90))
 
         if not options['test']:
             message.date_last_sent = now
