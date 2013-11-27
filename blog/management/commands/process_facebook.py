@@ -92,8 +92,8 @@ class Command(NoArgsCommand):
                 g.post(message=body, path='me/photos', source=open(article.main_image.image.path, 'rb'))
             else:
                 g.post(message=body, path='me/feed')
-        article.date_last_blogging_sent = now
-        article.save()
+            article.date_last_blogging_sent = now
+            article.save()
 
         logging.info('Sending article "%25s" (%s)' % (subject[:25], article.date_created.strftime('%y-%m-%d')))
 
