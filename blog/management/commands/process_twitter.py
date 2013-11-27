@@ -60,7 +60,7 @@ class Command(NoArgsCommand):
         message = qs.all()[0]
 
         link = 'http://www.vegeclic.fr%s' % reverse_lazy('article_slug', args=[message.article.id, message.article.slug])
-        status = '%s #Vegeclic #Vegan %s' % (message.message[:100], link)
+        status = '%s #Vegeclic #Vegan %s' % (message.message[:90], link)
 
         logging.info('Sending message "%s"' % status)
 
