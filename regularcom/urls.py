@@ -41,10 +41,12 @@ urlpatterns = patterns('',
     url(r'^pro/', include('pro.urls')),
     url(r'^blog/', include('blog.urls')),
     # url(r'^celerytest/', include('celerytest.urls')),
+    url(r'^fandjango/', include('fandjango.urls')),
 )
 
 urlpatterns += patterns('regularcom.views',
     url(r'^$', views.HomeView.as_view(), name='home'),
     url(r'^how/$', views.HowView.as_view(), name='how'),
     url(r'^chat/$', views.ChatView.as_view(), name='chat'),
+    url(r'^facebook/$', views.facebook, name='facebook'),
 )
