@@ -43,7 +43,7 @@ class Command(NoArgsCommand):
         make_option('-t', '--test', action='store_true', dest='test', default=False, help='Test mode (no changes applied) [default: %default]'),
     )
 
-    def get_page_graph_api(self, **options):
+    def get_graph_api(self, **options):
         oa = fm.OAuthToken.objects.get(user__facebook_id=settings.FACEBOOK_ADMIN_ID)
         logging.debug('oa.token: %s' % oa.token)
 
@@ -61,15 +61,15 @@ class Command(NoArgsCommand):
 
         logging.debug('page_token: %s' % page_token)
 
-        return fm.GraphAPI(page_token)
+        return [g, fm.GraphAPI(page_token)]
 
     def handle_noargs(self, **options):
         translation.activate('fr')
         today = datetime.date.today()
         now = datetime.datetime.now()
 
-        g = self.get_page_graph_api(**options)
-        logging.debug('me: %s' % g.get('me'))
+        gs = self.get_graph_api(**options)
+        logging.debug('me: %s' % gs[0].get('me'))
 
         qs = models.Article.objects.filter(date_last_blogging_sent=None)
         for article in qs.all():
@@ -88,10 +88,11 @@ class Command(NoArgsCommand):
         body = "%s\n\nPlus de détails à l'adresse : http://www.vegeclic.fr%s\n" % (strip_tags(article.body), reverse_lazy('article_slug', args=[article.id, article.slug]))
 
         if not options['test']:
-            if article.main_image:
-                g.post(message=body, path='me/photos', source=open(article.main_image.image.path, 'rb'))
-            else:
-                g.post(message=body, path='me/feed')
+            for g in gs:
+                if article.main_image:
+                    g.post(message=body, path='me/photos', source=open(article.main_image.image.path, 'rb'))
+                else:
+                    g.post(message=body, path='me/feed')
             article.date_last_blogging_sent = now
             article.save()
 
