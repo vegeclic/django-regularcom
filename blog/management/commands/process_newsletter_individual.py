@@ -52,7 +52,7 @@ class Command(NoArgsCommand):
             reader, created = models.Reader.objects.get_or_create(account=account)
             logger_account = logging.getLogger('[%25s]' % account.email[:25])
 
-            qs = models.Article.objects.filter(article__enabled=True, period_start__lte=today, period_end__gte=today).order_by('date_created')
+            qs = models.Article.objects.filter(enabled=True, period_start__lte=today, period_end__gte=today).order_by('date_created')
             if reader.articles_read.exists(): qs = qs.exclude(id__in=[a.id for a in reader.articles_read.all()])
 
             if not qs.exists():
