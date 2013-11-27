@@ -35,7 +35,7 @@ class BlogView(generic.ListView):
     template_name = 'blog/blog.html'
 
     def get_queryset(self):
-        articles = models.Article.objects.order_by('-period_start', '-date_created').all()
+        articles = models.Article.objects.filter(enabled=True).order_by('-period_start', '-date_created').all()
 
         paginator = Paginator(articles, 10)
 
