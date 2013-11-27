@@ -70,8 +70,8 @@ class Command(NoArgsCommand):
             logging.info('… to %s' % tk['oauth_token'])
 
             if not options['test']:
-                if article.main_image:
-                    t.update_status_with_media(status=status, media=open(article.main_image.image.path, 'rb'))
+                if message.article.main_image:
+                    t.update_status_with_media(status=status, media=open(message.article.main_image.image.path, 'rb'))
                 else:
                     t.update_status(status=status)
 
