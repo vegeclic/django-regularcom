@@ -85,8 +85,9 @@ class Command(NoArgsCommand):
         article = qs.all()[0]
 
         subject = article.title.title()
-        body = "%s\n\nPlus de détails à l'adresse : http://www.vegeclic.fr%s\n" % (strip_tags(article.body), reverse_lazy('article_slug', args=[article.id, article.slug]))
-        message = '%s\n\n%s' % (subject, body)
+        link = 'http://www.vegeclic.fr%s' % reverse_lazy('article_slug', args=[article.id, article.slug])
+        body = "%s\n\nPlus de détails à l'adresse : %s\n" % (strip_tags(article.body), link)
+        message = '%s\n%s\n\n%s' % (subject, link, body)
 
         if not options['test']:
             for g in gs:
