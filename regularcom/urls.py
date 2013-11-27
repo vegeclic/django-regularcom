@@ -48,5 +48,5 @@ urlpatterns += patterns('regularcom.views',
     url(r'^$', views.HomeView.as_view(), name='home'),
     url(r'^how/$', views.HowView.as_view(), name='how'),
     url(r'^chat/$', views.ChatView.as_view(), name='chat'),
-    url(r'^facebook/$', views.facebook, name='facebook'),
+    # url(r'^facebook/$', views.facebook, name='facebook'),
 )
