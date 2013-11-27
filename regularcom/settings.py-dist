@@ -272,3 +272,10 @@ FACEBOOK_APPLICATION_CANVAS_URL = ''
 FANDJANGO_SITE_URL = FACEBOOK_APPLICATION_CANVAS_URL
 FACEBOOK_ADMIN_ID = ''
 FACEBOOK_PAGE_ID = ''
+
+TWITTER_ACCOUNTS = [
+    {'oauth_token': '',
+     'oauth_secret': '',
+     'consumer_key': '',
+     'consumer_secret': ''},
+]
