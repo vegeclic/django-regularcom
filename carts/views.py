@@ -669,13 +669,13 @@ class CreateAllPreviewStep(CreateAllStep):
 
 class CreateAllAuthenticationStep(CreateAllStep):
     def __call__(self, wizard, form, step, data, files):
-        form.user = wizard.storage.extra_data.get('user', None)
+        form.user = get_user(wizard)
         return form
 
 class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
     def __call__(self, wizard, form):
         if not form.cleaned_data: return form
-        if wizard.storage.extra_data.get('user', None): return form
+        if get_user(wizard): return form
 
         email = form.cleaned_data.get('email').lower()
 
@@ -684,6 +684,7 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
             backend = auth.get_backends()[0]
             user.backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
             wizard.storage.extra_data['user_id'] = user.id
+            wizard.storage.extra_data['user_backend'] = user.backend
             messages.success(wizard.request, _("Your account has been successfully created."))
 
             print('authentication sign up')
@@ -695,6 +696,7 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
         user = auth.authenticate(username=email, password=password)
         if user is None: raise forms.forms.ValidationError(_('bad credentials'))
         wizard.storage.extra_data['user_id'] = user.id
+        wizard.storage.extra_data['user_backend'] = user.backend
         messages.success(wizard.request, _("You're logged in."))
 
         print('authentication sign in')
@@ -930,7 +932,8 @@ class CreateAll(SessionWizardView):
         subscription = tmp_dict['subscription']
 
         if not self.request.user.is_authenticated():
-            user = self.storage.extra_data['user']
+            user = get_user(self)
+            user.backend = self.storage.extra_data['user_backend']
             auth.login(self.request, user)
 
         payment_data = form_data.get('payment') or {}
