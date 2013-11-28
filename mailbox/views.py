@@ -94,6 +94,7 @@ class NewMessageView(generic.CreateView):
     def form_valid(self, form):
         fi = form.instance
         fi.owner = self.request.user.customer
+        self.success_url = reverse_lazy('messages', args=[1])
         ret = super().form_valid(form)
         fi.participants.add(fi.owner)
         fi.participants_read.add(fi.owner)
@@ -101,7 +102,7 @@ class NewMessageView(generic.CreateView):
         messages.success(self.request, _('Your message has been sent successfuly.'))
         models.create_mail(subject=fi.subject,
                            body=fi.body,
-                           participants=fi.participants.exclude(fi.owner),
+                           participants=fi.participants.exclude(id=fi.owner.id).all(),
                            message=fi)
         return ret
 
