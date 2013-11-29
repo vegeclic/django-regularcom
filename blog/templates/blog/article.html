@@ -32,7 +32,7 @@
 <div class="row">
   {% for object in articles %}
   <div class="col-sm-6 col-md-3">
-    <div class="thumbnail well" style="height:200px">
+    <div class="thumbnail well" style="height:230px">
       <a href="{% url "article_slug" object.id object.slug %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{ object.thumb_image }}"/></a>
       <div class="caption alert alert-warning">
         <a href="{% url "article_slug" object.id object.slug %}" style="text-decoration:none; color:black">{{ object.title }}</a>

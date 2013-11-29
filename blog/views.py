@@ -127,7 +127,7 @@ class ArticleView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'blog'
         context['sub_section'] = 'article'
-        context['articles'] = models.Article.objects.order_by('?').all()
+        context['articles'] = models.Article.objects.order_by('?').all()[:8]
         set_common_context_data(context)
         return context
 
