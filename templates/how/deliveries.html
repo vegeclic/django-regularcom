@@ -1,0 +1,77 @@
+{% load i18n %}
+{% load static %}
+
+{# Deliveries #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_deliveries" role="button" data-toggle="modal">Livraisons</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_deliveries" role="button" data-toggle="modal">
+	<img src="{% static "how/deliveries.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_deliveries" role="button" data-toggle="modal">
+	Comment consulter le détail de mes livraisons ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_deliveries" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_deliveries_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_deliveries_label">Livraisons</h2>
+	Comment consulter le détail de mes livraisons ?
+      </div>
+      <div class="modal-body">
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour consulter le détail des échéances de livraisons d'un de vos abonnements, vous devez vous rendre dans la rubrique « Panier » en cliquant, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "subscriptions" 1 %}">Panier</a> <sup>37</sup> ». À ce titre, le nombre situé à droite de ce lien <sup>37</sup> indique le nombre d'abonnement actif existant sur votre compte.
+	</div>
+
+	<div>
+	  <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Arrivé sur la rubrique « Panier », vous trouverez, dans la partie droite du site, la liste des abonnements auxquels vous avez souscrit. Pour consulter les détails d'un abonnement, vous pouvez cliquer sur la taille de l'abonnement correspondant <sup>63</sup>. Il vous est également possible de changer certain paramètre de votre abonnement en cliquant sur l'icone approprié <sup>66</sup>.
+	</div>
+
+	<div>
+	  <img src="{% static "how/deliveries.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Vous serez alors redirigé vers la page illustrée ci-dessus où il vous sera possible de visualiser la liste des échéances de votre abonnement avec leur prix et statut respectifs. Vous remarquerez la dégressivité des prix en observant que les prix baissent au fur et à mesure que l'on avance dans les échéances.
+	</div>
+
+	<div class="well">
+	  Par défaut, les échéances sont payées et validées automatiquement à J-10 de la date prévue d'envoi, cependant il vous est possible de les valider manuellement, et si vous le souhaitez, en avance, en cliquant sur l'icone correspondant située à gauche de chaque échéance <sup>63</sup>. Il vous est possible de modifier ce comportement en éditant les paramètres de votre abonnement <sup>66</sup>. Lorsqu'une de vos échéances est validée, cette dernière est surlignée en vert avec son statut, situé dans la colonne « Status », indiqué comme :
+	  <ul>
+	    <li>« Payé », lorsque l'échéance a été payé,</li>
+	    <li>« Préparation », lorsque le panier est en cours de préparation,</li>
+	    <li>« Livré », lorsque le panier a été livré,</li>
+	  </ul>
+	  Si l'échéance n'a pas encore été validée, elle est indiqué avec un status « En attente » et si le paiement et la validation de cette dernière a été omise, le status est alors indiqué comme « Expiré ».
+	</div>
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

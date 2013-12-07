@@ -1,0 +1,59 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_products" role="button" data-toggle="modal">Familles de produits</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_products" role="button" data-toggle="modal">
+	<img src="{% static "how/products.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_products" role="button" data-toggle="modal">
+	Choix des familles de produits
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_products" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_products_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_products_label">Familles de produits</h2>
+	Choix des familles de produits
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Si vous avez choisit de personnaliser votre abonnement, il vous sera demandé de renseigner vos choix de familles de produits.
+	</div>
+	<div>
+	  <img src="{% static "how/products.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="13">
+	    <li><strong>Plier/Déplier :</strong> pour naviguer au sein des familles de produits, il vous est possible de plier/déplier les familles de produits afin d'accéder aux sous-familles de produits, en cliquant sur le nom de la famille, par exemple « Alimentation ».</li>
+	    <li><strong>Ajouter :</strong> vous pouvez également sélectionner directement une famille de produits, si vous ne souhaitez pas affiner la sélection, en cliquant sur « ajouter ».</li>
+	  </ol>
+	</div>
+
+	<div>
+	  <img src="{% static "how/products_2.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+        <br/>
+        <div class="well">
+	  <ol start="15">
+	    <li><strong>Affiner :</strong> Si vous souhaitez affiner votre sélection, vous pouvez donc déplier les familles de produits vous intéressants, et ajouter les sous-familles et/ou sous-sous-familles que vous souhaitez voir apparaitre dans votre panier en cliquant sur « ajouter ».</li>
+	  </ol>
+        </div>
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+    </div>
+  </div>
+</div>  

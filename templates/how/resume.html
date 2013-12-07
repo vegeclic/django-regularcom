@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_resume" role="button" data-toggle="modal">Aperçu final</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_resume" role="button" data-toggle="modal">
+	<img src="{% static "how/resume.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_resume" role="button" data-toggle="modal">
+	Dernier aperçu avant validation
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_resume" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_resume_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_step8_label">Aperçu final</h2>
+	Dernier aperçu avant validation
+      </div>
+      <div class="modal-body">
+      
+        <div class="well">
+	  Ceci est le dernier aperçu de votre abonnement avant validation. Il reprend les informations d'adresses et point relais renseignées auparavant.
+	</div>
+	<div>
+	  <img src="{% static "how/resume.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="37">
+	   <li><strong>Étape suivante :</strong> Validez pour passer à l'étape suivante.</li>
+          </ol>
+        </div>
+      
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

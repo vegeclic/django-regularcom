@@ -1,0 +1,56 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_payment" role="button" data-toggle="modal">Paiement</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_payment" role="button" data-toggle="modal">
+	<img src="{% static "how/payment.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_payment" role="button" data-toggle="modal">
+	Paiement de votre abonnement
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_payment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_payment_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_payment_label">Paiement</h2>
+	Paiement de votre abonnement
+      </div>
+      <div class="modal-body">
+      
+        <div class="well">
+	  Cette étape permet de procéder au paiement d'une ou plusieurs échéances de votre abonnement.
+	</div>
+	<div>
+	  <img src="{% static "how/payment.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="26">
+	   <li><strong>Échéances :</strong> vous pouvez déterminer le nombre d'échéances que vous souhaitez payé en avance en déplacant la jauge.</li>
+	   <li><strong>Montant :</strong> cette case vous indique le montant qu'il vous faut payer (par rapport aux nombres d'échéances choisies au-dessus. Si vous posséder déjà de l'argent nécessaire sur votre « ponte-monnaie », le montant affiché sera de zéro.</li>
+	   <li><strong>Prix moyen :</strong> lors de la création d'un abonnement, en fonction de la durée, vous profitez de tarifs dégressif. Ce chiffre représente le prix moyen de votre panier en fonction de l'abonnement que vous avez crée.</li>
+	   <li><strong>Paiement :</strong> définissez le moyen de paiement qui vous convient en le sélectionnant. Les modalités seront affichés en dessous.</li>
+	   <li><strong>Étape suivante :</strong> Validez pour passer à l'étape suivante.</li>
+          </ol>
+        </div>
+      
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

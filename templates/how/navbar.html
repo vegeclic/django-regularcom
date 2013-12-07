@@ -1,0 +1,76 @@
+{% load i18n %}
+{% load static %}
+
+{# Navbar #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_navbar" role="button" data-toggle="modal">Navigation</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_navbar" role="button" data-toggle="modal">
+	<img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	<img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_navbar" role="button" data-toggle="modal">
+	Comment naviguer sur le site ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_navbar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_navbar_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_navbar_label">Navigation</h2>
+	Comment naviguer sur le site ?
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  <p>Vous trouverez ici une page d'aide relative à la méthode de navigation sur le site Végéclic.</p>
+	  <p>
+	    Il existe deux types de menu de navigation :
+	    <ul>
+	      <li>le menu de navigation principal, situé en haut du site,</li>
+	      <li>et le menu de navigation de la rubrique, situé à gauche du site.</li>
+	    </ul>
+	  </p>
+	</div>
+
+	<div>
+	  <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Le menu de navigation principal, illustré par les deux figures ci-dessus, peut être différent selon que vous soyez connecté ou non sur le site.
+	</div>
+
+	<div>
+	  <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  En ce qui concerne le menu de navigation de la rubrique, celui ci est composé de lien relatif à la rubrique visitée.
+	</div>
+
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

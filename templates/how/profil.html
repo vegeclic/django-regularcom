@@ -1,0 +1,68 @@
+{% load i18n %}
+{% load static %}
+
+{# Profil #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_profil" role="button" data-toggle="modal">Profil</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_profil" role="button" data-toggle="modal">
+	<img src="{% static "how/profil.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_profil" role="button" data-toggle="modal">
+	Comment fonctionne le profil ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_profil" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_profil_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_profil_label">Profil</h2>
+	Comment fonctionne le profil ?
+      </div>
+      <div class="modal-body">
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour accéder à la rubrique « Profil » afin de configurer les données relatives à votre compte, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "profile" %}">Profil</a> <sup>24</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/profil.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Arrivé dans la rubrique « Profil », un rappel des adresses que vous avez communiqués dans la page « <a href="{% url "addresses" %}">Adresse</a> <sup>27</sup> » apparaît dans la partie droite du site. Il vous est possible de les modifier ou ajouter en cliquant, sur le menu à gauche de site, sur le lien « <a href="{% url "address_create" %}">Nouvelle adresse</a> <sup>26</sup> ». Par ailleurs, si vous souhaitez, de temps en temps, changer votre mot de passe, il vous est possible de réinitialiser ce derner en cliquant sur le bouton « Réinitialiser mon mot de passe <sup>25</sup> ». Vous recevrez aussitôt un mail content un nouveau mot de passe.
+	</div>
+
+	<div>
+	  <img src="{% static "how/address.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Nous illustrons, ci-dessus, la page « Adresses ». Il vous est possible de créer une nouvelle adresse en cliquant sur le bouton « <a href="{% url "address_create" %}">Nouveau</a> <sup>28</sup> ». Vous serez alors rediriger vers un formulaire vous invitant à saisir les coordonnées de cette nouvelle adresse. Vous pouvez également modifier une adresse existante en vous référant à l'icone d'édition <sup>30</sup> à l'adresse correspondante. Et pour finir, vous pouvez indiquer le rôle de chacune de vos adresse à savoir s'il s'agit d'une adresse de « Livraison » ou « Facturation » <sup>29</sup>. L'adresse de « Livraison » et « Facturation » correspond par défaut à l'adresse « Principale » si ces dernières n'ont pas été définis.
+	</div>
+
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+{% load i18n %}
+{% load static %}
+
+{# Mailbox #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_mailbox" role="button" data-toggle="modal">Boite de réception</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_mailbox" role="button" data-toggle="modal">
+	<img src="{% static "how/mailbox.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_mailbox" role="button" data-toggle="modal">
+	Comment utiliser la messagerie ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_mailbox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_mailbox_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_mailbox_label">Boite de réception</h2>
+	Comment utiliser la messagerie ?
+      </div>
+      <div class="modal-body">
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour accéder à la rubrique « Boite de réception », afin de consulter votre messagerie, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "messages" 1 %}">Boite de réception</a> <sup>32</sup> ». À ce titre, un compteur apparait à côté de ce lien pour vous indiquez le nombre de nouveaux messages reçus lorsque vous en avez.
+	</div>
+
+	<div>
+	  <img src="{% static "how/mailbox.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Depuis votre messagerie, il vous est possible de prendre contact avec l'équipe Végéclic pour tous les problèmes que vous serez susceptible de rencontrer. Pour cela vous pouvez écrire un nouveau message en cliquant sur le lien « <a href="{% url "new_message" %}">Nouveau</a> <sup>34</sup> ». Vous serez alors redirigé vers un formulaire où vous serez invité à saisir l'objet ainsi que le corps de votre message. Il vous est également possible, depuis cette rubrique, de consulter les messages que vous avez reçu. Pour lire un message, cliquez sur l'objet de ce dernier comme illustré ci-dessus <sup>33</sup>. Les nouveaux messages sont surlignés en vert et vous en êtes informez avec une notification dans la partie supérieur du site ainsi que un mail.
+	</div>
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

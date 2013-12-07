@@ -1,0 +1,75 @@
+{% load i18n %}
+{% load static %}
+
+
+{# Login #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_login" role="button" data-toggle="modal">Connexion</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_login" role="button" data-toggle="modal">
+	<img src="{% static "how/login.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_login" role="button" data-toggle="modal">
+	Comment se connecter à son espace abonné ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_login_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_login_label">Connexion</h2>
+	Comment se connecter à son espace abonné ?
+      </div>
+      <div class="modal-body">
+	<div>
+	  <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour vous connecter à votre espace abonné et ainsi profiter de nos services, vous devez vous rendre sur la page « Connexion » en cliquant, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "login" %}">Connexion</a> <sup>13</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Arrivé sur le formulaire de connexion :
+	  <ul>
+	    <li>indiquez votre adresse électronique <sup>14</sup> (email) ainsi que le mot de passe que vous avez reçu par mail <sup>15</sup> après vous êtes inscrit</li>
+	    <li>et finissez en validant votre connexion en cliquant sur le bouton « Connexion <sup>16</sup> ».</li>
+	    <li>Vous pouvez, si vous le souhaitez, cocher la case « Se souvenir de moi <sup>17</sup> » afin de conserver votre session.</li>
+	    <li>Si vous avez oublié ou perdu votre mot de passe, vous pouvez cliquer sur le bouton « J'ai oublié mon mot de passe <sup>18</sup> ». Vous serez alors redirigé vers un autre formulaire vous invitant à saisir votre adresse électronique et valider afin de recevoir votre nouveau mot de passe par mail.</li>
+	  </ul>
+	</div>
+
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Vous obtiendrez ainsi un nouveau menu de navigation vous permettant de bénéficier de tous nos services.
+	</div>
+
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

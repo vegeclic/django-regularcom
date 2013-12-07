@@ -1,0 +1,55 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_validation" role="button" data-toggle="modal">Confirmation</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_validation" role="button" data-toggle="modal">
+	<img src="{% static "how/validation.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_validation" role="button" data-toggle="modal">
+	Confirmation de la création de votre abonnement
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_validation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_validation_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_validation_label">Confirmation</h2>
+	Confirmation de la création de votre abonnement
+      </div>
+      <div class="modal-body">
+      
+        <div class="well">
+	  Ceci est la confirmation que votre abonnement a bien été crée.
+	</div>
+	<div>
+	  <img src="{% static "how/validation.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="38">
+	  <li><strong>Numéro :</strong> Phrase de confirmation vous indiquant le numéro attribué à votre abonnement.</li>
+	  <li><strong>Montant à payer :</strong> Le montant indiqué correspond au montant qu'il vous reste à payer afin de terminer la création de l'abonnement.</li>
+	  <li><strong>Prix :</strong> Ce montant représente le montant moyen de toutes vos échéances en prenant en compte la dégressivité des prix.</li>
+	   <li><strong>Type de paiement :</strong> Un récapitulatif du moyen de paiement choisit avec les instructions à suivre.</li>
+          </ol>
+        </div>
+      
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

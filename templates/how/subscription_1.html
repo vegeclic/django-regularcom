@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_subscription" role="button" data-toggle="modal">Configuration</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_subscription" role="button" data-toggle="modal">
+	<img src="{% static "how/subscription.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_subscription" role="button" data-toggle="modal">
+	Configurez votre abonnement
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_subscription" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_subscription_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_subscription_label">Configuration</h2>
+	Configurez votre abonnement
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Dans cette étape, vous êtes invités à définir la taille de votre panier, la fréquence et la durée de votre abonnement, la date de début de votre abonnement si vous souhaitez le différer ainsi que des critères de choix de produits éventuels. Pour cela il vous suffit de déplacer le curseur des jauges prévus à cet effet.
+	</div>
+	<div>
+	  <img src="{% static "how/subscription.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="5">
+	    <li><strong>Taille de votre panier :</strong> définissez le prix de votre panier (les choix varient entre 15 et 200 €).</li>
+	    <li><strong>la fréquence :</strong> vous pouvez ensuite définir la fréquence de réception de ce panier par exemple en choisissant de recevoir le colis une fois par mois ou toutes les deux semaines (nous fonctionnons en terme de « semaines », c'est pourquoi en choisissant « 1 x par mois » et une durée de « 1 mois », il se peut que vous receviez deux colis puisque qu'un mois contient génerallement plus de quatre semaines). Si vous souhaitez recevoir un seul colis, cliquez sur le bouton rouge « recevoir une seule fois ».</li>
+	    <li><strong>la durée :</strong> définissez la durée souhaitée pour votre abonnement, qui peut varier entre 1 mois et 2 ans.</li>
+	    <li><strong>le début de votre abonnement :</strong> vous pouvez choisir de décaler le démarrage de votre abonnement ou de le faire commencer immédiatement (qui démarre au minimum à J+10).</li>
+	  </ol>
+	</div>
+	<br/>
+        <div>
+	  <img src="{% static "how/subscription_1.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="9">
+	    <li><strong>Critères :</strong> vous pouvez choisir d'attribuer un critère à votre abonnement, pour cela sélectionner celui qui vous intéresse. Les critères seront appliqués dans la mesure du possible mais ne sont pas réstrictifs. Par exemple si vous choisissez le critère « bio » et la famille de produits « fromages râpés/ en poudre », le critère ne s'appliquera pas car il n'y aucun produit correspondant à ce critère dans cette famille. Un produit non bio de cette famille sera alors ajouté à votre panier. Si vous souhaitez que le critère soit strict, vous pouvez nous laisser un commentaire dans l'étape 9, en prenant en compte que vous risquez d'avoir régulièrement les même produts si vous choisissez une famille de produits en contenant peu.</li>
+	    <li><strong>Le livreur :</strong> choisissez votre moyen de livraison en sélectionnant le livreur qui vous intéresse.</li>
+	    <li><strong>La proportion :</strong> En choisissant votre livreur, une jauge apparaît vous présentant la proportion des frais de port inclus dans votre panier, qui varient en fonction du livreur.</li>
+	    <li><strong>Etape suivante :</strong> Après avoir fait vos choix, cliquez sur ce bouton pour continuer la création de votre abonnement.</li>
+	  </ol>	  
+	</div>	 
+      </div>	 
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+    </div>
+  </div>
+</div>  	

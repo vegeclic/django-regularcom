@@ -1,0 +1,55 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_address_1" role="button" data-toggle="modal">Coordonnées</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_address_1" role="button" data-toggle="modal">
+	<img src="{% static "how/address_1.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_address_1" role="button" data-toggle="modal">
+	Indiquez vos coordonnées
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_address_1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_address_1_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_address_1_label">Coordonnées</h2>
+	Indiquez vos coordonnées
+      </div>
+      <div class="modal-body">
+      
+        <div class="well">
+	  Vous pouvez indiquez dans cette étape votre adresse postale ainsi que le point relais que vous choisissez si vous avez opté pour la livraison par Mondial Relay.
+	</div>
+	<div>
+	  <img src="{% static "how/address_1.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="31">
+	   <li><strong>Coordonnées :</strong> renseigner votre adresse postale. Dans votre profil vous pourrez encore ajouter d'autres adresses afin de définir une adresse de livraison, de facturation et/ou de la personne chez qui vous souhaite que le panier soit livré.</li>
+	   <li><strong>Mondial Relay :</strong> indiquez les coordonnées du point relais que vous avez choisit.</li>
+	   <li><strong>Choix du point relais :</strong> si vous n'avez pas encore déterminé de point relais, cliquez sur ce bouton poun trouver le point relais qui vous convient.</li>
+	   <li><strong>Étape suivante :</strong> Validez pour passer à l'étape suivante.</li>
+          </ol>
+        </div>
+      
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

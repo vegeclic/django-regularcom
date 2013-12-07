@@ -1,0 +1,131 @@
+{% load i18n %}
+{% load static %}
+
+
+{# Subscription #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_subscription" role="button" data-toggle="modal">Abonnement</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_subscription" role="button" data-toggle="modal">
+	<img src="{% static "how/thematic_carts.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_subscription" role="button" data-toggle="modal">
+	Comment s'abonner à un panier ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_subscription" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_subscription_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_subscription_label">Abonnement</h2>
+	Comment s'abonner à un panier ?
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Un fois que vous êtes connecté vous pouvez <a href="{% url "create_thematic" %}">choisir un panier thématique</a> ou <a href="{% url "create_custom" %}">créer un panier personnalisé</a>.
+	</div>
+
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour cela rendez-vous dans la rubrique « Panier » en cliquant sur le menu de navigation principal situé en haut du site sur le lien « <a href="{% url "subscriptions" 1 %}">Panier</a> <sup>37</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/subscriptions.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Arrivé sur la rubrique « Panier », vous pouvez à présent choisir de créer votre panier thématique en cliquant sur le menu de navigation à gauche « <a href="{% url "create_thematic" %}">Choisissez un panier thématique</a> <sup>38</sup> » ou de créer votre panier personnalisé en cliquant sur « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> <sup>40</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/thematic_carts.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Si vous faites le choix de créer un panier thématique, vous arrivez alors sur la page ci-dessus où pourrez choisir entre nos différents thêmes de panier. Si un des paniers vous convient, cliquez sur le bouton « Créer » situé en dessous de ce dernier. Si aucun des paniers thématiques vous convient, il est vous est tout de même possible de composer votre propre panier en allant dans la rubrique « <a href="{% url "create_custom" %}">Créer votre panier personnalisé</a> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/carts.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  <p>Dans les deux cas (choix d'un panier thématique ou personnalisé), vous êtes redirigé vers la page ci-dessus où vous êtes invité à définir la taille de votre panier, la fréquence et la durée de votre abonnement, la date de début de votre abonnement si vous souhaitez le différer ainsi que des critères de choix de produits éventuels. Pour cela il vous suffit de déplacer le curseur des jauges prévus à cet effet <sup>41, 42, 43, 44</sup>.</p>
+
+	  <p>
+	    Vous pouvez ainsi suivre les étapes comme indiquez ci-dessous :
+	    <ul>
+	      <li>définissez la taille de votre panier <sup>41</sup>,</li>
+	      <li>la fréquence de votre abonnement <sup>42</sup>,</li>
+	      <li>la durée de votre abonnement <sup>43</sup>,</li>
+	      <li>la date de début de votre abonnement <sup>44</sup>,</li>
+	      <li>ainsi que des critères <sup>45</sup> éventuels si vous le souhaitez.</li>
+	    </ul>
+	  </p>
+	</div>
+
+	<div>
+	  <img src="{% static "how/customize.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  <p>
+	    Plus bas dans le formulaire, vous avez également la possibilité de choisir les familles de produits que vous souhaitez trouver dans votre panier.
+	    <ul>
+	      <li>Dans le cas d'un panier thématique, il vous suffit de cliquer sur le bouton « Personnaliser » pour modifier le contenu du panier pré-sélectionné.</li>
+	      <li>Dans le cas d'un panier personnalisé, vous devez nécessairement sélectionner les familles de produits que vous souhaitez trouver dans votre panier.</li>
+	    </ul>
+	  </p>
+	  <p>Pour naviguer au sein des familles de produits, il vous est possible de plier/déplier les familles de produits <sup>49</sup> afin d'accéder aux familles de produits enfants. Vous pouvez ainsi sélectionner ou désélectionner des familles de produits en cliquant sur le bouton « ajouter <sup>46, 47</sup> » correspondant. Pour de plus ample information concernant une famille de produits en particulier, vous pouvez cliquez sur le bouton « plus <sup>48</sup> » correspondant.</p>
+	  <p>Une fois que vous êtes prêt à créer votre abonnement, cliquez sur le bouton « Confirmer » situé en bas du formulaire.</p>
+	</div>
+
+	{#<img src="{% static "how/customize2.png" %}" alt="" title="" class="img-thumbnail"/>#}
+
+	<div>
+	  <img src="{% static "how/extents.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Si vous avez choisit de personnaliser le contenu de votre panier, vous serez invité à paramétrer une dernière étape avant de finaliser la création de votre abonnement. Vous devez définir dans cette étape, comme illustrée ci-dessus, les proportions, exprimées en pourcentage, de chaque famille de produit que vous avez sélectionné précédemment. Vous définirez ainsi la quantité de chaque produit relative à la taille de votre panier. Pour se faire, vous pouvez vous aider, comme précedemment, des jauges prévus à cet effet <sup>51</sup>. Vous pouvez dans le besoin réequilibrer les proportions sur chaque produit en cliquant sur le bouton « Équilibrer <sup>52</sup> » et même verrouiller une proportion afin qu'elle reste figée lorsque vous paramétrez d'autres proportions de produits en vous aidant de l'icone de verrou située à gauche des jauges. Une fois prêt à créer votre abonnement, vous pourrez cliquer sur le bouton « Confirmer » situé en bas du formulaire <sup>53</sup> afin de valider et créer définitivement l'abonnement à votre nouveau panier. Il vous est possible de revenir à l'étape précédente si vous souhaitez modifier un paramètre de votre panier en cliquant sur « Étape précédente <sup>54</sup> ».
+	</div>
+
+	<div class="well">
+	  <strong>Exemple :</strong> Si vous avez choisit un panier à 30 € avec deux familles de produits différents, respectivement, viandes et fromages végétaux, de sélectionnées dont chacune occupe 50 % du panier, vous aurez alors une quantité équivalent à 15 € de viandes végétales et 15 € de fromages végétaux auxquels il faut soustraire les frais de port qui sont inclus au prix du panier.
+	</div>
+
+	<div class="well">
+	  Votre panier est ainsi crée, il ne vous reste qu'à suivre les indications envoyer par mail pour approvisionner <a href="">votre portemonnaie</a> et <a href="">valider vos paniers</a> ! Si votre compte est approvisionner, l'échéance sera prélevé automatiquement 10 jours avant la date d'envoi.
+	</div>
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

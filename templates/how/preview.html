@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_preview" role="button" data-toggle="modal">Aperçu</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_preview" role="button" data-toggle="modal">
+	<img src="{% static "how/preview.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_preview" role="button" data-toggle="modal">
+	Aperçu du contenu du panier
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_preview" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_preview_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_preview_label">Aperçu</h2>
+	Aperçu du contenu du panier
+      </div>
+      <div class="modal-body">
+      
+        <div class="well">
+	  Cette étape est un aperçu de l'abonnement que vous avez parametré jusqu'à présent.
+	</div>
+	<div>
+	  <img src="{% static "how/preview.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="22">
+	   <li><strong>Aperçu :</strong> vous retrouverez les informations défini au préalablee à savoir : taille, durée, fréquence, début et critères de votre panier. Vous pourrez également voir les familles de produits que vous avez sélectionné ainsi que les produits que vous avez choisit si vous avez personnalisé votne panier.</li>
+          </ol>
+        </div>
+        
+        <div>
+	  <img src="{% static "how/preview_1.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="23">
+	   <li><strong>Écheances :</strong> ce tableau reprend toutes les échéances de votre abonnement, tel que vous l'avez défini. Il indique les dates d'envoi de vos paniers, le prix de chaque panier et le prix moyen de votre abonnement.</li>
+	   <li><strong>Dégressivité :</strong> ce graphique reprend les données de votre abonnement et vous montre la dégressivité des prix de celui-ci. Vous pouvez ainsi constater que panier après panier, le coût de celui-ci diminue.</li>
+	   <li><strong>Étape suivante :</strong> vous pouvez toujours revenir à une étape précedente en cliquant sur « précedent ». Sinon, pour continuer la configuration de l'abonnement, cliquez sur « suivant ».</li>
+          </ol>
+        </div>
+      
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

@@ -1,0 +1,66 @@
+{% load i18n %}
+{% load static %}
+
+{# Wallet #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_wallet" role="button" data-toggle="modal">Portemonnaie</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_wallet" role="button" data-toggle="modal">
+	<img src="{% static "how/wallet.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_wallet" role="button" data-toggle="modal">
+	Comment utiliser le portemonnaie ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_wallet" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_wallet_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_wallet_label">Portemonnaie</h2>
+	Comment utiliser le portemonnaie ?
+      </div>
+      <div class="modal-body">
+	<div>
+	  <img src="{% static "how/navbar_login.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour accéder à la rubrique « Portemonnaie », afin d'approvisionner votre compte en monnaie et ainsi bénéficier des services proposés par Végéclic, vous pouvez cliquer, à l'aide du menu principal situé en haut du site, sur le lien « <a href="{% url "balance" %}">Portemonnaie</a> <sup>58</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/wallet.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Vous vous situez à présent sur votre portemonnaie virtuel vous permettant d'approvisionner votre compte en monnaie afin d'utiliser ce solde pour le paiement de vos abonnements. Comme illustré, ci-dessus, vous pouvez consulter le solde actuel de votre portemonnaie dans la partie droite du site dans l'intitulé « Solde de votre compte » ainsi que en cliquant sur le lien correspondant <sup>58</sup>.
+	</div>
+
+	<div class="well">
+	  Vous pouvez, en outre, approvisionner votre compte en monnaie en cliquant, sur le menu situé à gauche du site, sur le lien « <a href="{% url "credit" %}">Approvisionner</a> <sup>56</sup> ». Vous serez alors redirigé vers un formulaire vous invitant à saisir le montant que vous souhaitez créditer sur votre compte ainsi que le type de paiement. Il vous est également possible d'effectuer un retrait du montant disponible dans votre portemonnaie en vous référant à la partie « Retirer » en cliquant sur le lien « <a href="{% url "withdraw" %}">Retirer</a> <sup>57</sup> » du menu.
+	</div>
+
+	<div class="well">
+	  L'historique des opérations de votre compte est disponible en cliquant sur le lien « <a href="{% url "histories" 1 %}">Historiques</a> <sup>59</sup> ». Vous pouvez également consulter l'état de l'ensemble des requêtes d'approvisionnement ainsi que retraits effectuées en cliquant sur les liens « <a href="{% url "credit_requests" 1 %}">Requêtes d'approvisionnements</a> <sup>60</sup> » et « <a href="{% url "withdraw_requests" 1 %}">Requêtes de retraits</a> <sup>61</sup> ». Pour finir, vous pouvez modifier les paramètres relatifs à votre portemonnaie en cliquant sur le lien « <a href="{% url "settings" %}">Paramétrage</a> <sup>62</sup> ».
+	</div>
+
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

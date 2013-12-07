@@ -1,0 +1,61 @@
+{% load i18n %}
+{% load static %}
+
+{# cart #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_cart" role="button" data-toggle="modal">Choix du panier</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_cart" role="button" data-toggle="modal">
+	<img src="{% static "how/cart.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_cart" role="button" data-toggle="modal">
+	Créer votre panier Végéclic
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_cart" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_cart_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_cart_label">Choix du panier</h2>
+	Créer votre panier Végéclic
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Afin de crée votre abonnement, vous pouvez choisir parmi nos paniers thématiques ou créer un panier personnalisé.
+	</div>
+
+	<div>
+	  <img src="{% static "how/cart.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+	<div class="well">
+	  <ol>
+	    <li><strong>La barre de progression :</strong> elle vous permet de suivre au fur et à mesure la progression de la création de votre abonnement.</li>
+	    <li><strong>Les paniers thématiques :</strong> il vous suffit de sélectionner le panier qui vous convient, il apparaîtra alors en vert, ou</li>
+	    <li><strong>Personnaliser :</strong> vous pouvez également choisir de personanliser entièrement votre panier, dans ce cas sélectionner ce bouton.</li>
+	    <li><strong>Étape suivante :</strong> une fois votre choix fait, validez en cliquant sur ce bouton pour accéder à l'étape suivante.</li> 
+	  </ol>  
+	</div>
+
+	<div class="well">
+	  Pour cela rendez-vous dans la rubrique « Panier » en cliquant sur le menu de navigation principal situé en haut du site sur le lien « <a href="{% url "subscriptions" 1 %}">Panier</a> ou directement sur le formulaire de la page d'accueil ».
+	</div>
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

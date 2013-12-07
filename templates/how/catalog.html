@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load static %}
+
+{# Catalog #}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_catalog" role="button" data-toggle="modal">Catalogue</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_catalog" role="button" data-toggle="modal">
+	<img src="{% static "how/catalog.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_catalog" role="button" data-toggle="modal">
+	Comment utiliser le catalogue ?
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_catalog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_catalog_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_catalog_label">Catalogue</h2>
+	Comment utiliser le catalogue ?
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Afin que vous ayez un ordre d'idée des produits de nos fournisseurs utilisés pour composer vos panier, vous pouvez consulter le catalogue qui référence la totalité des produits classés par famille.
+	</div>
+
+	<div>
+	  <img src="{% static "how/navbar_signup.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Pour vous rendre dans la rubrique « Catalogue », vous devez cliquez, sur le menu de navigation situé en haut du site, sur le lien « <a href="{% url "catalog" %}">Catalogue</a> <sup>20</sup> ».
+	</div>
+
+	<div>
+	  <img src="{% static "how/catalog.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+
+	<br/>
+
+	<div class="well">
+	  Arrivé dans la rubrique « Catalogue », comme illustré ci-dessus, vous pouvez parcourir les produits de nos fournisseurs en sélectionnant, dans un permier temps, la famille de produits souhaitée, dans la partie gauche du site <sup>21</sup>, et dans un second, parcourir parmi les produits des fournisseurs qui apparaîssent dans la partie droite du site <sup>22</sup>. Il vous est possible d'afficher la fiche de chaque produit en cliquant sur leur image respectif <sup>22</sup> ainsi que de choisir un affichage en grille ou liste en cliquant sur les liens correspondants <sup>23</sup>.
+	</div>
+
+      </div>
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div>
+    </div>
+  </div>
+</div>

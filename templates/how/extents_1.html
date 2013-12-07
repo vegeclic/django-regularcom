@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_extents_1" role="button" data-toggle="modal">Proportion</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_extents_1" role="button" data-toggle="modal">
+	<img src="{% static "how/extents_1.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_extents_1" role="button" data-toggle="modal">
+	Définir les proportions des familles de produits
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_extents_1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_extents_1_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_extents_1_label">Proportion</h2>
+	Définir les proportions des familles de produits
+      </div>
+      <div class="modal-body">
+	<div class="well">
+	  Vous devez définir dans cette étape, comme illustrée ci-dessous, les proportions, exprimées en pourcentage, de chaque famille de produit que vous avez sélectionné précédemment.
+	</div>
+	<div>
+	  <img src="{% static "how/extents_1.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+          <ol start="16">
+            <li><strong>Équilibrer :</strong> vous pouvez dans le besoin réequilibrer les proportions de chaque famille, en cliquant sur le bouton « Équilibrer » et même verrouiller une proportion afin qu'elle reste figée lorsque vous paramétrez d'autres proportions en vous aidant de l'icone de verrou située à gauche des jauges.</li>
+            <li><strong>Proportion :</strong> dans le cas où vous souhaitez définir vous-même les proportions des familles choisies, une jauge vous permet d'augmenter ou de diminuer ce pourcentage.</li>
+            <li><strong>Choix des produits :</strong> vous pouvez décider de choisir vous même les produits que contiendront votre panier, ou de nous laisser composer pour vous le contenu à partir des familles que vous avez choisit. Vous pouvez également choisir les deux options. Il vous suffit de cliquer sur « je souhaite choisir » ou « je laisse Végéclic choisir » dans les familles de produits correspondantes.</li>
+            <li><strong>Étape suivante :</strong> n'oubliez pas de cliquer sur « suivant » après avoir fait vos choix pour accéder à l'étape suivante.</li>
+          </ol>
+        </div>
+	
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  

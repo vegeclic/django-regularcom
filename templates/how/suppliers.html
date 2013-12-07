@@ -1,0 +1,53 @@
+{% load i18n %}
+{% load static %}
+
+<div class="col-sm-8 col-md-{{colmd}}" style="margin-bottom:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h{{title}}><a href="#modal_suppliers" role="button" data-toggle="modal">Sélection</a></h{{title}}></div>
+    <div class="panel-body" style="height: {{height}}px">
+      <a href="#modal_suppliers" role="button" data-toggle="modal">
+	<img src="{% static "how/suppliers.png" %}" alt="" title="" class="img-thumbnail"/>
+      </a>
+    </div>
+    <div class="panel-footer" style="height: 60px">
+      <a href="#modal_suppliers" role="button" data-toggle="modal">
+	Sélectionner les produits
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal_suppliers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_suppliers_label" aria-hidden="true">
+  <div class="modal-dialog" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h2 id="modal_suppliers_label">Sélection</h2>
+	Sélectionner les produits
+      </div>
+      <div class="modal-body">
+      
+      <div class="well">
+	  Si vous avez décider dans l'étape précedente de choisir vous même les produits contenus dans votre panier, vous pourrez à cette étape les sélectionner. Ils sont affichés par familles de produits que vous avez définis.
+	</div>
+	<div>
+	  <img src="{% static "how/suppliers.png" %}" alt="" title="" class="img-thumbnail"/>
+	</div>
+	<br/>
+	<div class="well">
+	  <ol start="20">
+	   <li><strong>Sélection :</strong> la liste des produits disponibles dans les familles de produits que vous avez choisit apparaîssent sous formes de vignettes, il vous suffit de sélectionner les produits vous intéressants en cliquant dessus (il apparaîtront alors en vert), et ceci jusqu'à compléter la jauge juste au-dessus. Cette jauge représente la proportion que vous avez défini auparavant.</li>
+	   <li><strong>Étape suivante :</strong> une fois que vous avez choisit vos produits, cliquez sur « suivant » pour continuer de créer votre abonnement.</li>
+          </ol>
+        </div>
+        
+      </div>
+
+      <div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+      </div> 
+
+    </div>
+  </div>
+</div>  
