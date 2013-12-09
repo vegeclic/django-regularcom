@@ -160,7 +160,7 @@ class Price(models.Model):
         return round(np.mean(values), 2)
 
     def __unicode__(self):
-        return ('%.2f %s' % (self.get_after_tax_price(), self.currency.symbol)).strip()
+        return ('%.2f %s' % (self.get_after_tax_price_with_fee(), self.currency.symbol)).strip()
 
     def price_pro(self):
         return ('%.2f %s' % (self.get_pro_after_tax_price(), self.currency.symbol)).strip()
