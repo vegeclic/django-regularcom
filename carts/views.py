@@ -591,18 +591,24 @@ class CreateAllSuppliersStep(CreateAllStep):
 
         size = subscription_data.get('size', None)
         products = products_data.get('products', [])
+        carrier = subscription_data.get('carrier', None)
 
         products_tree = cache.get('products_tree') or sw.get_products_tree(pm.Product.objects)
         if not cache.get('products_tree'): cache.set('products_tree', products_tree)
 
         for product in products:
             if extents_data.get('choice_supplier_product_%d' % product.id, 'false') == 'false': continue
-            price = size.default_price().price*extents_data.get('product_%d' % product.id, 1)/100
+            weight = size.weight - size.weight*settings.PACKAGING_WEIGHT_RATE/100
+            price = size.default_price().price
+            weight_level = carrier.carrierlevel_set.filter(weight__gte=size.weight)
+            if weight_level: price -= weight_level[0].price
+            price = price*extents_data.get('product_%d' % product.id, 1)/100
+
             root = sw.find_product(products_tree, product.id)
             qs = sm.Product.objects.filter(status='p', product__in=sw.products_tree_to_list(root)).select_related('main_image', 'main_price', 'main_price__currency', 'main_price__tax', 'main_price__supplier').prefetch_related('criterias', 'suppliers').order_by('-date_created')
             form.fields['supplier_product_%d' % product.id] = f = forms.forms.ModelMultipleChoiceField(widget=forms.MyImageCheckboxSelectMultiple, queryset=qs, label=product.name)
             supplier_products_list = qs.all()
-            f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image if p.main_image else '', p.main_price.get_after_tax_price()/price*100)) for p in supplier_products_list]
+            f.choices = [(p.id, '%s|#~|%s|#~|%s' % (p.name, p.main_image.image if p.main_image else '', (p.main_price.get_after_tax_price_with_fee() if carrier.apply_suppliers_fee else p.main_price.get_after_tax_price())/price*100)) for p in supplier_products_list]
 
         return form
 
