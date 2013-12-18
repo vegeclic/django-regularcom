@@ -16,7 +16,7 @@
 	  </div>
 	  <div class="col-md-9">
 	    <div class="alert alert-info">
-	      <p class="lead">Vous avez choisit de créer un abonnement pour le panier thématique « <strong>{{name}}</strong> » pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».</p>
+	      <p class="lead">Vous avez choisit de créer un abonnement pour le panier thématique « <strong>{{name}}</strong> » {% if receive_only_once %}et de le recevoir une seule fois. Votre panier sera envoyé le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus.{% else %}pour une durée de <strong>{{duration}}</strong>. La première échéance débutera le <strong>{{start}}</strong> et sera d'un montant de <strong>{{price}}</strong> frais de port inclus. La fréquence d'envoi est « <strong>{{frequency}}</strong> ».{% endif %}</p>
 	    </div>
 	  </div>
 	</div>
