@@ -102,9 +102,19 @@ class CustomerDetailViewTests(TestCase):
         """
         customer = create_customer(EMAIL, PASSWORD)
         self.assertEqual(len(mail.outbox), 1)
-        self.client.get(reverse('login_link', args=(EMAIL, PASSWORD)))
+        self.client.login(username=EMAIL, password=PASSWORD)
         response = self.client.get(reverse('profile'))
         self.assertEqual(response.context['object'], customer)
+
+    def test_detail_view_get_context_data(self):
+        """
+        get_context_data() should set the following keys with values.
+        """
+        customer = create_customer(EMAIL, PASSWORD)
+        self.client.login(username=EMAIL, password=PASSWORD)
+        response = self.client.get(reverse('profile'))
+        self.assertEqual(response.context['section'], 'customers')
+        self.assertEqual(response.context['sub_section'], 'profile')
 
     def test_detail_view_without_addresses(self):
         """
@@ -112,9 +122,61 @@ class CustomerDetailViewTests(TestCase):
         """
         customer = create_customer(EMAIL, PASSWORD)
         self.assertEqual(len(mail.outbox), 1)
-        self.client.get(reverse('login_link', args=(EMAIL, PASSWORD)))
+        self.client.login(username=EMAIL, password=PASSWORD)
         response = self.client.get(reverse('profile'))
         obj = response.context['object']
         self.assertIsNone(obj.main_address)
         self.assertIsNone(obj.shipping_address)
         self.assertIsNone(obj.billing_address)
+
+@override_settings(EMAIL_ADMIN=EMAIL_ADMIN)
+class AddressListViewTests(TestCase):
+    def test_list_view_get_context_data(self):
+        """
+        get_context_data() should set the following keys with values.
+        """
+        customer = create_customer(EMAIL, PASSWORD)
+        self.client.login(username=EMAIL, password=PASSWORD)
+        response = self.client.get(reverse('addresses'))
+        self.assertEqual(response.context['section'], 'customers')
+        self.assertEqual(response.context['sub_section'], 'addresses')
+
+    def test_list_view_get_queryset(self):
+        """
+        get_queryset() should return a queryset of address list.
+        """
+        customer = create_customer_with_main_address(EMAIL, 'John', 'Smith', password=PASSWORD)
+        self.client.login(username=EMAIL, password=PASSWORD)
+        response = self.client.get(reverse('addresses'))
+        self.assertQuerysetEqual(response.context['object_list'], ['<Address: Address object>',])
+
+    def test_list_view_login_required(self):
+        response = self.client.get(reverse('addresses'))
+        self.assertRedirects(response, 'accounts/login/?next=/customers/addresses/')
+
+@override_settings(EMAIL_ADMIN=EMAIL_ADMIN)
+class AddressCreateViewTests(TestCase):
+    def test_create_view_create_an_address(self):
+        customer = create_customer(EMAIL, PASSWORD)
+        self.client.login(username=EMAIL, password=PASSWORD)
+
+        response = self.client.get(reverse('addresses'))
+        self.assertQuerysetEqual(response.context['object_list'], [])
+
+        self.client.post(reverse('address_create'))
+
+        response = self.client.get(reverse('addresses'))
+        self.assertQuerysetEqual(response.context['object_list'], ['<Address: Address object>',])
+
+    def test_create_view_login_required(self):
+        response = self.client.post(reverse('address_create'))
+        self.assertRedirects(response, 'accounts/login/?next=/customers/addresses/create/')
+
+@override_settings(EMAIL_ADMIN=EMAIL_ADMIN)
+class AddressUpdateViewTests(TestCase):
+    def test_update_view_edit_an_address(self):
+        customer = create_customer_with_main_address(EMAIL, 'John', 'Smith', password=PASSWORD)
+        self.client.login(username=EMAIL, password=PASSWORD)
+        response = self.client.post(reverse('address_edit', args=(customer.main_address.pk,)), {'first_name': 'Jean', 'last_name': 'Dupont'})
+        customer = models.Customer.objects.get(id=customer.id)
+        self.assertEqual(customer.main_address.__unicode__(), 'Jean Dupont')
