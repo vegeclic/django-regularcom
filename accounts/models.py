@@ -39,7 +39,7 @@ class AccountManager(BaseUserManager):
         account.save(using=self._db)
 
         customer = csm.Customer.objects.create(account=account)
-        wallet = wm.Wallet.objects.create(customer=customer, balance=settings.BALANCE_INIT, target_currency=cm.Parameter.objects.get(name='default currency').content_object)
+        wallet = wm.Wallet.objects.create(customer=customer, balance=settings.BALANCE_INIT, target_currency=cm.Currency.objects.get(name=settings.DEFAULT_CURRENCY))
 
         message = mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Welcome to Végéclic'), body=_(
 """Hi there,
