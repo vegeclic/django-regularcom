@@ -279,3 +279,5 @@ TWITTER_ACCOUNTS = [
      'consumer_key': '',
      'consumer_secret': ''},
 ]
+
+SOUTH_TESTS_MIGRATE = False
