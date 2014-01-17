@@ -5,15 +5,19 @@
 {% block section_title %}{% trans "Presentation" %}{% endblock %}
 
 {% block content %}
-<div class="alert alert-warning">
+<!--<div class="alert alert-warning">
 Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être passées avant ce <strong>dimanche 15 décembre à 20h</strong>. Les commandes passées après cette date-là et avant le 22 décembre, ne seront envoyées qu'<strong>à partir du 2 janvier 2014</strong> étant donné les jours fériés et les délais de livraison pendant ces périodes de fêtes.
-</div>
-<br/>
+</div>-->
+
 <div class="row">
   <div class="col-md-9">
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
-	<div class="item active">
+        <div class="item active">
+	  <a href="/blog/article/21/week-end-promo-48h/"><img src="{% static "promo48h.png" %}" alt="#"></a>
+	  {#<div class="carousel-caption">...</div>#}
+	</div>
+	<div class="item">
 	  <a href="{% url "how" %}"><img src="{% static "intro.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
@@ -40,6 +44,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
 	<li data-target="#carousel" data-slide-to="1"></li>
 	<li data-target="#carousel" data-slide-to="2"></li>
+	<li data-target="#carousel" data-slide-to="3"></li>
 	<!--<li data-target="#carousel" data-slide-to="3"></li>-->
       </ol>
     </div>
