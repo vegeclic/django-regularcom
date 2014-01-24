@@ -433,17 +433,6 @@ class CreateAllSubscriptionStep(CreateAllStep):
                                       Week.fromstring(form.thematic.start_duration).day(1))
                 form.fields['duration'].initial = delta.months
 
-            for field, locked in [('size', form.thematic.locked_size),
-                                  ('carrier', form.thematic.locked_carrier),
-                                  ('receive_only_once', form.thematic.locked_receive_only_once),
-                                  ('frequency', form.thematic.locked_frequency),
-                                  ('start', form.thematic.locked_start),
-                                  ('duration', form.thematic.locked_duration),
-                                  ('criterias', form.thematic.locked_criterias)]:
-                if locked:
-                    attrs = form.fields[field].widget.attrs
-                    attrs['class'] = attrs.get('class', '') + ' disabled'
-
             if form.thematic.criterias:
                 __key = 'thematic_criterias_%d' % form.thematic.id
                 form.fields['criterias'].initial = cache.get(__key) or [v.id for v in form.thematic.criterias.all()]
@@ -451,6 +440,18 @@ class CreateAllSubscriptionStep(CreateAllStep):
 
             form.fields['receive_only_once'].initial = form.thematic.receive_only_once
             form.fields['customized'].initial = False
+
+            for field, locked in [('size', form.thematic.locked_size),
+                                  ('carrier', form.thematic.locked_carrier),
+                                  ('receive_only_once', form.thematic.locked_receive_only_once),
+                                  ('frequency', form.thematic.locked_frequency),
+                                  ('start', form.thematic.locked_start),
+                                  ('duration', form.thematic.locked_duration),
+                                  ('criterias', form.thematic.locked_criterias),
+                                  ('customized', form.thematic.locked_products)]:
+                if locked:
+                    attrs = form.fields[field].widget.attrs
+                    attrs['class'] = attrs.get('class', '') + ' disabled'
         else:
             form.fields['customized'].initial = True
             attrs = form.fields['customized'].widget.attrs
