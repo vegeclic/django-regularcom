@@ -82,6 +82,7 @@ class Thematic(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
     enabled = models.BooleanField(_('enabled'), default=False)
+    order = models.IntegerField(_('order'), default=0)
 
     def __unicode__(self): return self.name
 
