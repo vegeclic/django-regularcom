@@ -14,7 +14,7 @@
   </div>
   {% endif %}
   <div style="text-align:justify">
-    {{ object.body|safe|linebreaksbr }}
+    {% if object.linebreaks %}{{ object.body|safe|linebreaksbr }}{% else %}{{ object.body|safe }}{% endif %}
   </div>
   <br/>
   <br/>

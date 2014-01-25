@@ -46,6 +46,7 @@ class Article(models.Model):
     title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(max_length=200)
     body = models.TextField(_('body'))
+    summary = models.TextField(_('summary'), null=True, blank=True)
     authors = models.ManyToManyField('accounts.Author', related_name='blog_article_authors', verbose_name=_('authors'))
     tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'), related_name='blog_article_tags')
     categories = models.ManyToManyField(Category, null=True, blank=True, related_name='blog_article_categories', verbose_name=_('categories'))
@@ -58,6 +59,7 @@ class Article(models.Model):
     period_end = models.DateField(_('period end'), null=True, blank=True)
     date_last_blogging_sent = models.DateTimeField(_('date last blogging sent'), null=True, blank=True)
     enabled = models.BooleanField(_('enabled'), default=True)
+    linebreaks = models.BooleanField(_('linebreaks'), default=True)
 
     def __unicode__(self): return self.title.title()
 

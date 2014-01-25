@@ -17,7 +17,7 @@
 
   <br/>
   <div style="text-align:justify; max-height:188px">
-    {{ article.body|striptags|truncatechars:900 }}
+    {% if not article.summary %}{{ article.body|striptags|truncatechars:900 }}{% else %}{{ article.summary|striptags|truncatechars:900 }}{% endif %}
   </div>
   <div class="pull-right">
     <a href="{% url "article_slug" article.id article.slug %}" class="btn btn-link btn-xs tooltip_link badge alert-warning" style="color:black" title="Continuer la lecture">Continuer</a>
