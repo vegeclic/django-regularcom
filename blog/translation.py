@@ -21,7 +21,7 @@ from modeltranslation.translator import translator, TranslationOptions
 from . import models
 
 class ArticleTranslationOptions(TranslationOptions):
-    fields = ('title', 'slug', 'body',)
+    fields = ('title', 'slug', 'body', 'summary',)
 
 translator.register(models.Article, ArticleTranslationOptions)
 
