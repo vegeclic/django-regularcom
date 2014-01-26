@@ -22,8 +22,8 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
 	<!-- <div class="item">
-	  <a href="{% url "create_thematic" %}"><img src="{% static "chrismasbanner.png" %}" alt="#"></a>
-	  {#<div class="carousel-caption">...</div>#}
+	     <a href="{% url "create_thematic" %}"><img src="{% static "chrismasbanner.png" %}" alt="#"></a>
+	     {#<div class="carousel-caption">...</div>#}
 	</div>-->
 	<div class="item">
 	  <a href="{% url "catalog_grid_product_id_page" 9 1 %}"><img src="{% static "vetementetaccessoires.png" %}" alt="#"></a>
@@ -79,39 +79,66 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 </div>
 {% endcomment %}
 
-  {% with c="cart" i=0 progress_value=0 current_progress_value=0 inverse_progress_value=100 %}
+<br/>
+
+<div class="row">
+  <div class="col-md-3 alert alert-warning">
+  
+    <div class="panel panel-warning">
+      <div class="panel-body" style="height:200px; text-align:justify; padding:0">
+        <img src="static/fraisportinclus.png"/>
+      </div>
+    </div>
+    <div class="panel panel-warning">
+      <a href="{% url "pro_home" %}"><div class="panel-body" style="text-align:justify">
+        <img src="static/homepro.png"/>
+        <p><strong>Découvrez nos offres pour PROFESSIONNELS !</strong></p>
+      </div></a>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">Derniers articles du blog</h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+        {% for article in last_articles|slice:":5"  %}
+        <a href="{% url "article_slug" article.id article.slug %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
+        <br/>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    {% with c="cart" i=0 progress_value=0 current_progress_value=0 inverse_progress_value=100 %}
 
     <h2 class="text-center text-info">Découvrez nos paniers</h2>
 
-  <hr/>
+    <hr/>
 
-{% comment %}
-  {% include "carts/create_all/header.html" %}
-{% endcomment %}
-  {% endwith %}
+    {% comment %}
+    {% include "carts/create_all/header.html" %}
+    {% endcomment %}
+    {% endwith %}
+    
+    <form role="form" method="post" action="{% url "create_all" %}">
+      {% csrf_token %}
+      <input id="id_create_all-current_step" name="create_all-current_step" type="hidden" value="cart" />
 
-<form role="form" method="post" action="{% url "create_all" %}">
-  {% csrf_token %}
-  <input id="id_create_all-current_step" name="create_all-current_step" type="hidden" value="cart" />
-
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
       <div class="alert alert-info">
 	Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur l'option « Personnaliser ».
       </div>
 
-      <div class="btn-group" data-toggle="buttons">
+      <div class="btn-group" data-toggle="buttons" style="width:848px">
 	{% for thematic in thematic_list|dictsort:'order' %}
-	  <label class="choice btn {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}btn-success active{% else %}btn-default{% endif %} btn-lg tooltip_link" title="{{thematic.body|truncatewords:20}}">
-	    <input type="radio" name="cart-choice" value="{{thematic.id}}" {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}checked="checked"{% endif %} />
-	    <img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" style="width:215px"/>
-	  </label>
+	<label class="choice btn {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}btn-success active{% else %}btn-default{% endif %} btn-lg tooltip_link" style="width:280px" title="{{thematic.body|truncatewords:20}}">
+	  <input type="radio" name="cart-choice" value="{{thematic.id}}" {% if thematic.id|floatformat == wizard.form.choice.value|floatformat %}checked="checked"{% endif %} />
+	  <img src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}" style="width:215px"/>
+	</label>
 	{% endfor %}
 
 	<label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
 	<label class="choice btn {% if wizard.form.choice.value == "perso" %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
-	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} /> <strong>Personnaliser</strong>
+	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} />        <strong>Personnaliser</strong>
 	</label>
       </div>
 
@@ -121,29 +148,28 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
       <div class="alert alert-info">
 	<strong>Prêt ?</strong> Cliquez sur « Suivant » pour continuer.
       </div>
+      <hr/>
 
-    </div>
-    <div class="col-md-2"></div>
+      <div class="form-group row" id="buttons">
+        <div class="col-md-6">
+          <button class="btn btn-lg {% if wizard.steps.current == "resume" %}btn-success{% else %}btn-primary{% endif %} btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% if wizard.steps.current == "resume" %}{% trans "Créer mon abonnement" %}{% else %}{% trans "Next" %}{% endif %}</button>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>
+        </div>
+      </div>
+    </form>
   </div>
-
-  <hr/>
-
-  <div class="form-group row" id="buttons">
-    <div class="col-md-6">
-      <button class="btn btn-lg {% if wizard.steps.current == "resume" %}btn-success{% else %}btn-primary{% endif %} btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% if wizard.steps.current == "resume" %}{% trans "Créer mon abonnement" %}{% else %}{% trans "Next" %}{% endif %}</button>
-    </div>
-    <div class="col-md-6">
-      <button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>
-    </div>
-  </div>
-</form>
+</div>
 
 <br/>
-
-<div class="well">
-  <p style="text-align:justify">Vous pouvez soit vous laisser séduire par <strong>un panier « surprise » qui varie à chaque échéance ou décider vous-même du contenu de celui-ci.</strong> Nos paniers sont composés à partir d'un large choix de produits qui ne fait qu'augmenter avec <strong>des prix dégressifs imbattables</strong>, en fonction de la durée de l'abonnement. Le but étant de faire découvrir la cuisine végétale à un plus grand nombre de personnes, de faciliter les débuts des personnes en transition alimentaire et de <strong>faire baisser les prix de nos fournisseurs</strong> pour vous proposer des prix intéressants</p>
-  <p style="text-align:justify">Afin de n'infliger aucune contrainte aux « cliqueurs végés », nos abonnements sont <strong>sans engagements</strong>, les paniers peuvent être modifiés en cours de route et les <strong>frais de port sont inclus</strong>. De plus Végéclic, étant géré par des personnes humaines et vegan, à pour but primordial le respect des êtres-vivants et de l'environnement. Nos produits sont donc <strong>garantis sans aucune exploitation animale</strong>, nous faisons des envois de colis regroupés pour <strong>limiter les émissions de CO<sub>2</sub></strong> et proposons l'envoi par point relais ou le retrait à domicile pour que cela soit <strong>plus économique et écologique.</strong></p>
-  <p> Pour comprendre le fonctionnement du site rendez-vous sur la page « <a href="{% url "how" %}">Comment ça marche ?</a> ».
+<br/>
+<div class="alert alert-warning">
+  <h3 class="text-center">Le concept en quelques mots</h3>
+  <br/>
+  <p style="text-align:justify; color:darkslategray">Vous pouvez soit vous laisser séduire par <strong>un panier « surprise » qui varie à chaque échéance ou décider vous-même du contenu de celui-ci.</strong> Nos paniers sont composés à partir d'un large choix de produits qui ne fait qu'augmenter avec <strong>des prix dégressifs imbattables</strong>, en fonction de la durée de l'abonnement. Le but étant de faire découvrir la cuisine végétale à un plus grand nombre de personnes, de faciliter les débuts des personnes en transition alimentaire et de <strong>faire baisser les prix de nos fournisseurs</strong> pour vous proposer des prix intéressants</p>
+  <p style="text-align:justify; color:darkslategray">Afin de n'infliger aucune contrainte aux « Végéclic'eurs(ses) », nos abonnements sont <strong>sans engagements</strong>, les paniers peuvent être modifiés en cours de route et les <strong>frais de port sont inclus</strong>. De plus Végéclic, étant géré par des personnes humaines et vegan, à pour but primordial le respect des êtres-vivants et de l'environnement. Nos produits sont donc <strong>garantis sans aucune exploitation animale</strong>, nous faisons des envois de colis regroupés pour <strong>limiter les émissions de CO<sub>2</sub></strong> et proposons l'envoi par point relais ou le retrait à domicile pour que cela soit <strong>plus économique et écologique.</strong></p>
+  <p style="color:darkslategray"> Pour comprendre le fonctionnement du site rendez-vous sur la page « <a href="{% url "how" %}">Comment ça marche ?</a> ».
 </div>
 
 <div class="alert alert-info">

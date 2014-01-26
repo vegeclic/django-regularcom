@@ -22,6 +22,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
 from django.core.cache import cache
 import carts.models as cm
+import blog.views as bv
 
 class HomeView(generic.TemplateView):
     template_name = 'home.html'
@@ -31,6 +32,7 @@ class HomeView(generic.TemplateView):
         context['section'] = 'home'
         context['thematic_list'] = cache.get('thematic_list') or cm.Thematic.objects.filter(enabled=True).select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', context['thematic_list'])
+        bv.set_common_context_data(context)
         return context
 
 class HowView(generic.TemplateView):
