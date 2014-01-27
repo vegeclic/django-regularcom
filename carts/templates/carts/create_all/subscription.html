@@ -163,7 +163,7 @@
 	];
 
 	var carriers_weight_min = [{% for carrier in wizard.form.carriers|dictsort:'id' %}{{carrier.weight_min|stringformat:"f"}}, {% endfor %}];
-	var sizes = [{% for size in wizard.form.sizes|dictsort:'weight' %}[{{size.weight|stringformat:"f"}}, {{size.default_price.price|stringformat:"f"}}], {% endfor %}];
+	var sizes = [{% for size in wizard.form.sizes|dictsort:'name' %}[{{size.weight|stringformat:"f"}}, {{size.default_price.price|stringformat:"f"}}], {% endfor %}];
 
 	function compute_progress_bar(id) {
 	    $('.radio-select').each(function() {
