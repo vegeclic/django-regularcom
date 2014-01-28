@@ -127,8 +127,8 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
       <div class="panel-body text-center">
         <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{last_recipe.thumb_image}}"/></a>
       </div>
-      <div class="caption">
-        <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}" style="text-decoration:none; color:black">{{ last_recipe.title }}</a>
+      <div class="caption text-center">
+        <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}" style="text-decoration:none; color:black"><strong>{{ last_recipe.title }}</strong></a>
       </div>
     </div>
     {% endif %}
