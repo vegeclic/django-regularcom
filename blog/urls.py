@@ -23,6 +23,7 @@ from . import views
 
 urlpatterns = patterns('pro.views',
                        url(r'^$', views.BlogView.as_view(), name='blog'),
+                       url(r'^page/(?P<page>\d+)/$', views.BlogView.as_view(), name='blog_page'),
                        url(r'^article/(?P<pk>\d+)/$', views.ArticleView.as_view(), name='article'),
                        url(r'^article/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', views.ArticleView.as_view(), name='article_slug'),
                        url(r'^category/(?P<pk>\d+)/$', views.CategoryView.as_view(), name='category'),

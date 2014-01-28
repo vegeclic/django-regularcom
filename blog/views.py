@@ -37,7 +37,7 @@ class BlogView(generic.ListView):
     def get_queryset(self):
         articles = models.Article.objects.filter(enabled=True).order_by('-period_start', '-date_created').all()
 
-        paginator = Paginator(articles, 10)
+        paginator = Paginator(articles, 5)
 
         page = self.kwargs.get('page', 1)
         try:
