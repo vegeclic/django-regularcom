@@ -11,12 +11,12 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    sodipodi:docname="fraisportinclus.svg"
-   height="200"
-   width="261"
+   height="156.99988"
+   width="167.41119"
    inkscape:version="0.48.4 r9939"
    version="1.1"
    id="svg2"
-   inkscape:export-filename="/home/geraldine/Documents/Vegeclic/FraisdePort/fraisportinclus.png"
+   inkscape:export-filename="/home/geraldine/Dev/django-regularcom/static/fraisportinclus.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <metadata
@@ -151,8 +151,8 @@
      id="namedview4"
      showgrid="false"
      inkscape:zoom="1.28"
-     inkscape:cx="462.80379"
-     inkscape:cy="124.70891"
+     inkscape:cx="400.41601"
+     inkscape:cy="87.118175"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
@@ -163,7 +163,7 @@
      fit-margin-bottom="0" />
   <g
      id="g7061"
-     transform="matrix(0.67729989,0,0,0.67729989,-136.3158,-115.4817)">
+     transform="matrix(0.67729989,0,0,0.67729989,-200.26607,-120.89109)">
     <text
        sodipodi:linespacing="125%"
        id="text4089-0"
@@ -175,7 +175,7 @@
        transform="translate(-129.18945,148.79856)">
       <g
          id="g4207"
-         transform="matrix(0.90433165,0,0,0.90433165,49.862628,10.248518)">
+         transform="matrix(0.73944277,0,0,0.73944277,161.48434,15.503172)">
         <path
            transform="matrix(1.15,0,0,1.15,258.8036,-60.953177)"
            d="m 361.39407,205.98729 c 0,72.87351 -59.07565,131.94916 -131.94915,131.94916 -72.87351,0 -131.949162,-59.07565 -131.949162,-131.94916 0,-72.87351 59.075652,-131.949158 131.949162,-131.949158 72.8735,0 131.94915,59.075648 131.94915,131.949158 z"
@@ -382,17 +382,17 @@
       <flowRoot
          xml:space="preserve"
          id="flowRoot4199"
-         style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:14px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
            id="flowRegion4201"><rect
              id="rect4203"
              width="403.125"
              height="480.46875"
              x="172.65625"
              y="-505.46875" /></flowRegion><flowPara
-           id="flowPara4205"></flowPara></flowRoot>    </g>
+           id="flowPara4205" /></flowRoot>    </g>
   </g>
   <g
-     transform="translate(324.87073,-116.54318)"
+     transform="translate(260.92046,-121.95257)"
      id="g7061-6"
      style="filter:url(#filter7724)" />
 </svg>

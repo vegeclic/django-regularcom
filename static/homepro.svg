@@ -21,7 +21,7 @@
    inkscape:export-ydpi="90"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath20"><path
@@ -57425,13 +57425,13 @@
      inkscape:window-height="826"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.0799623"
-     inkscape:cx="128.61985"
-     inkscape:cy="-24.017491"
+     inkscape:zoom="1.5272973"
+     inkscape:cx="11.391286"
+     inkscape:cy="75.610155"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g19391"
+     inkscape:current-layer="g82906"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -57481,7 +57481,7 @@
                    height="219.4521"
                    x="-17.593206"
                    y="-16.903744" /></flowRegion><flowPara
-                 id="flowPara19382"></flowPara></flowRoot></g></g><g
+                 id="flowPara19382" /></flowRoot></g></g><g
            id="g19391"><g
              id="g82898"
              transform="matrix(0.50984986,0,0,0.46901404,67.872566,-677.67449)"
@@ -57492,7 +57492,7 @@
                  id="g82906"
                  style="fill:#a10d59;fill-opacity:1"><g
                    id="g82908"
-                   style="fill:#a10d59;fill-opacity:1"><path
+                   style="fill:#a10d59;fill-opacity:1;opacity:0.3"><path
                      d="m 771.0835,-1742.584 c 0,0 -627.63575,0 -627.63575,0 0,0 0,457.7891 0,457.7891 0,0 627.63575,0 627.63575,0 0,0 0,-457.7891 0,-457.7891 z"
                      style="fill:#a10d59;fill-opacity:1;stroke:none"
                      id="path82918"

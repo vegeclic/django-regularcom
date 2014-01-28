@@ -23,6 +23,7 @@ from django.views import generic
 from django.core.cache import cache
 import carts.models as cm
 import blog.views as bv
+import blog.models as bm
 
 class HomeView(generic.TemplateView):
     template_name = 'home.html'
@@ -33,6 +34,10 @@ class HomeView(generic.TemplateView):
         context['thematic_list'] = cache.get('thematic_list') or cm.Thematic.objects.filter(enabled=True).select_related('main_image').order_by('name').all()
         if not cache.get('thematic_list'): cache.set('thematic_list', context['thematic_list'])
         bv.set_common_context_data(context)
+        last_recipes = bm.Article.objects.filter(tags__tag='recette').order_by('-period_start', '-date_created').all()
+        if last_recipes:
+            context['last_recipe'] = last_recipes[0]
+            
         return context
 
 class HowView(generic.TemplateView):

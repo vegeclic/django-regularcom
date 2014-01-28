@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block section_title %}{% trans "Presentation" %}{% endblock %}
+{% block section_title %}{% trans "Boutique végétalienne avec paniers thématiques" %}{% endblock %}
 
 {% block content %}
 <!--<div class="alert alert-warning">
@@ -82,19 +82,54 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 <br/>
 
 <div class="row">
-  <div class="col-md-3 alert alert-warning">
+  <div class="col-md-3 alert alert-danger">
   
     <div class="panel panel-warning">
-      <div class="panel-body" style="height:200px; text-align:justify; padding:0">
-        <img src="static/fraisportinclus.png"/>
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">
+          En savoir plus sur nos colis ?
+        </h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+          <a href="blog/article/13/comment-sont-prepares-les-paniers-vegeclic/"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
       </div>
     </div>
+{% comment %}
     <div class="panel panel-warning">
-      <a href="{% url "pro_home" %}"><div class="panel-body" style="text-align:justify">
-        <img src="static/homepro.png"/>
-        <p><strong>Découvrez nos offres pour PROFESSIONNELS !</strong></p>
-      </div></a>
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">
+          Un exemple de panier par semaine
+        </h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+          
+      </div>
+    </div>  
+{% endcomment %}
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">
+          Découvrez nos offres pour PROFESSIONNELS !
+        </h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+          <a href="{% url "pro_home" %}"><img src="static/homepro.png"/></a>
+      </div>
     </div>
+    
+    {% if last_recipe %}
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center" style="color:black">
+          La recette de la semaine
+        </h4>
+      </div>
+      <div class="panel-body" style="text-align:justify">
+        <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{last_recipe.thumb_image}}"/></a>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="panel panel-warning">
       <div class="panel-heading">
         <h4 class="panel-title text-center" style="color:black">Derniers articles du blog</h4>
@@ -105,13 +140,13 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
         <br/>
         {% endfor %}
       </div>
-    </div>
+    </div>  
   </div>
 
   <div class="col-md-9">
     {% with c="cart" i=0 progress_value=0 current_progress_value=0 inverse_progress_value=100 %}
 
-    <h2 class="text-center text-info">Découvrez nos paniers</h2>
+    <h2 class="text-center text-danger">Découvrez nos paniers</h2>
 
     <hr/>
 
@@ -124,7 +159,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
       {% csrf_token %}
       <input id="id_create_all-current_step" name="create_all-current_step" type="hidden" value="cart" />
 
-      <div class="alert alert-info">
+      <div class="alert alert-warning" style="color:black">
 	Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur l'option « Personnaliser ».
       </div>
 
@@ -138,14 +173,14 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 
 	<label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
 	<label class="choice btn {% if wizard.form.choice.value == "perso" %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
-	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} />        <strong>Personnaliser</strong>
+	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} />        <strong>Composer votre propre panier</strong>
 	</label>
       </div>
 
       <br/>
       <br/>
 
-      <div class="alert alert-info">
+      <div class="alert alert-warning" style="color:black">
 	<strong>Prêt ?</strong> Cliquez sur « Suivant » pour continuer.
       </div>
       <hr/>

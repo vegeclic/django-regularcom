@@ -22,7 +22,7 @@
       <div class="panel-heading">
         <h4 class="panel-title text-center" style="color:black">Catégories</h4>
       </div>
-      <div class="panel-body" style="height:200px; text-align:justify">
+      <div class="panel-body" style="height:210px; text-align:justify">
         {% for category in categories %}
         <a href="{% url "category_slug" category.id category.slug %}"><span class="badge alert-warning" style="margin:5px">{{ category.name|truncatechars:35 }}</span></a>
         <br/>
