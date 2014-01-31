@@ -5,49 +5,52 @@
 {% block section_title %}{% trans "Boutique végétalienne avec paniers thématiques" %}{% endblock %}
 
 {% block content %}
-<!--<div class="alert alert-warning">
-Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être passées avant ce <strong>dimanche 15 décembre à 20h</strong>. Les commandes passées après cette date-là et avant le 22 décembre, ne seront envoyées qu'<strong>à partir du 2 janvier 2014</strong> étant donné les jours fériés et les délais de livraison pendant ces périodes de fêtes.
-</div>-->
 
 <div class="row">
   <div class="col-md-9">
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
+
 	<div class="item active">
 	  <a href="/blog/article/23/paniers-speciaux-saint-valentin/"><img src="{% static "panierstvalentin.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
+
 	<div class="item">
 	  <a href="{% url "how" %}"><img src="{% static "intro.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
-	<!-- <div class="item">
-	     <a href="{% url "create_thematic" %}"><img src="{% static "chrismasbanner.png" %}" alt="#"></a>
-	     {#<div class="carousel-caption">...</div>#}
-	</div>-->
+
 	<div class="item">
 	  <a href="{% url "catalog_grid_product_id_page" 9 1 %}"><img src="{% static "vetementetaccessoires.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
+
 	<div class="item">
 	  <a href="{% url "create_thematic" %}"><img src="{% static "mix.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
+
       </div>
+
       <a class="left carousel-control" href="#carousel" data-slide="prev">
 	<span class="glyphicon glyphicon-chevron-left"></span>
       </a>
+
       <a class="right carousel-control" href="#carousel" data-slide="next">
 	<span class="glyphicon glyphicon-chevron-right"></span>
       </a>
+
       <ol class="carousel-indicators" style="bottom:-35px">
 	<li data-target="#carousel" data-slide-to="0" class="active"></li>
 	<li data-target="#carousel" data-slide-to="1"></li>
 	<li data-target="#carousel" data-slide-to="2"></li>
 	<li data-target="#carousel" data-slide-to="3"></li>
       </ol>
+
     </div>
   </div>
+
   <div class="col-md-3">
     <div style="background-image: url('{% static "banner.png" %}'); width: 280px; height:260px"></div>
   </div>
@@ -69,6 +72,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 	  <a href="blog/article/13/comment-sont-prepares-les-paniers-vegeclic/"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
       </div>
     </div>
+
 {% comment %}
     <div class="panel panel-warning">
       <div class="panel-heading">
@@ -81,6 +85,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
       </div>
     </div>
 {% endcomment %}
+
     <div class="panel panel-warning">
       <div class="panel-heading">
 	<h4 class="panel-title text-center" style="color:black">
@@ -119,6 +124,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 	{% endfor %}
       </div>
     </div>
+
   </div>
 
   <div class="col-md-9">
@@ -177,12 +183,19 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 
 <br/>
 <br/>
+
 <div class="alert alert-warning">
   <h3 class="text-center">Le concept en quelques mots</h3>
   <br/>
-  <p style="text-align:justify; color:darkslategray">Vous pouvez soit vous laisser séduire par <strong>un panier « surprise » qui varie à chaque échéance ou décider vous-même du contenu de celui-ci.</strong> Nos paniers sont composés à partir d'un large choix de produits qui ne fait qu'augmenter avec <strong>des prix dégressifs imbattables</strong>, en fonction de la durée de l'abonnement. Le but étant de faire découvrir la cuisine végétale à un plus grand nombre de personnes, de faciliter les débuts des personnes en transition alimentaire et de <strong>faire baisser les prix de nos fournisseurs</strong> pour vous proposer des prix intéressants</p>
-  <p style="text-align:justify; color:darkslategray">Afin de n'infliger aucune contrainte aux « Végéclic'eurs(ses) », nos abonnements sont <strong>sans engagements</strong>, les paniers peuvent être modifiés en cours de route et les <strong>frais de port sont inclus</strong>. De plus Végéclic, étant géré par des personnes humaines et vegan, à pour but primordial le respect des êtres-vivants et de l'environnement. Nos produits sont donc <strong>garantis sans aucune exploitation animale</strong>, nous faisons des envois de colis regroupés pour <strong>limiter les émissions de CO<sub>2</sub></strong> et proposons l'envoi par point relais ou le retrait à domicile pour que cela soit <strong>plus économique et écologique.</strong></p>
-  <p style="color:darkslategray"> Pour comprendre le fonctionnement du site rendez-vous sur la page « <a href="{% url "how" %}">Comment ça marche ?</a> ».
+  <p style="text-align:justify; color:darkslategray">
+    Vous pouvez soit vous laisser séduire par <strong>un panier « surprise » qui varie à chaque échéance ou décider vous-même du contenu de celui-ci.</strong> Nos paniers sont composés à partir d'un large choix de produits qui ne fait qu'augmenter avec <strong>des prix dégressifs imbattables</strong>, en fonction de la durée de l'abonnement. Le but étant de faire découvrir la cuisine végétale à un plus grand nombre de personnes, de faciliter les débuts des personnes en transition alimentaire et de <strong>faire baisser les prix de nos fournisseurs</strong> pour vous proposer des prix intéressants.
+  </p>
+  <p style="text-align:justify; color:darkslategray">
+    Afin de n'infliger aucune contrainte aux « Végéclic'eurs(ses) », nos abonnements sont <strong>sans engagements</strong>, les paniers peuvent être modifiés en cours de route et les <strong>frais de port sont inclus</strong>. De plus Végéclic, étant géré par des personnes humaines et vegan, à pour but primordial le respect des êtres-vivants et de l'environnement. Nos produits sont donc <strong>garantis sans aucune exploitation animale</strong>, nous faisons des envois de colis regroupés pour <strong>limiter les émissions de CO<sub>2</sub></strong> et proposons l'envoi par point relais ou le retrait à domicile pour que cela soit <strong>plus économique et écologique.</strong>
+  </p>
+  <p style="color:darkslategray">
+    Pour comprendre le fonctionnement du site rendez-vous sur la page « <a href="{% url "how" %}">Comment ça marche ?</a> ».
+  </p>
 </div>
 
 <div class="alert alert-info">
@@ -192,17 +205,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 {% endblock %}
 
 {% block foot %}
-<style type="text/css">
-.carousel-indicators li {
-  border: 1px solid #000;
-}
-
-.carousel-indicators li.active {
-  background-color: #000;
-}
-</style>
-
-  <script type="text/javascript">
+  <script>
     $(function() {
 	$('.choice').change(function() {
 	    $('.choice').not($(this)).each(function() {
@@ -215,15 +218,17 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
     });
   </script>
 
-  <script type="text/javascript">
+  <script>
     $(function() {
 	$('.popover_link').popover('show');
 	setTimeout(function() { $('.popover_link').popover('hide') }, 2000);
     });
   </script>
 
-  <style type="text/css">
+  <style>
     #buttons { overflow: hidden }
     #buttons .col-md-6 { float: right }
+    .carousel-indicators li { border: 1px solid #000; }
+    .carousel-indicators li.active { background-color: #000; }
   </style>
 {% endblock %}
