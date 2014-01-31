@@ -7,7 +7,7 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <div class="alert alert-info">
-	Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur l'option « Personnaliser ».
+	Vous pouvez choisir votre panier à thème parmi les choix ci-dessous ou composer votre propre panier en cliquant sur l'option « Composer votre propre panier ».
       </div>
 
       <div class="btn-group" data-toggle="buttons">
@@ -20,7 +20,8 @@
 
 	<label class="btn btn-lg btn-block"><span class="badge">ou</span></label>
 	<label class="choice btn {% if wizard.form.choice.value == "perso" %}btn-success active{% else %}btn-default{% endif %} btn-lg btn-block tooltip_link" title="Personnaliser votre panier">
-	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} /> <strong>Personnaliser</strong>
+	  <input type="radio" name="cart-choice" value="perso" {% if wizard.form.choice.value == "perso" %}checked="checked"{% endif %} />
+	  <strong>Composer votre propre panier</strong>
 	</label>
       </div>
 
