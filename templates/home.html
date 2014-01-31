@@ -13,7 +13,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
   <div class="col-md-9">
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
-        <div class="item active">
+	<div class="item active">
 	  <a href="/blog/article/23/paniers-speciaux-saint-valentin/"><img src="{% static "panierstvalentin.png" %}" alt="#"></a>
 	  {#<div class="carousel-caption">...</div>#}
 	</div>
@@ -54,96 +54,71 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
 </div>
 
 <br/>
-
-{% comment %}
-<div class="well">
-  Nous vous proposant de <strong>créer un abonnement</strong> en <a href="{% url "create_thematic" %}">choisissant un de nos paniers thématiques</a> ou en <a href="{% url "create_custom" %}">composant vous même le contenu de votre panier</a>.
-</div>
-
-<div class="row">
-  <div class="col-md-5">
-    <a href="{% url "create_thematic" %}">
-      <img class="tooltip_link" src="{% static "thematic_carts.png" %}" alt="Cliquez ici pour choisir un de nos paniers thématiques" title="Cliquez ici pour choisir un de nos paniers thématiques"/>
-    </a>
-  </div>
-
-  <div class="col-md-2 text-center">
-    <img src="{% static "or.png" %}" alt="Composer" title="Végéclic"/>
-  </div>
-
-  <div class="col-md-5">
-    <a href="{% url "create_custom" %}">
-      <img class="tooltip_link" src="{% static "custom_carts.png" %}" alt="Cliquez ici pour créer votre panier personnalisé" title="Cliquez ici pour créer votre panier personnalisé"/>
-    </a>
-  </div>
-</div>
-{% endcomment %}
-
 <br/>
 
 <div class="row">
   <div class="col-md-3 alert alert-danger">
-  
+
     <div class="panel panel-warning">
       <div class="panel-heading">
-        <h4 class="panel-title text-center" style="color:black">
-          En savoir plus sur nos colis ?
-        </h4>
+	<h4 class="panel-title text-center" style="color:black">
+	  En savoir plus sur nos colis ?
+	</h4>
       </div>
       <div class="panel-body" style="text-align:justify">
-          <a href="blog/article/13/comment-sont-prepares-les-paniers-vegeclic/"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
+	  <a href="blog/article/13/comment-sont-prepares-les-paniers-vegeclic/"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
       </div>
     </div>
 {% comment %}
     <div class="panel panel-warning">
       <div class="panel-heading">
-        <h4 class="panel-title text-center" style="color:black">
-          Un exemple de panier par semaine
-        </h4>
+	<h4 class="panel-title text-center" style="color:black">
+	  Un exemple de panier par semaine
+	</h4>
       </div>
       <div class="panel-body" style="text-align:justify">
-          
+
       </div>
-    </div>  
+    </div>
 {% endcomment %}
     <div class="panel panel-warning">
       <div class="panel-heading">
-        <h4 class="panel-title text-center" style="color:black">
-          Découvrez nos offres pour PROFESSIONNELS !
-        </h4>
+	<h4 class="panel-title text-center" style="color:black">
+	  Découvrez nos offres pour PROFESSIONNELS !
+	</h4>
       </div>
       <div class="panel-body" style="text-align:justify">
-          <a href="{% url "pro_home" %}"><img src="static/homepro.png"/></a>
+	  <a href="{% url "pro_home" %}"><img src="static/homepro.png"/></a>
       </div>
     </div>
-    
+
     {% if last_recipe %}
     <div class="panel panel-warning">
       <div class="panel-heading">
-        <h4 class="panel-title text-center" style="color:black">
-          La recette de la semaine
-        </h4>
+	<h4 class="panel-title text-center" style="color:black">
+	  La recette de la semaine
+	</h4>
       </div>
       <div class="caption text-center" style="margin-top:5px">
-        <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}" style="text-decoration:none; color:black"><strong>{{ last_recipe.title }}</strong></a>
+	<a href="{% url "article_slug" last_recipe.id last_recipe.slug %}" style="text-decoration:none; color:black"><strong>{{ last_recipe.title }}</strong></a>
       </div>
       <div class="panel-body text-center">
-        <a href="{% url "article_slug" last_recipe.id last_recipe.slug %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{last_recipe.thumb_image}}"/></a>
+	<a href="{% url "article_slug" last_recipe.id last_recipe.slug %}"><img class="img-thumbnail" src="{% get_media_prefix %}{{last_recipe.thumb_image}}"/></a>
       </div>
     </div>
     {% endif %}
 
     <div class="panel panel-warning">
       <div class="panel-heading">
-        <h4 class="panel-title text-center" style="color:black">Derniers articles du blog</h4>
+	<h4 class="panel-title text-center" style="color:black">Derniers articles du blog</h4>
       </div>
       <div class="panel-body" style="text-align:justify">
-        {% for article in last_articles|slice:":5"  %}
-        <a href="{% url "article_slug" article.id article.slug %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
-        <br/>
-        {% endfor %}
+	{% for article in last_articles|slice:":5"  %}
+	<a href="{% url "article_slug" article.id article.slug %}"><span class="badge alert-warning" style="margin:5px">{{article.title|truncatechars:35}}</span></a>
+	<br/>
+	{% endfor %}
       </div>
-    </div>  
+    </div>
   </div>
 
   <div class="col-md-9">
@@ -157,7 +132,7 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
     {% include "carts/create_all/header.html" %}
     {% endcomment %}
     {% endwith %}
-    
+
     <form role="form" method="post" action="{% url "create_all" %}">
       {% csrf_token %}
       <input id="id_create_all-current_step" name="create_all-current_step" type="hidden" value="cart" />
@@ -189,12 +164,12 @@ Pour recevoir un colis avant le 24 décembre 2013, les commandes doivent-être p
       <hr/>
 
       <div class="form-group row" id="buttons">
-        <div class="col-md-6">
-          <button class="btn btn-lg {% if wizard.steps.current == "resume" %}btn-success{% else %}btn-primary{% endif %} btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% if wizard.steps.current == "resume" %}{% trans "Créer mon abonnement" %}{% else %}{% trans "Next" %}{% endif %}</button>
-        </div>
-        <div class="col-md-6">
-          <button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>
-        </div>
+	<div class="col-md-6">
+	  <button class="btn btn-lg {% if wizard.steps.current == "resume" %}btn-success{% else %}btn-primary{% endif %} btn-block" type="submit" title="Cliquez ici pour confirmer et passer à l'étape suivante.">{% if wizard.steps.current == "resume" %}{% trans "Créer mon abonnement" %}{% else %}{% trans "Next" %}{% endif %}</button>
+	</div>
+	<div class="col-md-6">
+	  <button class="btn btn-lg btn-default btn-block {% if not wizard.steps.prev %}disabled{% endif %}" name="wizard_goto_step" type="submit" title="Cliquez ici pour revenir à l'étape précédente." value="{{ wizard.steps.prev }}">{% trans "Previous" %}</button>
+	</div>
       </div>
     </form>
   </div>
