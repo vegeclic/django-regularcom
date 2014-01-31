@@ -152,7 +152,7 @@
       <div class="row">
 	{% for thematic in thematic_list|dictsort:'order' %}
 	  <div class="col-md-4 text-center" style="margin-top:40px">
-	    <a class="btn btn-default btn-lg tooltip_link" href="{% url "create_all" %}" title="{{thematic.body|truncatewords:20}}">
+	    <a class="btn btn-default btn-lg tooltip_link" href="{% url "create_thematic_id" thematic.id %}" title="{{thematic.body|truncatewords:20}}">
 	      <img class="" src="{% get_media_prefix %}{{thematic.main_image}}" alt="{{thematic.name}}"/>
 	    </a>
 	  </div>
@@ -164,7 +164,7 @@
       </div>
 
       <div class="text-center">
-	<a class="btn btn-default btn-lg btn-block tooltip_link" href="{% url "create_all" %}" title="">
+	<a class="btn btn-default btn-lg btn-block tooltip_link" href="{% url "create_custom" %}" title="Personnaliser votre panier">
 	  <strong>Composer votre propre panier</strong>
 	</a>
       </div>

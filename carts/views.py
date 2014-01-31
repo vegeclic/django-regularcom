@@ -467,9 +467,9 @@ class CreateAllSubscriptionStep(CreateAllStep):
 
 class CreateAllSubscriptionDone(CreateAllDone):
     def __call__(self, wizard, own_data, form_data, tmp_dict):
-        print('subscription done')
+        # print('subscription done')
 
-        print(tmp_dict)
+        # print(tmp_dict)
 
         user = get_user(wizard)
         customer = user.customer
@@ -530,7 +530,7 @@ class CreateAllProductsDone(CreateAllDone):
     def __call__(self, wizard, own_data, form_data, tmp_dict):
         subscription = tmp_dict['subscription']
 
-        print('products', subscription)
+        # print('products', subscription)
 
         products_data = form_data.get('products') or {}
         extents_data = form_data.get('extents') or {}
@@ -694,7 +694,7 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
             wizard.storage.extra_data['user_backend'] = user.backend
             messages.success(wizard.request, _("Your account has been successfully created."))
 
-            print('authentication sign up')
+            # print('authentication sign up')
 
             return form
 
@@ -706,7 +706,7 @@ class CreateAllAuthenticationProcessStep(CreateAllProcessStep):
         wizard.storage.extra_data['user_backend'] = user.backend
         messages.success(wizard.request, _("You're logged in."))
 
-        print('authentication sign in')
+        # print('authentication sign in')
 
         return form
 
@@ -897,6 +897,7 @@ class CreateAll(SessionWizardView):
         context = super().get_context_data(**kwargs)
         context['section'] = 'cart'
         context['sub_section'] = 'create_all'
+        context.update(self.kwargs)
         return context
 
     def get_form(self, step=None, data=None, files=None):
@@ -919,22 +920,18 @@ class CreateAll(SessionWizardView):
 
     def process_step(self, form):
         step = self.steps.current
-        # print(self.storage.extra_data)
-        # print(self.get_all_cleaned_data())
         return super().process_step(CREATEALL_PROCESS_STEPS.get(step, CreateAllProcessStep())(self, form))
 
     def done(self, form_list, **kwargs):
         CREATEALL_FORMS_MIRROR = dict([(v,k) for k,v in dict(CREATEALL_FORMS).items()])
         form_data = dict([(CREATEALL_FORMS_MIRROR[f.__class__], f.cleaned_data) for f in form_list])
-        print(form_data)
-
         tmp_dict = {}
         for f in form_list:
             step = CREATEALL_FORMS_MIRROR[f.__class__]
-            print('process %s to do' % step)
+            # print('process %s to do' % step)
             if not CREATEALL_DONE.get(step, CreateAllDone())(self, form_data[step], form_data, tmp_dict): break
 
-        print('done finished')
+        # print('done finished')
 
         subscription = tmp_dict['subscription']
 
