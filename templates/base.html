@@ -14,7 +14,8 @@
 
     <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap-theme.min.css" type="text/css" />
     {#<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">#}
-    <style type="text/css">
+
+    <style>
       .navbar-nav li a { padding-top: 27px; padding-bottom: 27px; }
     </style>
 
@@ -37,19 +38,19 @@
 
     </div> <!--/.container -->
 
-    <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
     {#<script src="http://code.jquery.com/jquery.js"></script>#}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
     {#<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>#}
 
-    <script type="text/javascript">
+    <script>
       $(function() {
 	  $('.tooltip_link').tooltip();
       });
     </script>
 
-    <script type="text/javascript">
+    <script>
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-30742049-1']);
       _gaq.push(['_trackPageview']);
@@ -62,7 +63,7 @@
 
     {% block foot %}{% endblock %}
 
-    <script type="text/javascript">
+    <script>
       jQuery.ajaxSetup({cache: true});
       jQuery.getScript('https://static.jappix.com/php/get.php?l=fr&t=js&g=mini.xml', function() {
 	  MINI_GROUPCHATS = ["vegeclic@muc.jappix.com"];
