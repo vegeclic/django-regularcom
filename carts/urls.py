@@ -33,13 +33,13 @@ urlpatterns = patterns('carts.views',
                        # url(r'^create/thematic/$', views.ThematicListView.as_view(), name='create_thematic'),
                        # url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.CreateWizard.as_view([forms.CreateForm1, forms.CreateForm2], condition_dict={'1': views.show_extent_form_condition}), name='create_thematic_id'),
 
-                       url(r'^create/custom/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), {'custom': True}, name='create_custom'),
-                       url(r'^create/thematic/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_thematic'),
-                       url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_thematic_id'),
+                       url(r'^create/custom/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), {'custom': True}, name='create_custom'),
+                       url(r'^create/thematic/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), name='create_thematic'),
+                       url(r'^create/thematic/(?P<thematic_id>\d+)/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), name='create_thematic_id'),
 
-                       url(r'^create/all/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_all'),
-                       url(r'^create/all/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_all_custom'),
-                       url(r'^create/all/$', views.CreateAll.as_view(views.CREATEALL_FORMS, condition_dict=views.CREATEALL_CONDITIONS), name='create_all_thematic'),
+                       url(r'^create/all/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), name='create_all'),
+                       url(r'^create/all/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), name='create_all_custom'),
+                       url(r'^create/all/$', views.createall.CreateAll.as_view(views.createall.CREATEALL_FORMS, condition_dict=views.createall.CREATEALL_CONDITIONS), name='create_all_thematic'),
 
-                       url(r'^create/all/(?P<subscription_id>\d+)/(?P<payment_type>\w)/(?P<nb_deliveries>\d+)/$', views.CreateAllValidation.as_view(), name='create_all_validation'),
+                       url(r'^create/all/(?P<subscription_id>\d+)/(?P<payment_type>\w)/(?P<nb_deliveries>\d+)/$', views.createall.CreateAllValidation.as_view(), name='create_all_validation'),
 )

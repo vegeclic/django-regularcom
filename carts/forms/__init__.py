@@ -26,7 +26,7 @@ from django.utils.safestring import mark_safe
 from django.utils.encoding import force_text
 from django.forms.util import flatatt
 import django.contrib.auth as auth
-from . import models
+from .. import models
 import common.forms as cf
 import common.models as cm
 import suppliers.models as sm
