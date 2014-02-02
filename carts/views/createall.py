@@ -536,17 +536,17 @@ CREATEALL_DONE = {
 CREATEALL_STEPS_ORDER = ['cart', 'subscription', 'products', 'extents', 'suppliers', 'preview', 'authentication', 'payment', 'address', 'comment', 'resume',]
 
 CREATEALL_FORMS = [
-    ('cart', forms.CreateAllCartForm),
-    ('subscription', forms.CreateAllSubscriptionForm),
-    ('products', forms.CreateAllProductsForm),
-    ('extents', forms.CreateAllExtentsForm),
-    ('suppliers', forms.CreateAllSuppliersForm),
-    ('preview', forms.CreateAllPreviewForm),
-    ('authentication', forms.CreateAllAuthenticationForm),
-    ('payment', forms.CreateAllPaymentForm),
-    ('address', forms.CreateAllAddressForm),
-    ('comment', forms.CreateAllCommentForm),
-    ('resume', forms.CreateAllResumeForm),
+    ('cart', forms.createall.CreateAllCartForm),
+    ('subscription', forms.createall.CreateAllSubscriptionForm),
+    ('products', forms.createall.CreateAllProductsForm),
+    ('extents', forms.createall.CreateAllExtentsForm),
+    ('suppliers', forms.createall.CreateAllSuppliersForm),
+    ('preview', forms.createall.CreateAllPreviewForm),
+    ('authentication', forms.createall.CreateAllAuthenticationForm),
+    ('payment', forms.createall.CreateAllPaymentForm),
+    ('address', forms.createall.CreateAllAddressForm),
+    ('comment', forms.createall.CreateAllCommentForm),
+    ('resume', forms.createall.CreateAllResumeForm),
 ]
 
 def show_create_all_products_form_condition(wizard):
