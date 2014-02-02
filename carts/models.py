@@ -92,6 +92,7 @@ class Size(models.Model):
     weight = models.FloatField(_('weight'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
     enabled = models.BooleanField(_('enabled'), default=False)
+    order = models.IntegerField(_('order'), default=0)
 
     def default_price(self):
         try:

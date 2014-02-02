@@ -148,7 +148,7 @@ class CreateAllSubscriptionStep(CreateAllStep):
         form.carriers = cache.get('create_carriers') or models.Carrier.objects.select_related().all()
         if not cache.get('create_carriers'): cache.set('create_carriers', form.carriers)
 
-        form.sizes = cache.get('create_sizes') or models.Size.objects.select_related().all()
+        form.sizes = cache.get('create_sizes') or models.Size.objects.select_related().order_by('order').all()
         if not cache.get('create_sizes'): cache.set('create_sizes', form.sizes)
 
         return form

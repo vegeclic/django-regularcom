@@ -59,8 +59,8 @@ class CarrierAdmin(TranslationAdmin):
 admin.site.register(models.Carrier, CarrierAdmin)
 
 class SizeAdmin(TranslationAdmin):
-    list_display = ('id', 'name', 'price', 'weight', 'enabled',)
-    fields = ('name', 'body', 'weight', 'main_image', 'enabled',)
+    list_display = ('id', 'name', 'price', 'weight', 'enabled', 'order',)
+    fields = ('name', 'body', 'weight', 'main_image', 'enabled', 'order',)
     search_fields = ('name',)
     inlines = [PriceInline, ca.ImageInline,]
 

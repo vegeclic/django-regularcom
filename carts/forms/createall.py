@@ -48,7 +48,7 @@ class CreateAllCartForm(forms.Form):
         super().__init__(*args, **kwargs)
 
 class CreateAllSubscriptionForm(forms.Form):
-    size = forms.ModelChoiceField(queryset=models.Size.objects.select_related().order_by('id'), initial=2,
+    size = forms.ModelChoiceField(queryset=models.Size.objects.select_related().order_by('order'), initial=2,
                                   help_text=_('Which size would you like to use for your cart ? (delivery fees included)'),
                                   label=_('Size'))
     frequency = forms.ChoiceField(choices=models.FREQUENCY_CHOICES, initial=models.FREQUENCY_DEFAULT,
