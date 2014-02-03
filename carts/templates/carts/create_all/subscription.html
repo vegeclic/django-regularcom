@@ -64,7 +64,7 @@
 	{% for carrier in wizard.form.carriers %}
 	  <div class="carrier_detail" id="carrier_{{carrier.id}}">
 	    <h3>{{carrier.name}}</h3>
-	    <p>{{carrier.body}}</p>
+	    <p>{{carrier.body|safe}}</p>
 	  </div>
 	{% endfor %}
       </div>
