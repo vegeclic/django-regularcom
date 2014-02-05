@@ -10,25 +10,20 @@
   <div class="col-md-9">
     <div id="carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
-
 	<div class="item active">
-	  <a href="/blog/article/23/paniers-speciaux-saint-valentin/"><img src="{% static "panierstvalentin.png" %}" alt="#"></a>
-	  {#<div class="carousel-caption">...</div>#}
-	</div>
-
-	<div class="item">
 	  <a href="{% url "how" %}"><img src="{% static "intro.png" %}" alt="#"></a>
-	  {#<div class="carousel-caption">...</div>#}
+	</div>
+	
+	<div class="item">
+	  <a href="{% url "article_slug" 25 "frais_de_port_en_baisse" %}"><img src="{% static "bannerfraisport.png" %}" alt="#"></a>
 	</div>
 
 	<div class="item">
 	  <a href="{% url "catalog_grid_product_id_page" 9 1 %}"><img src="{% static "vetementetaccessoires.png" %}" alt="#"></a>
-	  {#<div class="carousel-caption">...</div>#}
 	</div>
 
 	<div class="item">
 	  <a href="{% url "create_thematic" %}"><img src="{% static "mix.png" %}" alt="#"></a>
-	  {#<div class="carousel-caption">...</div>#}
 	</div>
 
       </div>
@@ -69,7 +64,7 @@
 	</h4>
       </div>
       <div class="panel-body" style="text-align:justify">
-	  <a href="blog/article/13/comment-sont-prepares-les-paniers-vegeclic/"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
+	  <a href="{% url "article_slug" 13 "comment-sont-prepares-les-paniers-vegeclic" %}"><img style="margin-left: 30px" src="static/fraisportinclus.png"/></a>
       </div>
     </div>
 
