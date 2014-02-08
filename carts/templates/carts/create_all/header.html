@@ -1,3 +1,30 @@
+<div class="panel-group" id="accordion">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+        <a class="btn btn-block" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          <span class="label label-success">Vidéo</span> Comment faire un abonnement à un panier <strong>thématique</strong> ?
+        </a>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body text-center">
+        <div id="embed2">Chargement de la video...</div> 
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+        <a class="btn btn-block" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          <span class="label label-success">Vidéo</span> Comment faire un abonnement à un panier <strong>personnalisé</strong> ?
+        </a>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body text-center">
+        <div id="embed3">Chargement de la video...</div> 
+      </div>
+    </div>
+  </div>
+</div>
+
     <h1>{% if c == "cart" %}Créez votre panier Végéclic{% elif c == "subscription" %}Configuration de l'abonnement{% elif c == "products" %}Choix des familles de produits{% elif c == "extents" %}Proportions des produits{% elif c == "suppliers" %}Sélection des articles{% elif c == "preview" %}Aperçu du contenu du panier{% elif c == "authentication" %}Identification{% elif c == "payment" %}Paiement{% elif c == "address" %}Coordonnées{% elif c == "comment" %}Commentaire{% elif c == "resume" %}Aperçu avant validation{% elif c == "validation" %}Abonnement n° <strong>{{object.id}}</strong> crée{% endif %}</h1>
 
   <hr/>

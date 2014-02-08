@@ -60,17 +60,6 @@
     <div class="panel panel-warning">
       <div class="panel-heading">
 	<h4 class="panel-title text-center" style="color:black">
-	  Vidéo de présentation
-	</h4>
-      </div>
-      <div class="panel-body text-center" style="padding: 25px 0">
-        <div id="embed">Chargement de la video...</div>
-      </div>
-    </div>
-
-    <div class="panel panel-warning">
-      <div class="panel-heading">
-	<h4 class="panel-title text-center" style="color:black">
 	  En savoir plus sur nos colis ?
 	</h4>
       </div>
@@ -134,6 +123,46 @@
   </div>
 
   <div class="col-md-9">
+  
+<div class="panel-group" id="accordion">
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+        <a class="btn btn-block" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          <span class="label label-danger">Vidéo</span> Présentation de la boutique
+        </a>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body text-center">
+        <div id="embed1">Chargement de la video...</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+        <a class="btn btn-block" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          <span class="label label-danger">Vidéo</span> Comment faire un abonnement à un panier <strong>thématique</strong> ?
+        </a>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body text-center">
+        <div id="embed2">Chargement de la video...</div> 
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+        <a class="btn btn-block" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          <span class="label label-danger">Vidéo</span> Comment faire un abonnement à un panier <strong>personnalisé</strong> ?
+        </a>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body text-center">
+        <div id="embed3">Chargement de la video...</div> 
+      </div>
+    </div>
+  </div>
+</div>
+  
     {% with c="cart" i=0 progress_value=0 current_progress_value=0 inverse_progress_value=100 %}
 
     <h2 class="text-center text-danger">Découvrez nos paniers</h2>
@@ -261,27 +290,26 @@
 	setTimeout(function() { $('.popover_link').popover('hide') }, 2000);
     });
   </script>
-  
-  <script>
-        var videoUrl = 'http://vimeo.com/user24937733/presentationvegeclic';
-        var endpoint = 'http://www.vimeo.com/api/oembed.json';
-        var callback = 'embedVideo';
-        var url = endpoint + '?url=' + encodeURIComponent(videoUrl) + '&callback=' + callback + '&width=250';
-
-        function embedVideo(video) {
-            document.getElementById('embed').innerHTML = unescape(video.html);
-        }
-
-        function init() {
-            var js = document.createElement('script');
-            js.setAttribute('type', 'text/javascript');
-            js.setAttribute('src', url);
-            document.getElementsByTagName('head').item(0).appendChild(js);
-        }
-
-        window.onload = init;
+    
+    <script>
+        function embedVideo1(video) { document.getElementById('embed1').innerHTML = unescape(video.html); }
+        function embedVideo2(video) { document.getElementById('embed2').innerHTML = unescape(video.html); }
+        function embedVideo3(video) { document.getElementById('embed3').innerHTML = unescape(video.html); }
+        
+        $(function() {
+            var userUrl = 'http://vimeo.com/user24937733/';
+            var endpoint = 'http://www.vimeo.com/api/oembed.json';
+            
+            $([['presentationvegeclic', 'embedVideo1'],
+               ['abonnementthematique', 'embedVideo2'],
+               ['abonnementpersonnalise', 'embedVideo3']]).each(function() {
+                    var js = document.createElement('script');
+                    js.setAttribute('src', endpoint + '?url=' + encodeURIComponent(userUrl + $(this)[0]) + '&callback=' + $(this)[1] + '&width=435');
+                    document.getElementsByTagName('head').item(0).appendChild(js);
+            });
+        });
     </script>
-
+    
   <style>
     #buttons { overflow: hidden }
     #buttons .col-md-6 { float: right }

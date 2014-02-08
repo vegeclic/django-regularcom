@@ -53,6 +53,23 @@
 	setTimeout(function() { $('.popover_link').popover('hide') }, 2000);
     });
   </script>
+  
+      <script>
+        function embedVideo2(video) { document.getElementById('embed2').innerHTML = unescape(video.html); }
+        function embedVideo3(video) { document.getElementById('embed3').innerHTML = unescape(video.html); }
+        
+        $(function() {
+            var userUrl = 'http://vimeo.com/user24937733/';
+            var endpoint = 'http://www.vimeo.com/api/oembed.json';
+            
+            $([['abonnementthematique', 'embedVideo2'],
+               ['abonnementpersonnalise', 'embedVideo3']]).each(function() {
+                    var js = document.createElement('script');
+                    js.setAttribute('src', endpoint + '?url=' + encodeURIComponent(userUrl + $(this)[0]) + '&callback=' + $(this)[1] + '&width=435');
+                    document.getElementsByTagName('head').item(0).appendChild(js);
+            });
+        });
+    </script>
 
   <style type="text/css">
     #buttons { overflow: hidden }
