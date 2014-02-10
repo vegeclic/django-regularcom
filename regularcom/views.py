@@ -37,6 +37,9 @@ class HomeView(generic.TemplateView):
         last_recipes = bm.Article.objects.filter(tags__tag='recette').order_by('-period_start', '-date_created').all()
         if last_recipes:
             context['last_recipe'] = last_recipes[0]
+        cart_exemple = bm.Article.objects.filter(tags__tag='exemple').order_by('-period_start', '-date_created').all()
+        if cart_exemple:
+            context['cart_exemple'] = cart_exemple[0]
             
         return context
 
