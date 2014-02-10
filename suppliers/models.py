@@ -26,12 +26,15 @@ import common.models as cm
 import numpy as np
 
 class Supplier(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
-    suppliers = models.ManyToManyField('self', null=True, blank=True, related_name='supplier_suppliers', verbose_name=_('suppliers'))
-    delivery_delay = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
-    threshold_order = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
-    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
+    name                = models.CharField(_('name'), max_length=100, unique=True)
+    slug                = models.SlugField(unique=True)
+    suppliers           = models.ManyToManyField('self', null=True, blank=True,
+                                                 related_name='supplier_suppliers',
+                                                 verbose_name=_('suppliers'))
+    delivery_delay      = models.PositiveIntegerField(_('delivery delay'), null=True, blank=True)
+    threshold_order     = models.PositiveIntegerField(_('threshold order'), null=True, blank=True)
+    main_image          = models.OneToOneField('common.Image', null=True, blank=True,
+                                               related_name='+', verbose_name=_('main image'))
 
     def __unicode__(self): return self.name
 
@@ -45,36 +48,33 @@ class SupplierFee(models.Model):
     class Meta:
         unique_together = ('supplier', 'currency')
 
-    supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
-    currency = models.ForeignKey('common.Currency', related_name='supplier_fee_currency', verbose_name=_('currency'))
-    fee_per_weight = models.FloatField(_('fee per weight'))
+    supplier            = models.ForeignKey(Supplier, verbose_name=_('supplier'))
+    currency            = models.ForeignKey('common.Currency',
+                                            related_name='supplier_fee_currency',
+                                            verbose_name=_('currency'))
+    fee_per_weight      = models.FloatField(_('fee per weight'))
 
     def __unicode__(self): return '%s %s / 1 kg' % (self.fee_per_weight, self.currency.symbol)
 
 class Ingredient(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+    name        = models.CharField(_('name'), max_length=100, unique=True)
 
 class IngredientExtent(models.Model):
-    ingredient = models.ForeignKey(Ingredient, verbose_name=_('ingredient'))
-    ingredient_parent = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, related_name='ingredient_children', verbose_name=_('ingredient parent'))
-    extent = models.FloatField(_('extent'), default=0.)
-    bio = models.BooleanField(_('bio'), default=False)
+    ingredient          = models.ForeignKey(Ingredient, verbose_name=_('ingredient'))
+    ingredient_parent   = models.ManyToManyField('self', symmetrical=False, null=True,
+                                                 blank=True, related_name='ingredient_children',
+                                                 verbose_name=_('ingredient parent'))
+    extent              = models.FloatField(_('extent'), default=0.)
+    bio                 = models.BooleanField(_('bio'), default=False)
 
 class Energy(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+    name        = models.CharField(_('name'), max_length=100, unique=True)
 
 class EnergyExtent(models.Model):
-    energy = models.ForeignKey(Energy, verbose_name=_('energy'), unique=True)
-    value = models.CharField(_('value'), max_length=200, null=True, blank=True)
+    energy      = models.ForeignKey(Energy, verbose_name=_('energy'), unique=True)
+    value       = models.CharField(_('value'), max_length=200, null=True, blank=True)
 
 class Product(models.Model):
-    name = models.CharField(_('name'), max_length=100)
-    slug = models.SlugField(max_length=100, null=True, blank=True)
-    body = models.TextField(_('body'), blank=True)
-    brut_ingredients = models.TextField(_('brut ingredients'), blank=True)
-    allergies = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_allergies', verbose_name=_('allergies'))
-    traces = models.ManyToManyField(Ingredient, null=True, blank=True, related_name='product_traces', verbose_name=_('traces'))
-    product = models.ForeignKey('products.Product', related_name='product_product', verbose_name=_('product'))
     STATUS_CHOICES = (
         ('d', _('Draft')),
         ('p', _('Published')),
@@ -82,15 +82,35 @@ class Product(models.Model):
         ('e', _('Expired')),
         ('w', _('Withdrawn')),
     )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
-    suppliers = models.ManyToManyField(Supplier, null=True, blank=True, related_name='product_suppliers', verbose_name=_('suppliers'))
-    criterias = models.ManyToManyField('common.Criteria', null=True, blank=True, related_name='product_criterias', verbose_name=_('criterias'))
-    weight = models.FloatField(_('weight'), null=True, blank=True)
-    sku = models.CharField(max_length=100, blank=True)
-    main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
-    main_price = models.OneToOneField('Price', null=True, blank=True, related_name='+', verbose_name=_('main price'))
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+
+    name                = models.CharField(_('name'), max_length=100)
+    slug                = models.SlugField(max_length=100, null=True, blank=True)
+    body                = models.TextField(_('body'), blank=True)
+    brut_ingredients    = models.TextField(_('brut ingredients'), blank=True)
+    allergies           = models.ManyToManyField(Ingredient, null=True, blank=True,
+                                                 related_name='product_allergies',
+                                                 verbose_name=_('allergies'))
+    traces              = models.ManyToManyField(Ingredient, null=True, blank=True,
+                                                 related_name='product_traces',
+                                                 verbose_name=_('traces'))
+    product             = models.ForeignKey('products.Product', related_name='product_product',
+                                            verbose_name=_('product'))
+    status              = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES,
+                                           default='d')
+    suppliers           = models.ManyToManyField(Supplier, null=True, blank=True,
+                                                 related_name='product_suppliers',
+                                                 verbose_name=_('suppliers'))
+    criterias           = models.ManyToManyField('common.Criteria', null=True, blank=True,
+                                                 related_name='product_criterias',
+                                                 verbose_name=_('criterias'))
+    weight              = models.FloatField(_('weight'), null=True, blank=True)
+    sku                 = models.CharField(max_length=100, blank=True)
+    main_image          = models.OneToOneField('common.Image', null=True, blank=True,
+                                               related_name='+', verbose_name=_('main image'))
+    main_price          = models.OneToOneField('Price', null=True, blank=True, related_name='+',
+                                               verbose_name=_('main price'))
+    date_created        = models.DateTimeField(auto_now_add=True)
+    date_last_modified  = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return self.name
 
@@ -104,8 +124,8 @@ class Tax(models.Model):
     class Meta:
         verbose_name_plural = _('taxes')
 
-    name = models.CharField(_('name'), max_length=100, null=True, blank=True)
-    rate = models.FloatField(_('rate'))
+    name        = models.CharField(_('name'), max_length=100, null=True, blank=True)
+    rate        = models.FloatField(_('rate'))
 
     def __unicode__(self): return self.name
 
@@ -113,15 +133,18 @@ class Price(models.Model):
     class Meta:
         unique_together = ('product', 'supplier', 'currency')
 
-    product = models.ForeignKey(Product, verbose_name=_('product'))
-    supplier = models.ForeignKey(Supplier, verbose_name=_('supplier'))
-    reference = models.CharField(_('reference'), max_length=30, null=True, blank=True)
-    supplier_product_url = models.URLField(_('supplier product url'), null=True, blank=True)
-    limited = models.BooleanField(_('limited product'), default=False)
-    currency = models.ForeignKey('common.Currency', related_name='supplier_product_price_currency', verbose_name=_('currency'))
-    purchase_price = models.FloatField(_('purchase price'))
-    selling_price = models.FloatField(_('selling price'), null=True, blank=True)
-    tax = models.ForeignKey(Tax, related_name='supplier_product_price_tax', verbose_name=_('tax'), null=True, blank=True)
+    product             = models.ForeignKey(Product, verbose_name=_('product'))
+    supplier            = models.ForeignKey(Supplier, verbose_name=_('supplier'))
+    reference           = models.CharField(_('reference'), max_length=30, null=True, blank=True)
+    supplier_product_url= models.URLField(_('supplier product url'), null=True, blank=True)
+    limited             = models.BooleanField(_('limited product'), default=False)
+    currency            = models.ForeignKey('common.Currency',
+                                            related_name='supplier_product_price_currency',
+                                            verbose_name=_('currency'))
+    purchase_price      = models.FloatField(_('purchase price'))
+    selling_price       = models.FloatField(_('selling price'), null=True, blank=True)
+    tax                 = models.ForeignKey(Tax, related_name='supplier_product_price_tax',
+                                            verbose_name=_('tax'), null=True, blank=True)
 
     def price(self): return self.selling_price if self.selling_price else self.purchase_price
 
@@ -169,18 +192,18 @@ class Inventory(models.Model):
     class Meta:
         verbose_name_plural = _('inventories')
 
-    store = models.ForeignKey('Store', verbose_name=_('store'))
-    product = models.OneToOneField(Product, verbose_name=_('product'))
-    quantity = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+    store               = models.ForeignKey('Store', verbose_name=_('store'))
+    product             = models.OneToOneField(Product, verbose_name=_('product'))
+    quantity            = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
+    date_created        = models.DateTimeField(auto_now_add=True)
+    date_last_modified  = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return self.product.name
 
 class Store(models.Model):
-    name = models.CharField(_('name'), max_length=100, unique=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+    name                = models.CharField(_('name'), max_length=100, unique=True)
+    date_created        = models.DateTimeField(auto_now_add=True)
+    date_last_modified  = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return self.name
 
@@ -188,9 +211,9 @@ class Entry(models.Model):
     class Meta:
         verbose_name_plural = _('entries')
 
-    order = models.ForeignKey('Order', verbose_name=_('order'))
-    product = models.OneToOneField(Product, verbose_name=_('product'))
-    quantity = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
+    order       = models.ForeignKey('Order', verbose_name=_('order'))
+    product     = models.OneToOneField(Product, verbose_name=_('product'))
+    quantity    = models.PositiveIntegerField(_('quantity'), null=True, blank=True)
 
     def __unicode__(self): return self.product.name
 
@@ -201,6 +224,8 @@ class Order(models.Model):
         ('e', _('Expired')),
         ('w', _('Withdrawn')),
     )
-    status = models.CharField(_('status'), max_length=1, choices=STATUS_CHOICES, default='d')
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+
+    status              = models.CharField(_('status'), max_length=1,
+                                           choices=STATUS_CHOICES, default='d')
+    date_created        = models.DateTimeField(auto_now_add=True)
+    date_last_modified  = models.DateTimeField(auto_now=True)
