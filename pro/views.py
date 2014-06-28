@@ -74,7 +74,7 @@ class CatalogGridView(sw.CatalogView):
         context['sub_section'] = 'catalog'
         return context
 
-    @method_decorator(pro_required)
+    # @method_decorator(pro_required)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
 
 class CatalogListView(sw.CatalogView):
@@ -87,5 +87,5 @@ class CatalogListView(sw.CatalogView):
         context['sub_section'] = 'catalog'
         return context
 
-    @method_decorator(pro_required)
+    # @method_decorator(pro_required)
     def dispatch(self, *args, **kwargs): return super().dispatch(*args, **kwargs)
