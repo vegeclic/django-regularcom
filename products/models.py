@@ -19,6 +19,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
@@ -58,8 +59,11 @@ class Product(models.Model):
     products_parent = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, related_name='products_children', verbose_name=_('products parent'))
     tags = generic.GenericRelation(TaggedItem, verbose_name=_('tags'))
     main_image = models.OneToOneField('common.Image', null=True, blank=True, related_name='+', verbose_name=_('main image'))
-    tax = models.ForeignKey('suppliers.Tax', related_name='product_price_tax', verbose_name=_('tax'), null=True, blank=True)
+    tax = models.ForeignKey('common.Tax', related_name='product_price_tax', verbose_name=_('tax'), null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self): return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy('catalog_product_id_slug', args=[self.id, self.slug])

@@ -120,15 +120,6 @@ class Product(models.Model):
         except Product.DoesNotExist:
             return None
 
-class Tax(models.Model):
-    class Meta:
-        verbose_name_plural = _('taxes')
-
-    name        = models.CharField(_('name'), max_length=100, null=True, blank=True)
-    rate        = models.FloatField(_('rate'))
-
-    def __unicode__(self): return self.name
-
 class Price(models.Model):
     class Meta:
         unique_together = ('product', 'supplier', 'currency')
@@ -143,7 +134,8 @@ class Price(models.Model):
                                             verbose_name=_('currency'))
     purchase_price      = models.FloatField(_('purchase price'))
     selling_price       = models.FloatField(_('selling price'), null=True, blank=True)
-    tax                 = models.ForeignKey(Tax, related_name='supplier_product_price_tax',
+    tax                 = models.ForeignKey('common.Tax',
+                                            related_name='supplier_product_price_tax',
                                             verbose_name=_('tax'), null=True, blank=True)
 
     def price(self): return self.selling_price if self.selling_price else self.purchase_price

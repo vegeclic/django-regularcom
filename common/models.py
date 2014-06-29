@@ -80,6 +80,15 @@ class Currency(models.Model):
 
     def __unicode__(self): return ('%s (%s)' % (self.name, self.symbol)).strip()
 
+class Tax(models.Model):
+    class Meta:
+        verbose_name_plural = _('taxes')
+
+    name        = models.CharField(_('name'), max_length=100, null=True, blank=True)
+    rate        = models.FloatField(_('rate'))
+
+    def __unicode__(self): return self.name
+
 class Criteria(models.Model):
     name = models.CharField(_('name'), max_length=100)
     enabled = models.BooleanField(_('enabled'), default=True)
