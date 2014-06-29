@@ -47,10 +47,8 @@ nosetests.xml
 *.pyc
 local_settings.py
 settings.py
-initial_data.json
 
 # in addition
 *.db
 #*.png
 *~
-
