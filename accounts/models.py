@@ -27,21 +27,22 @@ import wallets.models as wm
 import mailbox.models as mm
 
 class AccountManager(BaseUserManager):
-    def create_user(self, email):
+    def create_user(self, email, _password=None):
         """
         Creates and saves a User with the given email and password.
         """
         if not email: raise ValueError('Users must have an email address')
 
         account = self.model(email=AccountManager.normalize_email(email).lower())
-        password = self.make_random_password()
+        password = self.make_random_password() if not _password else _password
         account.set_password(password)
         account.save(using=self._db)
 
         customer = csm.Customer.objects.create(account=account)
         wallet = wm.Wallet.objects.create(customer=customer, balance=settings.BALANCE_INIT, target_currency=cm.Currency.objects.get(name=settings.DEFAULT_CURRENCY))
 
-        message = mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Welcome to Végéclic'), body=_(
+        if not _password:
+            message = mm.Message.objects.create_message(mail_only=True, participants=[customer], subject=_('Welcome to Végéclic'), body=_(
 """Hi there,
 
 We are pleased to see you among us on the new website of Végéclic.
@@ -60,7 +61,7 @@ Ready ? Go to the "carts" section in order to create a new subscription. It is q
 Best regards,
 Végéclic.
 """
-        ) % {'email': account.email, 'password': password})
+            ) % {'email': account.email, 'password': password})
 
         return account
 
@@ -68,7 +69,7 @@ Végéclic.
         """
         Creates and saves a superuser with the given email and password.
         """
-        account = self.create_user(email, password=password)
+        account = self.create_user(email, password)
         account.is_admin = True
         account.save(using=self._db)
         return account
