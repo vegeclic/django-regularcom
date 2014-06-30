@@ -1,1 +1,0 @@
-[{"pk": 1, "fields": {"shipping_address": null, "main_address": null, "date_of_birth": null, "main_image": null, "date_last_modified": "2014-01-08T20:43:00.695Z", "relay_address": null, "pro": false, "billing_address": null, "date_created": "2014-01-08T20:43:00.694Z", "account": 1}, "model": "customers.customer"}]

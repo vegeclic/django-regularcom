@@ -1,1 +1,0 @@
-[{"pk": 1, "fields": {"bitcoin": null, "rib": null, "balance": 0.0, "paypal": null, "date_last_modified": "2014-01-08T20:43:00.774Z", "target_currency": 1, "date_created": "2014-01-08T20:43:00.774Z", "customer": 1}, "model": "wallets.wallet"}]
