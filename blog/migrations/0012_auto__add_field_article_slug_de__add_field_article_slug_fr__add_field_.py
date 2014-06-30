@@ -18,10 +18,11 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.SlugField')(blank=True, null=True, max_length=200),
                       keep_default=False)
 
-        for a in orm.Article.objects.all():
-            if a.title_de: a.slug_de = slugify(a.title_de)
-            if a.title_fr: a.slug_fr = slugify(a.title_fr)
-            a.save()
+        if not db.dry_run:
+            for a in orm.Article.objects.all():
+                if a.title_de: a.slug_de = slugify(a.title_de)
+                if a.title_fr: a.slug_fr = slugify(a.title_fr)
+                a.save()
 
         # Adding field 'Category.slug'
         db.add_column('blog_category', 'slug',
@@ -38,10 +39,11 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.SlugField')(blank=True, null=True, max_length=200),
                       keep_default=False)
 
-        for c in orm.Category.objects.all():
-            if c.name_de: c.slug_de = slugify(c.name_de)
-            if c.name_fr: c.slug_fr = slugify(c.name_fr)
-            c.save()
+        if not db.dry_run:
+            for c in orm.Category.objects.all():
+                if c.name_de: c.slug_de = slugify(c.name_de)
+                if c.name_fr: c.slug_fr = slugify(c.name_fr)
+                c.save()
 
     def backwards(self, orm):
         # Deleting field 'Article.slug_de'

@@ -7,6 +7,11 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ('common', '0001_initial'),
+        ('accounts', '0001_initial'),
+    )
+
     def forwards(self, orm):
         # Adding model 'TaggedItem'
         db.create_table('products_taggeditem', (

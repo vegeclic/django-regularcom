@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ('suppliers', '0005_auto__del_fee__add_tax__del_field_price_fee__add_field_price_tax'),
+    )
+
     def forwards(self, orm):
         # Adding field 'Product.tax'
         db.add_column('products_product', 'tax',
