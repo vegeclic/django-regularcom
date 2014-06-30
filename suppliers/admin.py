@@ -24,11 +24,6 @@ from . import forms, models
 import common.admin as ca
 import common.models as cm
 
-class TaxAdmin(ca.MyModelAdmin):
-    list_display = ('id', 'name', 'rate',)
-
-admin.site.register(models.Tax, TaxAdmin)
-
 class PriceInline(ca.LimitedAdminInlineMixin, admin.TabularInline):
     form = forms.PriceForm
     model = models.Price

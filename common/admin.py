@@ -110,6 +110,11 @@ class CurrencyAdmin(MyModelAdmin):
 
 admin.site.register(models.Currency, CurrencyAdmin)
 
+class TaxAdmin(MyModelAdmin):
+    list_display = ('id', 'name', 'rate',)
+
+admin.site.register(models.Tax, TaxAdmin)
+
 class AddressInline(generic.GenericStackedInline):
     model = models.Address
     extra = 1
