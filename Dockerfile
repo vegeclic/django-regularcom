@@ -17,6 +17,10 @@ RUN pip install -r requirements.txt
 
 # install our code
 ADD . /app
+COPY share/docker/run_server.sh /app/
+COPY share/docker/passenger_wsgi.py /app/
+COPY share/docker/setup_script.py /app/
+COPY share/docker/settings.py /app/regularcom/
 RUN chown -R www-data:www-data /app
 
 # install static files

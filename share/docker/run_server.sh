@@ -1,6 +1,8 @@
 #!/bin/sh
 
+echo "Sync + migrate database"
 python manage.py syncdb --noinput --migrate
+echo "Add fixtures"
 python setup_script.py
-#memcached -u memcache -d
+echo "Launch web server"
 nginx
